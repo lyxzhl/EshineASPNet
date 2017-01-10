@@ -16,7 +16,7 @@
     <TD height="99" bgcolor="#0099d8">
       <DIV class="logo_time">
       <DIV class="logo l"><IMG src="../Images/Medi-plus_02.png" height="99px" /></DIV>
-      <DIV class="time r"><SPAN>Medi-Plus咨询热线 <B style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">4000-888-888</B></SPAN><SPAN>Medi-Plus</SPAN></DIV></DIV></TD></TR>
+      <DIV class="time r"><SPAN>咨询热线 <B style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">400-888-8888</B></SPAN><SPAN>EshineASPNet</SPAN></DIV></DIV></TD></TR>
   <TR>
     <TD height="90">&nbsp;</TD></TR>
   <TR>
@@ -45,7 +45,7 @@
   <TR>
     <TD height="86" style="border-top-color: rgb(247, 247, 247); border-top-width: 3px; border-top-style: solid;">
       <DIV class="footer">
-      <P class="l">Medi-Plus版权所有 © 2013</P>
+      <P class="l">Eshine版权所有 © 2017</P>
       <P class="r">技术支持：明之育</P></DIV></TD></TR></TBODY></TABLE>
     </div>
     </form>

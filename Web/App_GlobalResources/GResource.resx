@@ -364,7 +364,7 @@
     <value>日</value>
   </data>
   <data name="discribesymptom" xml:space="preserve">
-    <value>请在此叙述主要症状及问题，Medi-plus就医协调为有偿服务，您提交具体需求后，我们的客户服务人员将在一个工作日内与您沟通详情。</value>
+    <value>您提交具体需求后，我们的客户服务人员将在一个工作日内与您沟通详情。</value>
   </data>
   <data name="dob" xml:space="preserve">
     <value>出生日期</value>

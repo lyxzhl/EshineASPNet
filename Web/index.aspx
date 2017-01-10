@@ -7,7 +7,7 @@
 <META content="IE=10.000" http-equiv="X-UA-Compatible">
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">     
 <title>EshineAspNet | <asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,titletext %>'></asp:Localize></TITLE>     
-<META name="description" content="Medi-Plus"> 
+<META name="description" content="EshineASPNet"> 
 <META name="viewport" content="width=device-width, initial-scale=1">         
 
       

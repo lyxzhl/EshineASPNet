@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Localize1Resource1.Text" xml:space="preserve">
-    <value>About Medi-Plus</value>
+    <value>About EshineASPNet</value>
   </data>
   <data name="Localize2Resource1.Text" xml:space="preserve">
     <value>Terms Of Service</value>

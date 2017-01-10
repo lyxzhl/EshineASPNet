@@ -172,7 +172,7 @@
     <value />
   </data>
   <data name="Label2Resource1.Text" xml:space="preserve">
-    <value>From: Medi-Plus</value>
+    <value>From: Eshine</value>
   </data>
   <data name="Label2Resource1.ToolTip" xml:space="preserve">
     <value />
@@ -262,7 +262,7 @@
     <value>已读站内信</value>
   </data>
   <data name="PageResource2.Title" xml:space="preserve">
-    <value>Medi-Plus &gt; Message</value>
+    <value> Message</value>
   </data>
   <data name="Panel1Resource1.GroupingText" xml:space="preserve">
     <value />

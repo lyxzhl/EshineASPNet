@@ -86,7 +86,7 @@
                          <asp:Image ID="Image2" runat="server" ImageUrl="~/Images/mpmailhead.jpg" 
                              meta:resourcekey="Image2Resource1" /></td>  
                      <td width="130" style="vertical-align:middle">
-                         <asp:Label ID="Label2" runat="server" Text="来自:Medi-Plus" Width="130px" 
+                         <asp:Label ID="Label2" runat="server" Text="来自:Eshine" Width="130px" 
                              meta:resourcekey="Label2Resource1"></asp:Label>
                      <asp:Label ID="lbltime" runat="server" Text='1天前' ForeColor="#777777" 
                              meta:resourcekey="lbltimeResource1"></asp:Label></td>  

@@ -59,7 +59,7 @@ public partial class safeemail : PageBases
         modelCu.customerValidateCode = pc.md5(checkCode);
         Cb.update(modelCu);
 
-        string newemaillink = "http://www.medi-plus.cn/confirmemail.aspx?id=" + modelCu.customerID + "&vc=" + modelCu.customerValidateCode + "&ne=" + this.TextBox4.Text;
+        string newemaillink = "http://www.eshinelee.com/confirmemail.aspx?id=" + modelCu.customerID + "&vc=" + modelCu.customerValidateCode + "&ne=" + this.TextBox4.Text;
         try
         {
 
@@ -79,7 +79,7 @@ public partial class safeemail : PageBases
 
     private void SendEmail(string strName, string strne)
     {
-        string Subject = "Medi-Plus修改邮箱";
+        string Subject = "修改邮箱";
 
         string strPath = System.Web.HttpContext.Current.Server.MapPath("~/email_changeemail.htm");
         StreamReader sr = new StreamReader(strPath, System.Text.Encoding.Default);

@@ -24,7 +24,7 @@
 
 <ul id='footer_list'>
 <li>
-<a href='../index.aspx'><asp:Localize ID="Localize1" runat="server" Text="关于Medi-Plus" meta:resourcekey="Localize1Resource1"></asp:Localize></a>
+<a href='../index.aspx'><asp:Localize ID="Localize1" runat="server" Text="关于" meta:resourcekey="Localize1Resource1"></asp:Localize></a>
 </li>
 <li>
 <a href='../TermsOfService.aspx'><asp:Localize ID="Localize2" runat="server" Text="服务条款" meta:resourcekey="Localize2Resource1"></asp:Localize></a>

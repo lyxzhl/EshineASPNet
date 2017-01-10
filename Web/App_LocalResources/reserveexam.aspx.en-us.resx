@@ -676,7 +676,7 @@
     <value>Please enter report receiving address!</value>
   </data>
   <data name="PageResource1.Title" xml:space="preserve">
-    <value>Medi-Plus &gt; Reserve exam</value>
+    <value> Reserve exam</value>
   </data>
   <data name="Panel1Resource1.GroupingText" xml:space="preserve">
     <value />

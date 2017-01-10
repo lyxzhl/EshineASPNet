@@ -148,7 +148,7 @@
     <value>View Report</value>
   </data>
   <data name="welcommsg" xml:space="preserve">
-    <value>Welcome to Medi-Plus</value>
+    <value>Welcome to EshineASPNet</value>
   </data>
   <data name="aleartcorrectemail" xml:space="preserve">
     <value>Please enter correct email!</value>
@@ -496,7 +496,7 @@
     <value>More fun</value>
   </data>
   <data name="mpmorefun" xml:space="preserve">
-    <value>More value added service in Medi-Plus</value>
+    <value>More value added service in EshineASPNet</value>
   </data>
   <data name="MPpackage" xml:space="preserve">
     <value>Selection</value>

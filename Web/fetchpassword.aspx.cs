@@ -32,7 +32,7 @@ public partial class fetchpassword : PageBases
     private void SendEmail(string strName, string strpw, string strid, string coname)
     {
         PublicClass pc = new PublicClass();
-        string Subject = "Medi-Plus登录密码";
+        string Subject = "登录密码";
 
         //读取HTML模板，即发送的页面
         string strPath = System.Web.HttpContext.Current.Server.MapPath("~/email_fetchpw.htm");

@@ -35,7 +35,7 @@ public partial class Admin_product_product_add : basePage
         M_pro.ex1ID = this.TextBox5.Text;
         if (this.File1.Value != null && this.File1.Value != "")
         {
-            ui.SaveSmallImg(Server.MapPath("~/Images/SmallImages") + "\\" + ui.GetFileName(this.File1), 145, 184, "Medi-Plus", 14, this.File1);
+            ui.SaveSmallImg(Server.MapPath("~/Images/SmallImages") + "\\" + ui.GetFileName(this.File1), 145, 184, "Eshine", 14, this.File1);
             M_pro.productImg = ui.GetFileName(this.File1);
             ui.SaveUpFile(Server.MapPath("~/Images/BigImages") + "\\" + ui.GetFileName(this.File1), this.File1);
             //M_pro.productImg = ui.GetFileName(this.File1);

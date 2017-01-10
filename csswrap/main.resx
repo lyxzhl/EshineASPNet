@@ -117,28 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DropDownList1Resource1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Label1Resource1.Text" xml:space="preserve">
-    <value>目前您没有可查看的体检报告！</value>
-  </data>
-  <data name="Label1Resource1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Label2Resource1.Text" xml:space="preserve">
-    <value>请选择体检报告：</value>
-  </data>
-  <data name="Label2Resource1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="PageResource1.Title" xml:space="preserve">
-    <value> 查看报告</value>
-  </data>
-  <data name="Panel1Resource1.GroupingText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Panel1Resource1.ToolTip" xml:space="preserve">
-    <value />
+  <metadata name="folderBrowserDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="richTextBox4.Text" xml:space="preserve">
+    <value>使用方式：
+确保表第一个字段为自增主键id
+右击数据库的表-编辑表脚本为(S)-CREAT到(C)-新建编辑器窗口
+复制从CREATE TABLE行到字段最后一行(即CONSTRAINT的上面一行)，例如
+CREATE TABLE [dbo].[province](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[code] [nvarchar](6) NULL,
+	[name] [nvarchar](40) NULL,
+粘贴这段到左侧的窗口，点击生成，软件自动生成对应的Model,DAL,Bll等至对应数据库，在项目添加现有项即可</value>
   </data>
 </root>

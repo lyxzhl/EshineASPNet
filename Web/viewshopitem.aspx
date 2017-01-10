@@ -26,7 +26,7 @@
 		</SCRIPT>
 <div class='container'>
 <a class='logo' href='index.aspx'>
-<img alt='Medi-Plus' src='Images/logo2.png'>
+<img alt='' src='Images/logo2.png'>
 </a>
 <asp:HyperLink class='button gray_button' ID="HyperLink4" runat="server" href='<%$ Resources:GResource,languagecode %>' Text='<%$ Resources:GResource,language %>'></asp:HyperLink>
 
@@ -90,7 +90,7 @@
 <div class='tags '>
 <div class='tag'>标签:</div>
 <div class='tag'>
-<a href=''>Medi-Plus</a>
+<a href=''></a>
 </div>
 <div class='tag'>
 <a href=''>体检</a>
