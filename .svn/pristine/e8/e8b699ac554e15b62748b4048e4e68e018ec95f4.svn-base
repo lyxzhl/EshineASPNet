@@ -1,0 +1,126 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Collections;
+using System.Data;
+public partial class report : PageBases
+{
+    Bll.CustomerBll cb = new Bll.CustomerBll();
+    Model.tab_customers modeCu = new Model.tab_customers();
+    Bll.companyBll comb = new Bll.companyBll();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        this.CheckUser((Hashtable)Application["Online"]);
+
+        if (comb.getcanuploadreport(comb.getcompanyname(Session["Companycode"].ToString())) == "0")
+        {
+            this.HyperLink5.Visible = false;
+        }
+
+        modeCu.customerID = int.Parse(Session["id"].ToString());
+        modeCu = cb.getCustomer(modeCu);
+        if (modeCu.packagecode == "入职体检")
+        {
+            this.Panel3.Visible = false; 
+        }
+    }
+
+    bool checkikreport()
+    {
+
+        return false;
+    }
+
+    protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        this.Panel1.Visible =false;
+
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            TableCell tc = e.Row.Cells[3];
+            if (tc.Text == "爱康国宾")
+            {
+                tc.Text = (string)GetGlobalResourceObject("GResource", "ikang");
+            }
+            else if (tc.Text == "美年大健康")
+            {
+                tc.Text = (string)GetGlobalResourceObject("GResource", "meinian");
+            }
+            else if (tc.Text == "慈铭体检")
+            {
+                tc.Text = (string)GetGlobalResourceObject("GResource", "ciming");
+            }
+            else if (tc.Text == "其他")
+            {
+                tc.Text = (string)GetGlobalResourceObject("GResource", "other");
+            }
+            
+            tc = e.Row.Cells[1];
+            if (tc.Text == "年度体检")
+            {
+                tc.Text = (string)GetGlobalResourceObject("GResource", "annualexam");
+            }
+            else if (tc.Text == "入职体检")
+            {
+                tc.Text = (string)GetGlobalResourceObject("GResource", "entryexam");
+            }
+            else if (tc.Text == "健康证体检")
+            {
+                tc.Text = (string)GetGlobalResourceObject("GResource", "healthcertiexam");
+            }
+            else if (tc.Text == "职业病体检")
+            {
+                tc.Text = (string)GetGlobalResourceObject("GResource", "occupationalexam");
+            }
+            else if (tc.Text == "其他")
+            {
+                tc.Text = (string)GetGlobalResourceObject("GResource", "other");
+            }
+
+        }
+    }
+
+    protected void GridView2_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            TableCell tc = e.Row.Cells[4];
+            if (tc.Text == "爱康国宾")
+            {
+                tc.Text = (string)GetGlobalResourceObject("GResource", "ikang");
+            }
+            else if (tc.Text == "美年大健康")
+            {
+                tc.Text = (string)GetGlobalResourceObject("GResource", "meinian");
+            }
+            else if (tc.Text == "慈铭体检")
+            {
+                tc.Text = (string)GetGlobalResourceObject("GResource", "ciming");
+            }
+            else if (tc.Text == "其他")
+            {
+                tc.Text = (string)GetGlobalResourceObject("GResource", "other");
+            }
+
+        }
+
+
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        Bll.RelativeBLL rb=new Bll.RelativeBLL();
+        DataTable dt = rb.RelativeSelect("select relativeName from tab_relatives where relativeCustomer=" + Session["id"]);
+        if (dt.Rows.Count < 1)
+        {
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('" + (string)GetGlobalResourceObject("GResource", "alertnorel") + "');window.location.href = 'RelativesDetails.aspx';</script>");
+        }
+        else
+        {
+            Response.Redirect("uploadrelreport.aspx");
+        }
+
+    }
+}

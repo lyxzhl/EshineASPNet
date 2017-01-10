@@ -1,0 +1,20 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick" onclick="goTo('list_order.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </a>
+        <div class="center">订单详情</div>
+        <div class="right">
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="OrderDetial" class="page">
+        <div class="page-content content_OrderDetial">
+            <div class="OrderDetial-wrap">
+            </div>
+        </div>
+    </div>
+</div>

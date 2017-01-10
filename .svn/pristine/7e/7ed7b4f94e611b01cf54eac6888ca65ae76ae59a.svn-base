@@ -1,0 +1,85 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="desktopnav.ascx.cs" Inherits="UserControl_desktopnav" %>
+<nav class='mobile_hidden' id='desktop'>
+<SCRIPT>
+    function sendemail(email) {
+        window.location.href = "mailto:" + escape(email);
+    }
+		</SCRIPT>
+<div class='container'>
+<a class='logo' href='index.aspx'>
+<img alt='Medi-Plus' src='Images/logo2.png'>
+<asp:Image ID="Image1" runat="server" style="margin-left:10px;" Visible="false"></asp:Image>
+</a>
+<asp:HyperLink class='button gray_button' ID="HyperLink3" runat="server" href='<%$ Resources:GResource,languagecode %>' Text='<%$ Resources:GResource,language %>'></asp:HyperLink>
+<asp:Panel ID="Panel1" runat="server">
+<div class='button blue_button' id='account'>
+<asp:Label ID="Label1" runat="server" Text="陈奕迅"></asp:Label>
+
+<ul id='account_links'>
+<li>
+<asp:HyperLink ID="HyperLink12" runat="server" NavigateUrl="~/PersonalDetails.aspx" Text='<%$ Resources:GResource,PersonalDetails %>'>我的资料</asp:HyperLink>
+
+</li>
+<li>
+<asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/viewreservation.aspx">我的预约(222)</asp:HyperLink>
+</li>
+    <li>
+<asp:HyperLink ID="HyperLink13" runat="server" NavigateUrl="~/viewshoporder.aspx">我的订单(222)</asp:HyperLink>
+</li>
+<li> 
+<asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/messages.aspx" Visible="false">消息(555)</asp:HyperLink>
+</li>
+    <li>
+        <asp:LinkButton ID="LinkButton1" runat="server" OnClick="LinkButton1_Click" Text='<%$ Resources:GResource,myshopcart %>' Visible="false"></asp:LinkButton>
+
+        
+        <%--<asp:HyperLink ID="HyperLink14" runat="server"><asp:Localize ID="Localize14" runat="server" Text='<%$ Resources:GResource,myshopcart %>'></asp:Localize></asp:HyperLink>--%>
+    </li>
+<li>
+<asp:HyperLink ID="HyperLink4" runat="server" NavigateUrl="~/safecenter.aspx" meta:resourcekey="LinkButton5Resource1">安全中心</asp:HyperLink>
+</li>
+<li>
+<asp:HyperLink ID="HyperLink6" runat="server" NavigateUrl="~/helpcenter.aspx" meta:resourcekey="LinkButton6Resource1" Visible="False">帮助中心</asp:HyperLink>
+</li>
+<li>
+<asp:HyperLink ID="HyperLink5" runat="server" NavigateUrl="~/login.aspx" meta:resourcekey="LinkButton1Resource1">退出</asp:HyperLink>
+</li>
+</ul>
+</div>
+
+<ul class='desktop_navigation'>
+<li class="bluedark1_button" style=" margin:0; vertical-align:middle; height:36px;" >
+<asp:HyperLink Font-Bold="True" Font-Size="13px" ForeColor="White" ID="HyperLink7" runat="server" NavigateUrl="~/benefitplan.aspx" Text='<%$ Resources:GResource,benefitplan %>'></asp:HyperLink>
+</li>
+<li class="bluedark1_button" style=" margin:0; vertical-align:middle; height:36px;">
+<asp:HyperLink Font-Bold="True" Font-Size="13px" ForeColor="White" ID="HyperLink8" runat="server"  Text='<%$ Resources:GResource,arrangeexam %>'>体检预约</asp:HyperLink>
+</li>
+<li class="bluedark1_button" style=" margin:0; vertical-align:middle; height:36px;" >
+<asp:HyperLink Font-Bold="True" Font-Size="13px" ForeColor="White" ID="HyperLink9" runat="server" NavigateUrl="~/report.aspx" Text='<%$ Resources:GResource,reportanalysis %>'>健康报告</asp:HyperLink>
+</li>
+    <li class="bluedark1_button" style=" margin:0; vertical-align:middle; height:36px">
+<asp:HyperLink Font-Bold="True" Font-Size="13px" ForeColor="White" ID="HyperLink14" runat="server" NavigateUrl="~/tohbuilder.aspx" Text='健康评估' >健康评估</asp:HyperLink>
+</li>
+<li class="bluedark1_button" style=" margin:0; vertical-align:middle; height:36px;display:none">
+<asp:HyperLink Font-Bold="True" Font-Size="13px" ForeColor="White" ID="HyperLink11" runat="server" NavigateUrl="~/healthconsult.aspx" Text='<%$ Resources:GResource,healthconsult %>' Visible="false" >健康咨询</asp:HyperLink>
+</li>
+    <li class="bluedark1_button" style=' margin:0; vertical-align:middle; height:36px;display:none'>
+<asp:HyperLink Font-Bold="True" Font-Size="13px" ForeColor="White" ID="HyperLink10" runat="server" NavigateUrl="~/healthshop.aspx" Text='<%$ Resources:GResource,healthyadd %>'>健康补给站</asp:HyperLink>
+</li>
+</ul>
+</asp:Panel>
+<asp:Panel ID="Panel2" runat="server" Visible="false" style="padding-top:8px;">
+
+<ul class='desktop_navigation' >
+<li style="color:#6c98cf; font-size:18px;">
+400-099-3363
+</li>
+<li>
+<A href="javascript:sendemail('service@medi-plus.com.cn');" style="padding-top:0; font-size:14px">service@medi-plus.com.cn</A>
+</li>
+
+
+</ul>
+</asp:Panel>
+</div>
+</nav>

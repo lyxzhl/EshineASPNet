@@ -1,0 +1,47 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <div class="left aClick" onclick="goTo('../../index.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </div>
+        <div class="center">用户信息</div>
+        <div class="right">
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="UserInfo" class="page">
+        <div class="page-content content_UInfo">
+            <div class="UInfo-wrap">
+                <div class="group-item">
+                    <a class="row-item my-status" href="#">
+                        <img id="imgIHead" src="img/no.jpg" class="img-circle pull-left noheadimg" style="width: 60px; height: 60px;" />
+                        <h4 id="appUserName"></h4>
+                    </a>
+                    <a href="#" class="row-item">
+                        <span class="pull-left mStore">我的余额</span><i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                    <a href="#" class="row-item">
+                        <span class="pull-left mStore">我的积分</span><i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                    <a href="#" class="row-item" onclick="goTo('../../module/order/list_order.html');">
+                        <span class="pull-left mStore">我的订单</span><i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                </div>
+
+                <div class="group-item">
+                    <a class="row-item" href="#">
+                        <span class="pull-left">意见反馈</span><i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                </div>
+
+                <div class="group-item">
+                    <a class="row-item" href="#" onclick="goTo('setting.html');">
+                        <span>设置</span><i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

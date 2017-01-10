@@ -1,0 +1,114 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="cshi.aspx.cs" Inherits="cshi" %>
+
+<%@ Import Namespace="System.Data" %>
+<%@ Register TagPrefix="MPuc" TagName="headcontent" Src="UserControl/headcontent.ascx" %>
+<%@ Register TagPrefix="MPuc" TagName="mobilenav" Src="UserControl/mobilenav.ascx" %>
+<%@ Register TagPrefix="MPuc" TagName="desktopnav" Src="UserControl/desktopnav.ascx" %>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="UserControl/footer1.ascx" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Medi-Plus -
+        <asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,titletext %>'></asp:Localize></title>
+    <MPuc:headcontent runat="server" ID="Unnamed1" />
+    <script src="JS/mp.js" type="text/javascript"></script>
+    <style>
+        #Button1 {
+            text-align: center;
+            margin: 0 auto;
+            width: 80%;
+            height: 100%;
+        }
+
+        #Button2 {
+            float: right;
+        }
+
+        ul#a {
+            width: 100%;
+            height: 60px;
+            /*background:#00A2CA;*/
+            margin: 0 auto;
+        }
+
+            ul#a li {
+                display: inline;
+                height: 60px;
+            }
+
+                ul#a li a {
+                    display: inline-block;
+                    padding: 0 20px;
+                    height: 60px;
+                    line-height: 60px;
+                    color: #000;
+                    font-family: "\5FAE\8F6F\96C5\9ED1";
+                    font-size: 16px;
+                }
+    </style>
+</head>
+<body class='member_orders' runat="server">
+    <MPuc:mobilenav runat="server" ID="Unnamed2" />
+    <div class='wrapper' data-behavior='Navigation' runat="server">
+        <MPuc:desktopnav runat="server" ID="Unnamed3" />
+
+        <div class='container' runat="server">
+            <div class='row' runat="server">
+
+                <div class='twelvecol'>
+
+                    <div class='tile' id='your_trunks1'>
+                        <h3>整体健康风险评估&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        </h3>
+                        <div class="row sizes">
+                            <div class="tile">
+                                <asp:Panel ID="Panel7" runat="server">
+                                    <ul id="a">
+                                        <li><a>
+                                            <asp:Label ID="Label3" runat="server" Text="Label"></asp:Label></a></li>
+                                        <li><a>
+                                            <asp:Label ID="Label4" runat="server" Text="Label"></asp:Label></a></li>
+                                        <li><a>
+                                            <asp:Label ID="Label5" runat="server" Text="Label"></asp:Label></a></li>
+                                        <li><a>
+                                            <asp:Label ID="Label6" runat="server" Text="Label"></asp:Label></a></li>
+                                        <li><a>
+                                            <asp:Label ID="Label7" runat="server" Text="Label"></asp:Label></a></li>
+                                        <li><a>
+                                            <asp:Label ID="Label8" runat="server" Text="Label"></asp:Label></a></li>
+                                        <li><a>
+                                            <asp:Label ID="Label9" runat="server" Text="Label"></asp:Label></a></li>
+                                        <li><a>
+                                            <asp:Label ID="Label10" runat="server" Text="Label"></asp:Label></a></li>
+                                    </ul>
+                                </asp:Panel>
+                            </div>
+                            <form name="FROM1" runat="server">
+                                <asp:Repeater ID="parentRepeater" runat="server">
+                                    <ItemTemplate>
+                                        <b><%# DataBinder.Eval(Container.DataItem,"AQDes") %></b><br>
+                                        <!-- start child repeater -->
+                                        <asp:Repeater ID="childRepeater" datasource='<%# ((DataRowView)Container.DataItem).Row.GetChildRows("myrelation") %>' runat="server">
+                                            <ItemTemplate>
+                                                <%# DataBinder.Eval(Container.DataItem, "[\"AADes\"]")%><br>
+                                            </ItemTemplate>
+                                        </asp:Repeater>
+                                        <!-- end child repeater -->
+                                    </ItemTemplate>
+                                </asp:Repeater>
+                                <div>
+                                    <input type="submit" name="next" value="继 续" class="button blue_button continue continue_form" />
+                                    <input type="submit" name="save" class="button blue_button continue continue_form" value="保存评估" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <br />
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

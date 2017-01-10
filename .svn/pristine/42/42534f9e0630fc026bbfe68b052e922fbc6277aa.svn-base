@@ -1,0 +1,23 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick">
+            <span class="aClick sfilter" onclick="filterStore();">筛选</span>
+        </a>
+        <div class="center">预约门店</div>
+        <div class="right">
+            <i class="aClick bdmap icon icon-location22"></i>
+            <a class="aClick aConfirm" href="#">确认</a>
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="CStoreMedical" class="page">
+        <div class="page-content content_CStoreMedical">
+            <div class="CStoreMedical-wrap">
+                <div class="group-item">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

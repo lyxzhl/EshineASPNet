@@ -1,0 +1,133 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="report.aspx.cs" Inherits="report" %>
+<%@ Register TagPrefix="MPuc" TagName="headcontent" Src="UserControl/headcontent.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="mobilenav" Src="UserControl/mobilenav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="desktopnav" Src="UserControl/desktopnav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="UserControl/footer1.ascx"%>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Medi-Plus - <asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,titletext %>'></asp:Localize></title>
+<MPuc:headcontent runat="server" ID="Unnamed1"/>
+<SCRIPT src="JS/mp.js" type="text/javascript"></SCRIPT>
+</head>
+<body class='member_orders'>
+<MPuc:mobilenav runat="server" ID="Unnamed2"/>
+<form id="Form1" runat="server">
+<div class='wrapper' data-behavior='Navigation'>
+<MPuc:desktopnav runat="server" ID="Unnamed3"/>
+
+<div class='container'>
+<div class='row'>
+<div class='twelvecol'>
+<h3><asp:Label ID="Label1" runat="server" Text='<%$ Resources:GResource,stuffreport %>'></asp:Label></h3>
+<div class='tile'  id='your_trunks1' >
+<asp:Panel ID="Panel1" runat="server" >
+        <asp:Label ID="Label3" runat="server" Text='<%$ Resources:GResource,noreport %>'></asp:Label>
+        <asp:HyperLink ID="HyperLink2" runat="server" class="button blue_button" NavigateUrl="~/reserveexam.aspx" Text='<%$ Resources:GResource,reservenow %>' Visible="false"></asp:HyperLink>
+    </asp:Panel>
+<asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" OnRowDataBound="GridView1_RowDataBound" 
+        DataKeyNames="orderID" DataSourceID="SqlDataSource1">
+        <Columns>
+            <asp:BoundField DataField="examDate" HeaderText='<%$ Resources:GResource,examdate %>'  DataFormatString="{0:d}" ItemStyle-Width="172px"
+                SortExpression="examDate" />
+                <asp:BoundField DataField="ReportType" HeaderText='<%$ Resources:GResource,reporttype %>'  ItemStyle-Width="172px"
+                SortExpression="ReportType" />
+                <asp:TemplateField   HeaderText='<%$ Resources:GResource,pdfdownload %>' >
+                <ItemTemplate>
+                 <asp:HyperLink runat="server" ImageUrl="~/Images/pdfs.jpg" 
+                 NavigateUrl='<%#Eval("Report") %>' Target="_blank">
+            </asp:HyperLink>             
+             </ItemTemplate> 
+            </asp:TemplateField>  
+
+            <asp:BoundField DataField="examSupplier" HeaderText='<%$ Resources:GResource,organization %>'  ItemStyle-Width="172px"
+                SortExpression="examSupplier" />
+            
+        </Columns>
+    </asp:GridView>
+
+    <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
+        ConnectionString="<%$ ConnectionStrings:db_ConnectionString %>" 
+        SelectCommand="SELECT [orderID], [examDate], [ReportType], [Report], [examSupplier] FROM [tab_orders] WHERE  customerName<>'' and (([orderStatus] = @orderStatus) AND ([customerID] = @customerID)) ORDER BY [ReportUploadDate] DESC">
+        <SelectParameters>
+            <asp:Parameter DefaultValue="已完成" Name="orderStatus" Type="String" />
+            <asp:SessionParameter Name="customerID" SessionField="id" Type="Int32" />
+        </SelectParameters>
+    </asp:SqlDataSource>
+
+    <div>
+        <asp:HyperLink ID="HyperLink5" runat="server" CssClass="button blue_button" NavigateUrl="~/uploadreport.aspx" Text='<%$ Resources:GResource,uploadreport %>'></asp:HyperLink>
+    </div>
+
+
+   
+</div>
+</div>
+</div>
+<br /><br /><p></p>
+
+    <asp:Panel ID="Panel3" runat="server">
+<div class='row'>
+<div class='twelvecol'>
+<h3><asp:Label ID="Label2" runat="server" Text='<%$ Resources:GResource,relreport %>' meta:resourcekey="Label2Resource1"></asp:Label></h3>
+<div class='tile'  id='your_trunks'>
+<asp:Panel ID="Panel2" runat="server" Visible="False">
+        <asp:Label ID="Label4" runat="server" Text='<%$ Resources:GResource,noreport %>'></asp:Label>
+    <asp:HyperLink ID="HyperLink1" runat="server" class="button blue_button" NavigateUrl="~/reserverelexam.aspx" Text='<%$ Resources:GResource,reservenow %>'></asp:HyperLink>
+    </asp:Panel>
+        <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" OnRowDataBound="GridView2_RowDataBound" 
+        DataKeyNames="orderID" DataSourceID="SqlDataSource2">
+        <Columns>
+            <asp:BoundField DataField="examDate" HeaderText='<%$ Resources:GResource,examdate %>'  DataFormatString="{0:d}" ItemStyle-Width="172px"
+                SortExpression="examDate" />
+                <asp:BoundField DataField="relativeName" HeaderText='<%$ Resources:GResource,relname %>'  ItemStyle-Width="172px" 
+                SortExpression="relativeName" />
+                <asp:BoundField DataField="ReportType" HeaderText='<%$ Resources:GResource,reporttype %>'  ItemStyle-Width="172px" Visible="false"
+                SortExpression="ReportType" />
+                <asp:TemplateField   HeaderText='<%$ Resources:GResource,pdfdownload %>' >
+                <ItemTemplate>
+                 <asp:HyperLink ID="HyperLink3" runat="server" ImageUrl="~/Images/pdfs.jpg" 
+                 NavigateUrl='<%#Eval("Report") %>' Target="_blank">
+            </asp:HyperLink>             
+             </ItemTemplate> 
+            </asp:TemplateField>  
+
+            <asp:BoundField DataField="examSupplier" HeaderText='<%$ Resources:GResource,organization %>'  ItemStyle-Width="172px"
+                SortExpression="examSupplier" />
+        </Columns>
+        <HeaderStyle CssClass="gridviewheaderrow" />
+        <AlternatingRowStyle CssClass="alternaterow" />
+    </asp:GridView>
+
+    <asp:SqlDataSource ID="SqlDataSource2" runat="server" 
+        ConnectionString="<%$ ConnectionStrings:db_ConnectionString %>" 
+        SelectCommand="SELECT [orderID], [examDate], [ReportType], [relativeName], [Report], [examSupplier] FROM [tab_orders] WHERE (([orderStatus] = @orderStatus) and relativeID in (select relativeID from tab_relatives where relativeCustomer= @customerID))">
+        <SelectParameters>
+            <asp:Parameter DefaultValue="已完成" Name="orderStatus" Type="String" />
+            <asp:SessionParameter Name="customerID" SessionField="id" Type="Int32" />
+        </SelectParameters>
+    </asp:SqlDataSource>
+    <div>
+        <asp:HyperLink ID="HyperLink4" runat="server" CssClass="button blue_button" NavigateUrl="~/uploadrelreport.aspx" Text='<%$ Resources:GResource,uploadreport %>' Visible="False"></asp:HyperLink>
+        <asp:Button ID="Button1" runat="server" CssClass="button blue_button" 
+            Text='<%$ Resources:GResource,uploadreport %>' onclick="Button1_Click" />
+    </div>
+    
+
+</div>
+</div>
+</div>
+
+    </asp:Panel>
+
+
+
+
+</div>
+
+</div>
+</form>
+<MPuc:footer ID="ucfooter" runat="server"/>
+
+</body>
+</html>

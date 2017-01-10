@@ -1,0 +1,519 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="healthconsult.aspx.cs" Inherits="healthconsult" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+<%@ Register TagPrefix="MPuc" TagName="headcontent" Src="UserControl/headcontent.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="mobilenav" Src="UserControl/mobilenav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="desktopnav" Src="UserControl/desktopnav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="UserControl/footer1.ascx"%>
+<!DOCTYPE html>
+<html>
+<head runat="server">
+<title>Medi-Plus - <asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,titletext %>'></asp:Localize></title>
+<MPuc:headcontent runat="server" ID="Unnamed1"/>
+<SCRIPT src="JS/mp.js" type="text/javascript"></SCRIPT>
+
+
+   <link rel='stylesheet' href='css/camera.css' type='text/css' media='all'>  
+ <LINK href="css/colorbox.css" rel="stylesheet" type="text/css" media="all">   
+ <link rel="stylesheet" href="CSS/onlineqqservice.css" />
+ <link href="assets/trunkclub-d1b693260400bfdc2a0f7777f2fc64fc.css" media="screen" rel="stylesheet" type="text/css" />
+ <link href="assets/tablet-bbeffdf3d4330828df91742e83e0d425.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="assets/mobile-b4dfb4e2266dfdf07b574db85a06993c.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="assets/print-c8a015c86e416d5901f0fb479d296674.css" media="print" rel="stylesheet" type="text/css" />
+
+    <style>
+		html,body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
+		#back_to_camera {
+
+			clear: both;
+			display: block;
+			height: 220px;
+			line-height: 40px;
+			padding: 0;
+
+			width:400px;
+			margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+
+			z-index: 1;
+		}
+		.fluid_container {
+			bottom: 0;
+		
+			left: 0;
+			
+			right: 0;
+			top: 50px;
+			z-index: 0;
+		}
+		#camera_wrap_4 {
+			bottom: 0;
+			height: 100%;
+			left: 0;
+			margin-bottom: 0px;
+			margin-top:50px;
+			right: 0;
+			top: 0;
+		}
+		.camera_bar {
+			z-index: 2;
+
+		}
+		.camera_thumbs {
+			margin-top: -142px;
+			position: relative;
+			z-index: 1;
+		}
+		.camera_thumbs_cont 
+		{
+		    background:rgba(255,255,255,0.1);
+			border-radius: 0;
+			-moz-border-radius: 0;
+			-webkit-border-radius: 0;
+		}
+		.camera_overlayer {
+			opacity: .1;
+		}
+		
+		nav#desktop{height:25px;}
+		
+		nav#desktop .logo{margin-top:0px}
+		
+		.logo {
+			margin-top:0px;
+		}
+	</style>
+
+
+    <script type='text/javascript' src='JS/jquery.min.js'></script>
+    <script type='text/javascript' src='JS/jquery.mobile.customized.min.js'></script>
+    <script type='text/javascript' src='JS/jquery.easing.1.3.js'></script> 
+    <script type='text/javascript' src='JS/camera.min.js'></script> 
+  <script src="js/service.js"></script>
+    <script>
+
+        jQuery(function () {
+
+            jQuery('#camera_wrap_4').each(function () {
+
+                var t = jQuery(this);
+
+                var s = 0;
+
+                t.camera({
+
+                    height: '760px',
+                    
+                    loader: '',
+                    pagination: false,
+                    thumbnails: false,
+                    hover: true,
+                    opacityOnGrid: false,
+                    barPosition: 'top',
+
+                    onEndTransition: function () {
+                        var ind = t.find('.camera_target .cameraSlide.cameracurrent').index();
+                        t.parents().find('.MM').removeClass("active");
+                        t.parents().find('#M' + ind).addClass("active");
+
+
+                    }
+
+                });
+
+            });
+
+        });
+
+
+        jQuery(function () {
+
+            jQuery('#camera_wrap_4_lyx').camera({
+                height: 'auto',
+                loader: 'bar',
+                pagination: false,
+                thumbnails: true,
+                hover: false,
+                opacityOnGrid: false,
+                barPosition: 'top',
+                onEndTransition: function () {
+                    var ind = $('.camera_target .cameraSlide.cameracurrent').index();
+                    $(".M1").addClass("active");
+                }
+            });
+
+        });
+
+        jQuery(document).ready(function () {
+
+
+
+            jQuery("#hamburger").click(function () {
+                if (jQuery("nav#mobile").hasClass("show_nav")) {
+                    jQuery("nav#mobile,.wrapper,header,footer").removeClass("show_nav");
+                    jQuery("nav#mobile,.wrapper,header,footer").addClass("hide_nav");
+                }
+                else {
+                    jQuery("nav#mobile,.wrapper,header,footer").removeClass("hide_nav");
+                    jQuery("nav#mobile,.wrapper,header,footer").addClass("show_nav");
+                }
+            });
+
+            jQuery(".close_nav").click(function () {
+                jQuery("nav#mobile,.wrapper,header,footer").removeClass("show_nav");
+                jQuery("nav#mobile,.wrapper,header,footer").addClass("hide_nav");
+            });
+        });
+	</script>
+    <SCRIPT>
+        function sendemail(email) {
+            window.location.href = "mailto:" + escape(email);
+        }
+		</SCRIPT>
+        <SCRIPT src="JS/mp.js" type="text/javascript"></SCRIPT>
+
+</head>
+<body class='careers'>
+<MPuc:mobilenav runat="server" ID="Unnamed2"/>
+<div class='wrapper' data-behavior='Navigation'>
+
+<form runat="server">
+<MPuc:desktopnav runat="server" ID="Unnamed3"/>
+
+
+
+<asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
+</asp:ToolkitScriptManager>
+<div class='container'>
+<div class='row'>
+<div class='twelvecol'>
+
+
+<div class='tile'>
+    <img alt="" src="Images/logo2.png" style="position:absolute; margin:20px 0px 0px -230px; top: 0px; left: 311px;"/>
+    <div style="vertical-align:middle;margin-top:-25px; text-align:right;padding-top: 5px; font: bold 18px/1.3em Arial,Verdana,sans-serif;">Medi-Plus</div>
+<%--<h2><asp:Localize ID="Localize6" runat="server" Text='<%$ Resources:GResource,reportconsult %>'></asp:Localize></h2>--%>
+<div class='content'>
+
+<style media="screen" type="text/css">#resumator-jobs { font: Arial,Verdana,sans-serif;}
+.resumator-job-title, .jobtext { text-align: left; color: #000000;}
+.resumator-form-iframe { display: block; clear: both;}
+.resumator-job-title { border-top: 1px solid #ddd; padding-top: 5px; font: bold 18px/1.3em Arial,Verdana,sans-serif; margin: 15px 0 0; padding: 5px 0 0;}
+.jobinfod,.resumator-job-info { display: block; float: left; line-height: 1.5em; margin: 0.25em 1em 0 0; text-align: left; font: 12px/1.3em Arial,Verdana,sans-serif;}
+.jobviewd { clear: both; padding-top: 4px; font: 12px/1.3em Arial,Verdana,sans-serif; color:#6c98cf}
+a.joblink { color: #2C659F;}
+.jobinfod { display: none;}
+.jobhead { font-weight: bold;}
+.jobdept,.jobexp { margin-left: 20px;}
+.jobdesc { display: none; padding-bottom: 20px;}
+.jobdest{ margin-top: 5px;}
+a.resumator-hide-details { display: block; clear: both; margin: 20px 0 0 0;}
+#resumator-logo { clear: both; margin: 25px 0 0 0;}
+.resumator-department-heading,.resumator-type-heading { margin: 20px 0 0 0; font-size: 28px; line-height: 30px;}
+</style>
+<div id="resumator-wrapper">
+<div id="resumator-widget" class="resumator-basic-widget">
+<div id="resumator-jobs" class="jobtext">
+<div class="resumator-job jobtext" style="vertical-align:middle; padding-left:230px;">
+
+    <%--<img alt="" src="Images/logo2.png" style="position:absolute; margin:10px 0px 0px -230px; top: 43px; left: 311px; width: 1px;"/>--%>
+    <div class="resumator-job-title jobtext" style="vertical-align:middle; text-align:right"></div>
+<div class="resumator-job-info jobtext">
+<span class="jobloca jobhead jobtext"><asp:Localize ID="Localize8" runat="server" Text='<%$ Resources:GResource,contacttel %>'></asp:Localize>: </span>400-099-3363 
+<span class="jobdept jobhead jobtext"> </span>
+</div>
+
+
+
+<div class="jobviewd jobtext">
+<span class="jobhead"><asp:Localize ID="Localize9" runat="server" Text='<%$ Resources:GResource,servicetime %>'></asp:Localize>: </span><asp:Localize ID="Localize10" runat="server" Text='<%$ Resources:GResource,servicetimemsg %>'></asp:Localize>
+</div>
+
+</div>
+
+
+    <%--2--%>
+    <div class="resumator-job jobtext" style="vertical-align:middle; padding-left:230px;font-family:Arial,'Times New Roman','Adoble黑体',SimHei;">
+    <div class="resumator-job-title jobtext" style="vertical-align:middle;"></div>
+<div class="resumator-job-info jobtext"">
+<span class="jobloca jobhead jobtext"><asp:Localize ID="Localize7" runat="server" Text='<%$ Resources:GResource,healthconsult1 %>'></asp:Localize></span><br /><br />
+    <span class="jobloca jobtext"><asp:Localize ID="Localize11" runat="server" Text='<%$ Resources:GResource,healthconsult2 %>'></asp:Localize></span>
+
+</div>
+</div>
+    <br />
+    <br />
+
+    <%--3--%>
+    <div class="resumator-job jobtext" style="vertical-align:middle; padding-left:230px; font-family:Arial,'Times New Roman','Adoble黑体',SimHei; margin-top:20px;display:none">
+    <div class="resumator-job-title jobtext" style="vertical-align:middle;"></div>
+<div class="resumator-job-info jobtext">
+<span class="jobloca jobhead jobtext"><asp:Localize ID="Localize12" runat="server" Text='<%$ Resources:GResource,healthconsult3 %>'></asp:Localize></span><br /><br />
+<span class="jobloca  jobtext"><asp:Localize ID="Localize13" runat="server" Text='<%$ Resources:GResource,healthconsult4 %>'></asp:Localize></span><br /><br />
+    <span class="jobloca  jobtext"><asp:Localize ID="Localize14" runat="server" Text='<%$ Resources:GResource,healthconsult5 %>'></asp:Localize></span>
+</div>
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+
+</div>
+</div>
+    <br>
+
+    
+
+
+<div class='tile hidden'>
+<h1><asp:Localize ID="Localize2" runat="server" Text='<%$ Resources:GResource,medicalconsult %>'></asp:Localize></h1>
+<br />
+<div class='content'>
+<p>
+    <asp:TextBox ID="TextBox1" runat="server" Width="99%" TextMode="MultiLine" placeholder='<%$ Resources:GResource,discribesymptom %>' Font-Size="12px"></asp:TextBox>
+</p>
+<DIV class="three_input_grouping">
+
+<DIV class="input select required">
+<LABEL class="select required" for="signup_context_birth_date"> <asp:Localize ID="Localize4" runat="server" Text='<%$ Resources:GResource,coordinatehospital %>'></asp:Localize></LABEL>
+<asp:DropDownList ID="DropDownListhosp" class="month_select required customSelect" runat="server">
+    <asp:ListItem Text='<%$ Resources:GResource,coordinatehospital %>'></asp:ListItem>
+    <asp:ListItem Text='<%$ Resources:GResource,ikang %>'></asp:ListItem>
+<asp:ListItem Text='<%$ Resources:GResource,meinian %>'></asp:ListItem>
+<asp:ListItem Text='<%$ Resources:GResource,ciming %>'></asp:ListItem>
+<asp:ListItem Text='上海瑞金医院'></asp:ListItem>
+<asp:ListItem Text='复旦大学附属华山医院'></asp:ListItem>
+<asp:ListItem Text='复旦大学附属中山医院'></asp:ListItem>
+<asp:ListItem Text='中国人民武装警察部队上海市总队医院'></asp:ListItem>
+<asp:ListItem Text='中国人民解放军第四医院'></asp:ListItem>
+<asp:ListItem Text='上海长海医院'></asp:ListItem>
+<asp:ListItem Text='上海仁济医院东院'></asp:ListItem>
+<asp:ListItem Text='上海仁济医院西院'></asp:ListItem>
+<asp:ListItem Text='上海交通大学医学院附属第九人民医院 '></asp:ListItem>
+<asp:ListItem Text='复旦大学附属肿瘤医院'></asp:ListItem>
+<asp:ListItem Text='上海第六人民医院'></asp:ListItem>
+<asp:ListItem Text='上海市长征医院'></asp:ListItem>
+<asp:ListItem Text='复旦大学附属儿科医院'></asp:ListItem>
+<asp:ListItem Text='复旦大学附属耳鼻喉科医院'></asp:ListItem>
+<asp:ListItem Text='上海新华医院'></asp:ListItem>
+<asp:ListItem Text='上海儿童医学中心'></asp:ListItem>
+<asp:ListItem Text='上海东方肝胆外科医院'></asp:ListItem>
+<asp:ListItem Text='上海市精神卫生中心'></asp:ListItem>
+<asp:ListItem Text='复旦大学附属产科医院杨浦院区'></asp:ListItem>
+<asp:ListItem Text='复旦大学附属妇产科医院黄浦院区'></asp:ListItem>
+<asp:ListItem Text='上海市眼病防治中心'></asp:ListItem>
+<asp:ListItem Text='上海市口腔防治院'></asp:ListItem>
+<asp:ListItem Text='上海第十人民医院'></asp:ListItem>
+<asp:ListItem Text='上海市皮肤病医院武夷路院区'></asp:ListItem>
+<asp:ListItem Text='上海市肺科医院'></asp:ListItem>
+<asp:ListItem Text='上海市胸科医院'></asp:ListItem>
+<asp:ListItem Text='上海市岳阳医院青海路特诊部'></asp:ListItem>
+<asp:ListItem Text='上海国际和平妇幼保健院'></asp:ListItem>
+<asp:ListItem Text='上海中医医院石门路门诊部'></asp:ListItem>
+<asp:ListItem Text='上海第一妇婴保健院'></asp:ListItem>
+<asp:ListItem Text='上海中医药大学附属岳阳中西医结合医院'></asp:ListItem>
+<asp:ListItem Text='上海皮肤病医院'></asp:ListItem>
+<asp:ListItem Text='上海第一人民医院'></asp:ListItem>
+<asp:ListItem Text='中国人民解放军第四五五医院'></asp:ListItem>
+<asp:ListItem Text='上海市儿童医院'></asp:ListItem>
+<asp:ListItem Text='上海市东方医院'></asp:ListItem>
+<asp:ListItem Text='上海市同济医院'></asp:ListItem>
+<asp:ListItem Text='上海市中医医院'></asp:ListItem>
+<asp:ListItem Text='上海交通大学医学院附属第三人民医院'></asp:ListItem>
+<asp:ListItem Text='上海同济口腔医院'></asp:ListItem>
+<asp:ListItem Text='复旦大学附属华东医院'></asp:ListItem>
+<asp:ListItem Text='上海龙华医院'></asp:ListItem>
+<asp:ListItem Text='上海市中西医结合医院'></asp:ListItem>
+<asp:ListItem Text='上海曙光医院西院'></asp:ListItem>
+<asp:ListItem Text='上海市胸科医院'></asp:ListItem>
+<asp:ListItem Text='上海曙光医院东院'></asp:ListItem>
+<asp:ListItem Text='复旦大学附属华山医院东院'></asp:ListItem>
+<asp:ListItem Text='上海市公共卫生临床中心水电路分院'></asp:ListItem>
+<asp:ListItem Text='上海市口腔病防治院分院'></asp:ListItem>
+<asp:ListItem Text='上海仁济医院南院'></asp:ListItem>
+<asp:ListItem Text='中国人民解放军第八五医院'></asp:ListItem>
+<asp:ListItem Text='上海解放军增高长高研究总院'></asp:ListItem>
+<asp:ListItem Text='上海交通大学医学院附属第三人民医院'></asp:ListItem>
+<asp:ListItem Text='上海市第五人民医院'></asp:ListItem>
+<asp:ListItem Text='上海远大心胸医院'></asp:ListItem>
+<asp:ListItem Text='上海蓝十字脑科医院'></asp:ListItem>
+<asp:ListItem Text='上海市气功研究所医疗门诊部'></asp:ListItem>
+<asp:ListItem Text='上海市杨浦区中心医院'></asp:ListItem>
+<asp:ListItem Text='上海市针灸经络研究所门诊部'></asp:ListItem>
+<asp:ListItem Text='上海市中医文献馆门诊部'></asp:ListItem>
+<asp:ListItem Text='上海远大心胸医院 '></asp:ListItem>
+<asp:ListItem Text='复旦大学附属中山医院延安西路分院'></asp:ListItem>
+<asp:ListItem Text='上海第八人民医院'></asp:ListItem>
+<asp:ListItem Text='上海市江湾医院'></asp:ListItem>
+<asp:ListItem Text='上海市大华医院'></asp:ListItem>
+<asp:ListItem Text='复旦大学附属肿瘤医院闵行分院'></asp:ListItem>
+<asp:ListItem Text='上海市闵行妇幼保健院'></asp:ListItem>
+<asp:ListItem Text='上海文艺医院'></asp:ListItem>
+<asp:ListItem Text='上海市闵行精神卫生中心'></asp:ListItem>
+<asp:ListItem Text='上海市闵行区吴泾医院'></asp:ListItem>
+<asp:ListItem Text='上海市闵行区牙病防治所'></asp:ListItem>
+<asp:ListItem Text='上海交通大学医学院附属瑞金医院远洋分院'></asp:ListItem>
+<asp:ListItem Text='上海市卢湾区中心医院'></asp:ListItem>
+<asp:ListItem Text='上海市松江区中心医院'></asp:ListItem>
+<asp:ListItem Text='上海市静安区中心医院'></asp:ListItem>
+<asp:ListItem Text='上海浦东新区公利医院'></asp:ListItem>
+<asp:ListItem Text='上海市金山区中心医院'></asp:ListItem>
+<asp:ListItem Text='上海市静安区老年医院'></asp:ListItem>
+<asp:ListItem Text='上海市普陀区利群医院'></asp:ListItem>
+<asp:ListItem Text='上海第一人民医院宝山分院'></asp:ListItem>
+<asp:ListItem Text='上海市嘉定区中心医院'></asp:ListItem>
+<asp:ListItem Text='上海光华中西医结合医院'></asp:ListItem>
+<asp:ListItem Text='上海普陀区妇婴保健院'></asp:ListItem>
+<asp:ListItem Text='上海市金山区疾病防治控制中心'></asp:ListItem>
+<asp:ListItem Text='上海市海员医院'></asp:ListItem>
+<asp:ListItem Text='上海市金山区精神卫生中心'></asp:ListItem>
+<asp:ListItem Text='上海市金山区枫泾镇兴塔社区卫生中心'></asp:ListItem>
+<asp:ListItem Text='上海市浦东新区传染病医院'></asp:ListItem>
+<asp:ListItem Text='上海市虹口区精神卫生中心'></asp:ListItem>
+<asp:ListItem Text='上海市长宁区中心医院'></asp:ListItem>
+<asp:ListItem Text='上海普陀区人民医院'></asp:ListItem>
+<asp:ListItem Text='上海建工医院'></asp:ListItem>
+<asp:ListItem Text='上海市宝山中心医院'></asp:ListItem>
+<asp:ListItem Text='上海市嘉定区妇幼保健院'></asp:ListItem>
+<asp:ListItem Text='上海市东医院'></asp:ListItem>
+<asp:ListItem Text='上海嘉定中医医院'></asp:ListItem>
+<asp:ListItem Text='上海市闸北区中心医院'></asp:ListItem>
+<asp:ListItem Text='上海市奉贤区中医院'></asp:ListItem>
+<asp:ListItem Text='复旦大学附属中山医院青浦分院'></asp:ListItem>
+<asp:ListItem Text='上海奉贤区中西医院'></asp:ListItem>
+<asp:ListItem Text='上海市黄浦区中西医结合医院'></asp:ListItem>
+<asp:ListItem Text='上海市闵行区中心医院'></asp:ListItem>
+<asp:ListItem Text='上海市南汇区中心医院'></asp:ListItem>
+<asp:ListItem Text='上海市松江区妇幼保健院'></asp:ListItem>
+<asp:ListItem Text='上海市黄浦区中心医院'></asp:ListItem>
+<asp:ListItem Text='上海市嘉定区安亭医院'></asp:ListItem>
+<asp:ListItem Text='上海市香山中医医院'></asp:ListItem>
+<asp:ListItem Text='上海市长宁区天山中医医院'></asp:ListItem>
+<asp:ListItem Text='上海市黄浦区传染病医院'></asp:ListItem>
+<asp:ListItem Text='上海市杨浦区安图医院'></asp:ListItem>
+<asp:ListItem Text='上海市第二人民医院'></asp:ListItem>
+<asp:ListItem Text='上海徐汇区中心医院'></asp:ListItem>
+<asp:ListItem Text='上海电力医院'></asp:ListItem>
+<asp:ListItem Text='上海市青浦区朱家角人民医院'></asp:ListItem>
+<asp:ListItem Text='上海长宁妇幼保健院'></asp:ListItem>
+<asp:ListItem Text='上海市南汇区中心医院'></asp:ListItem>
+<asp:ListItem Text='上海邮电医院'></asp:ListItem>
+<asp:ListItem Text='上海市南汇区光明中医院'></asp:ListItem>
+<asp:ListItem Text='上海市静安区精神卫生中心'></asp:ListItem>
+<asp:ListItem Text='上海市杨浦区控江医院'></asp:ListItem>
+<asp:ListItem Text='上海市杨浦区精神卫生中心'></asp:ListItem>
+<asp:ListItem Text='复旦大学附属华山医院宝山分院'></asp:ListItem>
+<asp:ListItem Text='上海南汇区周浦医院'></asp:ListItem>
+<asp:ListItem Text='上海市宝山区罗店医院'></asp:ListItem>
+<asp:ListItem Text='上海市奉贤区奉城医院'></asp:ListItem>
+<asp:ListItem Text='上海市奉贤区牙病防治所'></asp:ListItem>
+<asp:ListItem Text='上海市嘉定区南翔医院'></asp:ListItem>
+<asp:ListItem Text='上海市崇明县庙镇人民医院'></asp:ListItem>
+<asp:ListItem Text='上海市南汇南华医院'></asp:ListItem>
+<asp:ListItem Text='上海市南汇区精神卫生中心'></asp:ListItem>
+<asp:ListItem Text='上海市普陀区中心医院'></asp:ListItem>
+<asp:ListItem Text='上海杨浦区中医院'></asp:ListItem>
+<asp:ListItem Text='上海卢湾区妇幼保健院'></asp:ListItem>
+<asp:ListItem Text='民航上海医院'></asp:ListItem>
+<asp:ListItem Text='上海市奉贤区妇幼保健所'></asp:ListItem>
+<asp:ListItem Text='上海市松江区方塔中医医院'></asp:ListItem>
+<asp:ListItem Text='上海市浦东新区人民医院'></asp:ListItem>
+<asp:ListItem Text='上海市闵行区中医医院'></asp:ListItem>
+<asp:ListItem Text='上海市浦东新区浦南医院'></asp:ListItem>
+<asp:ListItem Text='上海杨浦区妇幼保健院'></asp:ListItem>
+<asp:ListItem Text='上海市闵行区江川社区卫生服务中心'></asp:ListItem>
+<asp:ListItem Text='上海市闵行区浦江社区卫生服务中心 '></asp:ListItem>
+<asp:ListItem Text='上海市闵行区颛桥社区卫生服务中心 '></asp:ListItem>
+<asp:ListItem Text='上海市闵行区古美社区卫生服务中心'></asp:ListItem>
+<asp:ListItem Text='上海惠慈中西医结合医院'></asp:ListItem>
+<asp:ListItem Text='上海市闵行区龙柏社区卫生服务中心'></asp:ListItem>
+<asp:ListItem Text='上海市闵行区华漕社区卫生服务中心'></asp:ListItem>
+<asp:ListItem Text='上海市闵行区马桥社区卫生服务中心'></asp:ListItem>
+<asp:ListItem Text='上海市闵行区七宝社区卫生服务中心'></asp:ListItem>
+<asp:ListItem Text='上海市闵行区虹桥社区卫生服务中心 '></asp:ListItem>
+<asp:ListItem Text='上海市闵行区莘庄社区卫生服务中心 '></asp:ListItem>
+<asp:ListItem Text='上海市闵行区梅陇社区卫生服务中心'></asp:ListItem>
+<asp:ListItem Text='上海市闵行区吴泾社区卫生服务中心'></asp:ListItem>
+<asp:ListItem Text='上海惠慈中西医结合医院'></asp:ListItem>
+<asp:ListItem Text='上海市闸北区大宁社区卫生服务中心'></asp:ListItem>
+<asp:ListItem Text='上海市松江区新浜镇卫生院'></asp:ListItem>
+<asp:ListItem Text='上海市徐汇区虹梅地段医院 '></asp:ListItem>
+<asp:ListItem Text='上海市南汇区新场镇社区卫生服务中心 '></asp:ListItem>
+<asp:ListItem Text='上海市闸北区华山医院永和分院 '></asp:ListItem>
+<asp:ListItem Text='上海市书院镇卫生院 '></asp:ListItem>
+<asp:ListItem Text='上海市卢湾区五里桥街道社区卫生服务中心 '></asp:ListItem>
+<asp:ListItem Text='上海市松江区佘山镇卫生院 '></asp:ListItem>
+<asp:ListItem Text='上海静安寺街道社区卫生服务中心 '></asp:ListItem>
+<asp:ListItem Text='上海市宣桥镇社区卫生服务中心 '></asp:ListItem>
+<asp:ListItem Text='上海鸿慈儿童医院 '></asp:ListItem>
+<asp:ListItem Text='上海九龙男子医院'></asp:ListItem>
+<asp:ListItem Text='上海阿波罗男子医院 '></asp:ListItem>
+<asp:ListItem Text='上海时光整形外科医院 '></asp:ListItem>
+<asp:ListItem Text='上海南浦妇科医院 '></asp:ListItem>
+<asp:ListItem Text='上海江城皮肤病医院 '></asp:ListItem>
+<asp:ListItem Text='上海江东医院 '></asp:ListItem>
+    </asp:DropDownList>
+</DIV>
+<DIV class="input select required">
+<LABEL class="select required" for="signup_context_birth_year"> <asp:Localize ID="Localize5" runat="server" Text='<%$ Resources:GResource,coordinatedoctor %>'></asp:Localize></LABEL>
+    <asp:TextBox class="string required" ID="TextBox2" runat="server" placeholder='<%$ Resources:GResource,doctorname %>'></asp:TextBox>
+</DIV>
+    <DIV class="input month_select required hidden">
+<LABEL class="month_select required" for="signup_context_birth_month"><asp:Localize ID="Localize3" runat="server" Text='<%$ Resources:GResource,medicaltime %>'></asp:Localize></LABEL>
+    <asp:DropDownList ID="DropDownListTime" class="select required customSelect" runat="server" Visible='false'>
+        <asp:ListItem  Text='<%$ Resources:GResource,medicaltime %>'></asp:ListItem>
+    </asp:DropDownList>
+    <asp:TextBox ID="TextBoxTime" runat="server"></asp:TextBox>
+    <asp:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="TextBoxTime">
+    </asp:CalendarExtender>
+</DIV>
+
+
+</DIV>
+<DIV class="fixed_button"  style="z-index:99999">
+<asp:Button class="button blue_button" ID="Button1" 
+        runat="server" Text='<%$ Resources:GResource,submit %>' onclick="Button1_Click"/>
+
+<P class="terms"></P></DIV>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+    
+<div class='container'">
+<div class='row'>
+<div class='twelvecol'>
+   <div id="back_to_camera"></div><!-- #back_to_camera -->
+
+	<div class="fluid_container">
+        <div class="camera_wrap camera_azure_skin" id="camera_wrap_4">
+            
+            <asp:Literal ID="Literal1" runat="server"></asp:Literal>
+            </div>
+    	</div> 
+        </div>
+    </div>
+    </div>
+    
+
+
+</form>
+</div>
+
+    
+
+<MPuc:footer ID="ucfooter" runat="server"/>
+</body>
+</html>

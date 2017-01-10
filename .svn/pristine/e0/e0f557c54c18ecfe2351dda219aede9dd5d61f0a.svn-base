@@ -1,0 +1,63 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Collections;
+public partial class viewuppackagedetail : PageBases
+{
+    public string content = "加项包信息";
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (Request["isvip"] != null && Request["isvip"].ToString()!= "")
+        {
+            ViewState["VIP"] = Request["isvip"].ToString();
+        }
+        else
+        {
+            ViewState["VIP"] = "";
+        }
+        if (!IsPostBack)
+        {
+            this.CheckUser((Hashtable)Application["Online"]);
+            init();
+        }
+    }
+    void init()
+    {
+        Bll.OrdersBll ob = new Bll.OrdersBll();
+        Bll.CustomerBll cb = new Bll.CustomerBll();
+        Model.tab_customers modeCu = new Model.tab_customers();
+        modeCu.customerID = int.Parse(Session["id"].ToString());
+        modeCu = cb.getCustomer(modeCu);
+        DataTable dt;
+
+        if (Request.QueryString["pc"] != null)
+        {
+            Session["pc"] = Request.QueryString["pc"];
+        }
+        else if (Session["pc"] == null)
+        {
+            return;
+        }
+
+        if (Session["language"] != null && Session["language"].ToString() == "en-us")
+        {
+            //dt = ob.Select("select msg_eng from tab_uppkg where uppkgcode='" + Request.QueryString["pc"] + "'");
+            dt = ob.Select("select msg_eng from tab_uppkg where uppkgcode ='" + Session["pc"] + "'");
+            if (dt.Rows.Count > 0)
+            content = dt.Rows[0]["msg_eng"].ToString();
+        }
+        else
+        {
+            dt = ob.Select("select msg from tab_uppkg where uppkgcode ='" + Session["pc"] + "'");
+            if(dt.Rows.Count>0)
+            content = dt.Rows[0]["msg"].ToString();
+        }
+
+        this.Label1.Text = DateTime.Now.ToShortDateString();
+    }
+}

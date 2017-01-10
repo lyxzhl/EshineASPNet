@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Reflection;
+namespace DALFactory
+{
+    public class supplierpackage_Factory
+    {
+        static readonly string path = System.Configuration.ConfigurationManager.AppSettings["DAL"];
+        public static IDAL.supplierpackageDal Createusers()
+        {
+            string classname = path + ".sql_supplierpackage";
+            return (IDAL.supplierpackageDal)Assembly.Load(path).CreateInstance(classname);
+        }
+    }
+}

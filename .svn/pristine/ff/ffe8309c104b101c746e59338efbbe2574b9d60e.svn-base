@@ -1,0 +1,42 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick" onclick="goTo('../../index.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </a>
+        <div class="center">健康档案</div>
+        <div class="right">
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="ProfileIndex" class="page">
+        <div class="page-content content_PIndex">
+            <div class="PIndex-wrap">
+                <div class="group-item">
+                    <a href="#" class="row-item" onclick="goTo('../../index.html');">
+                        <i class="pull-left icon-plus"></i>
+                        <h4 class="pull-left">医疗基本信息</h4>
+                        <i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                    <a href="#" class="row-item" onclick="goTo('../../index.html');">
+                        <i class="pull-left icon-accessibility"></i>
+                        <h4 class="pull-left">生活习惯</h4>
+                        <i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                    <a href="#" class="row-item" onclick="goTo('list_report.html');">
+                        <i class="pull-left icon-folder-open"></i>
+                        <h4 class="pull-left">报告</h4>
+                        <i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                    <a href="#" class="row-item" onclick="goTo('../../index.html');">
+                        <i class="pull-left icon-stats-dots"></i>
+                        <h4 class="pull-left">跟踪指标数据对比</h4>
+                        <i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class shopordersubmitted : PageBases
+{
+    Bll.OrdersBll ob = new Bll.OrdersBll();
+    Model.tab_orders order = new Model.tab_orders();
+    Bll.CustomerBll Cb = new Bll.CustomerBll();
+    Model.tab_customers modelCu = new Model.tab_customers();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (Request.QueryString["oid"] != null && Request.QueryString["price"] != null)
+        {
+            ViewState["shoporderid"] = Request.QueryString["oid"];
+            ViewState["shoporderprice"] = Request.QueryString["price"];
+            Session["shoporderid"] = ViewState["shoporderid"];
+            Session["shoporderprice"] = ViewState["shoporderprice"];
+            
+        }
+        else
+        {
+            if (Session["shoporderid"] != null && Session["shoporderprice"] != null)
+            {
+                ViewState["shoporderid"] = Session["shoporderid"];
+                ViewState["shoporderprice"] = Session["shoporderprice"];
+            }
+        }
+        //if (Request.QueryString["oid"] != null && Request.QueryString["oid"].ToString() != "")
+        //{
+        //    ViewState["orderid"] = Request.QueryString["oid"];
+        //}
+        //else
+        //{
+        //    Response.Redirect("login.aspx");
+        //}
+        order.orderID = int.Parse(ViewState["shoporderid"].ToString());
+        order = ob.getorders(order);
+        modelCu.customerID = order.customerID;
+        modelCu = Cb.getCustomer(modelCu);
+        if (int.Parse(ViewState["shoporderprice"].ToString()) < 199)
+        {
+            if (order.personAddress.IndexOf("江苏") != -1 || order.personAddress.IndexOf("浙江") != -1 || order.personAddress.IndexOf("上海") != -1)
+            {
+                this.Label2.Text = (int.Parse(ViewState["shoporderprice"].ToString()) + 6).ToString();Label6.Text= " (含运费6元)";
+            }
+            if (order.personAddress.IndexOf("北京") != -1 || order.personAddress.IndexOf("广东") != -1 || order.personAddress.IndexOf("湖北") != -1 || order.personAddress.IndexOf("深圳") != -1 || order.personAddress.IndexOf("成都") != -1 || order.personAddress.IndexOf("重庆") != -1)
+            {
+                this.Label2.Text = (int.Parse(ViewState["shoporderprice"].ToString()) + 9).ToString(); Label6.Text = " (含运费9元)";
+            }
+            if (order.personAddress.IndexOf("天津") != -1 || order.personAddress.IndexOf("河北") != -1 || order.personAddress.IndexOf("河南") != -1 || order.personAddress.IndexOf("辽宁") != -1 || order.personAddress.IndexOf("黑龙江") != -1 || order.personAddress.IndexOf("湖南") != -1 || order.personAddress.IndexOf("安徽") != -1 || order.personAddress.IndexOf("山东") != -1 || order.personAddress.IndexOf("新疆") != -1 || order.personAddress.IndexOf("江西") != -1 || order.personAddress.IndexOf("广西") != -1 || order.personAddress.IndexOf("甘肃") != -1 || order.personAddress.IndexOf("山西") != -1 || order.personAddress.IndexOf("内蒙古") != -1 || order.personAddress.IndexOf("陕西") != -1 || order.personAddress.IndexOf("吉林") != -1 || order.personAddress.IndexOf("福建") != -1 || order.personAddress.IndexOf("贵州") != -1 || order.personAddress.IndexOf("青海") != -1 || order.personAddress.IndexOf("西藏") != -1 || order.personAddress.IndexOf("宁夏") != -1 || order.personAddress.IndexOf("海南") != -1 || order.personAddress.IndexOf("台湾") != -1 || order.personAddress.IndexOf("香港") != -1 || order.personAddress.IndexOf("澳门") != -1)
+            {
+                this.Label2.Text = (int.Parse(ViewState["shoporderprice"].ToString()) + 12).ToString(); Label6.Text = " (含运费12元)";
+            }
+        }
+        else
+            this.Label2.Text = ViewState["shoporderprice"].ToString();
+        init();
+        this.HyperLink3.NavigateUrl += ViewState["shoporderid"];
+    }
+    void init()
+    {
+        Label3.Text = modelCu.customerBalance.ToString();
+
+        double price = double.Parse(this.Label2.Text);
+        double blance = Cb.getbalance(modelCu.customerID);
+        double bill = price - blance;
+        if (bill > 0)
+        {
+            Label4.Text = blance.ToString();
+            Label2.Text = bill.ToString();
+            modelCu.customerBalance = 0;
+            Cb.update(modelCu);
+        }
+        else
+        {
+            Label4.Text = price.ToString();
+            Label2.Text = "0";
+            modelCu.customerBalance = blance - price;
+            Cb.update(modelCu);
+        }
+        Label5.Text = modelCu.customerBalance.ToString();
+    }
+}

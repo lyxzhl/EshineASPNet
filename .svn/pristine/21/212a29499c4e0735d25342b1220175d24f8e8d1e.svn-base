@@ -1,0 +1,344 @@
+﻿using System;
+using System.Data;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Text;
+using System.Data.OleDb;
+using Model;
+using Bll;
+public partial class Admin_packageAdmin_packageInfo : System.Web.UI.Page
+{
+    Bll.packageBll pb = new Bll.packageBll();
+    Model.tab_package modelpb = new Model.tab_package();
+    PublicClass pc = new PublicClass();
+    upExcel ue = new upExcel();
+    Bll.uppkgBll ub = new Bll.uppkgBll();
+    Bll.CustomerBll cb = new CustomerBll();
+    DBunit.SQLAccess dbsql = new DBunit.SQLAccess();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            fillcompanydroplist();
+        }
+    }
+    void fillcompanydroplist()
+    {
+        DataTable dt = cb.CustomerSelect("SELECT distinct customerCompany, customerCompanycode FROM [tab_customers]");
+        this.DropDownList1.DataSource = dt.DefaultView;
+        this.DropDownList1.DataTextField = "customerCompany";
+        this.DropDownList1.DataValueField = "customerCompany";
+        this.DropDownList1.DataBind();
+        this.DropDownList1.Items.Insert(0, "选择公司");
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        string s = this.TextBox1.Text;
+        string scmd = @"select * from tab_package where packagecode like '%" + s + "%' or "
+           + " supplier like '%" + s + "%' or "
++ " company like '%" + s + "%' or "
++ " period like '%" + s + "%' or "
++ " budget like '%" + s + "%' or "
++ " price like '%" + s + "%' or "
++ " expiredate like '%" + s + "%' or "
++ " note like '%" + s + "%' or "
++ " type like '%" + s + "%'";
+
+        this.SqlDataSource1.SelectCommand = scmd;
+        this.SqlDataSource1.DataBind();
+    }
+
+
+    protected void Button3_Click(object sender, EventArgs e)//上传套餐
+    {
+        int successfulcount = 0, errorcount = 0;
+        try
+        {
+            if (this.FileUpload1.HasFile)
+            {
+                if (!ue.SaveUpFile("~/Admin/temp/", this.FileUpload1))//上传文件
+                {
+                    throw new Exception("上传文件失败!");
+                }
+
+                DataTable inputdt = ue.InputExcel("套餐信息");
+                if (inputdt == null)
+                {
+                    throw new Exception("Excel文件读取失败!");
+                }
+
+                int j;
+                for (int i = 0; i < inputdt.Rows.Count; i++)
+                {
+                    j = 0;
+                    modelpb = new tab_package();
+                    modelpb.packagecode = inputdt.Rows[i][j++].ToString().Trim();
+                    modelpb.supplier = inputdt.Rows[i][j++].ToString().Trim();
+                    modelpb.company = inputdt.Rows[i][j++].ToString().Trim();
+                    modelpb.period = inputdt.Rows[i][j++].ToString().Trim();
+                    modelpb.msg = inputdt.Rows[i][j++].ToString().Trim();
+                    
+                    if (inputdt.Rows[i][j] == null || inputdt.Rows[i][j].ToString() == "")
+                    {
+                        j++;
+                    }
+                    else
+                    {
+                        modelpb.budgetshare = double.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    }
+                    //modelpb.budget = double.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    modelpb.price = double.Parse(inputdt.Rows[i][j++].ToString().Trim());
+
+                    if (inputdt.Rows[i][j] == null || inputdt.Rows[i][j].ToString() == "")
+                    {
+                        j++;
+                    }
+                    else
+                    {
+                        modelpb.marketprice = double.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    }
+
+                    
+                    if (inputdt.Rows[i][j] == null || inputdt.Rows[i][j].ToString() == "")
+                    {
+                        j++;
+                    }
+                    else
+                    {
+                        modelpb.expiredate = DateTime.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    }
+                    modelpb.VIP = inputdt.Rows[i][j++].ToString().Trim();
+                    modelpb.note = inputdt.Rows[i][j++].ToString().Trim();
+                    modelpb.note_eng = inputdt.Rows[i][j++].ToString().Trim();
+                    modelpb.type = inputdt.Rows[i][j++].ToString().Trim();
+                    modelpb.minage = int.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    modelpb.maxage = int.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    modelpb.uppkgtype = "1";
+                    modelpb.applytype = inputdt.Rows[i][j++].ToString().Trim();
+
+                    try
+                    {
+                        if (pb.Add(modelpb) < 1)
+                        {
+                            errorcount++;
+                        }
+                        else
+                        {
+                            successfulcount++;
+                        }
+
+                    }
+                    catch
+                    {
+                        errorcount++;
+                    }
+                }
+                Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('操作已完成！其中成功导入数据" + successfulcount + "条，失败" + errorcount + "条'); </script>");
+                GridView1.DataBind();
+            }
+            else
+            {
+                throw new Exception("请选择Excel文件!");
+            }
+        }
+        catch (Exception ex)
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + ex.Message + "'); </script>");
+        }
+    }
+
+    protected void Button4_Click(object sender, EventArgs e)//读取加项包信息
+    {
+        int successfulcount = 0, errorcount = 0;
+        try
+        {
+            if (this.FileUpload2.HasFile)
+            {
+                if (!ue.SaveUpFile("~/Admin/temp/", this.FileUpload2))//上传文件
+                {
+                    throw new Exception("上传文件失败!");
+                }
+
+                DataTable inputdt = ue.InputExcel("加项包信息");
+                if (inputdt == null)
+                {
+                    throw new Exception("Excel文件读取失败!");
+                }
+
+                int j;
+                Model.tab_uppkg modelpb;
+                Bll.uppkgBll upb = new uppkgBll();
+                for (int i = 0; i < inputdt.Rows.Count; i++)
+                {
+                    j = 0;
+                    modelpb = new tab_uppkg();
+                    modelpb.packagecode = inputdt.Rows[i][j++].ToString().Trim();
+                    modelpb.uppkgcode = inputdt.Rows[i][j++].ToString().Trim();
+                    modelpb.msg = inputdt.Rows[i][j++].ToString().Trim();
+                    modelpb.price = double.Parse(inputdt.Rows[i][j++].ToString().Trim());
+
+                    if (inputdt.Rows[i][j] == null || inputdt.Rows[i][j].ToString() == "")
+                    {
+                        j++;
+                    }
+                    else
+                    {
+                        modelpb.marketprice = double.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    }
+
+
+                    modelpb.note = inputdt.Rows[i][j++].ToString().Trim();
+                    modelpb.note_eng = inputdt.Rows[i][j++].ToString().Trim();
+                    modelpb.groupname = inputdt.Rows[i][j++].ToString().Trim();
+                    modelpb.grouplimit = int.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    modelpb.minage = int.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    modelpb.maxage = int.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    try
+                    {
+                        if ( upb.Add(modelpb) < 1)
+                        {
+                            errorcount++;
+                        }
+                        else
+                        {
+                            successfulcount++;
+                        }
+
+                    }
+                    catch
+                    {
+                        errorcount++;
+                    }
+                }
+                Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('操作已完成！其中成功导入数据" + successfulcount + "条，失败" + errorcount + "条'); </script>");
+            }
+            else
+            {
+                throw new Exception("请选择Excel文件!");
+            }
+        }
+        catch (Exception ex)
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + ex.Message + "'); </script>");
+        }
+    }
+
+    protected void GridView1_RowCommand(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+
+            string packagecode = (e.Row.Cells[1].Controls[0] as HyperLink).Text;
+            GridView oGridView = (GridView)e.Row.FindControl("GridView2");
+            if (oGridView != null)
+            {
+
+                string s = "SELECT * FROM [tab_uppkg] where (packagecode='" + packagecode + "') ";
+                DataTable dt = ub.Select(s);
+                oGridView.DataSource = dt;
+                oGridView.DataBind();
+            }
+        }
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("packageUpdate.aspx?newpackage=yes");
+    }
+
+    protected void ButtonEE_Click(object sender, EventArgs e)
+    {
+        PublicClass pc = new PublicClass();
+        GridView1.AllowPaging = false;// turn off paging 
+        GridView1.DataSourceID = "";
+        GridView1.DataSourceID = this.SqlDataSource1.ID;
+
+        GridView1.DataBind();
+        pc.gridviewtoexcel(GridView1, "MediPlusexport");
+        GridView1.AllowPaging = true;
+        GridView1.DataSourceID = "";
+        GridView1.DataSourceID = this.SqlDataSource1.ID;
+
+        GridView1.DataBind();
+    }
+    protected void Button5_Click(object sender, EventArgs e)
+    {
+        if(this.TextBox2.Text=="9527")
+        {
+            string s = "delete from tab_package where company='" + this.DropDownList1.SelectedValue + "'";
+            int num= dbsql.ExecuteNonQuery(s);
+            if(num>0)
+            {
+                Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", "<script>alert('删除成功'); </script>");
+            }
+            else
+            {
+                Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", "<script>alert('没有该公司套餐可删除'); </script>");
+            }
+        }
+        else
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", "<script>alert('操作有风险，删除需谨慎！'); </script>");
+        }
+    }
+    protected void Button6_Click(object sender, EventArgs e)
+    {
+        int successfulcount = 0, errorcount = 0;
+        try
+        {
+            if (this.FileUpload3.HasFile)
+            {
+                if (!ue.SaveUpFile("~/Admin/temp/", this.FileUpload3))//上传文件
+                {
+                    throw new Exception("上传文件失败!");
+                }
+
+                DataTable inputdt = ue.InputExcel("套餐加项包排列组合");
+                if (inputdt == null)
+                {
+                    throw new Exception("Excel文件读取失败!");
+                }
+
+                int j;
+                Model.supplierpackage supplierpackage;
+                Bll.supplierpackageBll sb = new supplierpackageBll();
+                for (int i = 0; i < inputdt.Rows.Count; i++)
+                {
+                    j = 0;
+                    supplierpackage = new Model.supplierpackage();
+                    supplierpackage.suppliercode = inputdt.Rows[i][j++].ToString().Trim();
+                    supplierpackage.mpcode = inputdt.Rows[i][j++].ToString().Trim();
+                    supplierpackage.supplier = inputdt.Rows[i][j++].ToString().Trim();
+                    supplierpackage.price = double.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    try
+                    {
+                        if (sb.Add(supplierpackage) < 1)
+                        {
+                            errorcount++;
+                        }
+                        else
+                        {
+                            successfulcount++;
+                        }
+
+                    }
+                    catch
+                    {
+                        errorcount++;
+                    }
+                }
+                Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('操作已完成！其中成功导入数据" + successfulcount + "条，失败" + errorcount + "条'); </script>");
+            }
+            else
+            {
+                throw new Exception("请选择Excel文件!");
+            }
+        }
+        catch (Exception ex)
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + ex.Message + "'); </script>");
+        }
+    }
+}

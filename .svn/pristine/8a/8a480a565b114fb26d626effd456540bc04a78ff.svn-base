@@ -1,0 +1,57 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ordercheck.aspx.cs" Inherits="Admin_ordersAdmin_ordercheck" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <table>
+                <tr>
+                    <td>统一通过订单号改订单状态</td>
+
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>改成
+                <asp:DropDownList ID="DropDownList6" runat="server">
+                    <asp:ListItem>选择订单状态</asp:ListItem>
+                    <asp:ListItem>待确认</asp:ListItem>
+                    <asp:ListItem>预约未成功</asp:ListItem>
+                    <asp:ListItem>已预约未到检</asp:ListItem>
+                    <asp:ListItem>待付款</asp:ListItem>
+                    <asp:ListItem>待转账</asp:ListItem>
+                    <asp:ListItem>约检成功</asp:ListItem>
+                    <asp:ListItem>已体检</asp:ListItem>
+                    <asp:ListItem>已完成</asp:ListItem>
+                    <asp:ListItem>已报销</asp:ListItem>
+
+                    <asp:ListItem>已取消</asp:ListItem>
+                </asp:DropDownList>
+                    </td>
+                </tr>
+                <tr>
+                    <td>请输入订单号：<br />
+                        注：一行只能输入一个订单号<br />
+                        批量修改订单号之间加"-"<br /> 例:101-201
+                    </td>
+                    <td>
+                        <asp:TextBox ID="TextBox1" runat="server" TextMode="MultiLine" Height="300px"
+                            Width="200px"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <asp:Button ID="Button2" runat="server" Text="提 交" OnClick="Button2_Click" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</body>
+</html>

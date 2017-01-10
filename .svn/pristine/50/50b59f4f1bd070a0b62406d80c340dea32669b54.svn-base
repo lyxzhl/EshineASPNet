@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Model
+{
+    public class supplierpackage
+    {
+        private int _id = 0;
+        private string _suppliercode = "";
+        private string _mpcode = "";
+        private string _supplier = "";
+        private double _price = 0.0;
+
+
+        public int id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        public string suppliercode
+        {
+            get { return _suppliercode; }
+            set { _suppliercode = value; }
+        }
+
+        public string mpcode
+        {
+            get { return _mpcode; }
+            set { _mpcode = value; }
+        }
+
+        public string supplier
+        {
+            get { return _supplier; }
+            set { _supplier = value; }
+        }
+
+        public double price
+        {
+            get { return _price; }
+            set { _price = value; }
+        }
+
+
+
+    }
+}

@@ -1,0 +1,113 @@
+﻿using Model;
+using Bll;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Script.Serialization;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+
+public partial class pangguangai : System.Web.UI.Page
+{
+    QuestionClass qw = new QuestionClass();
+    QuestionClassBll er = new QuestionClassBll();
+    AssessmentQuestion zx = new AssessmentQuestion();
+    AssessmentQuestionBll cb = new AssessmentQuestionBll();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        tijianbti();
+        int a = int.Parse(Request["id"]);
+        tijiantimu(a);
+    }
+    public void  tijianbti()
+    {
+        string sql = string.Format("select * from dbo.db_QuestionClass");
+        DataTable dt = er.Select(sql);
+        if (dt.Rows.Count>0)
+        {
+            this.Label3.Text = dt.Rows[0]["QCName"].ToString();
+            this.Label4.Text = dt.Rows[1]["QCName"].ToString();
+            this.Label5.Text = dt.Rows[2]["QCName"].ToString();
+            this.Label6.Text = dt.Rows[3]["QCName"].ToString();
+            this.Label7.Text = dt.Rows[4]["QCName"].ToString();
+            this.Label8.Text = dt.Rows[5]["QCName"].ToString();
+            this.Label9.Text = dt.Rows[6]["QCName"].ToString();
+            this.Label10.Text = dt.Rows[7]["QCName"].ToString();
+        }
+
+    }
+
+
+    public void tijiantimu(int id)
+    {
+        string sql = string.Format("select * from db_AssessmentQuestion　where QCID={0}　and (AQGender=0 or AQGender=1) and (Marriage=1 or Marriage=0) and (AQMinAge<=0and AQMaxAge>=40)", id);
+        DataTable dt = cb.Select(sql);
+            this.rpList.DataSource = dt;
+            this.rpList.DataBind();
+    }
+
+    public  object daanlb(int id ,string aqtype)
+    {
+        string sql = string.Format("select '"+ aqtype + "' as AQType, * from db_AssessmentAnswer　where AQID={0}", id);
+        DataTable dt = cb.Select(sql);
+        if (dt.Rows.Count > 0)
+        {
+            return dt;
+           
+        }
+        return null;
+    }
+
+    protected void rptypelist_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+
+        //判断里层repeater处于外层repeater的哪个位置（ AlternatingItemTemplate，FooterTemplate，
+
+        //HeaderTemplate，，ItemTemplate，SeparatorTemplate）
+        if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        {
+            Repeater rep = e.Item.FindControl("rpList2") as Repeater;//找到里层的repeater对象
+            
+            DataRowView rowv = (DataRowView)e.Item.DataItem;//找到分类Repeater关联的数据项 
+            int id = Convert.ToInt32(rowv["AQID"]);
+            string aqtype = rowv["AQType"].ToString(); 
+            rep.DataSource = daanlb(id,aqtype);
+            rep.DataBind();
+        }
+    }
+
+    protected string ReturnBool(string str)
+
+    {
+
+        if (str == "0")
+
+            return "单选";
+
+        else
+
+            return "多选";
+
+    }
+
+    protected string Return(string str)
+
+    {
+
+        if (str == "0")
+
+            return "radio";
+
+        if (str == "1")
+
+            return "checkbox";
+        else
+            return "radio";
+
+    }
+
+}
+
+    

@@ -1,0 +1,52 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Collections;
+public partial class index1 : PageBases
+{
+    Bll.OrdersBll ob = new Bll.OrdersBll();
+    Bll.messageBll mb = new Bll.messageBll();
+    Model.tab_customers modeCu = new Model.tab_customers();
+    Bll.companyBll comb = new Bll.companyBll();
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            this.CheckUser((Hashtable)Application["Online"]);
+        }
+        //Session["id"] = 62;
+        //Session["cus"] = "陈德希";
+       
+        if ((Session["firstlogin"] != null && Session["firstlogin"] == "1"))
+        {
+
+        }
+        else
+        {
+          
+            //this.Label1.Text = Session["cus"].ToString();
+            //initpanel();
+        }
+    }
+
+
+
+
+    void initpanel()
+    {
+    
+     
+        //this.LinkButton3.Text = "";
+        this.HyperLink1.Text = (String)GetLocalResourceObject("LinkButton3Resource1.Text") + "(" + ob.getordernum(Convert.ToInt32(Session["id"])) + ")";
+        this.HyperLink2.Text = (String)GetLocalResourceObject("LinkButton4Resource1.Text") + "(" + mb.getunread(Convert.ToInt32(Session["id"])) + ")";
+
+      
+      
+    
+
+    }
+}

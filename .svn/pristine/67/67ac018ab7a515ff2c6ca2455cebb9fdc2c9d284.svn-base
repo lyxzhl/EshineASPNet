@@ -1,0 +1,55 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+
+public partial class hrpage_checkinfo2 : System.Web.UI.Page
+{
+    Bll.OrdersBll ob = new Bll.OrdersBll();
+    Bll.CustomerBll cb = new Bll.CustomerBll();
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (Request["customerCompanycode"] != null && Request["customerCompanycode"].ToString() != "")
+        {
+            ViewState["customerCompanycode"] = Request["customerCompanycode"];
+        }
+        if (Request["customerCompanyBU"] != null && Request["customerCompanyBU"].ToString() != "")
+        {
+            ViewState["customerCompanyBU"] = Request["customerCompanyBU"];
+        }
+        if (Request["customerGender"] != null && Request["customerGender"].ToString() != "")
+        {
+            ViewState["customerGender"] = Request["customerGender"];
+        }
+        if (Request["aa"] != null && Request["aa"].ToString() != "")
+        {
+            ViewState["aa"] = Request["aa"];
+        }
+        if (!IsPostBack)
+        {
+            init();
+        }
+    }
+    void init()
+    {
+        string s = "select a.customerName,Convert(varchar(10),examDate,120) examDate,examBranch from tab_customers a,tab_orders b where a.customerID=b.customerID and customerCompanycode='" + ViewState["customerCompanycode"] + "' and customerCompanyBU='" + ViewState["customerCompanyBU"] + "' and (orderStatus = N'已体检' or orderStatus = N'已完成') and (DATEPART(year, b.examDate) = (select top 1 currentperiod from tab_company where Companycode='" + ViewState["customerCompanycode"] + "' ))";
+        //string s = "select customerName,(select top 1 examDate from tab_orders where customerID=tab_customers.customerID and orderStatus = N'已体检' or orderStatus = N'已完成' order by orderID desc) examDate,(select top 1 examBranch from tab_orders where customerID=tab_customers.customerID and orderStatus = N'已体检' or orderStatus = N'已完成' order by orderID desc) examBranch from  tab_customers where customerCompanycode='" + ViewState["customerCompanycode"] + "' and customerCompanyBU='" + ViewState["customerCompanyBU"] + "'";
+        if (ViewState["customerGender"].ToString() != "全部")
+        {
+            s += " and customerGender='" + ViewState["customerGender"] + "'";
+        }
+        DataTable dt = ob.Select(s);
+        this.Repeater1.DataSource = dt;
+        this.Repeater1.DataBind();
+
+
+        Label1.Text = ViewState["customerCompanyBU"].ToString();
+        Label2.Text = ViewState["aa"].ToString();
+        Label3.Text = ViewState["customerGender"].ToString();
+        Label4.Text = dt.Rows.Count.ToString();
+    }
+}

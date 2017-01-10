@@ -1,0 +1,95 @@
+﻿using System;
+using System.Data;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class Admin_packageAdmin_uppkgUpdate : System.Web.UI.Page
+{
+    Bll.uppkgBll ub = new Bll.uppkgBll();
+    Model.tab_uppkg modelub = new Model.tab_uppkg();
+    PublicClass pc = new PublicClass();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!Page.IsPostBack)
+        {
+            if (Request.QueryString["newpkg"] != null && Request.QueryString["newpkg"].ToString() != "")
+            {
+                this.Button1.Visible = false;
+                this.Button3.Visible = true;
+                this.TextBox1.Text = Request.QueryString["newpkg"].ToString();
+                this.TextBox1.Enabled = false;
+            }
+            else
+            {
+                ViewState["uppkgid"] = Request.QueryString["Cid"];
+                modelub.id = int.Parse(ViewState["uppkgid"].ToString());
+                modelub = ub.getuppkg(modelub);
+
+                this.TextBox1.Text = modelub.packagecode;
+                this.TextBox5.Text = modelub.VIP;
+                this.TextBox4.Text = modelub.price.ToString();
+                this.TextBox8.Text = modelub.marketprice.ToString();
+                if (Session["language"] != null && Session["language"].ToString() == "en-us")
+                {
+                    content1.Value = modelub.msg_eng;
+                    this.TextBox2.Text = modelub.note_eng;
+                }
+                else
+                {
+                    content1.Value = modelub.msg;
+                    this.TextBox2.Text = modelub.note;
+                }
+            }
+        }
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+            Response.Redirect("packageUpdate.aspx?Cid=" + this.TextBox1.Text);
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        modelub.id = int.Parse(ViewState["uppkgid"].ToString());
+        modelub = ub.getuppkg(modelub);
+        fillcommonmodel();
+        
+        int i = ub.update(modelub);
+        if (i != 0)
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('更新成功');location='packageInfo.aspx'</script>");
+        }
+    }
+    void fillcommonmodel()
+    {
+        modelub.packagecode = this.TextBox1.Text;
+        
+        modelub.VIP = this.TextBox5.Text;
+        modelub.price = this.TextBox4.Text == "" ? 0 : double.Parse(this.TextBox4.Text);
+        modelub.marketprice = this.TextBox8.Text == "" ? 0 : double.Parse(this.TextBox8.Text);
+        if (Session["language"] != null && Session["language"].ToString() == "en-us")
+        {
+            modelub.note_eng = this.TextBox2.Text;
+            modelub.msg_eng = content1.Value.Replace("'", "''");
+            modelub.msg = modelub.msg.Replace("'", "''");
+        }
+        else
+        {
+            modelub.note = this.TextBox2.Text;
+            modelub.msg = content1.Value.Replace("'", "''");
+            modelub.msg_eng = modelub.msg_eng.Replace("'", "''");
+        }
+    }
+    protected void Button3_Click(object sender, EventArgs e)
+    {
+        fillcommonmodel();
+
+        int i = ub.Add(modelub);
+        if (i != 0)
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('添加成功');location='packageUpdate.aspx?Cid=" + this.TextBox1.Text + "'</script>");
+            
+        }
+    }
+}

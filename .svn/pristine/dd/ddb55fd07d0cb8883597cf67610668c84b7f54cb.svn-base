@@ -1,0 +1,44 @@
+(function($) {
+  $.fn.showErrorCode = function(code) {
+	var errorJson = [
+		{"id": 1, "code": "1001", "msg": "用户名不能为空"},
+		{"id": 2, "code": "1002", "msg": "登录密码不能为空"},
+		{"id": 3, "code": "1003", "msg": "用户名或密码错误"},
+		{"id": 4, "code": "1004", "msg": "手机号码不能为空"},
+		{"id": 5, "code": "1005", "msg": "手机号码验证失败"},
+		{"id": 6, "code": "2001", "msg": "用户名已存在"},
+		{"id": 7, "code": "2002", "msg": "手机号已注册"},
+		{"id": 8, "code": "2003", "msg": "注册用户操作失败"},
+		{"id": 9, "code": "2004", "msg": "登录验证失败"},
+		{"id": 10, "code": "2005", "msg": "验证用户信息失败"},
+		{"id": 11, "code": "3001", "msg": "网络通信异常，请稍后再试"},
+		{"id": 12, "code": "3002", "msg": "获取二维码信息异常"},
+		{"id": 13, "code": "3003", "msg": "短信发送验证码异常"}
+	];
+	var msg = "";
+	if (typeof (code) == "string") {
+		$.each(errorJson, function(i, val){
+			if(code == val.code)
+				msg = val.msg;
+		});
+		if (msg != "")
+		    return msg;
+	}
+  };
+  
+  $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name]) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+})(jQuery);

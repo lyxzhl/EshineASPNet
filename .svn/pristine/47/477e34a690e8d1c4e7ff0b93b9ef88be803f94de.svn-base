@@ -1,0 +1,123 @@
+﻿<html>
+<head>
+<title>注册信-sample</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style type="text/css">
+        .style1
+        {
+            font-size: 20px;
+        }
+        .style2
+        {
+            font-size: 16px;
+        }
+        .style3
+        {
+            font-size: 18px;
+        }
+
+    </style>
+</head>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<!-- Save for Web Slices (注册信-sample.psd) -->
+<table id="Table_01" width="768" height="1119" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td colspan="5">
+			<img src="Images/emailimg/regemail1.jpg" width="768" height="249" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<img src="Images/emailimg/regemail2.jpg" width="522" height="1" alt=""></td>
+		<td colspan="2" rowspan="2">
+			Date:<%date%></td>
+		<td>
+			<img src="Images/emailimg/regemail4.jpg" width="87" height="1" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<img src="Images/emailimg/regemail5.jpg" width="522" height="52" alt=""></td>
+		<td rowspan="5">
+			<img src="Images/emailimg/regemail6.jpg" width="87" height="868" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="4">
+			<img src="Images/emailimg/regemail7.jpg" width="129" height="816" alt=""></td>
+		<td width="552" height="641" colspan="3" style="text-align: left; vertical-align:top;">
+        <br /><br />
+            <strong><span class="style3">尊敬的 <%customname%> 先生/女士，</span></strong>
+            <br />
+            <br />
+            <span class="style3">请点击<a href="<%newemaillink%>"><%newemaillink%></a>激活新邮箱账号。
+            </span> 
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <span class="style1"><a href="http://www.medi-plus.com.cn/login.aspx">立即登陆 &gt;</a><br />
+            </span><br />
+            <br />
+             <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <span class="style3">有关详细信息，请参阅“常见问题解答”
+            </span>
+            <br />
+            <span class="style3">谢谢，。</span><br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <span class="style2">TM and copyright © 2013 Medi-plus Ltd.</span><br 
+                class="style2" />
+            <span class="style2">
+            <a href="http://www.medi-plus.com.cn/CopyrightPolicy.aspx">保留所有权利</a> / 
+            <a href="http://www.medi-plus.com.cn/index.aspx">了解最新信息</a> / 
+            <a href="http://www.medi-plus.com.cn/PrivacyPolicy.aspx">客户隐私政策</a> / 
+            <a href="http://www.medi-plus.com.cn/index.aspx">我的Medi-plus</a></span>
+        
+        
+        </td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<img src="Images/emailimg/regemail9.jpg" width="552" height="100" alt=""></td>
+	</tr>
+	<tr>
+		<td width="444" height="22" colspan="2">
+        <a href="http://www.medi-plus.com.cn/">www.medi-plus.com.cn</a>, 
+            <a href="mailto:customerservice@medi-plus.com.cn">customerservice@medi-plus.com.cn</a>
+        </td>
+		<td rowspan="2">
+			<img src="Images/emailimg/regemail11.jpg" width="108" height="75" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<img src="Images/emailimg/regemail12.jpg" width="444" height="53" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<img src="images/spacer.gif" width="129" height="1" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="393" height="1" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="51" height="1" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="108" height="1" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="87" height="1" alt=""></td>
+	</tr>
+</table>
+<!-- End Save for Web Slices -->
+</body>
+</html>

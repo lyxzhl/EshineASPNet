@@ -1,0 +1,1242 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
+using Model;
+using Bll;
+using Model.WebApp;
+using System.Net;
+using System.IO;
+using System.Web.Script.Serialization;
+using NPOI;
+using NPOI.XSSF.UserModel;
+using NPOI.SS.UserModel;
+using NPOI.HPSF;
+using NPOI.SS.Util;
+
+namespace MediPlus
+{
+    public class login
+    {
+        public static Model.tab_customers findmember(string usrname, string pw)
+        {
+            Model.tab_customers modelCu = new Model.tab_customers();
+            Bll.CustomerBll Cb = new Bll.CustomerBll();
+            modelCu.customerCode = usrname;
+            modelCu.customerIDcard = usrname;
+            modelCu.customerMobile = usrname;
+            modelCu.customerEmail = usrname;
+            modelCu.customerPrivateEmail = usrname;
+            modelCu.customerPwd = pw;
+            DataTable dt = Cb.CustomerSelect(modelCu);
+            if (dt.Rows.Count > 0)
+            {
+                modelCu.customerID = int.Parse(dt.Rows[0]["customerID"].ToString());
+                return Cb.getCustomer(modelCu);
+            }
+            return null;
+        }
+
+        public static DataTable findmembers(string usrname, string pw)
+        {
+            Model.tab_customers modelCu = new Model.tab_customers();
+            Bll.CustomerBll Cb = new Bll.CustomerBll();
+            modelCu.customerCode = usrname;
+            modelCu.customerIDcard = usrname;
+            modelCu.customerMobile = usrname;
+            modelCu.customerEmail = usrname;
+            modelCu.customerPrivateEmail = usrname;
+            modelCu.customerPwd = pw;
+            DataTable dt = Cb.CustomerSelect(modelCu);
+            if (dt.Rows.Count > 0)
+            {
+                modelCu.customerID = int.Parse(dt.Rows[0]["customerID"].ToString());
+                return dt;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 体检导航
+        /// </summary>
+        /// <param name="Tijian"></param>
+        /// <returns></returns>
+        public static DataTable tijiandaoh(string Tijian)
+        {
+            QuestionTypeBll cb = new QuestionTypeBll();
+            DataTable dt = cb.Select("select QTID as ID,QTName as Name,QTShortName as ShortName,QTDes as Des,QTDocument as Document from db_QuestionType");
+            if (dt.Rows.Count > 0)
+                return dt;
+            return null;
+        }
+
+        public static DataTable sdk(string ID)
+        {
+            Model.tab_customers modelCu = new Model.tab_customers();
+            Bll.CustomerBll Cb = new Bll.CustomerBll();
+            modelCu.customerID = int.Parse(ID);
+            DataTable dt = Cb.CustomerSelect(modelCu);
+            if (dt.Rows.Count > 0)
+            {
+                modelCu.customerID = int.Parse(dt.Rows[0]["customerID"].ToString());
+                return dt;
+            }
+            return null;
+        }
+
+        public static DataTable shijian(string id)
+        {
+            Model.tab_suppliers supp = new tab_suppliers();
+            Bll.SupplierBll cb = new Bll.SupplierBll();
+            string ss = string.Format("select * from tab_suppliers where id = '{0}'", id);
+            DataTable dt = cb.GetAny(ss);
+            if (dt.Rows.Count > 0)
+            {
+                supp.note = dt.Rows[0]["note"].ToString();
+                return dt;
+            }
+
+
+            return null;
+
+        }
+
+        public static DataTable mdian(string shengfen, string chengshi, string id)
+        {
+            Model.tab_company bb = new tab_company();
+            Bll.companyBll qq = new Bll.companyBll();
+            Model.tab_customers mc = new Model.tab_customers();
+            Bll.CustomerBll cb = new Bll.CustomerBll();
+            mc.customerID = int.Parse(id);
+            mc = cb.getCustomer(mc);
+            string ailablesupplier = qq.getavailablesupplier(mc.customerCompany);
+            Model.tab_suppliers modelCu = new Model.tab_suppliers();
+            Bll.SupplierBll Cb = new Bll.SupplierBll();
+            string ss = string.Format("select * from tab_shopsuppliers where province='{0}' and city='{1}' and id in({2})", shengfen, chengshi, ailablesupplier);
+            DataTable dt = Cb.GetAny(ss);
+            if (dt.Rows.Count > 0)
+            {
+                modelCu.hospid = dt.Rows[0]["hospid"].ToString();
+                return dt;
+            }
+
+            return null;
+        }
+        /// <summary>
+        /// 整体健康评估api
+        /// </summary>
+        /// <returns></returns>
+        public static DataTable HealthassessmentAPI(int customerID, int CType, string customerCode, int customerGender, DateTime customerDOB, string QTShortName, string ARDetail, int Marriage)
+        {
+            DataTable dt = null;
+            return dt;
+        }
+
+        /// <summary>
+        /// 疾病问卷api
+        /// </summary>
+        /// <param name="customerID"></param>
+        /// <param name="CType"></param>
+        /// <param name="customerCode"></param>
+        /// <param name="customerGender"></param>
+        /// <param name="customerDOB"></param>
+        /// <param name="QTShortName"></param>
+        /// <param name="ARDetail"></param>
+        /// <returns></returns>
+        public static DataTable report(int customerID, int CType, string customerCode, int customerGender, DateTime customerDOB, string QTShortName, string ARDetail, int Marriage)
+        {
+            AssessmentReport qw = new AssessmentReport();
+            AssessmentReportBll er = new AssessmentReportBll();
+            qw.customerID = customerID;
+            qw.CType = CType;
+            qw.customerCode = customerCode;
+            qw.customerGender = customerGender;
+            qw.customerDOB = customerDOB;
+            qw.QTID = 1;
+            qw.customerAge = CalculateAge(customerDOB, DateTime.Now);
+            qw.QTShortName = QTShortName;
+            qw.ARCreate = DateTime.Now;
+            qw.ARStatus = 1;
+            qw.QTTemplate = "";
+            qw.QTPage = "";
+            qw.IRequestTime = DateTime.Now;
+            qw.ARDetail = "";
+            DataTable dt = tijianwj(QTShortName, customerGender, qw.customerAge, Marriage);
+
+            List<AssessmentQuestionApp> List1 = TableList.ConvertTo<AssessmentQuestionApp>(dt).ToList();
+
+            string postapi = List1.ToString();
+            string disease = jiename(QTShortName);
+            drmedAPI.drmedapi(disease, postapi);
+
+            string sql = string.Format("");
+
+
+            return null;
+        }
+        /// <summary>
+        /// 接口值
+        /// </summary>
+        /// <param name="QTShortName"></param>
+        /// <returns></returns>
+        public static string jiename(string QTShortName)
+        {
+            QuestionTypeBll cb = new QuestionTypeBll();
+            string sql = string.Format("select IName from db_QuestionType where QTName='{0}'");
+            DataTable dt = cb.Select(sql);
+            if (dt.Rows.Count > 0)
+            {
+                return dt.Rows[0]["IName"].ToString();
+            }
+            return null;
+        }
+
+        public static int CalculateAge(DateTime birthDate, DateTime inceptionDate)
+        {
+
+            int years = inceptionDate.Year - birthDate.Year;
+
+            if (inceptionDate.Month < birthDate.Month || (inceptionDate.Month == birthDate.Month && inceptionDate.Day < birthDate.Day))
+                --years;
+            return years;
+        }
+
+
+        /// <summary>
+        /// 体检答案
+        /// </summary>
+        /// <param name="AQID"></param>
+        /// <returns></returns>
+        public static AssessmentQuestionObj tijiandaan(int AQID)
+        {
+            AssessmentAnswer qw = new AssessmentAnswer();
+            AssessmentAnswerBll cb = new AssessmentAnswerBll();
+            AssessmentQuestion er = new AssessmentQuestion();
+            AssessmentQuestionBll ca = new AssessmentQuestionBll();
+
+
+            string sql = string.Format("select b.AQQuestion,b.AQType,b.AQRemark,b.AQDes,b.AQOptions,b.AQSort from db_AssessmentQuestion b  where  b.AQID={0}", AQID);
+            string sqls = string.Format("select a.AAContent, a.AADes, a.AAType, a.AAScore  from db_AssessmentAnswer a  where a.AQID ={0}", AQID);
+            DataTable dt1 = cb.Select(sql);
+            DataTable dt2 = ca.Select(sqls);
+            if (dt1.Rows.Count > 0)
+            {
+                AssessmentQuestionObj obj = new AssessmentQuestionObj();
+                obj.question = new AQuestion
+                {
+                    Des = dt1.Rows[0]["AQDes"].ToString(),
+                    Options = int.Parse(dt1.Rows[0]["AQOptions"].ToString() != null ? dt1.Rows[0]["AQOptions"].ToString() : "0"),
+                    Question = dt1.Rows[0]["AQQuestion"].ToString(),
+                    Remark = dt1.Rows[0]["AQRemark"].ToString(),
+                    Sort = int.Parse(dt1.Rows[0]["AQSort"].ToString() != null ? dt1.Rows[0]["AQSort"].ToString() : "0"),
+                    Type = int.Parse(dt1.Rows[0]["AQType"].ToString() != null ? dt1.Rows[0]["AQType"].ToString() : "0"),
+
+                };
+                if (dt2.Rows.Count > 0)
+                {
+
+                    List<AAnswer> list = new List<AAnswer>();
+                    foreach (DataRow item in dt2.Rows)
+                    {
+                        AAnswer answer = new AAnswer
+                        {
+                            Des = item["AADes"].ToString(),
+                            Content = item["AAContent"].ToString(),
+                            Score = item["AAScore"].ToString(),
+                            Type = int.Parse(item["AAType"].ToString())
+                        };
+                        list.Add(answer);
+                    }
+                    obj.answerList = list;
+                }
+                return obj;
+            }
+
+
+            return null;
+        }
+
+        /// <summary>
+        /// 体检问卷
+        /// </summary>
+        /// <param name="TijianID"></param>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        public static DataTable tijianwj(string QTShortName, int AQGender, int Age, int Marriage)
+        {
+            AssessmentQuestionBll cb = new AssessmentQuestionBll();
+            string sql = string.Format("select AQID, a.QCID, b.QCShortName from db_AssessmentQuestion as a inner join db_QuestionClass as b on a.QCID = b.QCID where a.QTShortName='{0}' and (a.AQGender=0 or a.AQGender={1}) and (a.Marriage={2} or a.Marriage=0 )and (a.AQMinAge<={3}and a.AQMaxAge>={4})", QTShortName, AQGender, Marriage, Age, Age);
+            DataTable dt = cb.Select(sql);
+            if (dt.Rows.Count > 0)
+                return dt;
+            return null;
+        }
+
+        public static DataTable jiashu(string ID)
+        {
+            Model.tab_relatives rela = new tab_relatives();
+            Bll.RelativeBLL Cb = new Bll.RelativeBLL();
+            rela.relativeCustomer = int.Parse(ID);
+            DataTable dt = Cb.RelativeSelect("select * from tab_relatives where relativeCustomer='" + rela.relativeCustomer + "'");
+            if (dt.Rows.Count > 0)
+            {
+                rela.relativeCustomer = int.Parse(dt.Rows[0]["relativeCustomer"].ToString());
+                return dt;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public static int updatepersonaldetail(string id, Dictionary<string, object> info)
+        {
+            //string s = "";
+
+            Model.tab_customers modelCu = new Model.tab_customers();
+            Bll.CustomerBll Cb = new Bll.CustomerBll();
+            modelCu.customerID = Convert.ToInt32(id);
+            modelCu = Cb.getCustomer(modelCu);
+
+            if (info.ContainsKey("name")) modelCu.customerName = info["name"].ToString();
+            if (info.ContainsKey("email")) modelCu.customerEmail = info["email"].ToString();
+            if (info.ContainsKey("customerGender")) modelCu.customerGender = info["customerGender"].ToString();
+            if (info.ContainsKey("IDcard")) modelCu.customerIDcard = info["IDcard"].ToString();
+            if (info.ContainsKey("DOB")) modelCu.customerDOB = DateTime.Parse(info["DOB"].ToString());
+            if (info.ContainsKey("customerCompanyCity")) modelCu.customerCompanyCity = info["customerCompanyCity"].ToString();
+            if (info.ContainsKey("customerMarriageStatus")) modelCu.customerMarriageStatus = info["customerMarriageStatus"].ToString();
+            if (info.ContainsKey("customerCompanyProvince")) modelCu.customerCompanyProvince = info["customerCompanyProvince"].ToString();
+            if (info.ContainsKey("customerMobile")) modelCu.customerMobile = info["customerMobile"].ToString();
+
+
+
+
+            if (info.ContainsKey("password_old"))
+            {
+                if (info.ContainsKey("password"))
+                {
+                    string spw_old = info["password"].ToString();
+                    string spw = modelCu.customerPwd;
+                    if (spw == spw_old)
+                    {
+                        modelCu.customerPwd = info["password_old"].ToString();
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+                }
+                else
+                {
+                    modelCu.customerPwd = info["password"].ToString();
+                }
+
+            }
+
+
+            int num = Cb.update(modelCu);
+            if (num != 0)
+                return 1;
+            else
+                return 0;
+
+        }
+
+        //public static DataTable pro()
+        //{
+        //    Model.tab_product_class pro = new Model.tab_product_class();
+        //    Bll.ProdutClassBLL Cb = new Bll.ProdutClassBLL();
+        //   string sq  =  string.Format("select * from tab_productClass ");
+        //   DataTable dt = Cb.SelectProClass(sq);
+        //        if (dt.Rows.Count > 0)
+        //        {
+        //            return dt;
+        //        }
+        //    return null;
+        //}
+
+
+        public static DataTable pro(int ID)
+        {
+            Model.tab_product_class pro = new Model.tab_product_class();
+            Bll.ProdutClassBLL Cb = new Bll.ProdutClassBLL();
+            if (ID == 0)
+            {
+                string sq = string.Format("select * from tab_productClass");
+                DataTable dt = Cb.SelectProClass(sq);
+                if (dt.Rows.Count > 0)
+                {
+                    return dt;
+                }
+            }
+            else if (ID != 0)
+            {
+                string sq = string.Format("select * from tab_productClass where productClassID='{0}'", ID);
+                DataTable dt = Cb.SelectProClass(sq);
+                if (dt.Rows.Count > 0)
+                {
+                    return dt;
+                }
+            }
+
+            return null;
+        }
+
+        public static DataTable proclass(string ID)
+        {
+            Model.tab_product_class pro = new Model.tab_product_class();
+            Bll.ProdutClassBLL Cb = new Bll.ProdutClassBLL();
+            string sq = string.Format("select * from tab_productClass where productClassID='{0}'", ID);
+            DataTable dt = Cb.SelectProClass(sq);
+            if (dt.Rows.Count > 0)
+            {
+                return dt;
+            }
+            return null;
+        }
+        public static DataTable prostati(string id)
+        {
+            Model.tab_orders orderr = new Model.tab_orders();
+            Bll.OrdersBll cb = new Bll.OrdersBll();
+            string sq = string.Format("select * from tab_orders where customerID={0}", id);
+            DataTable dt = cb.GetAny(sq);
+            if (dt.Rows.Count > 0)
+            {
+                return dt;
+            }
+            return null;
+
+        }
+
+        public static DataTable products(string id)
+        {
+            Model.tab_product_class pro = new Model.tab_product_class();
+            Bll.ProdutClassBLL Cb = new Bll.ProdutClassBLL();
+            string sq = string.Format("select * from tab_products where productID={0}", id);
+            DataTable dt = Cb.SelectProClass(sq);
+            if (dt.Rows.Count > 0)
+            {
+                return dt;
+            }
+            return null;
+
+        }
+
+        public static int tiajiajiashu(string relativeCustomer, string relativeName, string relativeMobile, string relativeGender, string MarriageStatus, string relativeIDcard, DateTime relativeDOB, string Relationship)
+        {
+            Model.tab_relatives morela = new tab_relatives();
+            Bll.RelativeBLL rb = new Bll.RelativeBLL();
+
+
+            morela.relativeCustomer = int.Parse(relativeCustomer);
+            morela.relativeName = relativeName;
+            morela.relativeMobile = relativeMobile;
+            morela.relativeGender = relativeGender;
+            morela.relativeMarriageStatus = MarriageStatus;
+            morela.relativeIDcard = relativeIDcard;
+            morela.relativeDOB = relativeDOB;
+            morela.relativeRelationship = Relationship;
+
+            DataTable dt = rb.RelativeSelect("select  relativeIDcard from tab_relatives where relativeIDcard='" + relativeIDcard + "'");
+            if (dt.Rows.Count > 0)
+            {
+                return -1;
+            }
+            DataTable ds = rb.RelativeSelect("select  relativeCustomer from tab_relatives where relativeCustomer='" + relativeCustomer + "'");
+            if (ds.Rows.Count > 0)
+            {
+                return -2;
+            }
+
+
+            morela.relativeCustomer = int.Parse(relativeCustomer);
+            morela.relativeName = relativeName;
+            morela.relativeMobile = relativeMobile;
+            morela.relativeGender = relativeGender;
+            morela.relativeMarriageStatus = MarriageStatus;
+            morela.relativeIDcard = relativeIDcard;
+            morela.relativeDOB = relativeDOB;
+            morela.relativeRelationship = Relationship;
+
+            rb.RelativeAdd(morela);
+
+            return morela.relativeCustomer;
+        }
+
+        public static int customerstart(string nickname, string gender, string mobile, string password, string iDcard,
+        DateTime DOB, string hunyin)
+        {
+            Model.tab_customers modeCu = new Model.tab_customers();
+            Bll.CustomerBll cb = new Bll.CustomerBll();
+
+            modeCu.customerName = nickname;
+            modeCu.customerGender = gender;
+            modeCu.customerMobile = mobile;
+            modeCu.customerPwd = password;
+            modeCu.customerIDcard = iDcard;
+            modeCu.customerDOB = DOB;
+            modeCu.customerMarriageStatus = hunyin;
+
+            if (password.Length < 6) return -1;
+            modeCu.customerPwd = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(password, "MD5").ToLower();
+            if (iDcard.Length != 18) return -2;
+            if (mobile.Length != 11) return -3;
+
+            modeCu.customerName = nickname;
+            modeCu.customerGender = gender;
+            modeCu.customerMobile = mobile;
+            modeCu.customerPwd = password;
+            modeCu.customerIDcard = iDcard;
+            modeCu.customerDOB = DOB;
+            modeCu.customerMarriageStatus = hunyin;
+            int memberid = cb.CustomerAdd(modeCu);
+            modeCu.customerID = memberid;
+            //cdb.Add(modeCd);
+            return memberid;
+        }
+        public static int qrxx(string id, string usname, string age,
+            string dob, string iDcard, string shoujiahao, string Mailbox, string hunyin,
+            string dizhi, string shijian, string chengshi, string mdian, string taoc,
+            string jiaxiangbao)
+        {
+            Model.tab_orders ordes = new tab_orders();
+            Bll.OrdersBll cd = new Bll.OrdersBll();
+            ordes.customerID = int.Parse(id);
+            ordes.customerName = usname;
+            ordes.personAge = int.Parse(age);
+            ordes.personMarriageStatus = hunyin;
+            ordes.examCity = chengshi;
+            ordes.examBranch = mdian;
+            ordes.personMobile = shoujiahao;
+            ordes.personIDcard = iDcard;
+            ordes.personSex = dob;
+            ordes.examInfo = jiaxiangbao;
+
+
+
+            return 1;
+        }
+
+        /// <summary>
+        /// 根据dataTable生成Excel
+        /// </summary>
+        /// <param name="dt">数据源</param>
+        /// <param name="sheetName">sheet名称</param>
+        /// <param name="header">标题</param>
+        /// <param name="filename">文件名</param>
+        public static bool Export(DataTable dt, string sheetName, string header, string filename, out string msg)
+        {
+            try
+            {
+                msg = string.Empty;
+                //return Export(dt, sheetName, header, filename);
+                //using (MemoryStream ms = Export(dt, sheetName, header))
+                //{
+                //    using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write))
+                //    {
+                //        byte[] data = ms.ToArray();
+                //        fs.Write(data, 0, data.Length);
+                //        fs.Flush();
+                //    }
+                //}
+                //msg = string.Empty;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                msg = ex.Message;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 根据dataTable生成Excel
+        /// </summary>
+        /// <param name="dt">数据源</param>
+        /// <param name="sheetName">sheet名称</param>
+        /// <param name="header">标题</param>
+        /// <returns></returns>
+        public static MemoryStream Export(DataTable dt, string sheetName, string header)
+        {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            ISheet sheet;
+            if (!string.IsNullOrEmpty(sheetName))
+                sheet = workbook.CreateSheet(sheetName);
+            else
+                sheet = workbook.CreateSheet("sheet1");
+
+            ICellStyle dateStyle = workbook.CreateCellStyle();
+            IDataFormat format = workbook.CreateDataFormat();
+            dateStyle.DataFormat = format.GetFormat("yyyy-MM-dd hh:ss:mm");
+
+            //取得列宽
+            int[] arrColWidth = new int[dt.Columns.Count];
+            foreach (DataColumn item in dt.Columns)
+            {
+                arrColWidth[item.Ordinal] = Encoding.GetEncoding(936).GetBytes(item.ColumnName.ToString()).Length;
+            }
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                for (int j = 0; j < dt.Columns.Count; j++)
+                {
+                    int intTemp = Encoding.GetEncoding(936).GetBytes(dt.Rows[i][j].ToString()).Length;
+                    if (intTemp > arrColWidth[j])
+                    {
+                        arrColWidth[j] = intTemp;
+                    }
+                }
+            }
+
+            int rowIndex = 0;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                #region 新建表，填充表头，填充列头，样式
+                //if (rowIndex >= 1048576 || rowIndex == 0)
+                if (rowIndex >= 1048570 || rowIndex == 0)
+                {
+                    if (rowIndex != 0)
+                    {
+                        sheet = workbook.CreateSheet();
+                    }
+
+                    #region 表头及样式
+                    {
+                        IRow headerRow = sheet.CreateRow(0);
+                        headerRow.HeightInPoints = 25;
+                        headerRow.CreateCell(0).SetCellValue(header);
+
+                        ICellStyle headStyle = workbook.CreateCellStyle();
+                        headStyle.Alignment = HorizontalAlignment.Center;
+                        IFont font = workbook.CreateFont();
+                        font.FontHeightInPoints = 20;
+                        font.Boldweight = 700;
+                        headStyle.SetFont(font);
+                        headerRow.GetCell(0).CellStyle = headStyle;
+                        sheet.AddMergedRegion(new CellRangeAddress(0, 0, 0, dt.Columns.Count - 1));
+                        //headerRow
+                    }
+                    #endregion
+
+                    #region 列头及样式
+                    {
+                        IRow headerRow = sheet.CreateRow(1);
+                        ICellStyle headStyle = workbook.CreateCellStyle();
+                        headStyle.Alignment = HorizontalAlignment.Center;
+                        IFont font = workbook.CreateFont();
+                        font.FontHeightInPoints = 10;
+                        font.Boldweight = 700;
+                        headStyle.SetFont(font);
+                        foreach (DataColumn column in dt.Columns)
+                        {
+                            headerRow.CreateCell(column.Ordinal).SetCellValue(column.ColumnName);
+                            headerRow.GetCell(column.Ordinal).CellStyle = headStyle;
+
+                            //设置列宽
+                            sheet.SetColumnWidth(column.Ordinal, (arrColWidth[column.Ordinal] + 1) * 256);
+                        }
+                        //headerRow.Dispose();
+                    }
+                    #endregion
+
+                    rowIndex = 2;
+                }
+                #endregion
+
+                #region 填充内容
+                IRow dataRow = sheet.CreateRow(rowIndex);
+                foreach (DataColumn column in dt.Columns)
+                {
+                    ICell newCell = dataRow.CreateCell(column.Ordinal);
+
+                    string drValue = row[column].ToString();
+
+                    switch (column.DataType.ToString())
+                    {
+                        case "System.String"://字符串类型
+                            newCell.SetCellValue(drValue);
+                            break;
+                        case "System.DateTime"://日期类型
+                            DateTime dateV;
+                            DateTime.TryParse(drValue, out dateV);
+                            if (dateV != System.Data.SqlTypes.SqlDateTime.MinValue && dateV != new DateTime())
+                            {
+                                newCell.SetCellValue(dateV);
+                                newCell.CellStyle = dateStyle;//格式化显示
+                            }
+                            else
+                                newCell.SetCellValue("");
+                            break;
+                        case "System.Boolean"://布尔型
+                            bool boolV = false;
+                            bool.TryParse(drValue, out boolV);
+                            newCell.SetCellValue(boolV);
+                            break;
+                        case "System.Int16"://整型
+                        case "System.Int32":
+                        case "System.Int64":
+                        case "System.Byte":
+                            int intV = 0;
+                            int.TryParse(drValue, out intV);
+                            newCell.SetCellValue(intV);
+                            break;
+                        case "System.Decimal"://浮点型
+                        case "System.Double":
+                            double doubV = 0;
+                            double.TryParse(drValue, out doubV);
+                            newCell.SetCellValue(doubV);
+                            break;
+                        case "System.DBNull"://空值处理
+                            newCell.SetCellValue("");
+                            break;
+                        default:
+                            newCell.SetCellValue("");
+                            break;
+                    }
+                }
+                #endregion
+
+                rowIndex++;
+            }
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                workbook.Write(ms);
+                ms.Flush();
+                //ms.Position = 0;
+
+                //sheet.Dispose();
+                return ms;
+            }
+        }
+
+        /// <summary>
+        /// 根据dataTable生成Excel
+        /// </summary>
+        /// <param name="dt">数据源</param>
+        /// <param name="sheetName">sheet名称</param>
+        /// <param name="header">标题</param>
+        /// <returns></returns>
+        public static XSSFWorkbook Export(DataTable dt, string sheetName, string header, out string msg)
+        {
+            try
+            {
+                XSSFWorkbook workbook = new XSSFWorkbook();
+                ISheet sheet;
+                if (!string.IsNullOrEmpty(sheetName))
+                    sheet = workbook.CreateSheet(sheetName);
+                else
+                    sheet = workbook.CreateSheet("sheet1");
+
+                ICellStyle dateStyle = workbook.CreateCellStyle();
+                IDataFormat format = workbook.CreateDataFormat();
+                dateStyle.DataFormat = format.GetFormat("yyyy-MM-dd hh:ss:mm");
+
+                //取得列宽
+                int[] arrColWidth = new int[dt.Columns.Count];
+                foreach (DataColumn item in dt.Columns)
+                {
+                    arrColWidth[item.Ordinal] = Encoding.GetEncoding(936).GetBytes(item.ColumnName.ToString()).Length;
+                }
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    for (int j = 0; j < dt.Columns.Count; j++)
+                    {
+                        int intTemp = Encoding.GetEncoding(936).GetBytes(dt.Rows[i][j].ToString()).Length;
+                        if (intTemp > arrColWidth[j])
+                        {
+                            arrColWidth[j] = intTemp;
+                        }
+                    }
+                }
+
+                int rowIndex = 0;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    #region 新建表，填充表头，填充列头，样式
+                    //if (rowIndex >= 1048570 || rowIndex == 0)
+                    if (rowIndex >= 1048570 || rowIndex == 0)
+                    {
+                        if (rowIndex != 0)
+                        {
+                            sheet = workbook.CreateSheet();
+                        }
+
+                        #region 表头及样式
+                        {
+                            IRow headerRow = sheet.CreateRow(0);
+                            headerRow.HeightInPoints = 25;
+                            headerRow.CreateCell(0).SetCellValue(header);
+
+                            ICellStyle headStyle = workbook.CreateCellStyle();
+                            headStyle.Alignment = HorizontalAlignment.Center;
+                            IFont font = workbook.CreateFont();
+                            font.FontHeightInPoints = 20;
+                            font.Boldweight = 700;
+                            headStyle.SetFont(font);
+                            headerRow.GetCell(0).CellStyle = headStyle;
+                            sheet.AddMergedRegion(new CellRangeAddress(0, 0, 0, dt.Columns.Count - 1));
+                            //headerRow
+                        }
+                        #endregion
+
+                        #region 列头及样式
+                        {
+                            IRow headerRow = sheet.CreateRow(1);
+                            ICellStyle headStyle = workbook.CreateCellStyle();
+                            headStyle.Alignment = HorizontalAlignment.Center;
+                            IFont font = workbook.CreateFont();
+                            font.FontHeightInPoints = 10;
+                            font.Boldweight = 700;
+                            headStyle.SetFont(font);
+                            foreach (DataColumn column in dt.Columns)
+                            {
+                                headerRow.CreateCell(column.Ordinal).SetCellValue(column.ColumnName);
+                                headerRow.GetCell(column.Ordinal).CellStyle = headStyle;
+
+                                //设置列宽
+                                sheet.SetColumnWidth(column.Ordinal, (arrColWidth[column.Ordinal] + 1) * 256);
+                            }
+                            //headerRow.Dispose();
+                        }
+                        #endregion
+
+                        rowIndex = 2;
+                    }
+                    #endregion
+
+                    #region 填充内容
+                    IRow dataRow = sheet.CreateRow(rowIndex);
+                    foreach (DataColumn column in dt.Columns)
+                    {
+                        ICell newCell = dataRow.CreateCell(column.Ordinal);
+
+                        string drValue = row[column].ToString();
+
+                        switch (column.DataType.ToString())
+                        {
+                            case "System.String"://字符串类型
+                                newCell.SetCellValue(drValue);
+                                break;
+                            case "System.DateTime"://日期类型
+                                DateTime dateV;
+                                bool torf = DateTime.TryParse(drValue, out dateV);
+                                if (torf && dateV != System.Data.SqlTypes.SqlDateTime.MinValue && dateV != new DateTime())
+                                {
+                                    newCell.SetCellValue(dateV);
+                                    newCell.CellStyle = dateStyle;//格式化显示
+                                }
+                                else
+                                    newCell.SetCellValue("");
+                                break;
+                            case "System.Boolean"://布尔型
+                                bool boolV = false;
+                                bool.TryParse(drValue, out boolV);
+                                newCell.SetCellValue(boolV);
+                                break;
+                            case "System.Int16"://整型
+                            case "System.Int32":
+                            case "System.Int64":
+                            case "System.Byte":
+                                int intV = 0;
+                                int.TryParse(drValue, out intV);
+                                newCell.SetCellValue(intV);
+                                break;
+                            case "System.Decimal"://浮点型
+                            case "System.Double":
+                                double doubV = 0;
+                                double.TryParse(drValue, out doubV);
+                                newCell.SetCellValue(doubV);
+                                break;
+                            case "System.DBNull"://空值处理
+                                newCell.SetCellValue("");
+                                break;
+                            default:
+                                newCell.SetCellValue("");
+                                break;
+                        }
+                    }
+                    #endregion
+
+                    rowIndex++;
+                }
+                msg = string.Empty;
+                return workbook;
+            }
+            catch (Exception ex)
+            {
+                msg = ex.Message;
+                return null;
+            }
+            //try
+            //{
+            //    FileStream fs = new FileStream(filename, FileMode.CreateNew);//(filename, FileMode.Create, FileAccess.Write);
+            //    workbook.Write(fs);
+            //    //fs.Flush();
+            //    return true;
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw new Exception(ex.Message);
+            //    return false;
+            //}
+            //using (MemoryStream ms = new MemoryStream())
+            //{
+            //    workbook.Write(ms);
+            //    ms.Flush();
+            //    //ms.Position = 0;
+
+            //    //sheet.Dispose();
+            //    return ms;
+            //}
+        }
+
+        /// <summary>
+        /// 根据dataTable生成Excel
+        /// </summary>
+        /// <param name="ds">数据源</param>
+        /// <param name="sheetName">sheet名称</param>
+        /// <param name="header">标题</param>
+        /// <returns></returns>
+        public static XSSFWorkbook Export(DataSet ds, string sheetName, string header, out string msg)
+        {
+            try
+            {
+                if (ds == null || ds.Tables.Count != 2)
+                {
+                    msg = string.Empty;
+                    return null;
+                }
+                var dtRow = ds.Tables[0];
+                var dt = ds.Tables[1];
+
+                XSSFWorkbook workbook = new XSSFWorkbook();
+                ISheet sheet;
+                if (!string.IsNullOrEmpty(sheetName))
+                    sheet = workbook.CreateSheet(sheetName);
+                else
+                    sheet = workbook.CreateSheet("sheet1");
+
+                ICellStyle dateStyle = workbook.CreateCellStyle();
+                IDataFormat format = workbook.CreateDataFormat();
+                dateStyle.DataFormat = format.GetFormat("yyyy-MM-dd hh:ss:mm");
+
+                //取得列宽
+                //int[] arrColWidth = new int[dt.Columns.Count >= dtRow.Columns.Count * 2 ? dt.Columns.Count : dtRow.Columns.Count * 2];
+                int[] arrColWidth0 = new int[dtRow.Columns.Count * 2];
+                int[] arrColWidth1 = new int[dt.Columns.Count];
+
+                #region arrColWidth1 DataTable0的宽度
+                int iCount = 0;
+                for (int i = 0; i < dtRow.Columns.Count * 2; i++)
+                {
+                    if (i % 2 != 0)
+                    {
+                        arrColWidth0[i] = Encoding.GetEncoding(936).GetBytes(dtRow.Rows[0][iCount].ToString()).Length;
+                        iCount++;
+                    }
+                    else
+                    {
+                        var column = dtRow.Columns[iCount];
+                        arrColWidth0[i] = Encoding.GetEncoding(936).GetBytes(column.ColumnName.ToString()).Length;
+                    }
+                }
+
+                #endregion
+
+                #region arrColWidth1 DataTable1的宽度
+
+                foreach (DataColumn item in dt.Columns)
+                {
+                    arrColWidth1[item.Ordinal] = Encoding.GetEncoding(936).GetBytes(item.ColumnName.ToString()).Length;
+                }
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    for (int j = 0; j < dt.Columns.Count; j++)
+                    {
+                        int intTemp = Encoding.GetEncoding(936).GetBytes(dt.Rows[i][j].ToString()).Length;
+                        if (intTemp > arrColWidth1[j])
+                        {
+                            arrColWidth1[j] = intTemp;
+                        }
+                    }
+                }
+
+                #endregion
+
+                int[] arrColWidth = new int[] { };
+
+                #region 设置宽度 arrColWidth
+
+                if (arrColWidth1.Length >= arrColWidth0.Length)
+                {
+                    for (int i = 0; i < arrColWidth0.Length; i++)
+                    {
+                        if (arrColWidth0[i] > arrColWidth1[i])
+                            arrColWidth1[i] = arrColWidth0[i];
+                    }
+                    arrColWidth = arrColWidth1;
+                }
+                else
+                {
+                    for (int i = 0; i < arrColWidth1.Length; i++)
+                    {
+                        if (arrColWidth1[i] > arrColWidth0[i])
+                            arrColWidth0[i] = arrColWidth1[i];
+                    }
+                    arrColWidth = arrColWidth0;
+                }
+
+                #endregion
+
+                int rowIndex = 0;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    #region 新建表，填充表头，填充列头，样式
+                    //if (rowIndex >= 1048570 || rowIndex == 0)
+                    if (rowIndex >= 102350 || rowIndex == 0)
+                    {
+                        if (rowIndex != 0)
+                        {
+                            sheet = workbook.CreateSheet();
+                        }
+
+                        #region 表头及样式
+                        {
+                            IRow headerRow = sheet.CreateRow(0);
+                            headerRow.HeightInPoints = 25;
+                            headerRow.CreateCell(0).SetCellValue(header);
+
+                            ICellStyle headStyle = workbook.CreateCellStyle();
+                            headStyle.Alignment = HorizontalAlignment.Center;
+                            IFont font = workbook.CreateFont();
+                            font.FontHeightInPoints = 20;
+                            font.Boldweight = 700;
+                            headStyle.SetFont(font);
+                            headerRow.GetCell(0).CellStyle = headStyle;
+                            if (dt.Columns.Count > dtRow.Columns.Count * 2)
+                                sheet.AddMergedRegion(new CellRangeAddress(0, 0, 0, dt.Columns.Count - 1));
+                            else
+                                sheet.AddMergedRegion(new CellRangeAddress(0, 0, 0, dtRow.Columns.Count * 2 - 1));
+                            //headerRow
+                        }
+                        #endregion
+
+                        #region 第二行  DataTable0
+
+                        {
+                            IRow headerRow = sheet.CreateRow(1);
+                            ICellStyle headStyle = workbook.CreateCellStyle();
+                            headStyle.Alignment = HorizontalAlignment.Center;
+                            IFont font = workbook.CreateFont();
+                            font.FontHeightInPoints = 11;
+                            font.Boldweight = 700;
+                            headStyle.SetFont(font);
+
+                            int c = 0;
+                            for (int i = 0; i < dtRow.Columns.Count * 2; i++)
+                            {
+                                if (i % 2 != 0)
+                                {
+
+                                    headerRow.CreateCell(i).SetCellValue(dtRow.Rows[0][c].ToString());
+                                    headerRow.GetCell(i).CellStyle = headStyle;
+                                    sheet.SetColumnWidth(i, (arrColWidth[i] + 1) * 256);
+                                    c++;
+                                }
+                                else
+                                {
+                                    var column = dtRow.Columns[c];
+                                    headerRow.CreateCell(i).SetCellValue(column.ColumnName);
+                                    headerRow.GetCell(i).CellStyle = headStyle;
+                                    //设置列宽
+                                    sheet.SetColumnWidth(i, (arrColWidth[i] + 1) * 256);
+                                }
+                            }
+
+                        }
+
+                        #endregion
+
+                        #region 列头及样式
+                        {
+                            IRow headerRow = sheet.CreateRow(2);
+                            ICellStyle headStyle = workbook.CreateCellStyle();
+                            headStyle.Alignment = HorizontalAlignment.Center;
+                            IFont font = workbook.CreateFont();
+                            font.FontHeightInPoints = 10;
+                            font.Boldweight = 700;
+                            headStyle.SetFont(font);
+                            foreach (DataColumn column in dt.Columns)
+                            {
+                                headerRow.CreateCell(column.Ordinal).SetCellValue(column.ColumnName);
+                                headerRow.GetCell(column.Ordinal).CellStyle = headStyle;
+
+                                //设置列宽
+                                sheet.SetColumnWidth(column.Ordinal, (arrColWidth[column.Ordinal] + 1) * 256);
+                            }
+                            //headerRow.Dispose();
+                        }
+                        #endregion
+
+                        rowIndex = 3;
+                    }
+                    #endregion
+
+                    #region 填充内容
+                    IRow dataRow = sheet.CreateRow(rowIndex);
+                    foreach (DataColumn column in dt.Columns)
+                    {
+                        ICell newCell = dataRow.CreateCell(column.Ordinal);
+
+                        string drValue = row[column].ToString();
+
+                        switch (column.DataType.ToString())
+                        {
+                            case "System.String"://字符串类型
+                                newCell.SetCellValue(drValue);
+                                break;
+                            case "System.DateTime"://日期类型
+                                DateTime dateV;
+                                DateTime.TryParse(drValue, out dateV);
+                                if (dateV != System.Data.SqlTypes.SqlDateTime.MinValue && dateV != new DateTime())
+                                {
+                                    newCell.SetCellValue(dateV);
+                                    newCell.CellStyle = dateStyle;//格式化显示
+                                }
+                                else
+                                    newCell.SetCellValue("");
+                                break;
+                            case "System.Boolean"://布尔型
+                                bool boolV = false;
+                                bool.TryParse(drValue, out boolV);
+                                newCell.SetCellValue(boolV);
+                                break;
+                            case "System.Int16"://整型
+                            case "System.Int32":
+                            case "System.Int64":
+                            case "System.Byte":
+                                int intV = 0;
+                                int.TryParse(drValue, out intV);
+                                newCell.SetCellValue(intV);
+                                break;
+                            case "System.Decimal"://浮点型
+                            case "System.Double":
+                                double doubV = 0;
+                                double.TryParse(drValue, out doubV);
+                                newCell.SetCellValue(doubV);
+                                break;
+                            case "System.DBNull"://空值处理
+                                newCell.SetCellValue("");
+                                break;
+                            default:
+                                newCell.SetCellValue("");
+                                break;
+                        }
+                    }
+                    #endregion
+
+                    rowIndex++;
+                }
+                msg = string.Empty;
+                return workbook;
+            }
+            catch (Exception ex)
+            {
+                msg = ex.Message;
+                return null;
+            }
+            //try
+            //{
+            //    FileStream fs = new FileStream(filename, FileMode.CreateNew);//(filename, FileMode.Create, FileAccess.Write);
+            //    workbook.Write(fs);
+            //    //fs.Flush();
+            //    return true;
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw new Exception(ex.Message);
+            //    return false;
+            //}
+            //using (MemoryStream ms = new MemoryStream())
+            //{
+            //    workbook.Write(ms);
+            //    ms.Flush();
+            //    //ms.Position = 0;
+
+            //    //sheet.Dispose();
+            //    return ms;
+            //}
+        }
+
+        /// <summary>
+        /// 根据数据源生成Excel
+        /// </summary>
+        /// <param name="dt">数据源</param>
+        /// <param name="sheetName">sheet名称</param>
+        /// <param name="header">标题</param>
+        /// <param name="controller">路由</param>
+        /// <param name="action">方法</param>
+        /// <param name="msg">错误信息</param>
+        /// <returns></returns>
+        public static string Export(DataTable dt, string sheetName, string header, string controller, string action, out string msg)
+        {
+            try
+            {
+                string fileName = "";
+                using (MemoryStream ms = Export(dt, sheetName, header))
+                {
+                    using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+                    {
+                        byte[] data = ms.ToArray();
+                        fs.Write(data, 0, data.Length);
+                        fs.Flush();
+                    }
+                }
+                msg = string.Empty;
+                return fileName;
+            }
+            catch (Exception ex)
+            {
+                msg = ex.Message;
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 过滤不可见字符
+        /// </summary>
+        /// <param name="str">字符串</param>
+        /// <returns></returns>
+        public static string FilterCharacter(object str)
+        {
+            string value = string.Empty;
+            if (str != null)
+            {
+                char[] charStr = str.ToString().ToCharArray();
+                foreach (var cstr in charStr)
+                    if (cstr >= 0x20 && cstr != 0x7F)
+                        value += cstr.ToString();
+            }
+            return value;
+        }
+
+
+    }
+
+
+
+
+
+
+}

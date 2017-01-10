@@ -1,0 +1,58 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+
+namespace Bll
+{
+    public class messageBll
+    {
+        IDAL.messageDal itu = DALFactory.message_Factory.Createusers();
+
+        public int Add(Model.tab_message message)
+        {
+            return itu.Add(message);
+        }
+        public Model.tab_message getmessage(Model.tab_message message1)
+        {
+            return itu.getmessage(message1);
+        }
+
+        public int update(Model.tab_message message)
+        {
+            return itu.update(message);
+        }
+        public int Delete(int id)
+        {
+            return itu.Delete(id);
+        }
+        public DataTable Select(string ss)
+        {
+            return itu.Select(ss);
+        }
+        public int systemMsg(int Receiver, string Title, string Msg)
+        {
+            return itu.systemMsg( Receiver, Title,  Msg);
+        }
+        public int getmsgnum(int id, string additionalwhere)
+        {
+            return itu.getmsgnum(id,additionalwhere);
+        }
+        public int getunread(int id)
+        {
+            return itu.getunread(id);
+        }
+        public int markasread(string Messageid)
+        {
+            return itu.markasread(Messageid);
+        }
+        public string getmessage(int id)
+        {
+            return itu.getmessage(id);
+        }
+        public void sendmsg(int newsid, Model.tab_customers modelCu)
+        {
+            itu.sendmsg(newsid, modelCu);
+        }
+    }
+}

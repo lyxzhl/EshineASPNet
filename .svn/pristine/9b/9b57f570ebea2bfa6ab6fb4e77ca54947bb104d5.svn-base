@@ -1,0 +1,76 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick" onclick="goTo('../../index.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </a>
+        <div class="center">健康咨询</div>
+        <div class="right">
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="ConsultingIndex" class="page">
+        <div class="page-content content_CIndex">
+            <div class="CIndex-wrap">
+                <div class="container">
+                    <ul id="myTab" class="nav nav-tabs row">
+                        <li class="active col-md-5">
+                            <a href="#Health" data-toggle="tab">资讯</a>
+                        </li>
+                        <li class="col-md-5">
+                            <a href="#Consult" data-toggle="tab">咨询</a>
+                        </li>
+                    </ul>
+                </div>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="Health">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <a href="#" onclick="if(formNewsList(this, 1)) bindWindowListener(callNewsListEvent);" class="col-25 active">
+                                    <span>疾病</span></a>
+                                <a href="#" onclick="if(formNewsList(this, 2)) bindWindowListener(callNewsListEvent);" class="col-25">
+                                    <span>健身</span></a>
+                                <a href="#" onclick="if(formNewsList(this, 3)) bindWindowListener(callNewsListEvent);" class="col-25">
+                                    <span>食疗</span></a>
+                                <a href="#" onclick="if(formNewsList(this, 4)) bindWindowListener(callNewsListEvent);" class="col-25">
+                                    <span>习惯</span></a>
+                            </div>
+                            <div class="row">
+                                <a href="#" onclick="if(formNewsList(this, 5)) bindWindowListener(callNewsListEvent);" class="col-25">
+                                    <span>成长</span></a>
+                                <a href="#" onclick="if(formNewsList(this, 6)) bindWindowListener(callNewsListEvent);" class="col-25">
+                                    <span>两性</span></a>
+                                <a href="#" onclick="if(formNewsList(this, 7)) bindWindowListener(callNewsListEvent);" class="col-25">
+                                    <span>亲子</span></a>
+                                <a href="#" onclick="if(formNewsList(this, 8)) bindWindowListener(callNewsListEvent);" class="col-25">
+                                    <span>职场</span></a>
+                            </div>
+                        </div>
+                        <div class="container-fluid news-list">
+                            <div class="group-item">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="Consult">
+                        <div class="group-item">
+                            <div class="row-item">
+                                <textarea class="form-control edit" name="txtQuestion" id="txtQuestion" maxlength="300" placeholder="请简述所想要咨询的问题,仅限300字。"></textarea>
+                            </div>
+                            <div class="row-item">
+                                <input type="text" class="form-control edit" name="txtName" id="txtName" placeholder="姓名" />
+                            </div>
+                            <div class="row-item">
+                                <input type="text" class="form-control edit" name="txtContact" id="txtContact" placeholder="联系方式手机号码" />
+                            </div>
+                            <div class="row-item">
+                                <input type="button" class="btn btn-primary pull-right" value="提交" onclick="if (formCreateConsulting()) bindWindowListener(callConsultingEvent);" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

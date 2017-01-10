@@ -1,0 +1,86 @@
+﻿<%@ Page Language="C#"  EnableEventValidation="false" MasterPageFile="MasterPage.master" AutoEventWireup="true" CodeFile="ShopCar.aspx.cs" Inherits="IndexPage_ShopCar" Title="Untitled Page" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="665">
+        <tr>
+            <td align="center" background="Images/cplist_03.gif"  width="665" style="height: 132px">
+                <table border="0" cellpadding="0" cellspacing="0" >
+                    <tr>
+                        <td width="665">
+                            <img src="Images/usercenter_01.gif" /></td>
+                    </tr>
+                    <tr>
+                        <td width="665" valign="top"  style="height: 33px"><img src="Images/gupic1.gif" />
+                        </td>
+                    </tr>
+                    
+                    </table>
+                <asp:DataList ID="DataList1" runat="server" DataKeyField="产品ID" OnItemCommand="DataList1_ItemCommand">
+                    <ItemTemplate>
+                        <table align="center" bgcolor="#f2f2f2" border="0" cellpadding="4" cellspacing="1"
+                            style="width: 92%">
+                            <tr align="center" bgcolor="#f7f7f7" height="25">
+                                <td width="40">
+                                    <strong>编号</strong></td>
+                                <td width="300">
+                                    <strong>商 品 名 称</strong></td>
+                                <td width="40">
+                                    <strong>数量</strong></td>
+                                <td width="40">
+                                    <strong>积分</strong></td>
+                                <td width="60">
+                                    <strong>市场价</strong></td>
+                                <td width="60">
+                                    <strong>会员价</strong></td>
+                                <td style="width: 12px">
+                                    <strong>成交价</strong></td>
+                                <td width="70">
+                                    <strong>总 计</strong></td>
+                            </tr>
+                            <tr align="center" bgcolor="#ffffff" height="25">
+                                <td>
+                                    <asp:CheckBox ID="CheckBox1" runat="server" Checked="True" AutoPostBack="True" OnCheckedChanged="CheckBox1_CheckedChanged" /></td>
+                                <td align="center">
+                                    &nbsp;<asp:Label ID="Label1" runat="server"><%#Eval("产品名")%></asp:Label><a href="#" target="_blank"></a></td>
+                                <td>
+                                    &nbsp;<asp:TextBox ID="TextBox1" runat="server" CssClass="input_sr" Width="27px" Text='<%#Eval("数量")%>'></asp:TextBox></td>
+                                <td>
+                                    0</td>
+                                <td>
+                                    <asp:Label ID="pl1" runat="server"><%# Eval("单价")%></asp:Label></td>
+                                <td>
+                                    <asp:Label ID="pl2" runat="server"><%# Eval("单价")%></asp:Label></td>
+                                <td style="width: 12px">
+                                    <asp:Label ID="pl3" runat="server"><%# Eval("单价")%></asp:Label></td>
+                                <td>
+                                    <asp:Label ID="count" runat="server"><%# Eval("小计")%></asp:Label></td>
+                            </tr>
+                        </table>
+                        <%--<asp:RangeValidator ID="RangeValidator1" runat="server" ControlToValidate="TextBox1"
+                            ErrorMessage="本物品货源不足或则您输入错误!!" MaximumValue="20" MinimumValue="1"></asp:RangeValidator>--%>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                     <table align="center" bgcolor="#f2f2f2" border="0" cellpadding="4" cellspacing="1"
+                            style="width: 92%">
+                    <tr bgcolor="#f7f7f7">
+                                <td align="center" colspan="9" valign="middle" style="height: 25px">
+                                    <asp:Button ID="Button1" runat="server" OnClick="U" CssClass="input_bot" CommandName="zr" Text="更新商品" />
+                                    &nbsp; &nbsp;&nbsp;
+                                    <input class="input_bot" name="payment" type="submit" value="去收银台" id="Submit2"  onserverclick="Submit2_ServerClick" runat="server" />
+                                    &nbsp; &nbsp;
+                                    <input class="input_bot" language="javascript" name="button" onclick="javascript:window.location='BindPro.aspx'"
+                                        type="button" value="继续购物" />
+                                    <input name="cmdShow" type="hidden" value="Yes" />
+                                    &nbsp; &nbsp;您现在是：非注册用户 | 价格总计:<font color="#ff0000"><b><%=dy %></b></font> 元 | 积分:0 分
+                                </td>
+                            </tr></table>
+                    </FooterTemplate>
+                </asp:DataList>
+                        </tr>
+         <tr>
+            <td style="height: 4px; background-image: url(Images/cplist_04.gif);">
+                <img alt="" border="0" height="4" name="cplist_04" src="../Image/cplist_04.gif" width="665" /></td>
+        </tr>
+</table>
+                    
+</asp:Content>
+

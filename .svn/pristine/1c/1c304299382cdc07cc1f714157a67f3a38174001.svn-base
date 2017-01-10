@@ -1,0 +1,94 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+
+namespace SQLServerDAL
+{
+    class sql_uppkg:IDAL.uppkgDal
+    {
+        DBunit.SQLAccess sql = new DBunit.SQLAccess();
+        DateTime baddate = DateTime.Parse("1900-01-01");
+        public int Add(Model.tab_uppkg uppkg)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("insert into tab_uppkg values (");
+            strsql.AppendFormat("'{0}',", uppkg.uppkgcode);
+            strsql.AppendFormat("'{0}',", uppkg.packagecode);
+            strsql.AppendFormat("N'{0}',", uppkg.msg);
+            strsql.AppendFormat("'{0}',", uppkg.msg_eng);
+            strsql.AppendFormat("{0},", uppkg.price);
+            strsql.AppendFormat("{0},", uppkg.marketprice);
+            strsql.AppendFormat("N'{0}',", uppkg.VIP);
+            strsql.AppendFormat("N'{0}',", uppkg.note);
+            strsql.AppendFormat("'{0}',", uppkg.note_eng);
+            strsql.AppendFormat("N'{0}',", uppkg.groupname);
+            strsql.AppendFormat("{0},", uppkg.grouplimit);
+            strsql.AppendFormat("{0},", uppkg.minage);
+            strsql.AppendFormat("{0}", uppkg.maxage);
+            strsql.Append(") select SCOPE_IDENTITY()");
+            return Convert.ToInt32(sql.ExecuteSc(strsql.ToString()));
+        }
+
+
+        public Model.tab_uppkg getuppkg(Model.tab_uppkg uppkg1)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("select * from tab_uppkg where ");
+            strsql.AppendFormat("id='{0}'", uppkg1.id);
+            DataTable dt = sql.ExecuteDataSet(strsql.ToString()).Tables[0];
+            if (dt.Rows.Count < 1) return null;
+
+            Model.tab_uppkg uppkg = new Model.tab_uppkg();
+            uppkg.id = uppkg1.id;
+            uppkg.uppkgcode = dt.Rows[0]["uppkgcode"].ToString();
+            uppkg.packagecode = dt.Rows[0]["packagecode"].ToString();
+            uppkg.msg = dt.Rows[0]["msg"].ToString();
+            uppkg.msg_eng = dt.Rows[0]["msg_eng"].ToString();
+            uppkg.price = dt.Rows[0]["price"].ToString() == "" ? 0 : double.Parse(dt.Rows[0]["price"].ToString());
+            uppkg.marketprice = dt.Rows[0]["marketprice"].ToString() == "" ? 0 : double.Parse(dt.Rows[0]["marketprice"].ToString());
+            uppkg.VIP = dt.Rows[0]["VIP"].ToString();
+            uppkg.note = dt.Rows[0]["note"].ToString();
+            uppkg.note_eng = dt.Rows[0]["note_eng"].ToString();
+            uppkg.groupname = dt.Rows[0]["groupname"].ToString();
+            uppkg.grouplimit = dt.Rows[0]["grouplimit"].ToString() == "" ? 0 : int.Parse(dt.Rows[0]["grouplimit"].ToString());
+            uppkg.minage = dt.Rows[0]["minage"].ToString() == "" ? 0 : int.Parse(dt.Rows[0]["minage"].ToString());
+            uppkg.maxage = dt.Rows[0]["maxage"].ToString() == "" ? 0 : int.Parse(dt.Rows[0]["maxage"].ToString());
+            return uppkg;
+        }
+
+
+        public int update(Model.tab_uppkg uppkg)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("update tab_uppkg set ");
+            strsql.AppendFormat(" uppkgcode ='{0}',", uppkg.uppkgcode);
+            strsql.AppendFormat(" packagecode ='{0}',", uppkg.packagecode);
+            strsql.AppendFormat(" msg =N'{0}',", uppkg.msg);
+            strsql.AppendFormat(" msg_eng ='{0}',", uppkg.msg_eng);
+            strsql.AppendFormat(" price ='{0}',", uppkg.price);
+            strsql.AppendFormat(" marketprice ='{0}',", uppkg.marketprice);
+            strsql.AppendFormat(" VIP =N'{0}',", uppkg.VIP);
+            strsql.AppendFormat(" note =N'{0}',", uppkg.note);
+            strsql.AppendFormat(" note_eng ='{0}',", uppkg.note_eng);
+            strsql.AppendFormat(" groupname =N'{0}',", uppkg.groupname);
+            strsql.AppendFormat(" grouplimit ='{0}',", uppkg.grouplimit);
+            strsql.AppendFormat(" minage ='{0}',", uppkg.minage);
+            strsql.AppendFormat(" maxage ='{0}'", uppkg.maxage);
+            strsql.AppendFormat(" where id={0}", uppkg.id);
+            return sql.ExecuteNonQuery(strsql.ToString());
+        }
+
+
+        public int Delete(int id)
+        {
+            return sql.ExecuteNonQuery("delete from tab_uppkg where id=" + id);
+        }
+        public DataTable Select(string ss)
+        {
+            return sql.ExecuteDataSet(ss).Tables[0];
+        }
+
+
+    }
+}

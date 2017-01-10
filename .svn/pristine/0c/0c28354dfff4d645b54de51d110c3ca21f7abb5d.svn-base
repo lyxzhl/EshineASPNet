@@ -1,0 +1,212 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="packageInfo.aspx.cs" Inherits="Admin_packageAdmin_packageInfo" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head id="Head1" runat="server">
+    <title>无标题页</title>
+     <script>
+         function ShowHidden(sid, ev) {
+             ev = ev || window.event;
+             var target = ev.target || ev.srcElement;
+             var oDiv = document.getElementById("div" + sid);
+             oDiv.style.display = oDiv.style.display == "none" ? "block" : "none";
+             target.src = oDiv.style.display == "none" ? "../../Images/plus.png" : "../../Images/minus.png";
+         }
+ </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+     <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
+            <tr>
+                <td class="title" colspan="5">
+                    套餐信息</td>
+            </tr>
+        </table>
+        <br>
+        <table border="0" cellpadding="0" cellspacing="0" class="adminContent" style="width: 100%">
+                    <tr>
+                        <td align="center" style="width: 100px; height: 24px; text-align:right;">
+                            <asp:FileUpload ID="FileUpload1" runat="server" ToolTip="选择.xls文件" Width="200px" /></td>
+                        <td style="width: 22px; height: 24px; text-align:left;">
+                            <asp:Button ID="Button3" CssClass="TextBox" runat="server" onclick="Button3_Click" Text="上传套餐文件" ToolTip="" /></td>
+                        <td align="center" style="width: 50px; height: 24px;">
+                            <asp:Button ID="Button1" CssClass="TextBox" runat="server" Text="新 增" 
+                                onclick="Button1_Click" />
+                            </td>
+                        <td style="width: 100px; height: 24px; text-align:right;">
+                            <asp:TextBox ID="TextBox1" runat="server" CssClass="TextBox" Width="175px"></asp:TextBox></td>
+                        <td style="width: 100px; height: 24px; text-align:left;">
+                            &nbsp;<asp:Button ID="Button2" runat="server" CssClass="button" Text="搜　索" OnClick="Button2_Click" /></td>
+                        <td  >
+                            <asp:Button ID="ButtonEE" runat="server" Text="导出excel" 
+                                onclick="ButtonEE_Click"  />
+                            </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="width: 100px; height: 24px; text-align:right;">
+                            <asp:FileUpload ID="FileUpload2" runat="server" ToolTip="选择.xls文件" Width="200px" /></td>
+                        <td style="width: 22px; height: 24px; text-align:left;">
+                            <asp:Button ID="Button4" CssClass="TextBox" runat="server" onclick="Button4_Click" Text="上传加项包文件" ToolTip="" /></td>
+                       <td>
+                           <asp:DropDownList ID="DropDownList1" runat="server"></asp:DropDownList></td>
+                        <td>
+                            <asp:TextBox ID="TextBox2" placeholder="删除口令" runat="server" Width="60"></asp:TextBox>
+                            <asp:Button ID="Button5" runat="server" Text="删除公司套餐" OnClick="Button5_Click" /></td>
+                        
+                    </tr>
+            <tr>
+                <td align="center" style="width: 100px; height: 24px; text-align:right;">
+                            <asp:FileUpload ID="FileUpload3" runat="server" ToolTip="选择.xls文件" Width="200px" /></td>
+                        <td style="width: 22px; height: 24px; text-align:left;">
+                            <asp:Button ID="Button6" CssClass="TextBox" runat="server" onclick="Button6_Click" Text="套餐加项包组合文件" ToolTip="" /></td>
+                       
+            </tr>
+                </table>
+                <table border="0" cellpadding="0" cellspacing="0" class="adminContent" style="width: 100%">
+                <tr>
+                <td align="center">
+                    &nbsp;<asp:SqlDataSource 
+                        ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:db_ConnectionString %>"
+                        
+                        SelectCommand="SELECT * FROM [tab_package] ORDER BY [id] DESC" 
+                        ConflictDetection="CompareAllValues" 
+                        DeleteCommand="DELETE FROM [tab_package] WHERE [id] = @original_id AND (([packagecode] = @original_packagecode) OR ([packagecode] IS NULL AND @original_packagecode IS NULL)) AND (([supplier] = @original_supplier) OR ([supplier] IS NULL AND @original_supplier IS NULL)) AND (([company] = @original_company) OR ([company] IS NULL AND @original_company IS NULL)) AND (([msg] = @original_msg) OR ([msg] IS NULL AND @original_msg IS NULL)) AND (([price] = @original_price) OR ([price] IS NULL AND @original_price IS NULL)) AND (([marketprice] = @original_marketprice) OR ([marketprice] IS NULL AND @original_marketprice IS NULL)) AND (([addtime] = @original_addtime) OR ([addtime] IS NULL AND @original_addtime IS NULL)) AND (([expiredate] = @original_expiredate) OR ([expiredate] IS NULL AND @original_expiredate IS NULL)) AND (([VIP] = @original_VIP) OR ([VIP] IS NULL AND @original_VIP IS NULL)) AND (([note] = @original_note) OR ([note] IS NULL AND @original_note IS NULL))" 
+                        InsertCommand="INSERT INTO [tab_package] ([packagecode], [supplier], [company], [msg], [price], [marketprice], [addtime], [expiredate], [VIP], [note]) VALUES (@packagecode, @supplier, @company, @msg, @price, @marketprice, @addtime, @expiredate, @VIP, @note)" 
+                        OldValuesParameterFormatString="original_{0}" 
+                        
+                        UpdateCommand="UPDATE [tab_package] SET [packagecode] = @packagecode, [supplier] = @supplier, [company] = @company, [msg] = @msg, [price] = @price, [marketprice] = @marketprice, [addtime] = @addtime, [expiredate] = @expiredate, [VIP] = @VIP, [note] = @note WHERE [id] = @original_id AND (([packagecode] = @original_packagecode) OR ([packagecode] IS NULL AND @original_packagecode IS NULL)) AND (([supplier] = @original_supplier) OR ([supplier] IS NULL AND @original_supplier IS NULL)) AND (([company] = @original_company) OR ([company] IS NULL AND @original_company IS NULL)) AND (([msg] = @original_msg) OR ([msg] IS NULL AND @original_msg IS NULL)) AND (([price] = @original_price) OR ([price] IS NULL AND @original_price IS NULL)) AND (([marketprice] = @original_marketprice) OR ([marketprice] IS NULL AND @original_marketprice IS NULL)) AND (([addtime] = @original_addtime) OR ([addtime] IS NULL AND @original_addtime IS NULL)) AND (([expiredate] = @original_expiredate) OR ([expiredate] IS NULL AND @original_expiredate IS NULL)) AND (([VIP] = @original_VIP) OR ([VIP] IS NULL AND @original_VIP IS NULL)) AND (([note] = @original_note) OR ([note] IS NULL AND @original_note IS NULL))">
+                        <DeleteParameters>
+                            <asp:Parameter Name="original_id" Type="Int32" />
+                            <asp:Parameter Name="original_packagecode" Type="String" />
+                            <asp:Parameter Name="original_supplier" Type="String" />
+                            <asp:Parameter Name="original_company" Type="String" />
+                            <asp:Parameter Name="original_msg" Type="String" />
+                            <asp:Parameter Name="original_price" Type="Double" />
+                            <asp:Parameter Name="original_marketprice" Type="Double" />
+                            <asp:Parameter Name="original_addtime" Type="DateTime" />
+                            <asp:Parameter Name="original_expiredate" Type="DateTime" />
+                            <asp:Parameter Name="original_VIP" Type="String" />
+                            <asp:Parameter Name="original_note" Type="String" />
+                        </DeleteParameters>
+                        <InsertParameters>
+                            <asp:Parameter Name="packagecode" Type="String" />
+                            <asp:Parameter Name="supplier" Type="String" />
+                            <asp:Parameter Name="company" Type="String" />
+                            <asp:Parameter Name="msg" Type="String" />
+                            <asp:Parameter Name="price" Type="Double" />
+                            <asp:Parameter Name="marketprice" Type="Double" />
+                            <asp:Parameter Name="addtime" Type="DateTime" />
+                            <asp:Parameter Name="expiredate" Type="DateTime" />
+                            <asp:Parameter Name="VIP" Type="String" />
+                            <asp:Parameter Name="note" Type="String" />
+                        </InsertParameters>
+                        <UpdateParameters>
+                            <asp:Parameter Name="packagecode" Type="String" />
+                            <asp:Parameter Name="supplier" Type="String" />
+                            <asp:Parameter Name="company" Type="String" />
+                            <asp:Parameter Name="msg" Type="String" />
+                            <asp:Parameter Name="price" Type="Double" />
+                            <asp:Parameter Name="marketprice" Type="Double" />
+                            <asp:Parameter Name="addtime" Type="DateTime" />
+                            <asp:Parameter Name="expiredate" Type="DateTime" />
+                            <asp:Parameter Name="VIP" Type="String" />
+                            <asp:Parameter Name="note" Type="String" />
+                            <asp:Parameter Name="original_id" Type="Int32" />
+                            <asp:Parameter Name="original_packagecode" Type="String" />
+                            <asp:Parameter Name="original_supplier" Type="String" />
+                            <asp:Parameter Name="original_company" Type="String" />
+                            <asp:Parameter Name="original_msg" Type="String" />
+                            <asp:Parameter Name="original_price" Type="Double" />
+                            <asp:Parameter Name="original_marketprice" Type="Double" />
+                            <asp:Parameter Name="original_addtime" Type="DateTime" />
+                            <asp:Parameter Name="original_expiredate" Type="DateTime" />
+                            <asp:Parameter Name="original_VIP" Type="String" />
+                            <asp:Parameter Name="original_note" Type="String" />
+                        </UpdateParameters>
+                    </asp:SqlDataSource>
+                
+                </td>
+                </tr>
+                </table>
+                    <asp:GridView ID="GridView1" runat="server" AllowPaging="True"  PageSize="20" 
+            AutoGenerateColumns="False" DataSourceID="SqlDataSource1" Width="100%"  OnRowDataBound="GridView1_RowCommand"
+            AllowSorting="True" DataKeyNames="id" >
+                        <Columns>
+                         <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <div id="btnShowHidden<%#Eval("id") %>" style="cursor: pointer;" onclick="ShowHidden('<%#Eval("id") %>',event)">
+                                            <img src="../../Images/plus.png" />
+                                        </div> 
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            <asp:HyperLinkField DataTextField="packagecode" HeaderText="套餐代码"  SortExpression="packagecode" 
+                            DataNavigateUrlFields="id" DataNavigateUrlFormatString="packageUpdate.aspx?Cid={0}"  ItemStyle-Wrap="False" />
+                            <asp:BoundField DataField="company" HeaderText="公司" 
+                                SortExpression="company"  ItemStyle-Wrap="False" />
+                            <asp:BoundField DataField="supplier" HeaderText="供应商" 
+                                SortExpression="supplier"  ItemStyle-Wrap="False" />
+                            <asp:BoundField DataField="note" HeaderText="套餐名称" 
+                                SortExpression="note"  ItemStyle-Wrap="False" />
+                            <asp:BoundField DataField="price" HeaderText="价格" 
+                                SortExpression="price"  ItemStyle-Wrap="False" />
+                            <asp:BoundField DataField="budget" HeaderText="预算" 
+                                SortExpression="budget"  ItemStyle-Wrap="False" />
+                            <asp:BoundField DataField="type" HeaderText="类型" 
+                                SortExpression="type"  ItemStyle-Wrap="False" />
+                            <asp:BoundField DataField="expiredate" HeaderText="到期时间" DataFormatString="{0:d}"  
+                                SortExpression="expiredate"  ItemStyle-Wrap="False" />
+                            <asp:BoundField DataField="VIP" HeaderText="VIP" 
+                                SortExpression="VIP"  ItemStyle-Wrap="False" />
+                       
+                    
+                    <asp:TemplateField>  
+                                    <ItemTemplate>
+                                        <tr>
+                                            <td colspan="100%" align="left" style="border: none;">
+                                            <div id="div<%#Eval("id") %>" style="display: none;" position: relative;
+                                                    left: 15px; overflow: auto; width: 100%">
+                                                <table style="width: 100%;">
+                                                    <tr>
+                                                        <td  width="20" height="150" rowspan="2">
+                                                        </td>
+                                                        <td align="left" valign="top">
+                                                            <asp:Panel ID="Panel1" runat="server" Height="150" ScrollBars="Vertical" HorizontalAlign="Left">
+<asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" DataKeyNames="id">
+     <Columns>
+     <asp:HyperLinkField DataTextField="id" HeaderText="升级包"  SortExpression="id"
+                            DataNavigateUrlFields="id" DataNavigateUrlFormatString="uppkgUpdate.aspx?Cid={0}"  ItemStyle-Wrap="False" />   
+         <asp:BoundField DataField="VIP" HeaderText="VIP" SortExpression="VIP"  ItemStyle-Wrap="False" />
+         <asp:BoundField DataField="price" HeaderText="价格" SortExpression="price"  ItemStyle-Wrap="False" />
+         <%--<asp:BoundField DataField="msg" HeaderText="升级包内容" SortExpression="msg"  ItemStyle-Wrap="False" />--%>
+         <asp:BoundField DataField="uppkgcode" HeaderText="加项包代码" SortExpression="uppkgcode"  ItemStyle-Wrap="False" />
+         <asp:BoundField DataField="note" HeaderText="加项包名称" SortExpression="note"  ItemStyle-Wrap="False" />
+         <asp:BoundField DataField="note_eng" HeaderText="加项包名称(英文)" SortExpression="note_eng"  ItemStyle-Wrap="False" />
+     </Columns>
+     <HeaderStyle Wrap="False"  />
+                                                </asp:GridView>
+                                                            </asp:Panel>
+                    
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                    
+       
+                                               
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                        </Columns>
+                        <HeaderStyle Wrap="False"  />
+                    </asp:GridView>
+
+    </div>
+    
+    
+    </form>
+</body>
+</html>

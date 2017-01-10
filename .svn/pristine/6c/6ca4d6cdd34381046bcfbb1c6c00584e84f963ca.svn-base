@@ -1,0 +1,97 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="jiangkangpinggu.aspx.cs" Inherits="jiangkangpinggu" %>
+
+
+
+<%@ Register TagPrefix="MPuc" TagName="headcontent" Src="UserControl/headcontent.ascx" %>
+<%@ Register TagPrefix="MPuc" TagName="mobilenav" Src="UserControl/mobilenav.ascx" %>
+<%@ Register TagPrefix="MPuc" TagName="desktopnav" Src="UserControl/desktopnav.ascx" %>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="UserControl/footer1.ascx" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Medi-Plus -
+        <asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,titletext %>'></asp:Localize></title>
+    <MPuc:headcontent runat="server" ID="Unnamed1" />
+    <script src="JS/mp.js" type="text/javascript"></script>
+</head>
+<body class='member_orders'>
+    <MPuc:mobilenav runat="server" ID="Unnamed2" />
+    <form id="Form1" runat="server">
+        <div class='wrapper' data-behavior='Navigation'>
+            <MPuc:desktopnav runat="server" ID="Unnamed3" />
+
+            <div class='container'>
+                <div class='row'>
+                    <div class='twelvecol'>
+                        <h3>整体健康状况评估</h3>
+                        <div class='tile' id='your_trunks1'>
+                            <asp:Panel ID="Panel1" runat="server">
+                                <span style="color: rgb(51, 51, 51); font-family: tahoma, arial, 宋体, sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 24px; orphans: auto; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); display: inline !important; float: none;">一个人的整体健康状况可以通过测定其生理年龄来进行评估。生理年龄有时也称生物年龄，它比日历年龄更能真实地反应出一个人的生命活力和衰老程度。</span>
+                            </asp:Panel>
+
+                            <div>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <asp:HyperLink ID="HyperLink5" runat="server" CssClass="button blue_button" NavigateUrl="~/pangguangai.aspx?id=1" Text="继续评估"></asp:HyperLink>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <br />
+
+
+
+
+                <div class='twelvecol'>
+                    <h3>疾病风险评估</h3>
+                   <asp:Repeater ID="rpList" runat="server" >
+                         
+                               <HeaderTemplate>
+                                     <div class='tile' id='your_trunks2'>
+                                    <table class=" table  table-bordered">  
+							<thead>
+								<tr>
+                                        <th style="text-align: center">疾病名称</th>
+                                        <th style="text-align: center">风险指数</th>
+                                        <th style="text-align: center">相对风险等级</th>
+                                        <th style="text-align: center">评估报告</th>
+                                        <th style="text-align: center">评估时间</th>
+                                        <th style="text-align: center">操作</th>
+                                </tr>
+                            </thead>
+                            
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <tbody>
+                        <tr >
+                                        <td style="text-align: center">
+                                        <a href="pangguangai.aspx"><%# Eval("Name") %></a></td>
+                                        <td style="text-align: center"></td>
+                                        <td style="text-align: center"></td>
+                                        <td style="text-align: center"><a href="pangguangai.aspx">评估报告</a></td>
+                                        <td style="text-align: center">2015-09-18</td>
+                                        <td style="text-align: center"><a href="pangguangai.aspx">更新评估</a></td>
+                        </tr>
+                            </tbody>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                        
+                        </table>
+                        </div>
+                    </FooterTemplate>
+
+                        </asp:Repeater>
+
+                </div>
+            </div>
+            <div>
+                <MPuc:footer ID="Footer1" runat="server" />
+                </div>
+            </div>
+        
+        
+    </form>
+</body>
+</html>

@@ -1,0 +1,147 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ikang
+{
+    public class ikangmember
+    {
+
+        private string _hospid = "";
+        private static string _onlycode = "mp1392285351848";
+        private string _signature = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile("_ikang@" + _onlycode + "$_" + DateTime.Now.Date.ToString("yyyy-MM-dd"), "MD5").ToLower();
+        private string _version = "0.1";
+        private string _cardnumber = "";
+        private string _password = "";
+        private string _regdate = "";
+        private string _packagecode = "";
+        private string _name = "";
+        private string _sex = "";
+        private string _married = "";
+        private string _contacttel = "";
+        private string _idnumber = "";
+        private string _reportaddress = "";
+        private string _thirdnum = "";
+        private string _orderid = "";
+        private string _workno = "";
+        private string _reportstatus = "";
+        private string _reportpath = "";
+
+
+        public string hospid
+        {
+            get { return _hospid; }
+            set { _hospid = value; }
+        }
+
+        public string onlycode
+        {
+            get { return _onlycode; }
+            set { _onlycode = value; }
+        }
+
+        public string signature
+        {
+            get { return _signature; }
+            set { _signature = value; }
+        }
+
+        public string version
+        {
+            get { return _version; }
+            set { _version = value; }
+        }
+
+        public string cardnumber
+        {
+            get { return _cardnumber; }
+            set { _cardnumber = value; }
+        }
+
+        public string password
+        {
+            get { return _password; }
+            set { _password = value; }
+        }
+
+        public string regdate
+        {
+            get { return _regdate; }
+            set { _regdate = value; }
+        }
+
+        public string packagecode
+        {
+            get { return _packagecode; }
+            set { _packagecode = value; }
+        }
+
+        public string name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+
+        public string sex
+        {
+            get { return _sex; }
+            set { _sex = value; }
+        }
+
+        public string married
+        {
+            get { return _married; }
+            set { _married = value; }
+        }
+
+        public string contacttel
+        {
+            get { return _contacttel; }
+            set { _contacttel = value; }
+        }
+
+        public string idnumber
+        {
+            get { return _idnumber; }
+            set { _idnumber = value; }
+        }
+
+        public string reportaddress
+        {
+            get { return _reportaddress; }
+            set { _reportaddress = value; }
+        }
+
+        public string thirdnum
+        {
+            get { return _thirdnum; }
+            set { _thirdnum = value; }
+        }
+
+        public string orderid
+        {
+            get { return _orderid; }
+            set { _orderid = value; }
+        }
+
+        public string workno
+        {
+            get { return _workno; }
+            set { _workno = value; }
+        }
+
+        public string reportstatus
+        {
+            get { return _reportstatus; }
+            set { _reportstatus = value; }
+        }
+
+        public string reportpath
+        {
+            get { return _reportpath; }
+            set { _reportpath = value; }
+        }
+    }
+}

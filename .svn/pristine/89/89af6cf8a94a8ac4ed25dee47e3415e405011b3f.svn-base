@@ -1,0 +1,83 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Model
+{
+    public class tab_consult
+    {
+        private int _id = 0;
+        private int _customerID = 0;
+        private DateTime _adddate = DateTime.Parse("1900-01-01");
+        private DateTime _examdate = DateTime.Parse("1900-01-01");
+        private string _hospital = "";
+        private string _doctor = "";
+        private string _note = "";
+        private string _msg = "";
+        private string _status = "";
+        private string _consultant = "";
+
+
+        public int id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        public int customerID
+        {
+            get { return _customerID; }
+            set { _customerID = value; }
+        }
+
+        public DateTime adddate
+        {
+            get { return _adddate; }
+            set { _adddate = value; }
+        }
+
+        public DateTime examdate
+        {
+            get { return _examdate; }
+            set { _examdate = value; }
+        }
+
+        public string hospital
+        {
+            get { return _hospital; }
+            set { _hospital = value; }
+        }
+
+        public string doctor
+        {
+            get { return _doctor; }
+            set { _doctor = value; }
+        }
+
+        public string note
+        {
+            get { return _note; }
+            set { _note = value; }
+        }
+
+        public string msg
+        {
+            get { return _msg; }
+            set { _msg = value; }
+        }
+
+        public string status
+        {
+            get { return _status; }
+            set { _status = value; }
+        }
+
+        public string consultant
+        {
+            get { return _consultant; }
+            set { _consultant = value; }
+        }
+
+
+    }
+}

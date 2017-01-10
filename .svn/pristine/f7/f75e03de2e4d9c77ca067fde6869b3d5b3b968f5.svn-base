@@ -1,0 +1,160 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Model
+{
+    public class AssessmentQuestion
+    {
+        private int _AQID = 0;
+        private int _INumber = 0;
+        private int _QTID = 0;
+        private string _QTShortName = "";
+        private int _QCID = 0;
+        private string _AQQuestion = "";
+        private int _AQType = 0;
+        private string _AQRemark = "";
+        private string _AQDes = "";
+        private int _AQGender = 0;
+        private int _AQMinAge = 0;
+        private int _AQMaxAge = 0;
+        private int _Marriage = 0;
+        private int _AQOptions = 0;
+        private int _AQSort = 0;
+        private DateTime _CreateTime = DateTime.Parse("1900-01-01");
+        private DateTime _UpdateTime = DateTime.Parse("1900-01-01");
+        private int _CreateUser = 0;
+        private int _UpdateUser = 0;
+        private int _IsShow = 0;
+        private int _IsDel = 0;
+
+
+        public int AQID
+        {
+            get { return _AQID; }
+            set { _AQID = value; }
+        }
+
+        public int INumber
+        {
+            get { return _INumber; }
+            set { _INumber = value; }
+        }
+
+        public int QTID
+        {
+            get { return _QTID; }
+            set { _QTID = value; }
+        }
+
+        public string QTShortName
+        {
+            get { return _QTShortName; }
+            set { _QTShortName = value; }
+        }
+
+        public int QCID
+        {
+            get { return _QCID; }
+            set { _QCID = value; }
+        }
+
+        public string AQQuestion
+        {
+            get { return _AQQuestion; }
+            set { _AQQuestion = value; }
+        }
+
+        public int AQType
+        {
+            get { return _AQType; }
+            set { _AQType = value; }
+        }
+
+        public string AQRemark
+        {
+            get { return _AQRemark; }
+            set { _AQRemark = value; }
+        }
+
+        public string AQDes
+        {
+            get { return _AQDes; }
+            set { _AQDes = value; }
+        }
+
+        public int AQGender
+        {
+            get { return _AQGender; }
+            set { _AQGender = value; }
+        }
+
+        public int AQMinAge
+        {
+            get { return _AQMinAge; }
+            set { _AQMinAge = value; }
+        }
+
+        public int AQMaxAge
+        {
+            get { return _AQMaxAge; }
+            set { _AQMaxAge = value; }
+        }
+
+        public int Marriage
+        {
+            get { return _Marriage; }
+            set { _Marriage = value; }
+        }
+
+        public int AQOptions
+        {
+            get { return _AQOptions; }
+            set { _AQOptions = value; }
+        }
+
+        public int AQSort
+        {
+            get { return _AQSort; }
+            set { _AQSort = value; }
+        }
+
+        public DateTime CreateTime
+        {
+            get { return _CreateTime; }
+            set { _CreateTime = value; }
+        }
+
+        public DateTime UpdateTime
+        {
+            get { return _UpdateTime; }
+            set { _UpdateTime = value; }
+        }
+
+        public int CreateUser
+        {
+            get { return _CreateUser; }
+            set { _CreateUser = value; }
+        }
+
+        public int UpdateUser
+        {
+            get { return _UpdateUser; }
+            set { _UpdateUser = value; }
+        }
+
+        public int IsShow
+        {
+            get { return _IsShow; }
+            set { _IsShow = value; }
+        }
+
+        public int IsDel
+        {
+            get { return _IsDel; }
+            set { _IsDel = value; }
+        }
+
+
+    }
+}

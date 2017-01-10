@@ -1,0 +1,122 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Text.RegularExpressions;
+using MeiNianWebRef;
+using System.Web.Script.Serialization;
+using Subgurim.Controles;
+using System.IO;
+using System.Xml;
+using Com.Alipay;
+using System.Collections;
+using ikang;
+
+public partial class reserverelexam2 : PageBases
+{
+    DBunit.SQLAccess dbsql = new DBunit.SQLAccess();
+    Model.tab_customers modelCu = new Model.tab_customers();
+    Model.tab_relatives modelrel = new Model.tab_relatives();
+    Model.tab_orders orders = new Model.tab_orders();
+    Bll.CustomerBll Cb = new Bll.CustomerBll();
+    Bll.SupplierBll sb = new Bll.SupplierBll();
+    Bll.packageBll pb = new Bll.packageBll();
+    Bll.uppkgBll ub = new Bll.uppkgBll();
+    Bll.OrdersBll ob = new Bll.OrdersBll();
+    Bll.examcardBll eb = new Bll.examcardBll();
+    Bll.companyBll comb = new Bll.companyBll();
+    Bll.RelativeBLL rb = new Bll.RelativeBLL();
+    Bll.supplierpackageBll spb = new Bll.supplierpackageBll();
+    reserveexamcommon rc = new reserveexamcommon();
+
+    Bll.deliveryaddressBll db = new Bll.deliveryaddressBll();
+
+    GMap GMap1 = new GMap();
+
+    PublicClass pc = new PublicClass();
+    ikangservice iks = new ikangservice();
+    ikangmember ikm = new ikangmember();
+    HealthService mns = new HealthService();
+    //接收省份的集合
+    DataSet ds_Province;
+    //接收市的集合
+    DataSet ds_City;
+    //接收区的集合
+    DataSet ds_Area;
+    DateTime firstdate;
+    DateTime lastdate;
+    string DOB;
+    public string classmale, classfemale, classmarried, classunmarried, branchmapclass = "hidden", newaddressclass = "hidden", closscompanyaddressclass = "hidden";
+    public string supplierlistcontentikang, supplierlistcontentciming, supplierlistcontentmeinian;
+    int uppkgcount = -1;
+    public string continue2class = "hidden", xiyaclass = "hidden";
+    public string hideik = "", hidemn = "";
+    public int limit1, limit2, limit3, limit4, limit5, limit6, limit7, limit8, limit9, limit10;
+    public string supplierpackagecode = "";
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+        modelCu.customerID = int.Parse(Session["id"].ToString());
+        modelCu = Cb.getCustomer(modelCu);
+        if (!Page.IsPostBack)
+        {
+            rc.initcitySupplier(true, ref branchmapclass, modelCu, com_Province, com_City, DropDownList1, GMap1, Literal1, ref  hideik, ref  hidemn, ref  continue2class, ref  supplierlistcontentikang, ref  supplierlistcontentciming, ref  supplierlistcontentmeinian, Panel14, Panel15, Panel16);
+        }
+
+        if (!Page.IsPostBack)
+        {
+            int num = int.Parse(Session["num"].ToString());
+            if (num != 0)
+             Session["relativeID"] = num;
+            branchmapclass = "";
+            rc.fillbranch(true, ref branchmapclass, modelCu, com_Province, com_City, DropDownList1, GMap1, Literal1, ref  hideik, ref  hidemn, ref  continue2class, ref  supplierlistcontentikang, ref  supplierlistcontentciming, ref  supplierlistcontentmeinian, Panel14, Panel15, Panel16);
+        }
+    }
+    protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        branchmapclass = "";
+        rc.fillbranch(true, ref branchmapclass, modelCu, com_Province, com_City, DropDownList1, GMap1, Literal1, ref  hideik, ref  hidemn, ref  continue2class, ref  supplierlistcontentikang, ref  supplierlistcontentciming, ref  supplierlistcontentmeinian, Panel14, Panel15, Panel16);
+
+    }
+
+    protected void com_Province_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        branchmapclass = "";
+        try
+        {
+            rc.com_Province_SelectedIndexChanged(true, modelCu.customerCompany, this.com_Province, this.com_City);
+
+            rc.fillsupplier(modelCu, this.com_Province, this.com_City, this.DropDownList1);
+            rc.fillbranch(true, ref branchmapclass, modelCu, com_Province, com_City, DropDownList1, GMap1, Literal1, ref  hideik, ref  hidemn, ref  continue2class, ref  supplierlistcontentikang, ref  supplierlistcontentciming, ref  supplierlistcontentmeinian, Panel14, Panel15, Panel16);
+        }
+        catch (Exception ex)
+        {
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('error:" + ex.Message + "');</script>");
+        }
+    }
+    protected void com_City_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        branchmapclass = "";
+        //com_Area.Items.Clear();
+        //com_Area.Items.Add("请选择区");
+        //ds_Area = DBHelper.GetSet(string.Format("select name from area where cityId in (select code from city where name='{0}')", com_City.Text));
+        //if (ds_Area.Tables[0].Rows.Count == 0)
+        //    com_Area.Items.Add(com_City.Text);
+        //for (int i = 0; i < ds_Area.Tables[0].Rows.Count; i++)
+        //    com_Area.Items.Add(ds_Area.Tables[0].Rows[i][0].ToString());
+        //com_Area.SelectedIndex = 0;
+
+        rc.fillsupplier(modelCu, this.com_Province, this.com_City, this.DropDownList1);
+        rc.fillbranch(true, ref branchmapclass, modelCu, com_Province, com_City, DropDownList1, GMap1, Literal1, ref  hideik, ref  hidemn, ref  continue2class, ref  supplierlistcontentikang, ref  supplierlistcontentciming, ref  supplierlistcontentmeinian, Panel14, Panel15, Panel16);
+    }
+    protected void Button4_Click(object sender, EventArgs e)
+    {
+        Session["abc"] = Request.Form["checkboxstores"].ToString();
+        Session["Compan"] = com_Province.SelectedValue;
+        Session["provence"] = com_City.SelectedValue;
+        Response.Redirect("reserverelexam3.aspx?Company=" + com_Province.SelectedValue + "&provence=" + com_City.SelectedValue);
+    }
+}

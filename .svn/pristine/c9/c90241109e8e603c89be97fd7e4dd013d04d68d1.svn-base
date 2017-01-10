@@ -1,0 +1,31 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+public partial class qwas : System.Web.UI.Page
+{
+    Bll.CustomerBll cb = new Bll.CustomerBll();
+    Bll.examcardBll ec = new Bll.examcardBll();
+    DBunit.SQLAccess sql = new DBunit.SQLAccess();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        if(this.TextBox1.Text=="13579")
+        {
+            string s = "select customerID,customerIDcard from tab_customers where customerCompany='fengchenghighend'";
+            DataTable dtcard = ec.Select(s);
+            for(int i=0;i<dtcard.Rows.Count;i++)
+            {
+                string ss = "update tab_examcard set customerID=(select customerID from tab_customers where customerCompany='fengchenghighend' and customerIDcard='" + dtcard.Rows[i]["customerIDcard"] + "')";
+                ss += " where IDcard='" + dtcard.Rows[i]["customerIDcard"] + "'";
+                sql.ExecuteNonQuery(ss);
+            }
+        }
+    }
+}

@@ -1,0 +1,109 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="reportanalysis.aspx.cs" Inherits="reportanalysis" %>
+<%@ Register TagPrefix="MPuc" TagName="sidebar" Src="UserControl/sidebar.ascx"%>
+<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+<DIV class=nav>
+    <ul><li > <a href="Default.aspx">&nbsp;<asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,Default %>'></asp:Localize></a></li>
+<li > <a href="benefitplan.aspx">&nbsp;<asp:Localize ID="Localize2" runat="server" Text='<%$ Resources:GResource,benefitplan %>'></asp:Localize></a></li>
+<li > <a href="PersonalDetails.aspx">&nbsp;<asp:Localize ID="Localize3" runat="server" Text='<%$ Resources:GResource,PersonalDetails %>'></asp:Localize></a></li>
+<li > <a href="arrangeexam.aspx">&nbsp;<asp:Localize ID="Localize4" runat="server" Text='<%$ Resources:GResource,arrangeexam %>'></asp:Localize></a></li>
+<li class="current"> <a href="reportanalysis.aspx">&nbsp;<asp:Localize ID="Localize5" runat="server" Text='<%$ Resources:GResource,reportanalysis %>'></asp:Localize></a></li>
+<li > <a href="healthshop.aspx">&nbsp;<asp:Localize ID="Localize6" runat="server" Text='<%$ Resources:GResource,healthshop %>'></asp:Localize></a></li>
+<li > <a href="healthconsult.aspx">&nbsp;<asp:Localize ID="Localize7" runat="server" Text='<%$ Resources:GResource,healthconsult %>'></asp:Localize></a></li>
+<li > <a href="riskevaluate.aspx">&nbsp;<asp:Localize ID="Localize8" runat="server" Text='<%$ Resources:GResource,riskevaluate %>'></asp:Localize></a></li>
+       <td width="100%">&nbsp;</td>   </ul>
+    </DIV>
+
+    
+<DIV class=clearboth></DIV>
+
+<DIV class=content>
+<DIV>
+<DIV style="PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px; WIDTH: 100%">
+<DIV class=DNNAlignleft>
+<DIV class=ClaimsContent>
+<DIV>
+<DIV class=content>
+<H1><SPAN>
+    <asp:Label ID="Label1" runat="server" Text="健康报告分析"></asp:Label></SPAN></H1>
+    <p></p>
+    
+<DIV class="column column_75pct">
+<DIV class=main_content>
+<h3>
+    <asp:Label ID="Label2" runat="server" Text="员工体检报告"></asp:Label></h3>
+    <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CssClass="geostandardgridview"
+        DataKeyNames="orderID" DataSourceID="SqlDataSource1">
+        <Columns>
+            <asp:BoundField DataField="ReportUploadDate" HeaderText="上传日期"  DataFormatString="{0:d}" ItemStyle-Width="172px"
+                SortExpression="ReportUploadDate" />
+            <asp:BoundField DataField="ReportUploader" HeaderText="上传者"  ItemStyle-Width="172px"
+                SortExpression="ReportUploader" />
+            <asp:BoundField DataField="ReportType" HeaderText="报告属性"  ItemStyle-Width="172px"
+                SortExpression="ReportType" />
+            <asp:BoundField DataField="ReportNote" HeaderText="备注"  ItemStyle-Width="172px"
+                SortExpression="ReportNote" />
+        </Columns>
+        <HeaderStyle CssClass="gridviewheaderrow" />
+        <AlternatingRowStyle CssClass="alternaterow" />
+    </asp:GridView>
+
+    <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
+        ConnectionString="<%$ ConnectionStrings:db_ConnectionString %>" 
+        SelectCommand="SELECT [orderID], [ReportUploadDate], [ReportUploader], [ReportType], [ReportNote] FROM [tab_orders] WHERE (([orderStatus] = @orderStatus) AND ([customerID] = @customerID)) ORDER BY [ReportUploadDate] DESC">
+        <SelectParameters>
+            <asp:Parameter DefaultValue="已完成" Name="orderStatus" Type="String" />
+            <asp:SessionParameter Name="customerID" SessionField="id" Type="Int32" />
+        </SelectParameters>
+    </asp:SqlDataSource>
+    <div>
+        <asp:Button ID="Button1" CssClass="button secondarybutton" runat="server" Text="上传报告" />&nbsp;&nbsp;
+        <asp:Button ID="Button2" CssClass="button primarybutton" runat="server" 
+            Text="历年数据对比" onclick="Button2_Click" />
+    </div>
+
+    <br /><br /><br /><br />
+    <h3>
+    <asp:Label ID="Label3" runat="server" Text="家属体检报告"></asp:Label></h3>
+    <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False"  CssClass="geostandardgridview"
+        DataKeyNames="orderID" DataSourceID="SqlDataSource2">
+        <Columns>
+            <asp:BoundField DataField="ReportUploadDate" HeaderText="上传日期"  DataFormatString="{0:d}" ItemStyle-Width="172px"
+                SortExpression="ReportUploadDate" />
+            <asp:BoundField DataField="ReportUploader" HeaderText="上传者"  ItemStyle-Width="172px"
+                SortExpression="ReportUploader" />
+            <asp:BoundField DataField="ReportType" HeaderText="报告属性"  ItemStyle-Width="172px"
+                SortExpression="ReportType" />
+            <asp:BoundField DataField="ReportNote" HeaderText="备注"  ItemStyle-Width="172px"
+                SortExpression="ReportNote" />
+        </Columns>
+        <HeaderStyle CssClass="gridviewheaderrow" />
+        <AlternatingRowStyle CssClass="alternaterow" />
+    </asp:GridView>
+
+    <asp:SqlDataSource ID="SqlDataSource2" runat="server" 
+        ConnectionString="<%$ ConnectionStrings:db_ConnectionString %>" 
+        SelectCommand="SELECT [orderID], [ReportUploadDate], [ReportUploader], [ReportType], [ReportNote] FROM [tab_orders] WHERE (([orderStatus] = @orderStatus) AND ([customerID] = @customerID))">
+        <SelectParameters>
+            <asp:Parameter DefaultValue="已完成" Name="orderStatus" Type="String" />
+            <asp:SessionParameter Name="customerID" SessionField="id" Type="Int32" />
+        </SelectParameters>
+    </asp:SqlDataSource>
+    <div>
+        <asp:Button ID="Button3" CssClass="button secondarybutton" runat="server" Text="上传报告" />&nbsp;&nbsp;
+        <asp:Button ID="Button4" CssClass="button primarybutton" runat="server" Text="历年数据对比" />
+    </div>
+</DIV></DIV>
+
+
+
+
+
+<MPuc:sidebar ID="ucsidebar" runat="server"/>
+
+
+</DIV>
+
+</DIV></DIV></DIV></DIV>
+<DIV style="PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px; WIDTH: 100%"></DIV></DIV></DIV>
+</asp:Content>
+

@@ -1,0 +1,206 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="xiyasupplierinfo.aspx.cs" Inherits="Admin_supplierAdmin_xiyasupplierinfo" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head id="Head1" runat="server">
+    <title></title>
+    
+    <script src="http://files.cnblogs.com/rubylouvre/jquery1.83.js" > </script>
+     <script type="text/javascript" src="./JS/tipswindown.js"></script>
+
+    <script type="text/javascript">
+        /*
+        *弹出本页指定ID的内容于窗口
+        *id 指定的元素的id
+        *title:	window弹出窗的标题
+        *width:	窗口的宽,height:窗口的高
+        */
+        function showTipsWindown(title, id, width, height) {
+            tipsWindown(title, "id:" + id, width, height, "true", "", "true", id);
+        }
+
+        function confirmTerm(s) {
+            parent.closeWindown();
+            if (s == 1) {
+                parent.document.getElementById("isread").checked = true;
+            }
+        }
+
+        $(document).ready(function () {
+            $(".wanboxbtn4").click(function () {
+
+                //showTipsWindown("发送消息", 'simTestContent2', 600, 255);
+                $("#editmessage").fadeIn(400);
+                
+            }
+                );
+            $(".closemessage").click(function () {
+                $("#editmessage").hide();
+            });
+        });
+</script>
+    <style type="text/css">
+        .btn{display:inline-block;margin-bottom:0;font-weight:normal;text-align:center;vertical-align:middle;cursor:pointer;background-image:none;border:1px solid black;white-space:nowrap;letter-spacing:1px;padding:6px 12px;font-size:14px;line-height:1.428571429;border-radius:4px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none}
+.btn:focus{outline:thin dotted;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px}
+.btn:hover,.btn:focus{color:#333;text-decoration:none}
+
+.btn.btn--fb{background:#3b5998;color:#fff}
+.btn.btn--fb:hover{background:#23345b;color:#fff}
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+     <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
+            <tr>
+                <td class="title" colspan="5">
+                    体检中心信息</td>
+            </tr>
+        </table>
+        <br>
+        <table border="0" cellpadding="0" cellspacing="0" class="adminContent" style="width: 100%">
+                    <tr>
+                        <td align="center" style="width: 100px; height: 24px; text-align:right;">
+                            <asp:FileUpload ID="FileUpload1" runat="server" ToolTip="选择.xls文件" Width="200px" /></td>
+                        <td style="width: 22px; height: 24px; text-align:left;">
+                            <asp:Button ID="Button3" runat="server" onclick="Button3_Click" Text="上传Excel文件" ToolTip="" /></td>
+                        <td align="center" style="width: 50px; height: 24px;">
+                            </td>
+                        <td style="width: 100px; height: 24px; text-align:right;">
+                            <asp:TextBox ID="TextBox1" runat="server" CssClass="TextBox" Width="175px"></asp:TextBox></td>
+                        <td style="width: 100px; height: 24px; text-align:left;">
+                            &nbsp;<asp:Button ID="Button2" runat="server" CssClass="button" Text="搜　索" OnClick="Button2_Click" /></td>
+                        <td  >
+                            <asp:Button ID="ButtonEE" runat="server" Text="导出excel" 
+                                onclick="ButtonEE_Click"  />
+                            </td>
+                        <td>
+                            <asp:Button ID="Button1" runat="server" Text="批量修改选中的供应商" Visible="false" OnClick="Button1_Click" />
+                            <a class="btn  wanboxbtn4">批量修改选中的供应商</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td >
+                            </td>
+                    </tr>
+                </table>
+
+
+        <div id="editmessage" style="display:none;position:fixed;left:30%;top:20%;z-index:99999;background-color:white;border:2px solid;width:600px;height:400px">
+
+	<div id="simTestContent2" class="simScrollCont">
+	
+		<div class="mainlist">
+			<table class="replymessage" style="width:100%; height:100%;border-spacing:3px;">
+                <tr><td colspan="2" align="right">
+                    <a href="javascript:;" class="closemessage"><img src="/Images/close.png"  /></a>
+                    </td></tr>
+                <tr>
+                    <td width="80">
+                        <asp:Label ID="Label6" runat="server" Text="备注:"></asp:Label>
+                    </td>
+                </tr>
+                <tr >
+                        <td style="padding-top:10px;">
+                        <asp:TextBox ID="TextBox7" runat="server" TextMode="MultiLine"  CssClass="form-control" Height="200" Width="500"></asp:TextBox>
+                        
+                    </td>
+                </tr>
+                <tr><td colspan="2" align="left">
+                    <a class="btn btn--fb" style="width:150px;white-space:normal;" runat="server"  onserverclick="updatenote">
+                            确定
+                        </a>
+                    </td></tr>
+			</table>
+		</div>
+		
+	</div><!--simTestContent end-->
+	
+</div>
+                <table border="0" cellpadding="0" cellspacing="0" class="adminContent" style="width: 100%">
+                <tr>
+                <td align="center">
+                
+                </td>
+                </tr>
+                </table>
+        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False"  AllowPaging="True"  PageSize="20" 
+          AllowSorting="True"   DataKeyNames="id" DataSourceID="SqlDataSource1"  PagerSettings-Mode="NumericFirstLast" PagerSettings-PageButtonCount="50">
+            <Columns>
+                <asp:TemplateField>
+                    <ItemTemplate>
+                        <asp:CheckBox ID="CheckBox1" runat="server" />
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:BoundField DataField="supplier" HeaderText="体检中心" 
+                    SortExpression="supplier"  />
+                <asp:HyperLinkField DataTextField="branch" HeaderText="分店"  SortExpression="branch" 
+                            DataNavigateUrlFields="id" DataNavigateUrlFormatString="xiyasupplierUpdate.aspx?Cid={0}"  ItemStyle-Wrap="False" />
+                <asp:BoundField DataField="hospid" HeaderText="分店代码" 
+                    SortExpression="hospid" />
+                <asp:BoundField DataField="province" HeaderText="省" 
+                    SortExpression="province" />
+                <asp:BoundField DataField="city" HeaderText="市" 
+                    SortExpression="city" />
+                <asp:BoundField DataField="zone" HeaderText="区" SortExpression="zone" />
+                <asp:BoundField DataField="address" HeaderText="地址" 
+                    SortExpression="address" />
+                <asp:BoundField DataField="type" HeaderText="类型" SortExpression="type" />
+                <asp:BoundField DataField="lat" HeaderText="纬度lat" SortExpression="lat" />
+                <asp:BoundField DataField="lng" HeaderText="经度lng" SortExpression="lng" />
+                <asp:BoundField DataField="phone" HeaderText="电话" SortExpression="phone" />
+                <asp:BoundField DataField="note" HeaderText="备注" SortExpression="note" />
+                <asp:BoundField DataField="id" HeaderText="id" InsertVisible="False" 
+                    ReadOnly="True" SortExpression="id" />
+                
+            </Columns>
+        </asp:GridView>
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
+            ConnectionString="<%$ ConnectionStrings:db_ConnectionString %>" 
+            DeleteCommand="DELETE FROM [tab_xiyasuppliers] WHERE [id] = @original_id" 
+            InsertCommand="INSERT INTO [tab_xiyasuppliers] ([supplier], [branch], [hospid], [province], [city], [zone], [address], [type], [lat], [lng], [phone], [note]) VALUES (@supplier, @branch, @hospid, @province, @city, @zone, @address, @type, @lat, @lng, @phone, @note)" 
+            OldValuesParameterFormatString="original_{0}" 
+            SelectCommand="SELECT [supplier], [branch], [hospid], [province], [city], [zone], [address], [type], [lat], [lng], [phone], [note], [id] FROM [tab_xiyasuppliers]" 
+            
+            UpdateCommand="UPDATE [tab_xiyasuppliers] SET [supplier] = @supplier, [branch] = @branch, [hospid] = @hospid, [province] = @province, [city] = @city, [zone] = @zone, [address] = @address, [type] = @type, [lat] = @lat, [lng] = @lng, [phone] = @phone, [note] = @note WHERE [id] = @original_id" 
+            ProviderName="System.Data.SqlClient">
+            <DeleteParameters>
+                <asp:Parameter Name="original_id" Type="Int32" />
+            </DeleteParameters>
+            <InsertParameters>
+                <asp:Parameter Name="supplier" Type="String" />
+                <asp:Parameter Name="branch" Type="String" />
+                <asp:Parameter Name="hospid" Type="String" />
+                <asp:Parameter Name="province" Type="String" />
+                <asp:Parameter Name="city" Type="String" />
+                <asp:Parameter Name="zone" Type="String" />
+                <asp:Parameter Name="address" Type="String" />
+                <asp:Parameter Name="type" Type="String" />
+                <asp:Parameter Name="lat" Type="String" />
+                <asp:Parameter Name="lng" Type="String" />
+                <asp:Parameter Name="phone" Type="String" />
+                <asp:Parameter Name="note" Type="String" />
+            </InsertParameters>
+            <UpdateParameters>
+                <asp:Parameter Name="supplier" Type="String" />
+                <asp:Parameter Name="branch" Type="String" />
+                <asp:Parameter Name="hospid" Type="String" />
+                <asp:Parameter Name="province" Type="String" />
+                <asp:Parameter Name="city" Type="String" />
+                <asp:Parameter Name="zone" Type="String" />
+                <asp:Parameter Name="address" Type="String" />
+                <asp:Parameter Name="type" Type="String" />
+                <asp:Parameter Name="lat" Type="String" />
+                <asp:Parameter Name="lng" Type="String" />
+                <asp:Parameter Name="phone" Type="String" />
+                <asp:Parameter Name="note" Type="String" />
+                <asp:Parameter Name="original_id" Type="Int32" />
+            </UpdateParameters>
+        </asp:SqlDataSource>
+    </div>
+    
+    
+    </form>
+</body>
+</html>

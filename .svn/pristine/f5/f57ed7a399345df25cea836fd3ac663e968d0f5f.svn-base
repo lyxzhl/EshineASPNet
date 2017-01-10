@@ -1,0 +1,98 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Model
+{
+    [Serializable]
+    public class AssessmentAnswer
+    {
+        private int _AAID = 0;
+        private int _AQID = 0;
+        private string _AAContent = "";
+        private string _AADes = "";
+        private int _AAType = 0;
+        private string _AAScore = "";
+        private DateTime _CreateTime = DateTime.Parse("1900-01-01");
+        private DateTime _UpdateTime = DateTime.Parse("1900-01-01");
+        private int _CreateUser = 0;
+        private int _UpdateUser = 0;
+        private int _IsShow = 0;
+        private int _IsDel = 0;
+
+
+        public int AAID
+        {
+            get { return _AAID; }
+            set { _AAID = value; }
+        }
+
+        public int AQID
+        {
+            get { return _AQID; }
+            set { _AQID = value; }
+        }
+
+        public string AAContent
+        {
+            get { return _AAContent; }
+            set { _AAContent = value; }
+        }
+
+        public string AADes
+        {
+            get { return _AADes; }
+            set { _AADes = value; }
+        }
+
+        public int AAType
+        {
+            get { return _AAType; }
+            set { _AAType = value; }
+        }
+
+        public string AAScore
+        {
+            get { return _AAScore; }
+            set { _AAScore = value; }
+        }
+
+        public DateTime CreateTime
+        {
+            get { return _CreateTime; }
+            set { _CreateTime = value; }
+        }
+
+        public DateTime UpdateTime
+        {
+            get { return _UpdateTime; }
+            set { _UpdateTime = value; }
+        }
+
+        public int CreateUser
+        {
+            get { return _CreateUser; }
+            set { _CreateUser = value; }
+        }
+
+        public int UpdateUser
+        {
+            get { return _UpdateUser; }
+            set { _UpdateUser = value; }
+        }
+
+        public int IsShow
+        {
+            get { return _IsShow; }
+            set { _IsShow = value; }
+        }
+
+        public int IsDel
+        {
+            get { return _IsDel; }
+            set { _IsDel = value; }
+        }
+
+
+    }
+}

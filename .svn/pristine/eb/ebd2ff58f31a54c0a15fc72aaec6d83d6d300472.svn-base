@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text;
+
+namespace Bll
+{
+    public class tijianwenjBll
+    {
+        IDAL.tijianwenjDal itu = DALFactory.tijianwenj_Factory.Createusers();
+        public int Add(Model.tijianwenj tijianwenj)
+        {
+            return itu.Add(tijianwenj);
+        }
+        public Model.tijianwenj gettijianwenj(Model.tijianwenj tijianwenj1)
+        {
+            return itu.gettijianwenj(tijianwenj1);
+        }
+        public int update(Model.tijianwenj tijianwenj)
+        {
+            return itu.update(tijianwenj);
+        }
+        public int Delete(int id)
+        {
+            return itu.Delete(id);
+        }
+        public DataTable Select(string ss)
+        {
+            return itu.Select(ss);
+        }
+    }
+
+}

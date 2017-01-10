@@ -1,0 +1,75 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="benefitplan_back.aspx.cs" Inherits="benefitplan_back" %>
+<%@ Register TagPrefix="MPuc" TagName="headcontent" Src="UserControl/headcontent.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="mobilenav" Src="UserControl/mobilenav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="desktopnav" Src="UserControl/desktopnav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="UserControl/footer1.ascx"%>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Medi-Plus - 体检专家</title>
+<MPuc:headcontent runat="server" ID="Unnamed1"/>
+<SCRIPT src="JS/mp.js" type="text/javascript"></SCRIPT>
+</head>
+<body class='blogs'>
+
+<MPuc:mobilenav runat="server" ID="Unnamed2"/>
+<div class='wrapper' data-behavior='Navigation'>
+<MPuc:desktopnav runat="server" ID="Unnamed3"/>
+
+<form runat="server">
+<div class='container' data-behavior='Blog'>
+<div class='row'>
+<div class='twocol'></div>
+<div class='eightcol'>
+<div class='blog'>
+<div class='tile'>
+<div class='date'>2013年12月12日</div>
+<hr>
+<h2>
+<a href='kindeditor/attached/file/20131102/20131102115119_0112.pdf' target="_blank"'>VMware2014年度体检福利计划</a>
+</h2>
+<article>
+<p><a href='kindeditor/attached/file/20131102/20131102115119_0112.pdf' target="_blank"> <img src="Images/UploadFile/benefit_vm.jpg"/></a></p>
+<p><em>员工身体健康是公司最大的财富，也是公司得以稳定发展的保证，为了及时掌握员工的健康情况，提高员工团体对健康管理问题的重视，完善公司的福利政策，现拟定每年进行一次员工体检。
+</em></p>
+<p>1、及早发现疾病，减少风险随着公司的发展壮大，公司员工的数量将越来越多，员工的身体健康直接关系企业的稳定发展。
+实施员工体检计划，建立员工健康档案能够有效掌握员工的身体健康信息，有助于及早防治各种慢性病的严重恶化，减少员工因发病对生产工作的影响，同时可以有效预警各类突发性疾病的发生。比如有员工在工作过程中突发死亡，
+这对于员工本人以及其家庭来说都是一个无法挽回的损失，同时对公司也会造成一定的负面影响，每年一度的员工体检对于规避这样的风险起到一定的作用。
+</p>
+<p>2、完善公司福利员工体检计划作为一项福利政策，充分体现了公司对员工的关爱，对员工身体健康的重视，有利于增强员工对公司的认同感、归宿感，从精神层面和物质层面上满足员工的需要，从而更好地留住员工，降低人员流失率。另一方面，完善的福利待遇也是吸引求职者的重要条件之一，关注员工健康的企业更能获得求职者的认同与青睐，从而提高公司在求职市场的竞争力。
+</p>
+<div class='continue'>
+<a href='kindeditor/attached/file/20131102/20131102115119_0112.pdf' target="_blank">下载PDF文档</a>
+</div>
+</article>
+<asp:HyperLink ID="HyperLink3" runat="server" class='button blue_button' href='reserveexam.aspx' style="float:right; margin-top:-40px;" >马上预约体检</asp:HyperLink>
+<div class='bottom mobile_hidden'>
+<div class='tags'>
+<div class='tag'>标签:</div>
+<div class='tag'>
+<a href=''>Medi-Plus</a>
+</div>
+<div class='tag'>
+<a href=''>体检</a>
+</div>
+<div class='tag'>
+<a href=''>健康</a>
+</div>
+
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+<div class='twocol last'></div>
+</div>
+</div>
+</form>
+</div>
+<MPuc:footer ID="ucfooter" runat="server"/>
+</body>
+</html>
+

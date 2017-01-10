@@ -1,0 +1,335 @@
+* {
+	-moz-outline-style: none;
+}
+*:active {
+	-moz-outline-style: none;
+}
+*:focus {
+	-moz-outline-style: none;
+}
+html {
+	margin: 0px; padding: 0px;
+}
+body {
+	margin: 0px; padding: 0px;
+}
+img {
+	border: 0px currentColor;
+}
+fieldset {
+	margin: 0px; padding: 0px; border: currentColor; clear: both; display: block;
+}
+h1 {
+	margin: 0px 0px 15px; padding: 0px; line-height: 1em; font-size: inherit; font-weight: normal;
+}
+h2 {
+	margin: 0px 0px 15px; padding: 0px; line-height: 1em; font-size: inherit; font-weight: normal;
+}
+h3 {
+	margin: 0px 0px 15px; padding: 0px; line-height: 1em; font-size: inherit; font-weight: normal;
+}
+h4 {
+	margin: 0px 0px 15px; padding: 0px; line-height: 1em; font-size: inherit; font-weight: normal;
+}
+h5 {
+	margin: 0px 0px 15px; padding: 0px; line-height: 1em; font-size: inherit; font-weight: normal;
+}
+h6 {
+	margin: 0px 0px 15px; padding: 0px; line-height: 1em; font-size: inherit; font-weight: normal;
+}
+p {
+	line-height: 22px;
+}
+table {
+	padding: 0px; border-collapse: collapse;
+}
+td {
+	padding: 0px; border-collapse: collapse;
+}
+.clear {
+	clear: both;
+}
+.alignleft {
+	float: left;
+}
+.alignright {
+	float: right;
+}
+.aligncenter {
+	text-align: center; clear: both; margin-right: auto; margin-left: auto; display: block;
+}
+a {
+	color: rgb(83, 165, 165); text-decoration: underline;
+}
+a:hover {
+	text-decoration: none;
+}
+body {
+	background: url("images/header_bg.png") rgb(230, 230, 230); color: rgb(55, 55, 55); font-family: Arial, Helvetica, 宋体; font-size: 13px;
+}
+.pix_1280 {
+	float: left;
+}
+#resize {
+	background: url("images/resize.png") no-repeat; width: 66px; height: 66px; right: 0px; bottom: 0px; position: fixed; z-index: 100;
+}
+header {
+	background: url("images/header_bg.png") rgba(108, 152, 207, 1); left: 0px; top: 0px; width: 100%; height: 50px; right: 0px; font-size: 14px;  border-top-color: rgb(183, 183, 183); border-top-width: 0px; border-top-style: solid; float: left; display: block; position: fixed; z-index: 2;
+}
+header > div {
+	height: 50px; position: relative; z-index: 1;
+}
+header #logo {
+	background: url("camera_logo.png") no-repeat 20px 14px; margin: 0px; padding: 15px 0px 0px 20px; width: 168px; height: 126px; float: left; display: block;
+}
+header #logo a {
+	width: 168px; height: 126px; text-indent: -9999px; text-decoration: none; display: block;
+}
+header a {
+	color: rgb(255, 255, 255); text-decoration: none; float: left; display: block; font-style:normal;
+}
+header #subtitle {
+	margin: 0px; padding: 0px 0px 0px 10px; line-height: 1em; font-size: 14px; font-weight: 400; float: left;
+}
+#header_border {
+	background: url("images/header_border.png") repeat-x; left: 0px; height: 7px; right: 0px; bottom: 0px; position: absolute; z-index: 0;
+}
+#top_link_wrap {
+	padding: 0px 4px; top: 0px; right: 54px; position: absolute;
+}
+#top_link_wrap a {
+	padding: 0px 3px; text-transform: uppercase; line-height: 20px; font-family:Arial, Helvetica, 宋体; font-size: 11px; font-style: normal; display: block;
+}
+#top_link_wrap1 {
+  right: 0px; position: absolute;
+}
+#top_link_wrap2 {
+	padding: 0px 0px; top: 0px; right: 0px; position: absolute;
+}
+
+
+#social_wrap {
+	background: rgb(183, 183, 183); padding: 0px 4px; top: 0px; right: 0px; position: absolute;
+}
+#social_wrap a {
+	height: 20px; text-decoration: none; float: left; display: block;
+}
+#social_wrap #dribbble {
+	background: url("images/dribbble_icon.png") no-repeat center 2px; width: 23px;
+}
+#social_wrap #forrst {
+	background: url("images/forrst_icon.png") no-repeat center 0px; width: 21px;
+}
+#social_wrap #twitter {
+	background: url("images/twitter_icon.png") no-repeat center 2px; width: 26px;
+}
+#social_wrap #facebook {
+	background: url("images/facebook_icon.png") no-repeat center 1px; width: 17px;
+}
+nav {
+	margin-top: 28px; float: right;
+}
+nav ul {
+	margin: 0px; padding: 0px;
+}
+nav > ul.nav_min {
+	display: none;
+}
+nav ul li {
+	list-style: none; margin: 0px; padding: 0px 0px 0px 25px; float: left; position: relative;
+}
+nav ul li a {
+	padding: 0px 2px 6px; border-bottom-color: transparent; border-bottom-width: 5px; border-bottom-style: solid;
+}
+nav > ul > li > a.current {
+	border-bottom-color: rgb(18, 218, 218);
+}
+nav > ul > li > a:hover {
+	border-bottom-color: rgb(18, 218, 218);
+}
+nav > ul > li > a.pix_hover {
+	border-bottom-color: rgb(60, 60, 60) !important; border-bottom-width: 6px;
+}
+nav > ul.nav_max > li > ul {
+	background: rgb(60, 60, 60); padding: 15px 0px; width: 210px; font-size: 12px; position: absolute;
+}
+nav > ul.nav_min > li > ul {
+	background: rgb(60, 60, 60); padding: 15px 0px; top: 2px; width: 210px; right: 0px; overflow: hidden; font-size: 12px; display: none; position: absolute;
+}
+nav > ul.nav_min > li > a {
+	border-bottom-color: rgb(60, 60, 60); border-bottom-width: 6px; border-bottom-style: solid;
+}
+nav > ul.unique_nav > li > a {
+	border-bottom-color: rgb(60, 60, 60); border-bottom-width: 6px; border-bottom-style: solid;
+}
+nav > ul.nav_min > li ul {
+	display: none;
+}
+nav > ul > li > ul li {
+	margin: 0px; padding: 0px 15px; clear: both; float: none; display: block;
+}
+nav > ul > li > ul li a {
+	padding: 5px 0px; text-align: right; color: rgb(255, 255, 255); line-height: 20px; clear: both; float: none; display: block; text-shadow: none;
+}
+nav > ul.nav_max > li > ul li a {
+	border-top-color: rgb(95, 95, 95); border-bottom-color: rgb(0, 0, 0); border-top-width: 1px; border-bottom-width: 1px; border-top-style: solid; border-bottom-style: solid;
+}
+nav > ul > li > ul li a:hover {
+	color: rgb(215, 215, 215);
+}
+nav ul.nav_min ul ul {
+	background: rgb(37, 37, 37) !important; margin: 0px -15px; padding: 0px 15px 0px 0px; width: auto !important; position: relative;
+}
+span.close_x {
+	background: rgb(60, 60, 60) !important; margin: 0px !important; padding: 0px !important; left: -18px !important; top: 6px !important; width: 18px !important; height: 20px !important; text-align: center !important; color: rgb(255, 255, 255) !important; line-height: 18px !important; font-family: Arial, Helvetica, 宋体; font-size: 11px !important; font-style: normal !important; position: absolute !important; border-top-left-radius: 4px !important; border-bottom-left-radius: 4px !important; -webkit-border-top-left-radius: 4px; -webkit-border-bottom-left-radius: 4px; -moz-border-radius-topleft: 4px; -moz-border-radius-bottomleft: 4px;
+}
+.pix_1280 {
+	width: 1280px;
+}
+.pix_540 {
+	margin: 20px 0px 20px 40px; width: 540px; float: left;
+}
+.pix_250 {
+	margin: 20px 0px 20px 40px; width: 250px; float: left;
+}
+section {
+	padding-top: 104px; position: relative; z-index: 1;
+}
+hr {
+	border-width: 1px 0px; border-style: solid none; border-color: rgb(183, 183, 183) currentColor; margin: 40px 0px; width: 100%; height: 3px; float: left; display: block;
+}
+h2 {
+	line-height: 30px; font-family: Arial, Helvetica, 宋体; font-size: 35px; font-weight: 700;
+}
+.h2 {
+	text-transform: none; font-family: Arial, Helvetica, 宋体; font-size: 35px; font-weight: 700;
+}
+h3 {
+	font-family: Arial, Helvetica, 宋体; font-size: 28px; font-weight: 400;
+}
+.h3 {
+	text-transform: none; font-family: Arial, Helvetica, 宋体; font-size: 28px; font-weight: 400;
+}
+h4 {
+	text-transform: uppercase; line-height: 24px; font-family: Arial, Helvetica, 宋体; font-size: 16px; font-weight: 700;
+}
+.h4 {
+	text-transform: uppercase; font-family: Arial, Helvetica, 宋体; font-size: 16px; font-weight: 700;
+}
+h5 {
+	text-transform: uppercase; line-height: 18px; font-family: Arial, Helvetica, 宋体; font-size: 13px; font-weight: 700;
+}
+.h5 {
+	text-transform: uppercase; font-family: Arial, Helvetica, 宋体; font-size: 13px; font-weight: 700;
+}
+.paragraph {
+	text-transform: none !important; font-family: Arial, Helvetica, 宋体; font-size: 13px; font-weight: normal;
+}
+.border_title {
+	padding-left: 10px; border-left-color: rgb(183, 183, 183); border-left-width: 10px; border-left-style: solid; display: block;
+}
+.it_depends {
+	display: none;
+}
+.pre_wrap {
+	background: url("images/pre_bg.png"); padding: 15px 15px 0px; border: 8px solid rgb(238, 238, 238); overflow: auto; margin-bottom: 13px;
+}
+pre {
+	margin: 0px; padding: 8px 0px 22px; width: 100%; color: rgb(136, 136, 136); line-height: 25px; overflow: auto; font-family: Arial, Helvetica, 宋体; font-size: 12px;
+}
+code {
+	background: rgb(246, 246, 246); padding: 2px; color: rgb(136, 136, 136); font-family: Arial, Helvetica, 宋体; font-size: 12px;
+}
+dl {
+	border: 8px solid rgb(238, 238, 238); line-height: 18px;
+}
+dt {
+	background: rgb(246, 246, 246); padding: 5px 10px; font-weight: bold;
+}
+dd {
+	background: rgb(238, 238, 238); margin: 0px; padding: 5px 10px 5px 40px; font-size: 11px; font-style: italic;
+}
+ul {
+	margin: 10px 0px;
+}
+li {
+	margin: 5px 0px; 
+}
+#paypal_hide {
+	position: relative;
+}
+.paypal_form {
+	background: rgba(72, 72, 72, 0.95); margin: 100px 0px 0px; border-radius: 4px; text-align: center; color: rgb(215, 215, 215); font-size: 13px !important; font-style: italic; display: none; position: absolute; text-shadow: none !important; -webkit-border-radius: 4px; -moz-border-radius: 4px;
+}
+.paypal_form > div {
+	margin: 5px 15px 15px; float: left; position: relative;
+}
+.paypal_arrow {
+	left: 50%; width: 0px; height: 0px; bottom: -25px; margin-left: -10px; border-top-color: rgb(72, 72, 72); border-right-color: transparent; border-left-color: transparent; border-top-width: 10px; border-right-width: 10px; border-left-width: 10px; border-top-style: solid; border-right-style: solid; border-left-style: solid; position: absolute; opacity: 0.95;
+}
+.pp_pix_donation {
+	width: 100%; float: left; display: block;
+}
+.pp_pix_donation .dollar_span {
+	height: 26px; text-align: center; line-height: 26px; margin-right: 5px; display: inline-block;
+}
+.pp_pix_donation input[type=text] {
+	background: rgb(238, 238, 238); padding: 0px; border-radius: 4px; border: 2px solid rgb(204, 204, 204); width: 40px; height: 22px; text-align: center; color: rgb(72, 72, 72); line-height: 22px; font-family: Arial, Helvetica, 宋体; font-size: 13px; display: inline-block; -webkit-border-radius: 4px; -moz-border-radius: 4px;
+}
+.pix_button {
+	height: 26px; line-height: 26px; display: inline-block; position: relative;
+}
+.pix_button > span {
+	border-radius: 4px; display: inline-block; -webkit-border-radius: 4px; -moz-border-radius: 4px;
+}
+.pix_button > span > a {
+	padding: 0px 3px; border: 0px currentColor; height: 24px; color: rgb(215, 215, 215); line-height: 24px; font-family: Arial, Helvetica, 宋体; font-size: 1em; font-style: italic; text-decoration: none; display: inline-block; position: relative; z-index: 2; cursor: pointer;
+}
+.pix_button > span > input[type=submit] {
+	padding: 0px 3px; border: 0px currentColor; height: 24px; color: rgb(215, 215, 215); line-height: 24px; font-family: Arial, Helvetica, 宋体; font-size: 1em; font-style: italic; text-decoration: none; display: inline-block; position: relative; z-index: 2; cursor: pointer;
+}
+a.pix_button {
+	padding: 0px 3px; border: 0px currentColor; height: 24px; color: rgb(215, 215, 215); line-height: 24px; font-family: Arial, Helvetica, 宋体; font-size: 1em; font-style: italic; text-decoration: none; display: inline-block; position: relative; z-index: 2; cursor: pointer;
+}
+.pix_button > span > a {
+	height: 24px; line-height: 24px;
+}
+.pix_button > span > input[type=submit] {
+	height: 24px; line-height: 24px;
+}
+.pix_button > span {
+	border: 1px solid rgb(34, 34, 34); box-shadow: inset 0px 0px 1px rgba(255,255,255,0.2); -moz-box-shadow: inset 0px 0px 1px rgba(255, 255, 255, 0.2); -webkit-box-shadow: inset 0px 0px 1px rgba(255, 255, 255, 0.2);
+}
+a.pix_button {
+	border: 1px solid rgb(34, 34, 34); box-shadow: inset 0px 0px 1px rgba(255,255,255,0.2); -moz-box-shadow: inset 0px 0px 1px rgba(255, 255, 255, 0.2); -webkit-box-shadow: inset 0px 0px 1px rgba(255, 255, 255, 0.2);
+}
+.pix_button > span:active {
+	
+}
+a.pix_button:active {
+	
+}
+.p_download {
+	background: url("images/header_bg.png") rgb(221, 221, 221); margin: 13px 0px; padding: 10px; border-radius: 4px; border: 8px solid rgb(238, 238, 238); text-align: center; line-height: 22px; font-style: italic; display: block; position: relative; cursor: pointer; text-shadow: 0px 1px 0px #fff; -webkit-border-radius: 4px; -moz-border-radius: 4px;
+}
+#download_pack_version {
+	font-size: 120%;
+}
+.fake_pay_link {
+	display: none;
+}
+.camera_caption a {
+	color: rgb(18, 218, 218);
+}
+.adapt_image {
+	width: 100% !important;
+}
+
+@media only screen and (max-width:788px)
+{
+#top_link_wrap2 {
+	padding: 0px 0px; top: 35px; right: 0px; position: absolute;
+}
+
+}
+

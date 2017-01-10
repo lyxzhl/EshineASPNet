@@ -1,0 +1,41 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick" onclick="goTo('../../index.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </a>
+        <div class="center">登录</div>
+        <div class="right">
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="UserLogin" class="page">
+        <div class="page-content content_ULogin">
+            <div class="ULogin-wrap">
+                <div class="panel-body">
+                    <div class="group-item login-form">
+                        <div class="row-item">
+                            <label class="pull-center"><i class="icon icon-user2"></i></label>
+                            <label class="pull-center">
+                                <input type="text" class="form-control" id="txtUser" name="txtUser" placeholder="请输入邮箱或手机号"></label>
+                        </div>
+                        <div class="row-item">
+                            <label class="pull-center"><i class="icon icon-lock2"></i></label>
+                            <label class="pull-center">
+                                <input type="password" class="form-control" id="txtPwd" name="txtPwd" placeholder="请输入登录密码"></label>
+                        </div>
+                        <div class="row-item">
+                            <a class="btn btn-block btn-primary" href="#" onclick="if (formLogin()) bindWindowListener(callLoginEvent);">立即登录</a>
+                            <p></p>
+                            <p class="text-right text-white">
+                                没有帐号？<a href="#" onclick="serviceDisabled();">立即注册</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

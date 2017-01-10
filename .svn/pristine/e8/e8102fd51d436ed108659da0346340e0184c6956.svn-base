@@ -1,0 +1,160 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="changepassword.aspx.cs" Inherits="changepassword"  culture="auto" meta:resourcekey="PageResource1" uiculture="auto"%>
+
+<%@ Register TagPrefix="MPuc" TagName="headcontent" Src="UserControl/headcontent.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="mobilenav" Src="UserControl/mobilenav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="desktopnav" Src="UserControl/desktopnav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="UserControl/footer1.ascx"%>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Medi-Plus - <asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,titletext %>'></asp:Localize></title>
+<MPuc:headcontent ID="Headcontent1" runat="server"/>
+<SCRIPT src="JS/mp.js" type="text/javascript"></SCRIPT>
+</head>
+<body class='homes logins'>
+<MPuc:mobilenav ID="Mobilenav1" runat="server"/>
+<form id="Form1" runat="server">
+<div class='wrapper' data-behavior='Navigation'>
+<MPuc:desktopnav ID="Desktopnav1" runat="server"/>
+
+<div data-behavior='Home'>
+
+<div class='sections' style="margin-top:70px;">
+
+<section data-nav_link='stylist_link' id='stylist'>
+
+<ul class='benefits'>
+<li id='look_great'>
+<div class='left copy'>
+
+
+<div class='tile'>
+<div id='errors'></div>
+<h3><asp:Label ID="Label3" runat="server" Text='<%$ Resources:GResource,changepassword %>'></asp:Label></h3>
+<div class='fields'>
+
+<div class="simple_form new_login_context"id="Div1" >
+
+<asp:Panel ID="Panel1" runat="server" Visible="False">
+<DIV>
+<asp:Label ID="Label5" runat="server" Text='<%$ Resources:GResource,pwchngsuccessmsg %>'></asp:Label><br />
+</DIV>
+<asp:HyperLink ID="HyperLink1" runat="server" class="bluedark_button button" NavigateUrl="~/login.aspx" Text='<%$ Resources:GResource,relogin %>'></asp:HyperLink>
+<asp:HyperLink ID="HyperLink2" runat="server" class="blue_button button" NavigateUrl="~/index.aspx" Text='<%$ Resources:GResource,backtohome %>'></asp:HyperLink>
+    </asp:Panel>
+
+<asp:Panel ID="Panel2" runat="server" meta:resourcekey="Panel2Resource1">
+<div class="input">
+<asp:Label ID="Label7"  runat="server" Text='<%$ Resources:GResource,pwlastchangedtime %>'></asp:Label>：
+<asp:Label ID="Label1"  runat="server" Text="2000年1月1日"></asp:Label>
+</div>
+<div class="input hidden">
+<asp:Label ID="Label8"  runat="server" Text="密码有效期至"></asp:Label>:
+<asp:Label ID="Label2"  runat="server" Text="Label"></asp:Label>
+</div>
+<div class="input password required">
+    <asp:Label ID="Label4" runat="server" Text="<%$ Resources:Label9Resource1.Text%>"></asp:Label>
+<asp:TextBox ID="TextBox1" runat="server" class="string password required"   placeholder='<%$ Resources:Label9Resource1.Text%>'  type="password"></asp:TextBox>
+</div>
+<div class="input password required">
+    <asp:Label ID="Label6" runat="server" Text="<%$ Resources:Label10Resource1.Text%>"></asp:Label>
+<asp:TextBox ID="TextBox2" runat="server" class="string password required"   placeholder='<%$ Resources:Label10Resource1.Text%>'  type="password"></asp:TextBox>
+</div>
+<div class="input password required">
+    <asp:Label ID="Label9" runat="server" Text="<%$ Resources:Label11Resource1.Text%>"></asp:Label>
+<asp:TextBox ID="TextBox3" runat="server" class="string password required"   placeholder='<%$ Resources:Label11Resource1.Text%>'  type="password"></asp:TextBox>
+</div>
+<div class='submit_button'>
+<div class='spinner'></div>
+<asp:Button ID="Button1" runat="server" Text='<%$ Resources:GResource,cancel %>' class='action bluedark_button button session_button' onclick="Button1_Click" />
+<asp:Button ID="Button2" runat="server" Text='<%$ Resources:GResource,updatepassword %>'  class='action blue_button button session_button' onclick="Button2_Click" OnClientClick="return check()" />
+</div>
+</asp:Panel>
+
+</div>
+</div>
+
+
+</div>
+
+
+
+
+
+</div>
+
+<div class='right' style="padding:7% 2% 0 0;vertical-align:middle; width:37%">
+<div class='tile'  >
+<h3><asp:Label ID="Label12" runat="server" Text="设置密码规定" meta:resourcekey="Label12Resource1"></asp:Label>：</h3>
+<div class="input">
+<asp:Label ID="Label14" runat="server" Text="用户不得重复使用最近3组已使用过的密码。" meta:resourcekey="Label14Resource1"></asp:Label>
+</div>
+<div class="input">
+<asp:Label ID="Label15" runat="server" Text="密码不得少于8个字符。" meta:resourcekey="Label15Resource1"></asp:Label>
+</div>
+<div class="input">
+<asp:Label ID="Label16" runat="server" Text="密码不得多于20个字符。" meta:resourcekey="Label16Resource1"></asp:Label>
+</div>
+<div class="input">
+<asp:Label ID="Label17" runat="server" Text="密码中必须至少包含1个数字。" meta:resourcekey="Label17Resource1"></asp:Label>
+</div>
+<div class="input">
+<asp:Label ID="Label18" runat="server" Text="密码最少要有1位字母。" meta:resourcekey="Label18Resource1"></asp:Label>
+</div>
+<div class="input">
+<asp:Label ID="Label19" runat="server" Text="密码中允许使用特殊字符。" meta:resourcekey="Label19Resource1"></asp:Label>
+</div>
+<div class="input">
+<asp:Label ID="Label20" runat="server" Text="连续登录5次失败后账户将会被锁定。" meta:resourcekey="Label20Resource1"></asp:Label>
+</div>
+</div>
+
+
+</div>
+
+
+
+
+</li>
+</ul>
+</section>
+
+
+</div>
+</div>
+
+
+</div>
+</form>
+<MPuc:footer ID="ucfooter" runat="server"/>
+
+<script>
+    function check() {
+        with (document.all) {
+            TextBox1 = document.getElementById("<%=TextBox1.ClientID %>");
+            TextBox2 = document.getElementById("<%=TextBox2.ClientID %>");
+            TextBox3 = document.getElementById("<%=TextBox3.ClientID %>");
+            if (TextBox2.value == "") {
+                alert('<asp:Localize runat="server" Text="请输入新密码！" meta:resourcekey="Localize1Resource1"></asp:Localize>');
+                TextBox2.focus();
+                return false;
+            }
+            else if (TextBox2.value != TextBox3.value) {
+                alert('<asp:Localize runat="server" Text="两次输入的密码不匹配，请重新输入！" meta:resourcekey="Localize2Resource1"></asp:Localize>');
+                TextBox2.value = "";
+                TextBox3.value = "";
+                TextBox2.focus();
+                return false;
+            }
+            else if (TextBox2.value.length < 8 || TextBox2.value.length > 20) {
+                alert('<asp:Localize runat="server" Text="密码长度须在8-20个字符之间！" meta:resourcekey="Localize3Resource1"></asp:Localize>');
+                TextBox2.value = "";
+                TextBox3.value = "";
+                TextBox2.focus();
+                return false;
+            }
+        }
+    } 
+</script>
+</body>
+</html>

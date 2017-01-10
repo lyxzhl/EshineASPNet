@@ -1,0 +1,49 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="editcompany.aspx.cs" Inherits="Admin_CustomersAdmin_editcompany" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+     <%--   yrrrrrrrrrf批量修改离职员工<br />
+    <asp:FileUpload ID="FileUpload1" runat="server" ToolTip="选择.xls文件" Width="200px" />
+        <asp:Button ID="Button3" runat="server" onclick="Button3_Click" Text="上传Excel文件" ToolTip="" /> --%>
+
+         <table>
+                <tr>
+                    <td>统一id段的员工
+                    </td>
+
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <asp:TextBox ID="TextBox2" runat="server" placeholder="请输入离职二字"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td>请输入id：<br />
+                        注:批量修改订单号之间加"-"<br /> 例:100000235-1000002345<br />1000002345,1000002345,1000002345
+                    </td>
+                    <td>
+                        <asp:TextBox ID="TextBox1" runat="server" TextMode="MultiLine" Height="300px"
+                            Width="200px"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <asp:Button ID="Button2" runat="server" Text="提 交" OnClick="Button2_Click" />
+                    </td>
+                </tr>
+            </table>
+    
+    </div>
+    </form>
+</body>
+</html>

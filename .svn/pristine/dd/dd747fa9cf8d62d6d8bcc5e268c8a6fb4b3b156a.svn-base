@@ -1,0 +1,51 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="SubmitCharge.aspx.cs" Inherits="IndexPage_Default" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title></title>
+    <style type="text/css">
+        div{
+            margin-top:150px;
+            text-align:center;
+        }
+        body{
+            text-align:center;
+        }
+    </style>
+    <script language="javascript" type="text/javascript">
+        window.onload=function(){
+            setInterval("SubCharge()",2000) 
+        }
+        function SubCharge()
+        {
+            document.all.payInfo.submit();
+        }
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        请稍候……正在处理请求
+    </div>
+    </form>
+    <!--提交页面开始-->
+      <div id="divHidden" style="display:none; visibility:hidden; ">
+        <form id="payInfo" name="payInfo" action="alipay.aspx" method="post">
+            <input id="price" name="price" type="hidden" value="<%=price %>" />
+            <input id="cname" name="cname" type="hidden" value="<%=cName %>" />
+            <input id="toname" name="toname" type="hidden" value="<%=toName %>" />
+            <input id="toAdd" name="toAdd" type="hidden" value="<%=toAdd %>" />
+            <input id="zipCode" name="zipCode" type="hidden" value="<%=zipCode %>" />
+            <input id="toTel" name="toTel" type="hidden" value="<%=toTel %>" />
+            <input id="Info" name="Info" type="hidden" value="<%=Info %>" />
+             <input id="id" name="id" type="hidden" value="<%=id %>"/>
+              <input id="str" name="str" type="hidden" value="<%=str %>"/>
+            <input id="sign" name="sign" type="hidden" value="<%=sign %>" />
+            <input type="submit" />
+        </form>
+      </div>
+      <!--提交页面结束-->
+</body>
+</html>

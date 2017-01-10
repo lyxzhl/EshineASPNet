@@ -1,0 +1,68 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Collections;
+using System.Data;
+public partial class healthconsult :PageBases
+{
+    Bll.parasBll pb = new Bll.parasBll();
+    Model.tab_paras paras = new Model.tab_paras();
+    public string img = "";
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            this.CheckUser((Hashtable)Application["Online"]);
+            fillImg();
+        }
+        //filltime();
+    }
+    void fillImg()
+    {
+        string imgurl = "select pvalue from tab_paras where pname='consultimg' order by ptype";
+        DataTable dt = pb.Select(imgurl);
+        for(int i=0;i<dt.Rows.Count;i++)
+        {
+            this.Literal1.Text += "<div  data-src='" + dt.Rows[i][0].ToString() + "'></div>";
+        }
+    }
+    void filltime()
+    {
+        for (int i = 1; i <= 15; i++)
+        {
+            this.DropDownListTime.Items.Add(DateTime.Now.AddDays(i).ToShortDateString());
+        }
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        if (this.TextBox1.Text == "")
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "discribesymptom") + "');</script>");
+            this.TextBox1.Focus();
+            return;
+        }
+        if (false && this.TextBoxTime.Text!="" && DateTime.Parse(this.TextBoxTime.Text) < DateTime.Now)
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "resvtimeshdaftermsg") + "');</script>");
+            this.TextBoxTime.Text = "";
+            this.TextBoxTime.Focus();
+            return;
+        }
+        Model.tab_consult modelcon = new Model.tab_consult();
+        Bll.consultBll cb = new Bll.consultBll();
+        modelcon.adddate = DateTime.Now;
+        modelcon.customerID = int.Parse(Session["id"].ToString());
+        modelcon.doctor = this.TextBox2.Text;
+        if (this.TextBoxTime.Text!="")
+            modelcon.examdate = DateTime.Parse(this.TextBoxTime.Text);
+        modelcon.hospital = this.DropDownListhosp.SelectedValue;
+        modelcon.note = this.TextBox1.Text;
+        cb.Add(modelcon);
+
+        Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "questionrecordedmsg") + "');</script>");
+                
+    }
+}

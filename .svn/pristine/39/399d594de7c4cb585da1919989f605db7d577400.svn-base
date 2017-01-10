@@ -1,0 +1,250 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Text.RegularExpressions;
+using MeiNianWebRef;
+using System.Web.Script.Serialization;
+using Subgurim.Controles;
+using System.IO;
+using System.Xml;
+using Com.Alipay;
+using System.Collections;
+using ikang;
+
+public partial class fillinfo : System.Web.UI.Page
+{
+    DBunit.SQLAccess dbsql = new DBunit.SQLAccess();
+    Model.tab_customers modelCu = new Model.tab_customers();
+    Model.tab_orders orders = new Model.tab_orders();
+    Bll.CustomerBll Cb = new Bll.CustomerBll();
+    Bll.SupplierBll sb = new Bll.SupplierBll();
+    Bll.packageBll pb = new Bll.packageBll();
+    Bll.uppkgBll ub = new Bll.uppkgBll();
+    Bll.OrdersBll ob = new Bll.OrdersBll();
+    Bll.examcardBll eb = new Bll.examcardBll();
+    Bll.companyBll comb = new Bll.companyBll();
+    Model.tab_company modelcomp = new Model.tab_company();
+    Bll.supplierpackageBll spb = new Bll.supplierpackageBll();
+
+    Bll.deliveryaddressBll db = new Bll.deliveryaddressBll();
+    GMap GMap1 = new GMap();
+
+    reserveexamcommon rc = new reserveexamcommon();
+
+    PublicClass pc = new PublicClass();
+    ikangservice iks = new ikangservice();
+    ikangmember ikm = new ikangmember();
+    HealthService mns = new HealthService();
+    //接收省份的集合
+    DataSet ds_Province;
+    //接收市的集合
+    DataSet ds_City;
+    //接收区的集合
+    DataSet ds_Area;
+    DateTime firstdate;
+    DateTime lastdate;
+    string DOB;
+    public string classmale, classfemale, classmarried, classunmarried, branchmapclass = "hidden", newaddressclass = "hidden", closscompanyaddressclass = "hidden";
+    public string supplierlistcontentikang, supplierlistcontentciming, supplierlistcontentmeinian;
+    int uppkgcount = -1;
+    public string continue2class = "hidden", xiyaclass = "hidden";
+    public string hideik = "", hidemn = "";
+    public int limit1, limit2, limit3, limit4, limit5, limit6, limit7, limit8, limit9, limit10;
+    public string supplierpackagecode = "";
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        modelCu.customerID = int.Parse(Session["id"].ToString());
+        modelCu = Cb.getCustomer(modelCu);
+
+        if (!IsPostBack)
+        {
+            ViewState["t"] = Request["t"];
+      
+            if (modelCu.customerIDcard.Length == 18)
+            {
+                this.TextBox3.Text = modelCu.customerIDcard;
+            }
+            else
+            {
+                this.TextBox5.Text = modelCu.customerIDcard;
+            }
+
+            this.TextBox1.Text = modelCu.customerName;
+            this.TextBox2.Text= modelCu.customerPrivateEmail;
+            this.TextBox4.Text= modelCu.customerMobile;
+            
+           
+            if (modelCu.customerGender == "男")
+            {
+                this.RadioButton1.Checked = true;
+                classmale = "selected";
+            }
+            else if (modelCu.customerGender == "女")
+            {
+                this.RadioButton2.Checked = true;
+                classfemale = "selected";
+            }
+
+            if (modelCu.customerMarriageStatus == "未婚")
+            {
+                this.RadioButton3.Checked = true;
+                classunmarried = "selected";
+            }
+            else if (modelCu.customerMarriageStatus == "已婚")
+            {
+                this.RadioButton4.Checked = true;
+                classmarried = "selected";
+            }
+            displayage();
+        }
+        
+    }
+
+    void displayage()
+    {
+        int year = 1900, month = 0, day = 0, age = 0;
+        if (this.TextBox3.Text != "" && this.TextBox3.Text.Length == 18)
+        {
+            year = int.Parse(this.TextBox3.Text.Substring(6, 4));
+            month = int.Parse(this.TextBox3.Text.Substring(10, 2));
+            day = int.Parse(this.TextBox3.Text.Substring(12, 2));
+            age = DateTime.Now.Year - year;
+
+            if (int.Parse(this.TextBox3.Text.Substring(16, 1)) % 2 != 0)
+            {
+                this.RadioButton1.Checked = true;
+                this.RadioButton2.Checked = false;
+                classmale = "selected";
+            }
+            else
+            {
+                this.RadioButton1.Checked = false;
+                this.RadioButton2.Checked = true;
+                classfemale = "selected";
+            }
+        }
+        else
+        {
+            if (modelCu.customerDOB != null && modelCu.customerDOB != pc.baddate)
+            {
+                year = modelCu.customerDOB.Year;
+                month = modelCu.customerDOB.Month;
+                day = modelCu.customerDOB.Day;
+                age = DateTime.Now.Year - year;
+            }
+        }
+        if (age > 1)
+        {
+            this.TextBox6.Text = age.ToString();
+            DropDownListYear.SelectedIndex = DropDownListYear.Items.IndexOf(DropDownListYear.Items.FindByText(year.ToString()));
+            DropDownListMonth.SelectedIndex = DropDownListMonth.Items.IndexOf(DropDownListMonth.Items.FindByText(month.ToString()));
+            DropDownListDay.SelectedIndex = DropDownListDay.Items.IndexOf(DropDownListDay.Items.FindByText(day.ToString()));
+        }
+
+    }
+    protected void Button3_Click(object sender, EventArgs e)
+    {
+        if (this.TextBox1.Text == "")
+        {
+            Response.Write("<script>alert('姓名不能为空!')</script>");
+        }
+        else
+        {
+            modelCu.customerName = this.TextBox1.Text;
+        }
+        if (this.TextBox2.Text == "")
+        {
+            Response.Write("<script>alert('邮箱不能为空!')</script>");
+        }
+        else
+        {
+            modelCu.customerEmail = this.TextBox2.Text;
+        }
+       
+        if (this.TextBox4.Text == "")
+        {
+            Response.Write("<script>alert('手机号不能为空!')</script>");
+        }
+        else
+        {
+            modelCu.customerMobile = this.TextBox4.Text;
+        }
+        if (this.TextBox3.Text == "" && this.TextBox5.Text == "")
+        {
+            Response.Write("<script>alert('身份证或护照号不能为空!')</script>");
+        }
+        else
+        {
+            if (this.TextBox5.Text == "")
+            {
+                modelCu.customerIDcard = this.TextBox3.Text;
+            }
+            else
+            {
+                modelCu.customerIDcard = this.TextBox5.Text;
+            }
+        }
+        if (this.RadioButton1.Checked && this.RadioButton2.Checked)
+        {
+            Response.Write("<script>alert('请选择性别!')</script>");
+        }
+        else
+        {
+            if (this.RadioButton1.Checked == true)
+            {
+                modelCu.customerGender = "男";
+            }
+            else
+            {
+                modelCu.customerGender = "女";
+            }
+        }
+
+        //if (this.RadioButton3.Checked&& this.RadioButton4.Checked)
+        //{
+        //    Response.Write("<script>alert('请选择婚姻!')</script>");
+        //}
+        //else
+        //{
+            if (this.RadioButton3.Checked == true)
+            {
+                modelCu.customerMarriageStatus = "未婚";
+            }
+            else
+            {
+                modelCu.customerMarriageStatus = "已婚";
+            }
+        //}
+
+        if (this.DropDownListDay.SelectedItem.ToString() == "" && this.DropDownListMonth.SelectedItem.ToString() == "" && this.DropDownListYear.SelectedItem.ToString() == "")
+        {
+            Response.Write("<script>alert('请填写时间!')</script>");
+        }
+        else
+        {
+            displayage();
+            string n=DropDownListDay.SelectedValue.ToString();
+            string y=DropDownListMonth.SelectedValue.ToString();
+            string r=DropDownListYear.SelectedValue.ToString();
+            modelCu.customerDOB = DateTime.Parse( r+"-"+y+"-"+n);
+            
+        }
+        Cb.update(modelCu);
+        if (ViewState["t"].ToString() == "login")
+        {
+            Response.Redirect("index.aspx");
+        }
+        else if (ViewState["t"].ToString() == "reserveBindxam")
+        {
+            Response.Redirect("reserveBindexam.aspx");
+        }
+        else
+        {
+            Response.Redirect("reserveexam.aspx", true);
+        }
+    }
+}

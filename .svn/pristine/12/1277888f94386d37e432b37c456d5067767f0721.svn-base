@@ -1,0 +1,114 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text;
+
+namespace SQLServerDAL
+{
+    public class sql_AssessmentQuestion :IDAL.AssessmentQuestionDal
+    {
+        DBunit.SQLAccess sql = new DBunit.SQLAccess();
+        DateTime baddate = DateTime.Parse("1900-01-01");
+        public int Add(Model.AssessmentQuestion AssessmentQuestion)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("insert into AssessmentQuestion values (");
+            strsql.AppendFormat("{0},", AssessmentQuestion.INumber);
+            strsql.AppendFormat("{0},", AssessmentQuestion.QTID);
+            strsql.AppendFormat("'{0}',", AssessmentQuestion.QTShortName);
+            strsql.AppendFormat("{0},", AssessmentQuestion.QCID);
+            strsql.AppendFormat("N'{0}',", AssessmentQuestion.AQQuestion);
+            strsql.AppendFormat("{0},", AssessmentQuestion.AQType);
+            strsql.AppendFormat("N'{0}',", AssessmentQuestion.AQRemark);
+            strsql.AppendFormat("N'{0}',", AssessmentQuestion.AQDes);
+            strsql.AppendFormat("{0},", AssessmentQuestion.AQGender);
+            strsql.AppendFormat("{0},", AssessmentQuestion.AQMinAge);
+            strsql.AppendFormat("{0},", AssessmentQuestion.AQMaxAge);
+            strsql.AppendFormat("{0},", AssessmentQuestion.Marriage);
+            strsql.AppendFormat("{0},", AssessmentQuestion.AQOptions);
+            strsql.AppendFormat("{0},", AssessmentQuestion.AQSort);
+            strsql.AppendFormat("{0},", AssessmentQuestion.CreateTime == baddate ? "null" : "'" + AssessmentQuestion.CreateTime.ToString() + "'");
+            strsql.AppendFormat("{0},", AssessmentQuestion.UpdateTime == baddate ? "null" : "'" + AssessmentQuestion.UpdateTime.ToString() + "'");
+            strsql.AppendFormat("{0},", AssessmentQuestion.CreateUser);
+            strsql.AppendFormat("{0},", AssessmentQuestion.UpdateUser);
+            strsql.AppendFormat("{0},", AssessmentQuestion.IsShow);
+            strsql.AppendFormat("{0}", AssessmentQuestion.IsDel);
+            strsql.Append(") select SCOPE_IDENTITY()");
+            return Convert.ToInt32(sql.ExecuteSc(strsql.ToString()));
+        }
+
+
+        public Model.AssessmentQuestion getAssessmentQuestion(Model.AssessmentQuestion AssessmentQuestion1)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("select * from AssessmentQuestion where ");
+            strsql.AppendFormat("AQID='{0}'", AssessmentQuestion1.AQID);
+            DataTable dt = sql.ExecuteDataSet(strsql.ToString()).Tables[0];
+            if (dt.Rows.Count < 1) return null;
+
+            Model.AssessmentQuestion AssessmentQuestion = new Model.AssessmentQuestion();
+            AssessmentQuestion.AQID = AssessmentQuestion1.AQID;
+            AssessmentQuestion.INumber = int.Parse(dt.Rows[0]["INumber"].ToString());
+            AssessmentQuestion.QTID = int.Parse(dt.Rows[0]["QTID"].ToString());
+            AssessmentQuestion.QTShortName = dt.Rows[0]["QTShortName"].ToString();
+            AssessmentQuestion.QCID = int.Parse(dt.Rows[0]["QCID"].ToString());
+            AssessmentQuestion.AQQuestion = dt.Rows[0]["AQQuestion"].ToString();
+            AssessmentQuestion.AQType = int.Parse(dt.Rows[0]["AQType"].ToString());
+            AssessmentQuestion.AQRemark = dt.Rows[0]["AQRemark"].ToString();
+            AssessmentQuestion.AQDes = dt.Rows[0]["AQDes"].ToString();
+            AssessmentQuestion.AQGender = int.Parse(dt.Rows[0]["AQGender"].ToString());
+            AssessmentQuestion.AQMinAge = int.Parse(dt.Rows[0]["AQMinAge"].ToString());
+            AssessmentQuestion.AQMaxAge = int.Parse(dt.Rows[0]["AQMaxAge"].ToString());
+            AssessmentQuestion.Marriage = int.Parse(dt.Rows[0]["Marriage"].ToString());
+            AssessmentQuestion.AQOptions = int.Parse(dt.Rows[0]["AQOptions"].ToString());
+            AssessmentQuestion.AQSort = int.Parse(dt.Rows[0]["AQSort"].ToString());
+            AssessmentQuestion.CreateTime = dt.Rows[0]["CreateTime"].ToString() == "" ? baddate : DateTime.Parse(dt.Rows[0]["CreateTime"].ToString());
+            AssessmentQuestion.UpdateTime = dt.Rows[0]["UpdateTime"].ToString() == "" ? baddate : DateTime.Parse(dt.Rows[0]["UpdateTime"].ToString());
+            AssessmentQuestion.CreateUser = int.Parse(dt.Rows[0]["CreateUser"].ToString());
+            AssessmentQuestion.UpdateUser = int.Parse(dt.Rows[0]["UpdateUser"].ToString());
+            AssessmentQuestion.IsShow = int.Parse(dt.Rows[0]["IsShow"].ToString());
+            AssessmentQuestion.IsDel = int.Parse(dt.Rows[0]["IsDel"].ToString());
+            return AssessmentQuestion;
+        }
+
+
+        public int update(Model.AssessmentQuestion AssessmentQuestion)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("update AssessmentQuestion set ");
+            strsql.AppendFormat(" INumber ='{0}',", AssessmentQuestion.INumber);
+            strsql.AppendFormat(" QTID ='{0}',", AssessmentQuestion.QTID);
+            strsql.AppendFormat(" QTShortName ='{0}',", AssessmentQuestion.QTShortName);
+            strsql.AppendFormat(" QCID ='{0}',", AssessmentQuestion.QCID);
+            strsql.AppendFormat(" AQQuestion =N'{0}',", AssessmentQuestion.AQQuestion);
+            strsql.AppendFormat(" AQType ='{0}',", AssessmentQuestion.AQType);
+            strsql.AppendFormat(" AQRemark =N'{0}',", AssessmentQuestion.AQRemark);
+            strsql.AppendFormat(" AQDes =N'{0}',", AssessmentQuestion.AQDes);
+            strsql.AppendFormat(" AQGender ='{0}',", AssessmentQuestion.AQGender);
+            strsql.AppendFormat(" AQMinAge ='{0}',", AssessmentQuestion.AQMinAge);
+            strsql.AppendFormat(" AQMaxAge ='{0}',", AssessmentQuestion.AQMaxAge);
+            strsql.AppendFormat(" Marriage ='{0}',", AssessmentQuestion.Marriage);
+            strsql.AppendFormat(" AQOptions ='{0}',", AssessmentQuestion.AQOptions);
+            strsql.AppendFormat(" AQSort ='{0}',", AssessmentQuestion.AQSort);
+            strsql.AppendFormat(" CreateTime ={0},", AssessmentQuestion.CreateTime == baddate ? "null" : "'" + AssessmentQuestion.CreateTime.ToString() + "'");
+            strsql.AppendFormat(" UpdateTime ={0},", AssessmentQuestion.UpdateTime == baddate ? "null" : "'" + AssessmentQuestion.UpdateTime.ToString() + "'");
+            strsql.AppendFormat(" CreateUser ='{0}',", AssessmentQuestion.CreateUser);
+            strsql.AppendFormat(" UpdateUser ='{0}',", AssessmentQuestion.UpdateUser);
+            strsql.AppendFormat(" IsShow ='{0}',", AssessmentQuestion.IsShow);
+            strsql.AppendFormat(" IsDel ='{0}'", AssessmentQuestion.IsDel);
+            strsql.AppendFormat(" where AQID={0}", AssessmentQuestion.AQID);
+            return sql.ExecuteNonQuery(strsql.ToString());
+        }
+
+
+        public int Delete(int AQID)
+        {
+            return sql.ExecuteNonQuery("delete from AssessmentQuestion where AQID=" + AQID);
+        }
+        public DataTable Select(string ss)
+        {
+            return sql.ExecuteDataSet(ss).Tables[0];
+        }
+
+    }
+}

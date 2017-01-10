@@ -1,0 +1,119 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Model
+{
+    [Serializable]
+    public class QuestionType
+    {
+        private int _QTID = 0;
+        private string _QTName = "";
+        private string _QTShortName = "";
+        private string _QTDes = "";
+        private string _QTDocument = "";
+        private string _QTTemplate = "";
+        private string _QTPage = "";
+        private string _IName = "";
+        private int _IsSort = 0;
+        private DateTime _CreateTime = DateTime.Parse("1900-01-01");
+        private DateTime _UpdateTime = DateTime.Parse("1900-01-01");
+        private int _CreateUser = 0;
+        private int _UpdateUser = 0;
+        private int _IsShow = 0;
+        private int _IsDel = 0;
+
+
+        public int QTID
+        {
+            get { return _QTID; }
+            set { _QTID = value; }
+        }
+
+        public string QTName
+        {
+            get { return _QTName; }
+            set { _QTName = value; }
+        }
+
+        public string QTShortName
+        {
+            get { return _QTShortName; }
+            set { _QTShortName = value; }
+        }
+
+        public string QTDes
+        {
+            get { return _QTDes; }
+            set { _QTDes = value; }
+        }
+
+        public string QTDocument
+        {
+            get { return _QTDocument; }
+            set { _QTDocument = value; }
+        }
+
+        public string QTTemplate
+        {
+            get { return _QTTemplate; }
+            set { _QTTemplate = value; }
+        }
+
+        public string QTPage
+        {
+            get { return _QTPage; }
+            set { _QTPage = value; }
+        }
+
+        public string IName
+        {
+            get { return _IName; }
+            set { _IName = value; }
+        }
+
+        public int IsSort
+        {
+            get { return _IsSort; }
+            set { _IsSort = value; }
+        }
+
+        public DateTime CreateTime
+        {
+            get { return _CreateTime; }
+            set { _CreateTime = value; }
+        }
+
+        public DateTime UpdateTime
+        {
+            get { return _UpdateTime; }
+            set { _UpdateTime = value; }
+        }
+
+        public int CreateUser
+        {
+            get { return _CreateUser; }
+            set { _CreateUser = value; }
+        }
+
+        public int UpdateUser
+        {
+            get { return _UpdateUser; }
+            set { _UpdateUser = value; }
+        }
+
+        public int IsShow
+        {
+            get { return _IsShow; }
+            set { _IsShow = value; }
+        }
+
+        public int IsDel
+        {
+            get { return _IsDel; }
+            set { _IsDel = value; }
+        }
+
+
+    }
+}

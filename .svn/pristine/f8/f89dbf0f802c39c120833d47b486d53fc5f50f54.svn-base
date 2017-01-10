@@ -1,0 +1,67 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="examfaq.aspx.cs" Inherits="examfaq" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+
+<DIV class=nav>
+    <ul><li > <a href="Default.aspx">&nbsp;<asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,Default %>'></asp:Localize></a></li>
+<li > <a href="benefitplan.aspx">&nbsp;<asp:Localize ID="Localize2" runat="server" Text='<%$ Resources:GResource,benefitplan %>'></asp:Localize></a></li>
+<li > <a href="PersonalDetails.aspx">&nbsp;<asp:Localize ID="Localize3" runat="server" Text='<%$ Resources:GResource,PersonalDetails %>'></asp:Localize></a></li>
+<li class="current"> <a href="arrangeexam.aspx">&nbsp;<asp:Localize ID="Localize4" runat="server" Text='<%$ Resources:GResource,arrangeexam %>'></asp:Localize></a></li>
+<li > <a href="reportanalysis.aspx">&nbsp;<asp:Localize ID="Localize5" runat="server" Text='<%$ Resources:GResource,reportanalysis %>'></asp:Localize></a></li>
+<li > <a href="healthshop.aspx">&nbsp;<asp:Localize ID="Localize6" runat="server" Text='<%$ Resources:GResource,healthshop %>'></asp:Localize></a></li>
+<li > <a href="healthconsult.aspx">&nbsp;<asp:Localize ID="Localize7" runat="server" Text='<%$ Resources:GResource,healthconsult %>'></asp:Localize></a></li>
+<li > <a href="riskevaluate.aspx">&nbsp;<asp:Localize ID="Localize8" runat="server" Text='<%$ Resources:GResource,riskevaluate %>'></asp:Localize></a></li>
+       <td width="100%">&nbsp;</td>   </ul>
+    </DIV>
+
+    <DIV class=clearboth></DIV>
+
+<DIV class=content>
+<DIV>
+<DIV 
+style="PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px; WIDTH: 100%">
+<DIV class=DNNAlignleft>
+<DIV class="BA2 DashBoardContent">
+<DIV>
+
+<DIV class=content>
+<DIV class=main_content>
+
+    <table style="width: 100%;">
+        <tr>
+            <td style=" width:166px; background-color:#f3f3f3; vertical-align: top;" 
+                valign="top">
+                <div id="menu1">
+<ul>
+<li><a href="arrangeexam.aspx" style="background-image: url('Images/a1.png'); background-repeat: no-repeat; background-position: 13px"><asp:Localize ID="Localize9" runat="server"  Text='<%$ Resources:GResource,arrangeexamc %>'></asp:Localize></a></li>
+<li><a href="arrangeRelexam.aspx" style="background-image: url('Images/a2.png'); background-repeat: no-repeat; background-position: 13px"><asp:Localize ID="Localize10" runat="server" Text='<%$ Resources:GResource,arrangeRelexamc %>'></asp:Localize></a></li>
+<li><a href="viewreport.aspx" style="background-image: url('Images/a3.png'); background-repeat: no-repeat; background-position: 15px"><asp:Localize ID="Localize11" runat="server" Text='<%$ Resources:GResource,viewreportc %>'></asp:Localize></a></li>
+<li><a href="examfaq.aspx" id="current" style="background-image: url('Images/a4.png'); background-repeat: no-repeat; background-position: 18px"><asp:Localize ID="Localize12" runat="server" Text='<%$ Resources:GResource,examfaqc %>'></asp:Localize></a></li>
+</ul>
+</div>
+<div style="height:235px">
+<img src="Images/ab.jpg" />
+</div>
+            </td>
+            <td  style=" width:747px;">
+                <%=maincontent%>
+                
+                
+            </td>
+            <td>
+                &nbsp;
+            </td>
+        </tr>
+        
+        
+    </table>
+
+</DIV>
+
+</DIV></DIV></DIV></DIV></DIV>
+<DIV 
+style="PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px; WIDTH: 100%"></DIV></DIV>
+</DIV>
+
+</asp:Content>
+

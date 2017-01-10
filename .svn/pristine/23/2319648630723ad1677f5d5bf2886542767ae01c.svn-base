@@ -1,0 +1,159 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Text;
+public partial class Admin_supplierAdmin_ikangcard : System.Web.UI.Page
+{
+    
+    PublicClass pc = new PublicClass();
+    
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            this.Label1.Text = getemptycardnum().ToString();
+        }
+        if (ViewState["ikcardselectcomm"] != null && ViewState["ikcardselectcomm"].ToString() != "")
+        {
+            this.SqlDataSource1.SelectCommand = ViewState["ikcardselectcomm"].ToString();
+        }
+    }
+
+    int getemptycardnum()
+    {
+        string s = "select count(*) from tab_examcard where Cardstatus='emptycard'";
+        Bll.examcardBll eb = new Bll.examcardBll();
+        DataTable dt = eb.Select(s);
+        return Convert.ToInt32(dt.Rows[0][0]);
+    }
+
+    protected void Button3_Click(object sender, EventArgs e)
+    {
+        int successfulcount = 0, errorcount = 0;
+        upExcel ue = new upExcel();
+        string currentname = "";
+        try
+        {
+            if (this.FileUpload1.HasFile)
+            {
+                if (!ue.SaveUpFile("~/Admin/temp/", this.FileUpload1))//上传文件
+                {
+                    throw new Exception("上传文件失败!");
+                }
+
+                DataTable inputdt = ue.InputExcel("爱康卡");
+                if (inputdt == null)
+                {
+                    throw new Exception("Excel文件读取失败!");
+                }
+
+                int j;
+                Bll.examcardBll eb = new Bll.examcardBll();
+                Model.tab_examcard examcard;
+                Bll.CustomerBll cb = new Bll.CustomerBll();
+                Model.tab_customers customer = new Model.tab_customers();
+                StringBuilder erroritem = new StringBuilder();
+                for (int i = 0; i < inputdt.Rows.Count; i++)
+                {
+                    j = 0;
+                    examcard = new Model.tab_examcard();
+
+                    examcard.CardNumIKang = inputdt.Rows[i][j++].ToString().Trim();
+                    //examcard.Cardstatus = inputdt.Rows[i][j++].ToString().Trim();
+                    j++;
+                    examcard.company = inputdt.Rows[i][j++].ToString().Trim();
+                    examcard.name = inputdt.Rows[i][j++].ToString().Trim();
+                    currentname = examcard.name;
+
+                    examcard.IDcard = inputdt.Rows[i][j++].ToString().Trim();
+                    
+                    if (examcard.IDcard == "")
+                    {
+                        examcard.Cardstatus = "emptycard";
+                    }
+                    else
+                    {
+                        examcard.Cardstatus = "avaiable";
+                        customer = new Model.tab_customers();
+                        customer.customerName = examcard.name;
+                        customer.customerIDcard = examcard.IDcard;
+                        customer = cb.getCustomer(customer);
+                        examcard.customerID = customer.customerID;
+
+                    }
+                    //if (inputdt.Rows[i][j] != null && inputdt.Rows[i][j].ToString() != "")
+                    //{
+                    //    examcard.customerID = int.Parse(inputdt.Rows[i][j].ToString().Trim());
+                    //}
+                    //j++;
+                    //if (inputdt.Rows[i][j] != null && inputdt.Rows[i][j].ToString() != "")
+                    //{
+                    //    examcard.relativeID = int.Parse(inputdt.Rows[i][j].ToString().Trim());
+                    //}
+
+                    try
+                    {
+                        if (eb.Add(examcard) < 1)
+                        {
+                            errorcount++;
+                        }
+                        else
+                        {
+                            successfulcount++;
+                        }
+
+                    }
+                    catch
+                    {
+                        errorcount++;
+                        erroritem.Append(examcard.name+",\n");
+                    }
+                }
+                Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('操作已完成！其中成功导入数据" + successfulcount + "条，失败" + errorcount + "条"+erroritem.ToString()+"'); </script>");
+                GridView1.DataBind();
+            }
+            else
+            {
+                throw new Exception("请选择Excel文件!");
+            }
+        }
+        catch (Exception ex)
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + ex.Message + ",current:"+currentname+"'); </script>");
+        }
+    }
+
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        string s = this.TextBox1.Text;
+        string scmd = "SELECT [CardNumIKang], [Cardstatus], [name], [IDcard], [customerID], [relativeID], [company], [id] FROM [tab_examcard] ";
+
+        if (s != "")
+        {
+            scmd += "where (CardNumIKang like '%" + s + "%' or  name like '%" + s + "%' or  IDcard like '%" + s + "%')";
+        }
+        ViewState["ikcardselectcomm"] = scmd;
+        this.SqlDataSource1.SelectCommand = scmd;
+        this.SqlDataSource1.DataBind();
+    }
+
+    protected void ButtonEE_Click(object sender, EventArgs e)
+    {
+        PublicClass pc = new PublicClass();
+        GridView1.AllowPaging = false;// turn off paging 
+        GridView1.DataSourceID = "";
+        GridView1.DataSourceID = this.SqlDataSource1.ID;
+
+        GridView1.DataBind();
+        pc.gridviewtoexcel(GridView1, "MediPlusexport");
+        GridView1.AllowPaging = true;
+        GridView1.DataSourceID = "";
+        GridView1.DataSourceID = this.SqlDataSource1.ID;
+
+        GridView1.DataBind();
+    }
+}

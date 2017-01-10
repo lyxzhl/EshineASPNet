@@ -1,0 +1,79 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="viewpackagedetail.aspx.cs" Inherits="viewpackagedetail" %>
+
+
+<%@ Register TagPrefix="MPuc" TagName="headcontent" Src="UserControl/headcontent.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="mobilenav" Src="UserControl/mobilenav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="desktopnav" Src="UserControl/desktopnav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="UserControl/footer1.ascx"%>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Medi-Plus - <asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,titletext %>'></asp:Localize></title>
+<MPuc:headcontent runat="server" ID="Unnamed1"/>
+<SCRIPT src="JS/mp.js" type="text/javascript"></SCRIPT>
+    <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js"></script>
+</head>
+<body class='blogs'>
+
+<div class='wrapper' data-behavior='Navigation'>
+<nav class='mobile_hidden' id='desktop'>
+<SCRIPT>
+    function sendemail(email) {
+        window.location.href = "mailto:" + escape(email);
+    }
+		</SCRIPT>
+<div class='container'>
+<a class='logo' href='index.aspx'>
+<img alt='Medi-Plus' src='Images/logo2.png'>
+</a>
+<asp:HyperLink Visible="false" class='button gray_button' ID="HyperLink4" runat="server" href='<%$ Resources:GResource,languagecode %>' Text='<%$ Resources:GResource,language %>'></asp:HyperLink>
+
+<asp:Panel ID="Panel2" runat="server" style="padding-top:8px;">
+<ul class='desktop_navigation' >
+<li style="color:#6c98cf; font-size:18px;">
+400-099-3363
+</li>
+<li>
+<A href="javascript:sendemail('service@medi-plus.com.cn');" style="padding-top:0; font-size:14px">service@medi-plus.com.cn</A>
+</li>
+</ul>
+</asp:Panel>
+</div>
+</nav>
+
+<form id="Form1" runat="server">
+<div class='container' data-behavior='Blog'>
+<div class='row'>
+<div class='twocol'></div>
+<div class='eightcol'>
+<div class='blog'>
+<div class='tile'>
+<div class='date'>
+    <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label></div>
+<hr>
+<h2>
+    <asp:Localize ID="Localize2" runat="server" Text='<%$ Resources:GResource,packageinfo %>'></asp:Localize>
+</h2>
+    <article>
+    
+<%=content %>
+
+        
+    </article>
+    
+</div>
+
+
+
+</div>
+</div>
+<div class='twocol last'></div>
+</div>
+</div>
+</form>
+</div>
+<MPuc:footer ID="ucfooter" runat="server"/>
+</body>
+</html>
+
+

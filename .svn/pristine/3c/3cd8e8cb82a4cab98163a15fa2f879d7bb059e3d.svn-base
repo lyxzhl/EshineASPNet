@@ -1,0 +1,161 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+
+public partial class IndexPage_BuyThing : System.Web.UI.Page
+{
+    Bll.ProductBll b_Pro = new Bll.ProductBll();
+    ShopingCar sh = new ShopingCar();
+   
+    protected void Page_Load(object sender, EventArgs e)
+    {  
+        if (!Page.IsPostBack)
+        { 
+            string pid = Request.QueryString["pid"];
+            ViewState["pid"] = Convert.ToInt32(pid);
+            addData(Convert.ToInt32(pid));
+            
+        }
+
+    }
+    void addData(int pid)
+    {
+        DataTable da = b_Pro.SelectPro("select * from tab_products where productID=" + pid);
+        string proName = da.Rows[0]["productName"].ToString();
+        string pic = da.Rows[0]["productImg"].ToString();
+        double price = Convert.ToDouble(da.Rows[0]["productUnitPrice"].ToString());
+        //如果购物篮为空就创建购物篮
+        if (Session["shop"] == null)
+        {
+            
+           DataTable dt= sh.createShop();
+            dt = sh.Add(pid, proName, pic, 1, price, price, dt);
+            Session["shop"] = dt;
+            this.DataList1.DataSource = dt;
+            this.DataList1.DataBind();
+            getMon(dt);
+        }
+        else
+        {
+            DataTable dt = (DataTable)Session["shop"];
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {   
+                
+                if (dt.Rows[i]["产品ID"].ToString() == pid.ToString())//判断是否已经购买了相同的商品
+                {
+                    //更新数量
+                    int count = Convert.ToInt32(dt.Rows[i]["数量"]);
+                    count++;
+                    dt = sh.Update(pid, count, dt);
+                    Session["shop"] = dt;
+                    this.DataList1.DataSource = dt;
+                    this.DataList1.DataBind();
+                    getMon(dt);
+                    return;
+
+                }
+
+            }
+
+            dt = sh.Add(pid, proName, pic, 1, price, price, dt);
+            Session["shop"] = dt;
+            this.DataList1.DataSource = dt;
+            this.DataList1.DataBind();
+            getMon(dt);
+
+        }
+    }
+    void getMon(DataTable dt)
+    { 
+        double sumMon = 0;
+        foreach (DataRow row in dt.Rows)
+        {
+            sumMon += Convert.ToDouble(row["小计"]);
+        }
+      
+        this.Label6.Text = sumMon.ToString();
+       
+       
+    }
+    protected void DataList1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+       
+
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+       
+        Response.Redirect("BindPro.aspx");
+    }
+    protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
+    {
+        
+    }
+    protected void DataList1_ItemDataBound(object sender, DataListItemEventArgs e)
+    {    
+    }
+    protected void DataList1_ItemCommand(object source, DataListCommandEventArgs e)
+    {
+         
+         DataTable dt = (DataTable)Session["shop"];
+        if (e.CommandName == "up")
+        {
+            try
+            {  TextBox la = (TextBox)e.Item.FindControl("TextBox1");
+                if (Convert.ToInt32(la.Text) > 0)
+                {
+                  
+                    string id = this.DataList1.DataKeys[e.Item.ItemIndex].ToString();
+                    dt = sh.Update(Convert.ToInt32(id), Convert.ToInt32(la.Text), dt);
+                    getMon(dt);
+                    Session["shop"] = dt;
+                }
+            }
+            catch
+            { }
+            this.DataList1.DataSource = dt;
+            this.DataList1.DataBind(); 
+        }
+       
+        
+    }
+
+    protected void Submit1_ServerClick(object sender, EventArgs e)
+    {
+        if (Session["cus"] == null)
+        {
+            Session["url"] = "Pay.aspx";
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('您还没登陆！！！')</script>");
+            //ClientScript.RegisterStartupScript(GetType(), "", "<script language>alert('您还没登陆！！！')</script>");
+            Server.Transfer("BindPro.aspx?pid=0");
+        }
+        else
+        {
+            Server.Transfer("Pay.aspx");
+        }
+ 
+    }
+    protected void CheckBox1_CheckedChanged(object sender, EventArgs e)
+    {
+        DataTable dt = (DataTable)Session["shop"];
+        for (int i = 0; i < this.DataList1.Items.Count; i++)
+        {
+            CheckBox cb = (CheckBox)this.DataList1.Items[i].FindControl("CheckBox1");
+            if (!cb.Checked)
+            {
+                string id = this.DataList1.DataKeys[this.DataList1.Items[i].ItemIndex].ToString();
+                dt = sh.Delete(Convert.ToInt32(id), dt);
+                getMon(dt);
+            }
+        }
+        this.DataList1.DataSource = dt;
+        this.DataList1.DataBind();  
+    }
+}

@@ -1,0 +1,132 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text;
+
+namespace SQLServerDAL
+{
+    public class sql_AssessmentReport :IDAL.AssessmentReportDal
+    {
+        DBunit.SQLAccess sql = new DBunit.SQLAccess();
+        DateTime baddate = DateTime.Parse("1900-01-01");
+        public int Add(Model.AssessmentReport AssessmentReport)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("insert into AssessmentReport values (");
+            strsql.AppendFormat("{0},", AssessmentReport.customerID);
+            strsql.AppendFormat("{0},", AssessmentReport.CType);
+            strsql.AppendFormat("'{0}',", AssessmentReport.customerCode);
+            strsql.AppendFormat("{0},", AssessmentReport.customerGender);
+            strsql.AppendFormat("{0},", AssessmentReport.customerDOB == baddate ? "null" : "'" + AssessmentReport.customerDOB.ToString() + "'");
+            strsql.AppendFormat("'{0}',", AssessmentReport.ARCode);
+            strsql.AppendFormat("{0},", AssessmentReport.customerAge);
+            strsql.AppendFormat("{0},", AssessmentReport.QTID);
+            strsql.AppendFormat("'{0}',", AssessmentReport.QTShortName);
+            strsql.AppendFormat("{0},", AssessmentReport.ARCreate == baddate ? "null" : "'" + AssessmentReport.ARCreate.ToString() + "'");
+            strsql.AppendFormat("{0},", AssessmentReport.ARStatus);
+            strsql.AppendFormat("'{0}',", AssessmentReport.ARDetail);
+            strsql.AppendFormat("{0},", AssessmentReport.ARScore);
+            strsql.AppendFormat("N'{0}',", AssessmentReport.QTTemplate);
+            strsql.AppendFormat("N'{0}',", AssessmentReport.QTPage);
+            strsql.AppendFormat("N'{0}',", AssessmentReport.IRequest);
+            strsql.AppendFormat("N'{0}',", AssessmentReport.IResponse);
+            strsql.AppendFormat("{0},", AssessmentReport.IRequestTime == baddate ? "null" : "'" + AssessmentReport.IRequestTime.ToString() + "'");
+            strsql.AppendFormat("{0},", AssessmentReport.IResponseTime == baddate ? "null" : "'" + AssessmentReport.IResponseTime.ToString() + "'");
+            strsql.AppendFormat("N'{0}',", AssessmentReport.ARContent);
+            strsql.AppendFormat("{0},", AssessmentReport.CreateTime == baddate ? "null" : "'" + AssessmentReport.CreateTime.ToString() + "'");
+            strsql.AppendFormat("{0},", AssessmentReport.UpdateTime == baddate ? "null" : "'" + AssessmentReport.UpdateTime.ToString() + "'");
+            strsql.AppendFormat("{0},", AssessmentReport.CreateUser);
+            strsql.AppendFormat("{0},", AssessmentReport.UpdateUser);
+            strsql.AppendFormat("{0},", AssessmentReport.IsShow);
+            strsql.AppendFormat("{0}", AssessmentReport.IsDel);
+            strsql.Append(") select SCOPE_IDENTITY()");
+            return Convert.ToInt32(sql.ExecuteSc(strsql.ToString()));
+        }
+
+
+        public Model.AssessmentReport getAssessmentReport(Model.AssessmentReport AssessmentReport1)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("select * from AssessmentReport where ");
+            strsql.AppendFormat("ARID='{0}'", AssessmentReport1.ARID);
+            DataTable dt = sql.ExecuteDataSet(strsql.ToString()).Tables[0];
+            if (dt.Rows.Count < 1) return null;
+
+            Model.AssessmentReport AssessmentReport = new Model.AssessmentReport();
+            AssessmentReport.ARID = AssessmentReport1.ARID;
+            AssessmentReport.customerID = int.Parse(dt.Rows[0]["customerID"].ToString());
+            AssessmentReport.CType = int.Parse(dt.Rows[0]["CType"].ToString());
+            AssessmentReport.customerCode = dt.Rows[0]["customerCode"].ToString();
+            AssessmentReport.customerGender = int.Parse(dt.Rows[0]["customerGender"].ToString());
+            AssessmentReport.customerDOB = dt.Rows[0]["customerDOB"].ToString() == "" ? baddate : DateTime.Parse(dt.Rows[0]["customerDOB"].ToString());
+            AssessmentReport.ARCode = dt.Rows[0]["ARCode"].ToString();
+            AssessmentReport.customerAge = int.Parse(dt.Rows[0]["customerAge"].ToString());
+            AssessmentReport.QTID = int.Parse(dt.Rows[0]["QTID"].ToString());
+            AssessmentReport.QTShortName = dt.Rows[0]["QTShortName"].ToString();
+            AssessmentReport.ARCreate = dt.Rows[0]["ARCreate"].ToString() == "" ? baddate : DateTime.Parse(dt.Rows[0]["ARCreate"].ToString());
+            AssessmentReport.ARStatus = int.Parse(dt.Rows[0]["ARStatus"].ToString());
+            AssessmentReport.ARDetail = dt.Rows[0]["ARDetail"].ToString();
+            AssessmentReport.ARScore = double.Parse(dt.Rows[0]["ARScore"].ToString());
+            AssessmentReport.QTTemplate = dt.Rows[0]["QTTemplate"].ToString();
+            AssessmentReport.QTPage = dt.Rows[0]["QTPage"].ToString();
+            AssessmentReport.IRequest = dt.Rows[0]["IRequest"].ToString();
+            AssessmentReport.IResponse = dt.Rows[0]["IResponse"].ToString();
+            AssessmentReport.IRequestTime = dt.Rows[0]["IRequestTime"].ToString() == "" ? baddate : DateTime.Parse(dt.Rows[0]["IRequestTime"].ToString());
+            AssessmentReport.IResponseTime = dt.Rows[0]["IResponseTime"].ToString() == "" ? baddate : DateTime.Parse(dt.Rows[0]["IResponseTime"].ToString());
+            AssessmentReport.ARContent = dt.Rows[0]["ARContent"].ToString();
+            AssessmentReport.CreateTime = dt.Rows[0]["CreateTime"].ToString() == "" ? baddate : DateTime.Parse(dt.Rows[0]["CreateTime"].ToString());
+            AssessmentReport.UpdateTime = dt.Rows[0]["UpdateTime"].ToString() == "" ? baddate : DateTime.Parse(dt.Rows[0]["UpdateTime"].ToString());
+            AssessmentReport.CreateUser = int.Parse(dt.Rows[0]["CreateUser"].ToString());
+            AssessmentReport.UpdateUser = int.Parse(dt.Rows[0]["UpdateUser"].ToString());
+            AssessmentReport.IsShow = int.Parse(dt.Rows[0]["IsShow"].ToString());
+            AssessmentReport.IsDel = int.Parse(dt.Rows[0]["IsDel"].ToString());
+            return AssessmentReport;
+        }
+
+
+        public int update(Model.AssessmentReport AssessmentReport)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("update AssessmentReport set ");
+            strsql.AppendFormat(" customerID ='{0}',", AssessmentReport.customerID);
+            strsql.AppendFormat(" CType ='{0}',", AssessmentReport.CType);
+            strsql.AppendFormat(" customerCode ='{0}',", AssessmentReport.customerCode);
+            strsql.AppendFormat(" customerGender ='{0}',", AssessmentReport.customerGender);
+            strsql.AppendFormat(" customerDOB ={0},", AssessmentReport.customerDOB == baddate ? "null" : "'" + AssessmentReport.customerDOB.ToString() + "'");
+            strsql.AppendFormat(" ARCode ='{0}',", AssessmentReport.ARCode);
+            strsql.AppendFormat(" customerAge ='{0}',", AssessmentReport.customerAge);
+            strsql.AppendFormat(" QTID ='{0}',", AssessmentReport.QTID);
+            strsql.AppendFormat(" QTShortName ='{0}',", AssessmentReport.QTShortName);
+            strsql.AppendFormat(" ARCreate ={0},", AssessmentReport.ARCreate == baddate ? "null" : "'" + AssessmentReport.ARCreate.ToString() + "'");
+            strsql.AppendFormat(" ARStatus ='{0}',", AssessmentReport.ARStatus);
+            strsql.AppendFormat(" ARDetail ='{0}',", AssessmentReport.ARDetail);
+            strsql.AppendFormat(" ARScore ='{0}',", AssessmentReport.ARScore);
+            strsql.AppendFormat(" QTTemplate =N'{0}',", AssessmentReport.QTTemplate);
+            strsql.AppendFormat(" QTPage =N'{0}',", AssessmentReport.QTPage);
+            strsql.AppendFormat(" IRequest =N'{0}',", AssessmentReport.IRequest);
+            strsql.AppendFormat(" IResponse =N'{0}',", AssessmentReport.IResponse);
+            strsql.AppendFormat(" IRequestTime ={0},", AssessmentReport.IRequestTime == baddate ? "null" : "'" + AssessmentReport.IRequestTime.ToString() + "'");
+            strsql.AppendFormat(" IResponseTime ={0},", AssessmentReport.IResponseTime == baddate ? "null" : "'" + AssessmentReport.IResponseTime.ToString() + "'");
+            strsql.AppendFormat(" ARContent =N'{0}',", AssessmentReport.ARContent);
+            strsql.AppendFormat(" CreateTime ={0},", AssessmentReport.CreateTime == baddate ? "null" : "'" + AssessmentReport.CreateTime.ToString() + "'");
+            strsql.AppendFormat(" UpdateTime ={0},", AssessmentReport.UpdateTime == baddate ? "null" : "'" + AssessmentReport.UpdateTime.ToString() + "'");
+            strsql.AppendFormat(" CreateUser ='{0}',", AssessmentReport.CreateUser);
+            strsql.AppendFormat(" UpdateUser ='{0}',", AssessmentReport.UpdateUser);
+            strsql.AppendFormat(" IsShow ='{0}',", AssessmentReport.IsShow);
+            strsql.AppendFormat(" IsDel ='{0}'", AssessmentReport.IsDel);
+            strsql.AppendFormat(" where ARID={0}", AssessmentReport.ARID);
+            return sql.ExecuteNonQuery(strsql.ToString());
+        }
+
+
+        public int Delete(int ARID)
+        {
+            return sql.ExecuteNonQuery("delete from AssessmentReport where ARID=" + ARID);
+        }
+        public DataTable Select(string ss)
+        {
+            return sql.ExecuteDataSet(ss).Tables[0];
+        }
+
+    }
+}

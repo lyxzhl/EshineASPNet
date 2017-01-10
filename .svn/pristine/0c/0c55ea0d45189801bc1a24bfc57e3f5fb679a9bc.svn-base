@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Reflection;
+namespace DALFactory
+{
+    public class examcard_Factory
+    {
+        static readonly string path = System.Configuration.ConfigurationManager.AppSettings["DAL"];
+        public static IDAL.examcardDal Createusers()
+        {
+            string classname = path + ".sql_examcard";
+            return (IDAL.examcardDal)Assembly.Load(path).CreateInstance(classname);
+        }
+    }
+}

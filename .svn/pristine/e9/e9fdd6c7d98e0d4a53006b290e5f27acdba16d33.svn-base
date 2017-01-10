@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>霓蝶健康</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/framework7.ios.css" type="text/css" />
+    <link rel="stylesheet" href="css/icon.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/fullcalendar.css" />
+    <link rel="stylesheet" href="css/bootstrap-progressbar.min.css" />
+    <link rel="stylesheet" href="css/framework7.indexed-list.css" />
+</head>
+<body>
+    <div class="views">
+        <div class="view view-main">
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <img src="img/logo.png"></img>
+                    </div>
+                    <div class="center">霓蝶健康</div>
+                    <div class="right">
+                    </div>
+                </div>
+            </div>
+            <div class="pages navbar-through">
+                <div data-page="Index" class="page" ng-controller="IndexPageController">
+                    <div class="page-content">
+                        <div class="home-page-wrap">
+                            <div id="slides">
+                                <div class="banner one"></div>
+                                <div class="banner two"></div>
+                                <div class="banner three"></div>
+                            </div>
+                            <div class="home-page-module">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="metro metroAss col-100" onclick="goTo('./module/assessment/choose_assessment.html');">
+                                            <i class="icon icon-checkmark pull-center"></i>
+                                            <span class="pull-center">健康风险评估</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="metro metroCon col-50" onclick="goTo('./module/consulting/index.html');">
+                                            <i class="icon icon-question pull-center"></i>
+                                            <span class="pull-center">健康咨询</span>
+                                        </div>
+                                        <div class="metro metroSer col-50" onclick="goTo('./module/service/index.html');">
+                                            <i class="icon icon-list2 pull-center"></i>
+                                            <span class="pull-center">健康体检</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="metro metroRec col-50" onclick="goTo('./module/profile/index.html');">
+                                            <i class="icon icon-profile pull-center"></i>
+                                            <span class="pull-center">健康档案</span>
+                                        </div>
+                                        <div class="metro metroRid col-50" onclick="goTo('./module/aid/index.html');">
+                                            <i class="icon icon-aid-kit pull-center"></i>
+                                            <span class="pull-center">医疗援助</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="toolbar tabbar tbar hide">
+                <div class="toolbar-inner">
+                    <a href="#" class="tab-link active">
+                        <img src="img/1-press.png"></img>
+                        <p>首页</p>
+                    </a>
+                    <a href="#" class="tab-link hide" onclick="serviceDisabled();">
+                        <img src="img/2-n.png"></img>
+                        <p>社区</p>
+                    </a>
+                    <a href="#" class="tab-link hide" onclick="serviceDisabled();">
+                        <img src="img/3-n.png"></img>
+                        <p>计划</p>
+                    </a>
+                    <a href="#" class="tab-link" onclick="goToForBar(this, './module/user/info.html');">
+                        <img src="img/4-n.png"></img>
+                        <p>我的</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery.js"></script>
+    <script src="js/framework7.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/jquery.slides.min.js"></script>
+    <script src="js/bootstrap-progressbar.min.js"></script>
+    <script src="js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script src="js/fullcalendar.min.js"></script>
+    <script src="js/framework7.indexed-list.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?ak=YG2iv0eCzo1z6YTsau5pgd24&v=1.5"></script>
+    <script src="js/baidumap.js" type="text/javascript"></script>
+    <script src="js/app_ext.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/welcomescreen.js"></script>
+    <script src="js/IndexPageController.js"></script>
+    <script src="js/jquery.raty.js"></script>
+    <script src="js/init.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#slides').slidesjs({
+                width: 828,
+                height: 320,
+                navigation: false,
+                play: {
+                    active: false,
+                    effect: "slide",
+                    interval: 3000,
+                    auto: true,
+                    swap: true,
+                    pauseOnHover: false,
+                    restartDelay: 3000
+                }
+            });
+
+            var device = getDeviceNumber();
+            delLocalStorage("tqList");
+            delLocalStorage("tqReportList");
+
+            var page1 = $$(".pages").height();
+            var slides = $$("#slides").height();
+            var toolbar = $$(".toolbar").height();
+            var height = ((page1 - slides - toolbar) / 3 - 25);
+            if (height < 100)
+                height = 100;
+            var top = (height / 2) - 22;
+            $$(".metroAss").css({
+                "height": height + "px",
+                "line-height": height + "px"
+            });
+            $$(".metroCon").css({
+                "height": height + "px",
+                "line-height": height + "px"
+            });
+            $$(".metroSer").css({
+                "height": height + "px",
+                "line-height": height + "px"
+            });
+            $$(".metroRec").css({
+                "height": height + "px",
+                "line-height": height + "px"
+            });
+            $$(".metroRid").css({
+                "height": height + "px",
+                "line-height": height + "px"
+            });
+        });
+    </script>
+</body>
+
+</html>

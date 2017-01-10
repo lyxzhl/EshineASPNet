@@ -1,0 +1,146 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Text.RegularExpressions;
+using System.Collections;
+public partial class changepassword : PageBases
+{
+    Model.tab_customers modelCu = new Model.tab_customers();
+    Bll.CustomerBll Cb = new Bll.CustomerBll();
+    DataTable dt;
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            this.CheckUser((Hashtable)Application["Online"]);
+        }
+        modelCu.customerID = int.Parse(Session["id"].ToString());
+        if (!IsPostBack)
+        {
+            //if (dt.Rows[0]["customerLastPWChanged"] == null || dt.Rows[0]["customerLastPWChanged"].ToString() == "")
+                if (Session["firstlogin"] != null && Session["firstlogin"] == "1")
+            {
+                this.Label1.Text = "";
+                this.Label2.Text = "";
+            }
+            else
+            {
+                dt = Cb.CustomerSelect(modelCu);
+                
+                modelCu = Cb.getCustomer(modelCu);
+                 DateTime lastchn = DateTime.Parse(modelCu.customerLastPWChanged.ToString());
+                this.Label1.Text = lastchn.Date.ToShortDateString();
+                DateTime pwexpdate = lastchn.AddDays(180);
+                if (DateTime.Now > pwexpdate)
+                {
+                    this.Label2.Text = "已过期";
+                    this.Button1.Enabled = false;
+                }
+                else
+                {
+                    this.Label2.Text = pwexpdate.Date.ToShortDateString();
+                }
+            }
+        }
+
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        if (Session["firstlogin"] != null && Session["firstlogin"] == "1")
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "mustchngpwmsg") + "'); </script>");
+        }
+        else
+        {
+            Response.Redirect("index.aspx");
+        }
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        PublicClass pc = new PublicClass();
+        modelCu = Cb.getCustomer(modelCu);
+
+        if (pc.md5(this.TextBox1.Text) == modelCu.customerPwd )
+        {
+            //regex1检查密码长度，允许数字字母和特殊符号，但是不校验必须搭配字母和数字
+            //regex2判断密码必须包含数字及字母及特殊符号
+            //regex2判断密码必须包含数字及字母,允许特殊符号
+            String regex1 = @"^[-\da-zA-Z`=\\\[\];',./~!@#$%^&*()_+|{}:""<>?]{8,20}$";
+            String regex2 = @"[-\da-zA-Z`=\\\[\];',./~!@#$%^&*()_+|{}:""<>?]*((\d+[a-zA-Z]+[-`=\\\[\];',./~!@#$%^&*()_+|{}:""<>?]+)|(\d+[-`=\\\[\];',./~!@#$%^&*()_+|{}:""<>?]+[a-zA-Z]+)|([a-zA-Z]+\d+[-`=\\\[\];',./~!@#$%^&*()_+|{}:""<>?]+)|([a-zA-Z]+[-`=\\\[\];',./~!@#$%^&*()_+|{}:""<>?]+\d+)|([-`=\\\[\];',./~!@#$%^&*()_+|{}:""<>?]+\d+[a-zA-Z]+)|([-`=\\\[\];',./~!@#$%^&*()_+|{}:""<>?]+[a-zA-Z]+\d+))[-\da-zA-Z`=\\\[\];',./~!@#$%^&*()_+|{}:""<>?]*";
+            String regex3 = @"^(?=.*?[a-zA-Z])(?=.*?[0-6])[!""#$%&'()*+,\-./:;<=>?@\[\\\]^_`{|}~A-Za-z0-9]{8,20}$";
+            //if (Regex.IsMatch(this.TextBox2.Text, regex1) && Regex.IsMatch(this.TextBox2.Text, regex2))
+
+            if (Regex.IsMatch(this.TextBox2.Text, "[a-zA-Z]+"))
+            {
+                if (Regex.IsMatch(this.TextBox2.Text, "[0-9]+"))
+                {
+                    string s = pc.md5(this.TextBox2.Text);
+                    if (s != modelCu.customerOldPW1 && s != modelCu.customerOldPW2 && s != modelCu.customerOldPW3) //新密码不和前3个密码重复
+                    {
+                        modelCu = Cb.getCustomer(modelCu);
+                        if (this.Label1.Text != "")//从来没改过密码，则为第一次登录，不用缓存就密码，否则缓存
+                        {
+                            modelCu.customerOldPW1 = modelCu.customerOldPW2;
+                            modelCu.customerOldPW2 = modelCu.customerOldPW3;
+                            modelCu.customerOldPW3 = modelCu.customerPwd;//当前密码变成旧密码，把更旧的密码顶出去
+                        }
+                        modelCu.customerPwd = s;
+                        modelCu.customerLastPWChanged = DateTime.Now;
+                        Cb.update(modelCu);
+
+                        pc.addlog(modelCu.customerID.ToString(), this.TextBox2.Text, "", "", Session["empName"]+"用户平台修改密码", "");
+
+                        if (Session["firstlogin"] != null && Session["firstlogin"] == "1")
+                        {
+                            //Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('预约成功！'); window.location.href = 'viewarrangement.aspx';");
+                            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "pwchngsuccessmsg") + "'); window.location.href = 'TermsOfService.aspx';</script>");
+                            return;
+                            //Response.Redirect("TermsOfService.aspx");
+                        }
+                        else
+                        {
+                            this.Panel1.Visible = true;
+                            this.Panel2.Visible = false;
+                        }
+                    }
+                    else
+                    {
+                        Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "alertrepeat3set") + "'); </script>");
+
+                        this.TextBox2.Text = "";
+                        this.TextBox3.Text = "";
+                        this.TextBox2.Focus();
+                    }
+                }
+                else
+                {
+                    Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "alertneeddigit") + "'); </script>");
+                    this.TextBox2.Text = "";
+                    this.TextBox3.Text = "";
+                    this.TextBox2.Focus();
+                }
+            }
+            else
+            {
+                Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "alertneedchar") + "'); </script>");
+                this.TextBox2.Text = "";
+                this.TextBox3.Text = "";
+                this.TextBox2.Focus();
+            }
+            
+
+            
+        }
+        else
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "alertwrongcurrentpw") + "'); </script>");
+            
+            this.TextBox1.Text = "";
+            this.TextBox1.Focus();
+        }
+    }
+}

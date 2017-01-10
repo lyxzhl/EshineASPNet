@@ -1,0 +1,30 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick" onclick="goTo('../../index.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </a>
+        <div class="center">体检服务</div>
+        <div class="right">
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="ServiceIndex" class="page">
+        <div class="page-content content_SIndex">
+            <div class="SIndex-wrap">
+                <div class="jumbotron text-center">
+                    <p>
+                        <a href="#" class="btn btn-info" onclick="goTo('ourself_medical.html');">
+                            <i class="icon-user2"></i><span>为自己预约</span></a>
+                    </p>
+                    <p>
+                        <a href="#" class="btn btn-info" onclick="goTo('family_medical.html');">
+                            <i class="icon-users"></i><span>为家人预约</span></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

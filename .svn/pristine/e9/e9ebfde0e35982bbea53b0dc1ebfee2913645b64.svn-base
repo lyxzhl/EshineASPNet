@@ -1,0 +1,20 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </a>
+        <div class="center"></div>
+        <div class="right">
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="DetialSupplier" class="page">
+        <div class="page-content content_DSupplier">
+            <div class="DSupplier-wrap">
+            </div>
+        </div>
+    </div>
+</div>

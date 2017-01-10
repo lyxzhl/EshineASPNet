@@ -1,0 +1,61 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="hrpage_checkinfo2.aspx.cs" Inherits="hrpage_checkinfo2" %>
+
+<%@ Register Assembly="System.Web.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Namespace="System.Web.UI.DataVisualization.Charting" TagPrefix="asp" %>
+
+<%@ Register TagPrefix="MPuc" TagName="headcontent" Src="UserControl/headcontent.ascx" %>
+<%@ Register TagPrefix="MPuc" TagName="mobilenav" Src="UserControl/mobilenav.ascx" %>
+<%@ Register TagPrefix="MPuc" TagName="desktopnav" Src="UserControl/desktopnav.ascx" %>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="UserControl/footer1.ascx" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Medi-Plus -
+        <asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,titletext %>'></asp:Localize></title>
+    <MPuc:headcontent runat="server" ID="Unnamed1" />
+    <script src="JS/mp.js" type="text/javascript"></script>
+    <link type="text/css" href="bootstrap-3.2.0-dist/css/Style.css" rel="stylesheet" />
+</head>
+<body class='careers member_orders'>
+    <MPuc:mobilenav runat="server" ID="Unnamed2" />
+    <div class='wrapper' data-behavior='Navigation'>
+        <MPuc:desktopnav runat="server" ID="Unnamed3" />
+
+        <form id="Form1" runat="server">
+            <div class='container'>
+                <div class='row'>
+                    <div class='twelvecol' style="text-align:center;">
+                        <p style="font-size:x-large">
+                        <asp:Label ID="Label1" runat="server" Text="BU"></asp:Label>
+                                <asp:Label ID="Label2" runat="server" Text="初始人数"></asp:Label>
+                                <asp:Label ID="Label3" runat="server" Text="男"></asp:Label>
+                                共有<asp:Label ID="Label4" runat="server" Text="人"></asp:Label>人
+                            </p>
+            <asp:Repeater ID="Repeater1" runat="server">
+                <HeaderTemplate>
+                    <table class=" table  table-bordered">
+                        
+                        <tr>
+                            <td style="text-align:center">姓名</td>
+                            <td style="text-align:center">体检日期</td>
+                            <td style="text-align:center">体检机构</td>
+                        </tr>
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <tr>
+                        <td style="text-align:center"><%#Eval("customerName") %></td>
+                        <td style="text-align:center"><%#Eval("examDate") %></td>
+                        <td style="text-align:center"><%#Eval("examBranch") %></td>
+                    </tr>
+                </ItemTemplate>
+                <FooterTemplate>
+                    </table>
+                </FooterTemplate>
+            </asp:Repeater>
+                        </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <MPuc:footer ID="ucfooter" runat="server" />
+</body>
+</html>

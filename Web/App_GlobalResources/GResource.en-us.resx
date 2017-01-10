@@ -1,0 +1,1143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Default" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="healthconsult" xml:space="preserve">
+    <value>Health Consult</value>
+  </data>
+  <data name="healthshop" xml:space="preserve">
+    <value>Health Shop</value>
+  </data>
+  <data name="PersonalDetails" xml:space="preserve">
+    <value>Personal Details</value>
+  </data>
+  <data name="reportanalysis" xml:space="preserve">
+    <value>Report</value>
+  </data>
+  <data name="riskevaluate" xml:space="preserve">
+    <value>Risk Evaluate</value>
+  </data>
+  <data name="examfaqc" xml:space="preserve">
+    <value>F&amp;Q</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>中文</value>
+  </data>
+  <data name="languagecode" xml:space="preserve">
+    <value>?language=zh-cn</value>
+  </data>
+  <data name="viewreportc" xml:space="preserve">
+    <value>View Report</value>
+  </data>
+  <data name="welcommsg" xml:space="preserve">
+    <value>Welcome to Medi-Plus</value>
+  </data>
+  <data name="aleartcorrectemail" xml:space="preserve">
+    <value>Please enter correct email!</value>
+  </data>
+  <data name="confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="personaldetail" xml:space="preserve">
+    <value>Personal Details</value>
+  </data>
+  <data name="relativedetail" xml:space="preserve">
+    <value>Relative Detail</value>
+  </data>
+  <data name="addressmanagement" xml:space="preserve">
+    <value>Shipping</value>
+  </data>
+  <data name="addthisaddress" xml:space="preserve">
+    <value>Add Address</value>
+  </data>
+  <data name="contactAddress" xml:space="preserve">
+    <value>Shipping Address</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="detailAddress" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="mobilenumber" xml:space="preserve">
+    <value>Mobile</value>
+  </data>
+  <data name="nosavedaddress" xml:space="preserve">
+    <value>You don't have shipping address!</value>
+  </data>
+  <data name="recipient" xml:space="preserve">
+    <value>Recipient</value>
+  </data>
+  <data name="savedaddress" xml:space="preserve">
+    <value>Saved shipping addresses</value>
+  </data>
+  <data name="selectCity" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="selectProvince" xml:space="preserve">
+    <value>Province</value>
+  </data>
+  <data name="selectZone" xml:space="preserve">
+    <value>Zone</value>
+  </data>
+  <data name="titletext" xml:space="preserve">
+    <value>Microsoft Professor</value>
+  </data>
+  <data name="accountname" xml:space="preserve">
+    <value>Account name</value>
+  </data>
+  <data name="accountnum" xml:space="preserve">
+    <value>Account No.</value>
+  </data>
+  <data name="alertalipayfailed" xml:space="preserve">
+    <value>Payment failed, verify Alipay failed!</value>
+  </data>
+  <data name="alertcancelordersucc" xml:space="preserve">
+    <value>Cancel order succeed！</value>
+  </data>
+  <data name="alertcantfindorder" xml:space="preserve">
+    <value>Can not find this order, please contact custom service!</value>
+  </data>
+  <data name="alertidmust18" xml:space="preserve">
+    <value>ID number should be 18 digits long！</value>
+  </data>
+  <data name="alertmobilemust11" xml:space="preserve">
+    <value>Mobile number must be 11 digits long！</value>
+  </data>
+  <data name="alertneedanswer" xml:space="preserve">
+    <value>Please enter answer!</value>
+  </data>
+  <data name="alertneeddob" xml:space="preserve">
+    <value>Please select DOB!</value>
+  </data>
+  <data name="alertneedemail" xml:space="preserve">
+    <value>Please enter corrct email!</value>
+  </data>
+  <data name="alertneedfullid" xml:space="preserve">
+    <value>Please enter full ID number!</value>
+  </data>
+  <data name="alertneedidorpass" xml:space="preserve">
+    <value>Please enter ID number or passport number！</value>
+  </data>
+  <data name="alertneedmaritalstatus" xml:space="preserve">
+    <value>Please select marital status！</value>
+  </data>
+  <data name="alertneedmobile" xml:space="preserve">
+    <value>Please enter mobile number！</value>
+  </data>
+  <data name="alertneedname" xml:space="preserve">
+    <value>Please enter name！</value>
+  </data>
+  <data name="alertneedquestion" xml:space="preserve">
+    <value>Please choose question！</value>
+  </data>
+  <data name="alertneedrecipient" xml:space="preserve">
+    <value>Please enter recipient!</value>
+  </data>
+  <data name="alertneedrecipienttel" xml:space="preserve">
+    <value>Please enter recipient mobile!</value>
+  </data>
+  <data name="alertneedrel" xml:space="preserve">
+    <value>Please select relative！</value>
+  </data>
+  <data name="alertneedreportaddr" xml:space="preserve">
+    <value>Please enter shipping address!</value>
+  </data>
+  <data name="alertneedreportfile" xml:space="preserve">
+    <value>Please select report file！</value>
+  </data>
+  <data name="alertneedreporttype" xml:space="preserve">
+    <value>Please select report type！</value>
+  </data>
+  <data name="alertneedsex" xml:space="preserve">
+    <value>Please select sex！</value>
+  </data>
+  <data name="alertneeduserpw" xml:space="preserve">
+    <value>Please enter username and password!</value>
+  </data>
+  <data name="alertneedvericode" xml:space="preserve">
+    <value>Please enter verify code!</value>
+  </data>
+  <data name="alertnoemailrecord" xml:space="preserve">
+    <value>Cannot find this email record, please enter correct email!</value>
+  </data>
+  <data name="alertpayerrortry" xml:space="preserve">
+    <value>Payment error, please try again!</value>
+  </data>
+  <data name="alertpaysucceed" xml:space="preserve">
+    <value>Payment succeed!</value>
+  </data>
+  <data name="alertreportsldpdf" xml:space="preserve">
+    <value>Report file should be pdf format！</value>
+  </data>
+  <data name="alertsendemailerror" xml:space="preserve">
+    <value>Error sending email!</value>
+  </data>
+  <data name="alertsurecancel" xml:space="preserve">
+    <value>return confirm("Sure to cancel？");</value>
+  </data>
+  <data name="alertuploadsucceed" xml:space="preserve">
+    <value>Upload report succeed！</value>
+  </data>
+  <data name="alertwronganswer" xml:space="preserve">
+    <value>Wrong answer, please double check!</value>
+  </data>
+  <data name="alertwrongDOB" xml:space="preserve">
+    <value>Incorrect DOB!</value>
+  </data>
+  <data name="alertwrongIDnum" xml:space="preserve">
+    <value>Incorrect ID number!</value>
+  </data>
+  <data name="alertwrongmobile" xml:space="preserve">
+    <value>Incorrect mobile number, please enter again！</value>
+  </data>
+  <data name="alertwronguserpw" xml:space="preserve">
+    <value>Username or password incorrect!</value>
+  </data>
+  <data name="alertwrongvericode" xml:space="preserve">
+    <value>Wrong verify code!</value>
+  </data>
+  <data name="alertwrongzone" xml:space="preserve">
+    <value>Incorrect region!</value>
+  </data>
+  <data name="back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="backtohome" xml:space="preserve">
+    <value>Back to Home</value>
+  </data>
+  <data name="cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="changepassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="children" xml:space="preserve">
+    <value>Children</value>
+  </data>
+  <data name="choosebranch" xml:space="preserve">
+    <value>Double Click to Choose Branch</value>
+  </data>
+  <data name="ciming" xml:space="preserve">
+    <value>Ci Ming</value>
+  </data>
+  <data name="cimings" xml:space="preserve">
+    <value>CiMing</value>
+  </data>
+  <data name="contacttel" xml:space="preserve">
+    <value>HOTLINE</value>
+  </data>
+  <data name="continuego" xml:space="preserve">
+    <value>Continue→</value>
+  </data>
+  <data name="coordinatedoctor" xml:space="preserve">
+    <value>Coordinate Doctor</value>
+  </data>
+  <data name="coordinatehospital" xml:space="preserve">
+    <value>Coordinate Hospital</value>
+  </data>
+  <data name="copyrightpolicy" xml:space="preserve">
+    <value>Copyright Policy</value>
+  </data>
+  <data name="couple" xml:space="preserve">
+    <value>Couple</value>
+  </data>
+  <data name="day" xml:space="preserve">
+    <value>Day</value>
+  </data>
+  <data name="discribesymptom" xml:space="preserve">
+    <value>Please briefly discribe your symptom!</value>
+  </data>
+  <data name="dob" xml:space="preserve">
+    <value>DOB</value>
+  </data>
+  <data name="docheckup" xml:space="preserve">
+    <value>Do check-up</value>
+  </data>
+  <data name="docheckupandpay" xml:space="preserve">
+    <value>Do check-up and payment</value>
+  </data>
+  <data name="doctorname" xml:space="preserve">
+    <value>Doctor name</value>
+  </data>
+  <data name="dontagree" xml:space="preserve">
+    <value>I do not agree</value>
+  </data>
+  <data name="dontagreemsg" xml:space="preserve">
+    <value>return confirm("You can noly reserve check-up by phone without agreeing terms of service, are you sure?");</value>
+  </data>
+  <data name="doublecheckinfo" xml:space="preserve">
+    <value>Double Check Personal Info. and Check-up Info.</value>
+  </data>
+  <data name="downloadpdfdoc" xml:space="preserve">
+    <value>PDF download</value>
+  </data>
+  <data name="entryexam" xml:space="preserve">
+    <value>Entry medical check-up</value>
+  </data>
+  <data name="examdate" xml:space="preserve">
+    <value>Medical check-up date</value>
+  </data>
+  <data name="examtimepkg" xml:space="preserve">
+    <value>Check-up Time and Package</value>
+  </data>
+  <data name="female" xml:space="preserve">
+    <value>Female</value>
+  </data>
+  <data name="fetchmyself" xml:space="preserve">
+    <value>Retrieve by myself</value>
+  </data>
+  <data name="fetchpassword" xml:space="preserve">
+    <value>Retrieve Password</value>
+  </data>
+  <data name="fillallpinfomsg" xml:space="preserve">
+    <value>Please fullfill the info</value>
+  </data>
+  <data name="foreignpassnum" xml:space="preserve">
+    <value>Passport No.</value>
+  </data>
+  <data name="frontpay" xml:space="preserve">
+    <value>Front desk</value>
+  </data>
+  <data name="frontpaythen" xml:space="preserve">
+    <value>Pay at front desk at medical check-up date, please go on time and read instructions carefully</value>
+  </data>
+  <data name="guangdabank" xml:space="preserve">
+    <value>中国建设银行安顺路支行</value>
+  </data>
+  <data name="Hadreservation" xml:space="preserve">
+    <value>Had Reservation</value>
+  </data>
+  <data name="happennext" xml:space="preserve">
+    <value>What happen next</value>
+  </data>
+  <data name="Health" xml:space="preserve">
+    <value>Health</value>
+  </data>
+  <data name="healthcertiexam" xml:space="preserve">
+    <value>Health certificate medical check-up</value>
+  </data>
+  <data name="iagree" xml:space="preserve">
+    <value>I agree</value>
+  </data>
+  <data name="idnum" xml:space="preserve">
+    <value>ID number</value>
+  </data>
+  <data name="ikang" xml:space="preserve">
+    <value>IKang</value>
+  </data>
+  <data name="ikangs" xml:space="preserve">
+    <value>IKang</value>
+  </data>
+  <data name="ikupnote1" xml:space="preserve">
+    <value>Need upgrade but wish to pay at front desk, pay it on medical check-up date.</value>
+  </data>
+  <data name="ikupnote2" xml:space="preserve">
+    <value>Note: price at front desk is higher!</value>
+  </data>
+  <data name="items" xml:space="preserve">
+    <value> items</value>
+  </data>
+  <data name="jinshicompanyname" xml:space="preserve">
+    <value>霓蝶（上海）医疗科技有限公司</value>
+  </data>
+  <data name="justnow" xml:space="preserve">
+    <value>Just now</value>
+  </data>
+  <data name="Label" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="makebanktransfer" xml:space="preserve">
+    <value>Make bank transfer</value>
+  </data>
+  <data name="male" xml:space="preserve">
+    <value>Male</value>
+  </data>
+  <data name="marriagestatus" xml:space="preserve">
+    <value>Marital status</value>
+  </data>
+  <data name="married" xml:space="preserve">
+    <value>Married</value>
+  </data>
+  <data name="medicalconsult" xml:space="preserve">
+    <value>Medical Consult</value>
+  </data>
+  <data name="medicaltime" xml:space="preserve">
+    <value>Medical Time</value>
+  </data>
+  <data name="meinian" xml:space="preserve">
+    <value>MeiNian</value>
+  </data>
+  <data name="meinians" xml:space="preserve">
+    <value>MeiNian</value>
+  </data>
+  <data name="month" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="morefun" xml:space="preserve">
+    <value>More fun</value>
+  </data>
+  <data name="mpmorefun" xml:space="preserve">
+    <value>More value added service in Medi-Plus</value>
+  </data>
+  <data name="MPpackage" xml:space="preserve">
+    <value>Selection</value>
+  </data>
+  <data name="mpselection" xml:space="preserve">
+    <value>Selection</value>
+  </data>
+  <data name="mustchngpwmsg" xml:space="preserve">
+    <value>You must change your password to continue!</value>
+  </data>
+  <data name="mustontimemsg" xml:space="preserve">
+    <value>Please go on time and read instructions carefully</value>
+  </data>
+  <data name="myreservation" xml:space="preserve">
+    <value>My reservation</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="nameonid" xml:space="preserve">
+    <value>Name on ID card</value>
+  </data>
+  <data name="noorder" xml:space="preserve">
+    <value>No order yet</value>
+  </data>
+  <data name="noreport" xml:space="preserve">
+    <value>No report yet</value>
+  </data>
+  <data name="notboundset" xml:space="preserve">
+    <value>Not bound, please config!</value>
+  </data>
+  <data name="notsettedques" xml:space="preserve">
+    <value>No safe question, please config!</value>
+  </data>
+  <data name="occupationalexam" xml:space="preserve">
+    <value>Occupational disease medical check-up</value>
+  </data>
+  <data name="oldmobilewrong" xml:space="preserve">
+    <value>Old mobile number incorrect, please try again!</value>
+  </data>
+  <data name="onedayago" xml:space="preserve">
+    <value>1 day ago</value>
+  </data>
+  <data name="onemonthago" xml:space="preserve">
+    <value>1 month ago</value>
+  </data>
+  <data name="oneweekago" xml:space="preserve">
+    <value>1 week ago</value>
+  </data>
+  <data name="onlinepay" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="ordernum" xml:space="preserve">
+    <value>Order No.</value>
+  </data>
+  <data name="orderstatus" xml:space="preserve">
+    <value>Order status</value>
+  </data>
+  <data name="organization" xml:space="preserve">
+    <value>Organization</value>
+  </data>
+  <data name="os_cancel" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="os_checked" xml:space="preserve">
+    <value>Check-up finished</value>
+  </data>
+  <data name="os_finish" xml:space="preserve">
+    <value>Report ready</value>
+  </data>
+  <data name="os_paid" xml:space="preserve">
+    <value>Order paid</value>
+  </data>
+  <data name="os_saved" xml:space="preserve">
+    <value>Order saved</value>
+  </data>
+  <data name="os_waitpay" xml:space="preserve">
+    <value>Waiting for payment</value>
+  </data>
+  <data name="os_waittransfer" xml:space="preserve">
+    <value>Waiting for transfer</value>
+  </data>
+  <data name="other" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="package" xml:space="preserve">
+    <value>Package</value>
+  </data>
+  <data name="packageinfo" xml:space="preserve">
+    <value>Package Info</value>
+  </data>
+  <data name="Paperreportship" xml:space="preserve">
+    <value>Paper report shipping</value>
+  </data>
+  <data name="parent" xml:space="preserve">
+    <value>Parent</value>
+  </data>
+  <data name="passportnum" xml:space="preserve">
+    <value>Passport No.</value>
+  </data>
+  <data name="payment" xml:space="preserve">
+    <value>Payment→</value>
+  </data>
+  <data name="paymethod" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="payresult" xml:space="preserve">
+    <value>Payment result</value>
+  </data>
+  <data name="pdfdownload" xml:space="preserve">
+    <value>PDF download</value>
+  </data>
+  <data name="pointbill" xml:space="preserve">
+    <value>points, </value>
+  </data>
+  <data name="privacypolicy" xml:space="preserve">
+    <value>Privacy Policy</value>
+  </data>
+  <data name="privateemail" xml:space="preserve">
+    <value>Private email</value>
+  </data>
+  <data name="productname" xml:space="preserve">
+    <value>Product Name</value>
+  </data>
+  <data name="pwchngsuccessmsg" xml:space="preserve">
+    <value>Your password has been updated successfully!</value>
+  </data>
+  <data name="pwlastchangedtime" xml:space="preserve">
+    <value>Password last changed</value>
+  </data>
+  <data name="quantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="questionrecordedmsg" xml:space="preserve">
+    <value>Your question has been recorded, our custom service will contact you soon!</value>
+  </data>
+  <data name="quickselect" xml:space="preserve">
+    <value>Quick Selection：</value>
+  </data>
+  <data name="relationshipcus" xml:space="preserve">
+    <value>relationship</value>
+  </data>
+  <data name="relname" xml:space="preserve">
+    <value>Relative name</value>
+  </data>
+  <data name="relogin" xml:space="preserve">
+    <value>ReLogin</value>
+  </data>
+  <data name="relreport" xml:space="preserve">
+    <value>Relative report</value>
+  </data>
+  <data name="Relreservation" xml:space="preserve">
+    <value>Reletive reservation</value>
+  </data>
+  <data name="remain" xml:space="preserve">
+    <value>Remain</value>
+  </data>
+  <data name="reportconsult" xml:space="preserve">
+    <value>Report consult reservation</value>
+  </data>
+  <data name="reportexamdate" xml:space="preserve">
+    <value>Check-up date of this report</value>
+  </data>
+  <data name="reporttype" xml:space="preserve">
+    <value>Report type</value>
+  </data>
+  <data name="Reservecheckup" xml:space="preserve">
+    <value>Reserve Check-up</value>
+  </data>
+  <data name="reserveforme" xml:space="preserve">
+    <value>Reserve for me</value>
+  </data>
+  <data name="reserveforrel" xml:space="preserve">
+    <value>Reserve for relatives</value>
+  </data>
+  <data name="reservenow" xml:space="preserve">
+    <value>Reserve NOW</value>
+  </data>
+  <data name="resvtimeshdaftermsg" xml:space="preserve">
+    <value>Reservation should after today, please choose again!</value>
+  </data>
+  <data name="rightselectbranch" xml:space="preserve">
+    <value>Select branch on right side to continue</value>
+  </data>
+  <data name="safeq1" xml:space="preserve">
+    <value>What's your mother's name？</value>
+  </data>
+  <data name="safeq10" xml:space="preserve">
+    <value>Wha't the name of your primary school？</value>
+  </data>
+  <data name="safeq11" xml:space="preserve">
+    <value>What's your father's DOB？</value>
+  </data>
+  <data name="safeq12" xml:space="preserve">
+    <value>What's your couple's name？</value>
+  </data>
+  <data name="safeq13" xml:space="preserve">
+    <value>What's your mother's job？</value>
+  </data>
+  <data name="safeq14" xml:space="preserve">
+    <value>What's your teacher's name in senior school？</value>
+  </data>
+  <data name="safeq15" xml:space="preserve">
+    <value>What's your couple's job？</value>
+  </data>
+  <data name="safeq16" xml:space="preserve">
+    <value>Who's your best childhood friend？</value>
+  </data>
+  <data name="safeq17" xml:space="preserve">
+    <value>Who's your best dormitory friend？</value>
+  </data>
+  <data name="safeq18" xml:space="preserve">
+    <value>Who affect you the most？</value>
+  </data>
+  <data name="safeq2" xml:space="preserve">
+    <value>What's your father's job？</value>
+  </data>
+  <data name="safeq3" xml:space="preserve">
+    <value>What's your couple's DOB？</value>
+  </data>
+  <data name="safeq4" xml:space="preserve">
+    <value>What's your student ID？</value>
+  </data>
+  <data name="safeq5" xml:space="preserve">
+    <value>What's your mother's DOB？</value>
+  </data>
+  <data name="safeq6" xml:space="preserve">
+    <value>What's your teacher's name in high school？</value>
+  </data>
+  <data name="safeq7" xml:space="preserve">
+    <value>What's your father's name？</value>
+  </data>
+  <data name="safeq8" xml:space="preserve">
+    <value>Where is your birth place？</value>
+  </data>
+  <data name="safeq9" xml:space="preserve">
+    <value>What's your teacher's name in primary school？</value>
+  </data>
+  <data name="select" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="selfpay" xml:space="preserve">
+    <value>Bill RMB</value>
+  </data>
+  <data name="sendtootheraddr" xml:space="preserve">
+    <value>Send to other address</value>
+  </data>
+  <data name="sentpwtomobilemsg" xml:space="preserve">
+    <value>We have sent new password to your mobile!</value>
+  </data>
+  <data name="servicetime" xml:space="preserve">
+    <value>SERVICE TIME</value>
+  </data>
+  <data name="servicetimemsg" xml:space="preserve">
+    <value>Monday - Friday 9：00-18:00（except holidays）</value>
+  </data>
+  <data name="settedquestion" xml:space="preserve">
+    <value>Set safe question!</value>
+  </data>
+  <data name="sex" xml:space="preserve">
+    <value>Sex</value>
+  </data>
+  <data name="stuffreport" xml:space="preserve">
+    <value>Employee report</value>
+  </data>
+  <data name="submit" xml:space="preserve">
+    <value>Submit→</value>
+  </data>
+  <data name="suppliernotemsg" xml:space="preserve">
+    <value>Available medical check-up dates refer to left list, contact custom service for other date at </value>
+  </data>
+  <data name="termservice" xml:space="preserve">
+    <value>Terms of service</value>
+  </data>
+  <data name="throughphoneandid" xml:space="preserve">
+    <value>Through Mobile+ID</value>
+  </data>
+  <data name="throughsafequestion" xml:space="preserve">
+    <value>Through Safe Question</value>
+  </data>
+  <data name="throughworkemail" xml:space="preserve">
+    <value>Through Work Email</value>
+  </data>
+  <data name="Toaddress" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="tocompany" xml:space="preserve">
+    <value>Send to company (Once a month)</value>
+  </data>
+  <data name="tootheraddr" xml:space="preserve">
+    <value>Send to other address (Pay delivery fee at front desk)</value>
+  </data>
+  <data name="total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="totalamount" xml:space="preserve">
+    <value>Total Amount</value>
+  </data>
+  <data name="transferbank" xml:space="preserve">
+    <value>Transfer bank</value>
+  </data>
+  <data name="transferpay" xml:space="preserve">
+    <value>Bank transfer</value>
+  </data>
+  <data name="transfersuccessthen" xml:space="preserve">
+    <value>Notice us after your payment</value>
+  </data>
+  <data name="twohourago" xml:space="preserve">
+    <value>2 hours ago</value>
+  </data>
+  <data name="twopassnotmatch" xml:space="preserve">
+    <value>Two passwords are not match, please try again!</value>
+  </data>
+  <data name="unitprice" xml:space="preserve">
+    <value>Unit Price</value>
+  </data>
+  <data name="unmarried" xml:space="preserve">
+    <value>Unmarried</value>
+  </data>
+  <data name="unreaditems" xml:space="preserve">
+    <value> unread items</value>
+  </data>
+  <data name="updatepassword" xml:space="preserve">
+    <value>Update Password</value>
+  </data>
+  <data name="updatesuccess" xml:space="preserve">
+    <value>Update success!</value>
+  </data>
+  <data name="uploadreport" xml:space="preserve">
+    <value>Upload report</value>
+  </data>
+  <data name="uppkg" xml:space="preserve">
+    <value>Upgrade</value>
+  </data>
+  <data name="verifyok" xml:space="preserve">
+    <value>Verify successed!</value>
+  </data>
+  <data name="viewpkgdetail" xml:space="preserve">
+    <value>View package detail</value>
+  </data>
+  <data name="workemail" xml:space="preserve">
+    <value>Work email</value>
+  </data>
+  <data name="year" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="Yuan" xml:space="preserve">
+    <value>RMB</value>
+  </data>
+  <data name="goconsult" xml:space="preserve">
+    <value>Go consult</value>
+  </data>
+  <data name="goshopping" xml:space="preserve">
+    <value>Go shopping</value>
+  </data>
+  <data name="vieworders" xml:space="preserve">
+    <value>View order</value>
+  </data>
+  <data name="alertlinkcannotrec" xml:space="preserve">
+    <value>Link cannot be recognized！</value>
+  </data>
+  <data name="alertnewemailok" xml:space="preserve">
+    <value>Active new email succeed！</value>
+  </data>
+  <data name="fillreportorg" xml:space="preserve">
+    <value>Enter orgnization</value>
+  </data>
+  <data name="idpass1option" xml:space="preserve">
+    <value>Fill either Chinese ID No. or Passpord No. Fill all other info</value>
+  </data>
+  <data name="viewuppkgdetail" xml:space="preserve">
+    <value>View upgrade detail</value>
+  </data>
+  <data name="payerrortry" xml:space="preserve">
+    <value>Payment failed, please try again!</value>
+  </data>
+  <data name="paysucceed" xml:space="preserve">
+    <value>Payment succeed!</value>
+  </data>
+  <data name="alertwrongmobileid" xml:space="preserve">
+    <value>No match, please enter correct mobile number and ID number!</value>
+  </data>
+  <data name="youreserveok" xml:space="preserve">
+    <value>Reservation succeed, please subject to SMS message</value>
+  </data>
+  <data name="requireenglishservice" xml:space="preserve">
+    <value>Require English service</value>
+  </data>
+  <data name="requirepaperreport" xml:space="preserve">
+    <value>Need paper report (If not necessary please contribute conservation)</value>
+  </data>
+  <data name="wehaveereportplzcon" xml:space="preserve">
+    <value>Check electronic report online</value>
+  </data>
+  <data name="alertneedprocityzone" xml:space="preserve">
+    <value>Please select province, city and zone!</value>
+  </data>
+  <data name="yoursubmitok" xml:space="preserve">
+    <value>Your reservation succeed, please subject to SMS message</value>
+  </data>
+  <data name="alertneeddate" xml:space="preserve">
+    <value>Please select date!</value>
+  </data>
+  <data name="alertnorel" xml:space="preserve">
+    <value>No relative info, please create relative first!</value>
+  </data>
+  <data name="alertilegle" xml:space="preserve">
+    <value>New password cannot meet requirement!</value>
+  </data>
+  <data name="alertrepeat3set" xml:space="preserve">
+    <value>Cannot re-use any of the previous 3 password!</value>
+  </data>
+  <data name="alertwrongcurrentpw" xml:space="preserve">
+    <value>Incorrect current password!</value>
+  </data>
+  <data name="alertneedchar" xml:space="preserve">
+    <value>New password should contain alpha charactor.</value>
+  </data>
+  <data name="alertneeddigit" xml:space="preserve">
+    <value>New password should digit.</value>
+  </data>
+  <data name="pdfonly" xml:space="preserve">
+    <value>PDF file only!</value>
+  </data>
+  <data name="requireenglishreport" xml:space="preserve">
+    <value>Need English report</value>
+  </data>
+  <data name="aboutus" xml:space="preserve">
+    <value>About Us</value>
+  </data>
+  <data name="na" xml:space="preserve">
+    <value>N/A</value>
+  </data>
+  <data name="qrnofee" xml:space="preserve">
+    <value>Scan QR code to make payment!</value>
+  </data>
+  <data name="toalipay" xml:space="preserve">
+    <value>Pay through Alipay</value>
+  </data>
+  <data name="DropDownList2Resource1" xml:space="preserve">
+    <value>Select package</value>
+  </data>
+  <data name="com_CityResource1" xml:space="preserve">
+    <value>Select city</value>
+  </data>
+  <data name="com_ProvinceResource1" xml:space="preserve">
+    <value>Select province</value>
+  </data>
+  <data name="DropDownList1Resource1" xml:space="preserve">
+    <value>Select center</value>
+  </data>
+  <data name="DropDownList2Resource11" xml:space="preserve">
+    <value>Select package</value>
+  </data>
+  <data name="DropDownList3Resource1" xml:space="preserve">
+    <value>Select upgrade</value>
+  </data>
+  <data name="DropDownList4Resource1" xml:space="preserve">
+    <value>Select branch</value>
+  </data>
+  <data name="myorder" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="shopcart" xml:space="preserve">
+    <value>Shop cart</value>
+  </data>
+  <data name="shippinginfo" xml:space="preserve">
+    <value>Shipping info</value>
+  </data>
+  <data name="tobelowaddr" xml:space="preserve">
+    <value>Ship to belowing address</value>
+  </data>
+  <data name="abc" xml:space="preserve">
+    <value>i am abc</value>
+  </data>
+  <data name="pricetype" xml:space="preserve">
+    <value>MP</value>
+  </data>
+  <data name="promoteprice" xml:space="preserve">
+    <value>EP</value>
+  </data>
+  <data name="queren" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="tianxie" xml:space="preserve">
+    <value>Fill Order Info</value>
+  </data>
+  <data name="viewcart" xml:space="preserve">
+    <value>Shop Cart</value>
+  </data>
+  <data name="xuanze" xml:space="preserve">
+    <value>Selected Item</value>
+  </data>
+  <data name="addcart" xml:space="preserve">
+    <value>Add Cart</value>
+  </data>
+  <data name="buynow" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="chanpinjieshao" xml:space="preserve">
+    <value>Introdution</value>
+  </data>
+  <data name="choose" xml:space="preserve">
+    <value>Choosed</value>
+  </data>
+  <data name="healthyadd" xml:space="preserve">
+    <value>Health Station</value>
+  </data>
+  <data name="jibencanshu" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="nowprice" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="num" xml:space="preserve">
+    <value>Num</value>
+  </data>
+  <data name="pinpaijieshao" xml:space="preserve">
+    <value>Brand</value>
+  </data>
+  <data name="producttype" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="shiyongshuoming" xml:space="preserve">
+    <value>Instructions</value>
+  </data>
+  <data name="shopcar" xml:space="preserve">
+    <value>Shop Cart</value>
+  </data>
+  <data name="money" xml:space="preserve">
+    <value>Money</value>
+  </data>
+  <data name="orderdate" xml:space="preserve">
+    <value>Order date</value>
+  </data>
+  <data name="orderproduct" xml:space="preserve">
+    <value>Order products</value>
+  </data>
+  <data name="payway" xml:space="preserve">
+    <value>Please choose payment method</value>
+  </data>
+  <data name="productyunfei" xml:space="preserve">
+    <value>Logistic Cost:&lt;br /&gt;Total price below 199 RMB, Jiang Su, Zhe Jiang, Shanghai with additional 6 RMB, Beijing, Guangzhou, Wuhan, Shenzhen, Chengdu, Chongqing with additional 9 RMB, others with additional 12 RMB</value>
+  </data>
+  <data name="myshopcart" xml:space="preserve">
+    <value>Shop Cart</value>
+  </data>
+  <data name="huajians" xml:space="preserve">
+    <value>Huajian</value>
+  </data>
+  <data name="ruicis" xml:space="preserve">
+    <value>Ruici</value>
+  </data>
+  <data name="healthconsult1" xml:space="preserve">
+    <value>Appointment For Report Interpretation By Doctor</value>
+  </data>
+  <data name="healthconsult2" xml:space="preserve">
+    <value> Doctor from check-up center will call back, and give interpretation of each indicator (no charge).</value>
+  </data>
+  <data name="healthconsult3" xml:space="preserve">
+    <value>Seeking Medical Care After Check-up -- Appointment For Experts &amp; Doctors From 3A Hospitals Nationwide</value>
+  </data>
+  <data name="healthconsult4" xml:space="preserve">
+    <value>Appointment &amp; Register 350RMB/Each</value>
+  </data>
+  <data name="healthconsult5" xml:space="preserve">
+    <value>Appointment &amp; Register + Dispatched Personnel 500RMB/Each</value>
+  </data>
+  <data name="alertsubmitfailed" xml:space="preserve">
+    <value>Submit reservation failed! Error code:</value>
+  </data>
+  <data name="errorpaymothod" xml:space="preserve">
+    <value>Please select pay method!</value>
+  </data>
+  <data name="address" xml:space="preserve">
+    <value>E-mail address</value>
+  </data>
+  <data name="Age" xml:space="preserve">
+    <value>Age</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Cell phone Number</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details of the appointment</value>
+  </data>
+  <data name="dizhi" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Fee" xml:space="preserve">
+    <value>Fee</value>
+  </data>
+  <data name="gerxx" xml:space="preserve">
+    <value>Personal information</value>
+  </data>
+  <data name="Itemsl" xml:space="preserve">
+    <value>Added Items</value>
+  </data>
+  <data name="Marital" xml:space="preserve">
+    <value>Marital Status</value>
+  </data>
+  <data name="Packagel" xml:space="preserve">
+    <value>Package</value>
+  </data>
+  <data name="Passport" xml:space="preserve">
+    <value>Passport Number</value>
+  </data>
+  <data name="xingb" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="xingming" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Dental" xml:space="preserve">
+    <value>Dental Branch</value>
+  </data>
+  <data name="paywait" xml:space="preserve">
+    <value>After paying,  Customer service will make the most appropriate arrangement during business time, Please be patient!</value>
+  </data>
+  <data name="RMB" xml:space="preserve">
+    <value>RMB</value>
+  </data>
+  <data name="mapinti" xml:space="preserve">
+    <value>Mapinside</value>
+  </data>
+  <data name="mpwechat" xml:space="preserve">
+    <value>Wechat</value>
+  </data>
+  <data name="onlineshop" xml:space="preserve">
+    <value>Online Shop</value>
+  </data>
+  <data name="scrumdev" xml:space="preserve">
+    <value>Scrum Dev</value>
+  </data>
+  <data name="view" xml:space="preserve">
+    <value>View</value>
+  </data>
+</root>

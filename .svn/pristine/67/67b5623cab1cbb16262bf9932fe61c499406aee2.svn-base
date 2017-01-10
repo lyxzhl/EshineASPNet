@@ -1,0 +1,607 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="reserverelexam3.aspx.cs" Inherits="reserverelexam3" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+
+<%@ Register TagPrefix="MPuc" TagName="headcontent" Src="UserControl/headcontent.ascx" %>
+<%@ Register TagPrefix="MPuc" TagName="mobilenav" Src="UserControl/mobilenav.ascx" %>
+<%@ Register TagPrefix="MPuc" TagName="desktopnav" Src="UserControl/desktopnav.ascx" %>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="UserControl/footer1.ascx" %>
+<%@ Register Assembly="GMaps" Namespace="Subgurim.Controles" TagPrefix="cc1" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Medi-Plus -
+        <asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,titletext %>'></asp:Localize></title>
+    <MPuc:headcontent runat="server" ID="Unnamed1" />
+    <link rel="stylesheet" type="text/css" href="CSS/safecenter.css">
+    <script src="JS/mp.js" type="text/javascript"></script>
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?ak=YG2iv0eCzo1z6YTsau5pgd24&v=1.5"></script>
+    <script src="JS/baidumap.js" type="text/javascript"></script>
+
+</head>
+<body class='signups'>
+    <MPuc:mobilenav runat="server" ID="Unnamed2" />
+    <form id="Form1" runat="server">
+        <div class='wrapper' data-behavior='Navigation'>
+            <MPuc:desktopnav runat="server" ID="Unnamed3" />
+
+            <div class="container signup">
+                <div class="simple_form new_signup_context" id="new_signup_context">
+
+                    <div id="main" runat="server">
+                        <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
+                        </asp:ToolkitScriptManager>
+                    </div>
+                    <asp:UpdateProgress ID="UpdateProgress1" runat="server">
+                        <ProgressTemplate>
+                            <div style="filter: alpha(opacity=80); background-color: #f0f0f0; width: 150px; height: 150px; text-align: center;">
+                                <asp:Label ID="Labelwait" runat="server" Text="正在联系体检中心..."
+                                    meta:resourcekey="LabelwaitResource1"></asp:Label><br />
+                                <asp:Label ID="Labelwait2" runat="server" Text="可能持续约几秒钟" meta:resourcekey="Labelwait2Resource1"></asp:Label><br />
+                                <img src="Images/loading.gif" align="middle" width="100px" height="100px" />
+                            </div>
+                        </ProgressTemplate>
+                    </asp:UpdateProgress>
+                    <asp:ModalPopupExtender ID="ModalPopupExtender1" runat="server" TargetControlID="LinkButPop"
+                        PopupControlID="UpdateProgress1" DynamicServicePath="" Enabled="True">
+                    </asp:ModalPopupExtender>
+                    <asp:LinkButton ID="LinkButPop" runat="server" class="hidden"></asp:LinkButton>
+
+
+                    <div class="three_input_grouping" >
+                                    <div class="input month_select required">
+                                        <asp:DropDownList ID="com_Province" runat="server" AutoPostBack="True" class="select required customSelect"
+                                           Visible="false"
+                                            meta:resourcekey="com_ProvinceResource1">
+                                            <asp:ListItem Text='<%$ Resources:GResource,selectProvince %>'></asp:ListItem>
+                                        </asp:DropDownList>
+
+                                    </div>
+                                    <div class="input select required">
+                                        <asp:DropDownList ID="com_City" runat="server" AutoPostBack="True" Visible="false"
+                                            class="select required customSelect"
+                                            meta:resourcekey="com_CityResource1">
+                                            <asp:ListItem Text='<%$ Resources:GResource,selectCity %>'></asp:ListItem>
+                                        </asp:DropDownList>
+                                    </div>
+                                    <div class="input select hidden">
+                                        <asp:DropDownList ID="com_Area" runat="server" class="select required customSelect" Visible="false"
+                                            meta:resourcekey="com_AreaResource1">
+                                            <asp:ListItem Text='<%$ Resources:GResource,selectZone %>'></asp:ListItem>
+                                        </asp:DropDownList>
+                                    </div>
+                                    <div class="input select hidden">
+                                        <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True" Visible="false"
+                                            class="select required customSelect"
+                                            meta:resourcekey="DropDownList1Resource1">
+                                        </asp:DropDownList>
+                                    </div>
+                                    <div class="hidden">
+                                        <a class="button blue_button" onclick='document.getElementById("mapdiv").className = "row";'>地图显示</a>
+                                    </div>
+                                </div>
+                    <asp:Panel class="signup_form tile" ID="Panel4" runat="server" Visible="false">
+                        <div class="row">
+                            <div class="twelvecol" style="height: 35px;">
+                                <h1>
+                                    <asp:Localize ID="Localize20" runat="server" Text='<%$ Resources:GResource,examtimepkg %>'></asp:Localize></h1>
+                                <h4></h4>
+                            </div>
+                        </div>
+                        <div class="row sizes">
+                            <div class="threecol"></div>
+                            <div class="fivecol">
+
+
+                                <div class="input required">
+                                    <label class="month_select required" for="signup_context_birth_month">
+                                        <asp:Localize ID="Localize21" runat="server" Text='<%$ Resources:GResource,examdate %>'></asp:Localize></label>
+                                    <asp:DropDownList ID="DropDownList4" class="select required customSelect" runat="server" meta:resourcekey="DropDownList4Resource1">
+                                        <asp:ListItem Text='<%$ Resources:GResource,examdate %>'></asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                                <div class="input required">
+                                    <label class="month_select required" for="signup_context_birth_month">
+                                        <asp:Localize ID="Localize22" runat="server" Text='<%$ Resources:GResource,package %>'></asp:Localize></label>
+                                    <asp:DropDownList ID="DropDownList2" OnSelectedIndexChanged="DropDownList2_SelectedIndexChanged"
+                                        AutoPostBack="True" class="select required customSelect" runat="server">
+                                    </asp:DropDownList>
+                                    <asp:Label ID="Label18" runat="server" Text="" Visible="false"></asp:Label><br />
+                                    <asp:CheckBox ID="CheckBox7" runat="server" Text='<%$ Resources:GResource,attendwomensub %>'  AutoPostBack="True" OnCheckedChanged="CheckBox7_CheckedChanged" />
+                                    <asp:TextBox ID="TextBoxCharge1" runat="server" Text="0" class="hidden" name="paytxt"></asp:TextBox>
+                                    <asp:TextBox ID="TextBoxExCharge1" runat="server" Text="0" class="hidden" name="paytxt"></asp:TextBox>
+                                </div>
+                                <div class="input required">
+                                    <asp:Label ID="Label59" runat="server" Text='<%$ Resources:GResource,uppkg %>'></asp:Label>
+                                    (
+    <asp:Panel ID="Panelremainmoney" runat="server">
+        <asp:Label ID="Label7" runat="server" Text='<%$ Resources:GResource,remain %>'></asp:Label>
+        <asp:Label ID="Labelremainpoint" runat="server" Text="Label"></asp:Label>
+        <asp:Label ID="Label9" runat="server" Text='<%$ Resources:GResource,pointbill %>'></asp:Label>
+    </asp:Panel>
+                                    <asp:Label ID="Label19" runat="server" Text='<%$ Resources:GResource,selfpay %>'></asp:Label>
+                                    <asp:Label ID="Labelbill" runat="server" Text="Label"></asp:Label>
+                                    <asp:Label ID="Label8" runat="server" Text='<%$ Resources:GResource,Yuan %>'></asp:Label>)
+    <asp:DropDownList ID="DropDownList3" OnSelectedIndexChanged="DropDownList3_SelectedIndexChanged"
+        AutoPostBack="True" class="select required customSelect" runat="server" Visible="False">
+    </asp:DropDownList><br />
+                                    <asp:Label ID="Label60" runat="server" Text="3选1"></asp:Label>
+                                    <asp:CheckBoxList ID="CheckBoxList1" runat="server" AutoPostBack="True"
+                                        OnSelectedIndexChanged="CheckBoxList1_SelectedIndexChanged">
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                    </asp:CheckBoxList>
+                                    <asp:Label ID="Label61" runat="server" Text="3选2"></asp:Label>
+                                    <asp:CheckBoxList ID="CheckBoxList2" runat="server" AutoPostBack="True"
+                                        OnSelectedIndexChanged="CheckBoxList2_SelectedIndexChanged">
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                    </asp:CheckBoxList>
+                                    <asp:Label ID="Label62" runat="server" Text="多选多"></asp:Label>
+                                    <asp:CheckBoxList ID="CheckBoxList3" runat="server" AutoPostBack="True"
+                                        OnSelectedIndexChanged="CheckBoxList3_SelectedIndexChanged">
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                    </asp:CheckBoxList>
+                                    <asp:Label ID="Label63" runat="server" Text="多选多"></asp:Label>
+                                    <asp:CheckBoxList ID="CheckBoxList4" runat="server" AutoPostBack="True"
+                                        OnSelectedIndexChanged="CheckBoxList4_SelectedIndexChanged">
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                    </asp:CheckBoxList>
+                                    <asp:Label ID="Label64" runat="server" Text="多选多"></asp:Label>
+                                    <asp:CheckBoxList ID="CheckBoxList5" runat="server" AutoPostBack="True"
+                                        OnSelectedIndexChanged="CheckBoxList5_SelectedIndexChanged">
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                    </asp:CheckBoxList>
+                                    <asp:Label ID="Label65" runat="server" Text="多选多"></asp:Label>
+                                    <asp:CheckBoxList ID="CheckBoxList6" runat="server" AutoPostBack="True"
+                                        OnSelectedIndexChanged="CheckBoxList6_SelectedIndexChanged">
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                    </asp:CheckBoxList>
+                                    <asp:Label ID="Label66" runat="server" Text="多选多"></asp:Label>
+                                    <asp:CheckBoxList ID="CheckBoxList7" runat="server" AutoPostBack="True"
+                                        OnSelectedIndexChanged="CheckBoxList7_SelectedIndexChanged">
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                    </asp:CheckBoxList>
+                                    <asp:Label ID="Label67" runat="server" Text="多选多"></asp:Label>
+                                    <asp:CheckBoxList ID="CheckBoxList8" runat="server" AutoPostBack="True"
+                                        OnSelectedIndexChanged="CheckBoxList8_SelectedIndexChanged">
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                    </asp:CheckBoxList>
+                                    <asp:Label ID="Label68" runat="server" Text="多选多"></asp:Label>
+                                    <asp:CheckBoxList ID="CheckBoxList9" runat="server" AutoPostBack="True"
+                                        OnSelectedIndexChanged="CheckBoxList9_SelectedIndexChanged">
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                    </asp:CheckBoxList>
+                                    <asp:Label ID="Label69" runat="server" Text="多选多"></asp:Label>
+                                    <asp:CheckBoxList ID="CheckBoxList10" runat="server" AutoPostBack="True"
+                                        OnSelectedIndexChanged="CheckBoxList10_SelectedIndexChanged">
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                    </asp:CheckBoxList>
+
+                                    <asp:TextBox ID="TextBoxCBL" runat="server" Visible="False"></asp:TextBox>
+                                    <asp:TextBox ID="TextBoxCBL2" runat="server" Visible="False"></asp:TextBox>
+                                    <asp:TextBox ID="TextBoxCBL3" runat="server" Visible="False"></asp:TextBox>
+                                    <asp:TextBox ID="TextBoxCBL4" runat="server" Visible="False"></asp:TextBox>
+                                    <asp:TextBox ID="TextBoxCBL5" runat="server" Visible="False"></asp:TextBox>
+                                    <asp:TextBox ID="TextBoxCBL6" runat="server" Visible="False"></asp:TextBox>
+                                    <asp:TextBox ID="TextBoxCBL7" runat="server" Visible="False"></asp:TextBox>
+                                    <asp:TextBox ID="TextBoxCBL8" runat="server" Visible="False"></asp:TextBox>
+                                    <asp:TextBox ID="TextBoxCBL9" runat="server" Visible="False"></asp:TextBox>
+                                    <asp:TextBox ID="TextBoxCBL10" runat="server" Visible="False"></asp:TextBox>
+                                    <asp:TextBox ID="TextBoxCharge2" runat="server" Text="0" class="hidden" name="paytxt"></asp:TextBox>
+                                </div>
+
+                                <asp:Panel ID="Panel17" runat="server" Visible="false">
+                                    <asp:Label ID="Label70" runat="server" Text="选择洗牙分店"></asp:Label>
+                                    <asp:RadioButtonList ID="RadioButtonList1" runat="server">
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                        <asp:ListItem></asp:ListItem>
+                                    </asp:RadioButtonList>
+                                    <br />
+                                </asp:Panel>
+
+                                <asp:Panel ID="Panel9" runat="server" Visible="false">
+                                    <div class="three_input_grouping">
+
+                                        <asp:Panel ID="Panel_platformpay" runat="server">
+                                            <div class="input required">
+                                                <label class="month_select required" for="signup_context_birth_month">
+                                                    <asp:Localize ID="Localize24" runat="server" Text='<%$ Resources:GResource,paymethod %>'></asp:Localize></label>
+                                                <div>
+                                                    <asp:RadioButton ID="RadioButton8" runat="server" Text='<%$ Resources:GResource,onlinepay %>' GroupName="paymethod" /></div>
+                                            </div>
+                                            <div class="input required">
+                                                <label class="month_select required" for="signup_context_birth_month">&nbsp;</label>
+                                                <div>
+                                                    <asp:RadioButton ID="RadioButton10" runat="server" Text='<%$ Resources:GResource,transferpay %>' GroupName="paymethod" /></div>
+                                            </div>
+                                        </asp:Panel>
+
+                                        <div class="input required">
+                                            <label class="month_select required" for="signup_context_birth_month">&nbsp;</label>
+                                            <div>
+                                                <asp:RadioButton ID="RadioButton9" runat="server"  Visible="false" Text='<%$ Resources:GResource,frontpay %>' GroupName="paymethod" /></div>
+                                        </div>
+
+                                    </div>
+                                </asp:Panel>
+
+                                <div class="input required hidden">
+                                    <asp:CheckBox ID="CheckBox8" runat="server" Text='<%$ Resources:GResource,requireenglishservice %>' />
+                                </div>
+
+                                <div class="input  required">
+                                    <div>
+                                        <asp:CheckBox ID="CheckBox100" runat="server" Checked="true" Text='<%$ Resources:GResource,wehaveereportplzcon %>' Enabled="false" />
+                                    </div>
+                                    <div>
+                                        <asp:CheckBox ID="CheckBox9" runat="server" Text='<%$ Resources:GResource,requirepaperreport %>' class="ckbneedpaperreport" onclick="needpaperreportclick(this)" />
+                                    </div>
+                                </div>
+                                <div class="input  required <% = CheckBox9.Checked ? "" : "hidden" %>" id="paperreportdiv">
+
+                                    <div class="input required hidden">
+                                        <asp:CheckBox ID="CheckBox10" runat="server" Text='<%$ Resources:GResource,requireenglishreport %>' />
+                                    </div>
+
+                                    <label class=" required" for="signup_context_first_name">
+                                        <asp:Localize ID="Localize25" runat="server" Text='<%$ Resources:GResource,Paperreportship %>'></asp:Localize></label>
+                                    <asp:TextBox ID="TextBoxPA" runat="server" class="hidden paperaddr" Text='<%$ Resources:GResource,tocompany %>'></asp:TextBox>
+                                    <div>
+                                        <asp:RadioButton ID="RadioButton5" runat="server" GroupName="reportaddr" Text='<%$ Resources:GResource,tocompany %>' Checked="True" />
+                                    </div>
+                                    <div class="<%=closscompanyaddressclass %>" id="closscompanyaddress" style="padding-left:20px">
+                                        <asp:RadioButton ID="RadioButton11" GroupName="companyaddress" runat="server" OnCheckedChanged="RadioButton11_CheckedChanged" />
+                                        <asp:RadioButton ID="RadioButton12" GroupName="companyaddress" runat="server" OnCheckedChanged="RadioButton11_CheckedChanged" />
+                                        <asp:RadioButton ID="RadioButton13" GroupName="companyaddress" runat="server" OnCheckedChanged="RadioButton11_CheckedChanged" />
+                                        <asp:RadioButton ID="RadioButton18" GroupName="companyaddress" runat="server" OnCheckedChanged="RadioButton11_CheckedChanged" />
+                                        <asp:RadioButton ID="RadioButton19" GroupName="companyaddress" runat="server" OnCheckedChanged="RadioButton11_CheckedChanged" />
+                                        
+                                    </div>
+                                    <div>
+                                        <asp:RadioButton ID="RadioButton6" runat="server" GroupName="reportaddr" Text='<%$ Resources:GResource,fetchmyself %>' />
+                                    </div>
+                                    <asp:Panel ID="Panel3" runat="server">
+                                    </asp:Panel>
+                                    <div>
+                                        <asp:RadioButton ID="RadioButton7" runat="server" AutoPostBack="true" GroupName="reportaddr" Text='<%$ Resources:GResource,tootheraddr %>' />
+                                    </div>
+                                    <div class="<%=newaddressclass %>" id="newaddress">
+                                        <div class="three_input_grouping">
+                                            <div class="input month_select required">
+                                                <asp:DropDownList ID="com_Province1" runat="server" AutoPostBack="True" OnSelectedIndexChanged="com_Province1_SelectedIndexChanged"
+                                                    class="month_select required customSelect">
+                                                    <asp:ListItem Text='<%$ Resources:GResource,selectProvince %>'></asp:ListItem>
+                                                </asp:DropDownList>
+                                            </div>
+                                            <div class="input select required">
+                                                <asp:DropDownList ID="com_City1" runat="server" AutoPostBack="True" OnSelectedIndexChanged="com_City1_SelectedIndexChanged"
+                                                    class="month_select required customSelect">
+                                                    <asp:ListItem Text='<%$ Resources:GResource,selectCity %>'></asp:ListItem>
+                                                </asp:DropDownList>
+                                            </div>
+                                            <div class="input select required">
+                                                <asp:DropDownList ID="com_Area1" runat="server" class="select required customSelect">
+                                                    <asp:ListItem Text='<%$ Resources:GResource,selectZone %>'></asp:ListItem>
+                                                </asp:DropDownList>
+                                            </div>
+                                        </div>
+                                        <div class="input string required">
+                                            <asp:Label ID="Label20" runat="server" Text='<%$ Resources:GResource,detailAddress %>'></asp:Label>
+                                            <asp:TextBox class="string" ID="TextBox7" runat="server" placeholder='<%$ Resources:GResource,detailAddress %>'></asp:TextBox>
+                                        </div>
+                                        <div class="two_input_grouping">
+                                            <div class="input string required">
+                                                <asp:Label ID="Label35" runat="server" Text='<%$ Resources:GResource,recipient %>'></asp:Label>
+                                                <asp:TextBox class="string tel required numeric" ID="TextBox8" runat="server" placeholder='<%$ Resources:GResource,recipient %>'></asp:TextBox>
+                                            </div>
+                                            <div class="input string required">
+                                                <asp:Label ID="Label36" runat="server" Text='<%$ Resources:GResource,mobilenumber %>'></asp:Label>
+                                                <asp:TextBox class="string tel required numeric" ID="TextBox9" runat="server" type="tel" onkeypress="if (event.keyCode<48 || event.keyCode>57) event.returnValue=false;" MaxLength="11" minlength="11" placeholder='<%$ Resources:GResource,mobilenumber %>'></asp:TextBox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="fourcol last">
+                                <asp:Localize ID="Localize26" runat="server" Text='<%$ Resources:GResource,suppliernotemsg %>'></asp:Localize><a href="mailto:service@medi-plus.com.cn">service@medi-plus.com.cn</a>
+                                <br />
+                                <br />
+                                <br />
+                                <asp:HyperLink ID="HyperLink2" runat="server" Target="_blank" Text='<%$ Resources:GResource,viewpkgdetail %>'></asp:HyperLink><br />
+                                <br />
+                                <br />
+                                <asp:HyperLink ID="HyperLink8" runat="server" Target="_blank" Text='<%$ Resources:GResource,viewuppkgdetail %>'></asp:HyperLink><br />
+
+                                <asp:Panel ID="Panel11" runat="server" Visible="False">
+                                    <asp:Localize ID="Localize27" runat="server" Text='<%$ Resources:GResource,ikupnote1 %>'></asp:Localize><br />
+                                    <asp:Localize ID="Localize28" runat="server" Text='<%$ Resources:GResource,ikupnote2 %>'></asp:Localize><br />
+                                </asp:Panel>
+                            </div>
+                        </div>
+                        <div class="fixed_button" style="z-index: 99999">
+                            <div class="spinner"></div>
+                            <asp:Button class="button bluedark_button continue continue_form" ID="Button6" runat="server" Text='<%$ Resources:GResource,changebranch %>' OnClick="Button6_Click" />
+                            <asp:Button class="button blue_button continue continue_form" ID="Button5" OnClientClick="return checkform2();"
+                                runat="server" Text='<%$ Resources:GResource,continuego %>' OnClick="Button5_Click" />
+
+                            <p class="terms"></p>
+                        </div>
+                    </asp:Panel>
+
+                    
+                    <asp:Panel class="signup_form tile " ID="Panel6" runat="server" Visible="false">
+                        <div class="row">
+                            <div class="twelvecol">
+                                <h2>
+                                    <asp:Localize ID="Localize29" runat="server" Text='<%$ Resources:GResource,doublecheckinfo %>'></asp:Localize></h2>
+                                <h3></h3>
+                            </div>
+                        </div>
+                        <div class="row sizes">
+                            <div class="sixcol" style="text-align: left;">
+                                <h3>
+                                    <asp:Label ID="Label45" runat="server" Text="个人信息" Font-Bold="True"
+                                        meta:resourcekey="Label45Resource1"></asp:Label></h3>
+                                <div class="input">
+                                    <asp:Label ID="Label21" runat="server" Text="姓名"
+                                        meta:resourcekey="Label21Resource1"></asp:Label>：
+                                    <asp:Label ID="Label23" runat="server" Text="Label"
+                                        meta:resourcekey="Label23Resource1"></asp:Label>
+                                </div>
+                                <div class="input">
+                                    <asp:Label ID="Label22" runat="server" Text="性别"
+                                        meta:resourcekey="Label22Resource1"></asp:Label>：
+                                    <asp:Label ID="Label24" runat="server" Text="Label"
+                                        meta:resourcekey="Label24Resource1"></asp:Label>
+                                </div>
+                                <div class="input">
+                                    <asp:Label ID="Label25" runat="server" Text="年龄"
+                                        meta:resourcekey="Label25Resource1"></asp:Label>：
+                                    <asp:Label ID="Label26" runat="server" Text="Label"
+                                        meta:resourcekey="Label26Resource1"></asp:Label>
+                                </div>
+                                <div class="input">
+                                    <asp:Label ID="Label27" runat="server" Text="证件号"
+                                        meta:resourcekey="Label27Resource1"></asp:Label>：
+                                    <asp:Label ID="Label28" runat="server" Text="Label"
+                                        meta:resourcekey="Label28Resource1"></asp:Label>
+                                </div>
+                                <div class="input">
+                                    <asp:Label ID="Label29" runat="server" Text="手机号"
+                                        meta:resourcekey="Label29Resource1"></asp:Label>：
+                                    <asp:Label ID="Label30" runat="server" Text="Label"
+                                        meta:resourcekey="Label30Resource1"></asp:Label>
+                                </div>
+                                <div class="input hidden">
+                                    <asp:Label ID="Label31" runat="server" Text="私人邮箱"
+                                        meta:resourcekey="Label31Resource1"></asp:Label>：
+                                    <asp:Label ID="Label32" runat="server" Text="Label"
+                                        meta:resourcekey="Label32Resource1"></asp:Label>
+                                </div>
+                                <div class="input">
+                                    <asp:Label ID="Label37" runat="server" Text="婚姻状况"
+                                        meta:resourcekey="Label37Resource1"></asp:Label>：
+                                    <asp:Label ID="Label38" runat="server" Text="Label"
+                                        meta:resourcekey="Label38Resource1"></asp:Label>
+                                </div>
+                                <div class="input">
+                                    <asp:Label ID="Label39" runat="server" Text="联系地址"
+                                        meta:resourcekey="Label39Resource1"></asp:Label>：
+                                    <asp:Label ID="Label40" runat="server" Text="Label"
+                                        meta:resourcekey="Label40Resource1"></asp:Label>
+                                </div>
+                                <div class="input">
+                                    <asp:Label ID="Label33" runat="server" Text="与员工关系"
+                                        meta:resourcekey="Label33Resource1"></asp:Label>：
+                                    <asp:Label ID="Label34" runat="server" Text=""></asp:Label>
+                                </div>
+                            </div>
+                            <div class="sixcol last" style="text-align: left;">
+                                <h3>
+                                    <asp:Label ID="Label46" runat="server" Text="体检预约信息" Font-Bold="True"
+                                        meta:resourcekey="Label46Resource1"></asp:Label></h3>
+                                <div class="input">
+                                    <asp:Label ID="Label41" runat="server" Text="预约时间"
+                                        meta:resourcekey="Label41Resource1"></asp:Label>：
+                                    <asp:Label ID="Label42" runat="server" Text="Label"
+                                        meta:resourcekey="Label42Resource1"></asp:Label>
+                                </div>
+                                <div class="input">
+                                    <asp:Label ID="Label43" runat="server" Text="体检城市"
+                                        meta:resourcekey="Label43Resource1"></asp:Label>：
+                                    <asp:Label ID="Label44" runat="server" Text="Label"
+                                        meta:resourcekey="Label44Resource1"></asp:Label>
+                                </div>
+                                <div class="input">
+                                    <asp:Label ID="Label47" runat="server" Text="体检门店"
+                                        meta:resourcekey="Label47Resource1"></asp:Label>：
+                                    <asp:Label ID="Label48" runat="server" Text="Label"
+                                        meta:resourcekey="Label48Resource1"></asp:Label>
+                                </div>
+                                <div class="input">
+                                    <asp:Label ID="Label49" runat="server" Text="体检套餐"
+                                        meta:resourcekey="Label49Resource1"></asp:Label>：
+                                    <asp:Label ID="Label50" runat="server" Text="Label"
+                                        meta:resourcekey="Label50Resource1"></asp:Label>
+                                </div>
+                                <div class="input">
+                                    <asp:Label ID="Label51" runat="server" Text="加项包"
+                                        meta:resourcekey="Label51Resource1"></asp:Label>：
+                                    <asp:Label ID="Label52" runat="server" Text='<%$ Resources:GResource,na %>'></asp:Label>
+                                </div>
+                                <div class="input hidden">
+                                    <asp:Label ID="Label53" runat="server" Text="总费用"
+                                        meta:resourcekey="Label53Resource1"></asp:Label>：
+                                    <asp:Label ID="Label54" runat="server" Text="Label"
+                                        meta:resourcekey="Label54Resource1"></asp:Label>
+                                </div>
+                                <div class="input">
+                                    <asp:Label ID="Label55" runat="server" Text="自付费"
+                                        meta:resourcekey="Label55Resource1"></asp:Label>：
+                                    <asp:Label ID="Label56" runat="server" Text="Label"
+                                        meta:resourcekey="Label56Resource1"></asp:Label>
+                                </div>
+                                <div class="input hidden">
+                                    <asp:Label ID="Label57" runat="server" Text="备注"
+                                        meta:resourcekey="Label57Resource1"></asp:Label>：
+                                    <asp:Label ID="Label58" runat="server" Text=""
+                                        meta:resourcekey="Label58Resource1"></asp:Label>
+                                </div>
+                                <div class="input <%=xiyaclass %>">
+                                    <asp:Label ID="Label71" runat="server" Text="洗牙分店"></asp:Label>：
+                                    <asp:Label ID="Label72" runat="server" Text=""></asp:Label>
+                                </div>
+                            </div>
+                        </div>
+
+
+                   
+
+                    </asp:Panel>
+
+
+                </div>
+            </div>
+        </div>
+    </form>
+   
+    <script type="text/javascript">
+        function needpaperreportclick(ckb) {
+            var pdiv = document.getElementById("paperreportdiv");
+            if (ckb.checked == true) {
+                pdiv.setAttribute("class", "input required");
+            }
+            else if (ckb.checked == false) {
+                pdiv.setAttribute("class", "input required hidden");
+            }
+        }
+
+      
+   
+    function showpop() {
+        var lb = document.getElementById("<%=LinkButPop.ClientID%>");
+        lb.click();
+    }
+
+    $(document).ready(function () {
+        $("[name=reportaddr]").click(function () {
+            if ($(this).next().text() == '<asp:Literal runat="server" Text="<%$ Resources:GResource,tootheraddr %>" />') {
+                //$("#newaddress").fadeIn();
+                $(".paperaddr").val("");
+            }
+            else if ($(this).next().text() == '<asp:Literal runat="server" Text="<%$ Resources:GResource,tocompany %>" />') {
+                $("#closscompanyaddress").fadeIn();
+
+                $(".paperaddr").val("");
+            }
+            else {
+                $(".paperaddr").value = "";
+                $("#closscompanyaddress").fadeOut();
+                $("#newaddress").fadeOut();
+                if ($(this).next().text().substring(0, 3) == '<asp:Literal runat="server" Text="<%$ Resources:GResource,Toaddress %>" />') {
+                    $(".paperaddr").val($(this).next().text().substring(3, $(this).next().text().length - 3));
+                }
+                else {
+                    $(".paperaddr").val($(this).next().text());
+                }
+            }
+        });
+    });
+    </script>
+</body>
+</html>

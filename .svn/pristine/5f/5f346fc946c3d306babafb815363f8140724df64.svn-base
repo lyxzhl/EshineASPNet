@@ -1,0 +1,23 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </a>
+        <div class="center">订单满意度</div>
+        <div class="right">
+            <span class="aClick">提交</span>
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="OrderScore" class="page">
+        <div class="page-content content_OScore">
+            <div class="OScore-wrap">
+                <div class="group-item">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

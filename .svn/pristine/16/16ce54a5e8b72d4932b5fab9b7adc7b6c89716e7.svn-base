@@ -1,0 +1,80 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick" onclick="goTo('../../index.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </a>
+        <div class="center">医疗援助</div>
+        <div class="right">
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="AidIndex" class="page">
+        <div class="page-content content_AIndex">
+            <div class="AIndex-wrap">
+                <div class="container">
+                    <ul id="myTab" class="nav nav-tabs row">
+                        <li class="active col-40 text-center">
+                            <a href="#Domestic" data-toggle="tab">国内医院</a>
+                        </li>
+                        <li class="col-40 text-center">
+                            <a href="#Foreign" data-toggle="tab">国外医院</a>
+                        </li>
+                    </ul>
+                </div>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="Domestic">
+                        <div class="group-item">
+                            <a class="row-item" href="#" onclick="goTo('list_supplier.html?id=爱康国宾')">
+                                <i class="pull-left icon icon-heart "></i>
+                                <h5 class="pull-left" data-name="爱康国宾">爱康国宾</h5>
+                                <i class="pull-right icon icon-chevron-right"></i>
+                            </a>
+                            <a class="row-item" href="#" onclick="goTo('list_supplier.html?id=慈铭体检')">
+                                <i class="pull-left icon icon-heart "></i>
+                                <h5 class="pull-left" data-name="慈铭体检">慈铭体检</h5>
+                                <i class="pull-right icon icon-chevron-right"></i>
+                            </a>
+                            <a class="row-item" href="#" onclick="goTo('list_supplier.html?id=华检体检')">
+                                <i class="pull-left icon icon-heart "></i>
+                                <h5 class="pull-left" data-name="华检体检">华检体检</h5>
+                                <i class="pull-right icon icon-chevron-right"></i>
+                            </a>
+                            <a class="row-item" href="#" onclick="goTo('list_supplier.html?id=美年大健康')">
+                                <i class="pull-left icon icon-heart "></i>
+                                <h5 class="pull-left" data-name="美年大健康">美年大健康</h5>
+                                <i class="pull-right icon icon-chevron-right"></i>
+                            </a>
+                            <a class="row-item" href="#" onclick="goTo('list_supplier.html?id=瑞慈体检')">
+                                <i class="pull-left icon icon-heart "></i>
+                                <h5 class="pull-left" data-name="瑞慈体检">瑞慈体检</h5>
+                                <i class="pull-right icon icon-chevron-right"></i>
+                            </a>
+                            <a class="row-item" href="#" onclick="goTo('list_supplier.html?id=熙康')">
+                                <i class="pull-left icon icon-heart "></i>
+                                <h5 class="pull-left" data-name="熙康">熙康</h5>
+                                <i class="pull-right icon icon-chevron-right"></i>
+                            </a>
+                            <a class="row-item" href="#" onclick="goTo('list_supplier.html?id=其他专业体检机构')">
+                                <i class="pull-left icon icon-heart "></i>
+                                <h5 class="pull-left" data-name="其他专业体检机构">其他专业体检机构</h5>
+                                <i class="pull-right icon icon-chevron-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="Foreign">
+                        <div class="group-item">
+                            <a class="row-item" href="#" onclick="goTo('../../module/order/score_order.html');">
+                                <i class="pull-left icon icon-heart"></i>
+                                <h5 class="pull-left" data-name="国外医院">国外医院</h5>
+                                <i class="pull-right icon icon-chevron-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

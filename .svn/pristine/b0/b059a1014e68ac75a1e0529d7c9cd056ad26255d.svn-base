@@ -1,0 +1,2223 @@
+
+/* check isLogined */
+function checkLogined() {
+    if (getLocalStorage("appUser") != null)
+        return true;
+    return false;
+}
+
+/* login begin */
+function formLogin() {
+    myApp.showPreloader();
+    if ($("#txtUser").val() == "") {
+        myApp.hidePreloader();
+        myApp.alert('用户名不能为空！');
+        return false;
+    }
+    if ($("#txtPwd").val() == "") {
+        myApp.hidePreloader();
+        myApp.alert('密码不能为空！');
+        return false;
+    }
+    var jsonStr = {
+        "userName": $("#txtUser").val(),
+        "passWord": $("#txtPwd").val()
+    };
+    var json = '{"key": "UserService", "name": "Login", "jsonstr": ' + JSON.stringify(jsonStr) + '}';
+    createDataFrame(json, "frLogin");
+    return true;
+}
+
+function callLoginEvent() {
+    if (checkDataFrame(event.data, "Login", "UserService")) {
+        unBindWindowListener("frLogin", callLoginEvent);
+        myApp.showPreloader();
+        var obj = getDataFrame(event.data.d);
+        if (obj != null) {
+            addLocalStorage("appUser", JSON.stringify(obj));
+            myApp.hidePreloader();
+            myApp.alert("登录成功", function () {
+                goTo("../../index.html");
+            });
+        }
+    }
+}
+
+function formLogout() {
+    myApp.showPreloader();
+    delLocalStorage("appUser");
+    myApp.hidePreloader();
+    goTo("../../index.html");
+}
+/* login end */
+
+/* info begin */
+
+function infoShowMenu() {
+    if (checkLogined()) {
+        $(".info-wrap .group-item:first .row-item").show();
+        $(".info-wrap .group-item:first .row-item.my-status").hide();
+    } else {
+        $(".info-wrap .group-item:first .row-item").hide();
+        $(".info-wrap .group-item:first .row-item.my-status").show();
+    }
+}
+/* info end*/
+
+/* assessment begin */
+function formAssType() {
+    myApp.showPreloader();
+    var appUser = getLocalStorage("appUser");
+    if (appUser == null) {
+        myApp.hidePreloader();
+        myApp.alert("请先登录！", function () {
+            goTo("../../module/user/login.html");
+        });
+        return false;
+    }
+    var jsonStr = {
+        "userInfo": encodeURIComponent(appUser)
+    };
+    var json = '{"key": "AssessmentService", "name": "QuestionType", "jsonstr": ' + JSON.stringify(jsonStr) + '}';
+    createDataFrame(json, "frAssType");
+    return true;
+}
+
+function callAssTypeEvent() {
+    
+    if (checkDataFrame(event.data, "QuestionType", "AssessmentService")) {
+        unBindWindowListener("frAssType", callAssTypeEvent);
+        myApp.showPreloader();
+        var obj = getDataFrame(event.data.d);
+        if (obj != null) {
+            showAssTypePage(obj);
+            myApp.hidePreloader();
+        }
+    }
+}
+
+function showAssTypePage(json) {
+    if (typeof (json) == "object") {
+        var basic = $("#Basic .group-item").first();
+        var disease = $("#Disease .group-item").first();
+        var mind = $("#Mind .group-item").first();
+        var template = $("<div />").append($("<div />").attr({ "class": "row-item", "onclick": "goTo('start_assessment.html?id={tId}');" })
+            .append($("<span />").html("{tName}")));
+        $.each(json, function (i, v) {
+            if (v.tLabel == 0) {
+                basic.append($("<div />").append($("<div />").attr("onclick", "goTo('start_assessment.html?id={tId}');")
+                    .append($("<img />").attr("src", "../../img/basic_bg.png")))
+                    .strFormat(v));
+            }
+            else if (v.tLabel == 1)
+                disease.append(template.strFormat(v));
+            else if (v.tLabel == 2)
+                disease.append(template.strFormat(v));
+        });
+    }
+}
+
+function formQList(tId) {
+    myApp.showPreloader();
+    var appUser = getLocalStorage("appUser");
+    if (appUser == null) {
+        myApp.hidePreloader();
+        myApp.alert("请先登录！", function () {
+            goTo("../../module/user/login.html");
+        });
+        return false;
+    }
+    var jsonStr = {
+        "userInfo": encodeURIComponent(appUser),
+        "tId": tId
+    };
+    var json = '{"key": "AssessmentService", "name": "QuestionList", "jsonstr": ' + JSON.stringify(jsonStr) + '}';
+    createDataFrame(json, "frQList");
+    return true;
+}
+
+function callQListEvent() {
+    if (checkDataFrame(event.data, "QuestionList", "AssessmentService")) {
+        unBindWindowListener("frQList", callQListEvent);
+        myApp.showPreloader();
+        var obj = getDataFrame(event.data.d);
+        if (obj != null) {
+            var tqList = getLocalQList(obj[0].tId, obj);
+            if (tqList != null) {
+                var qid = getHistoryQuestionId(tqList);
+                $("#aStart").attr("onclick", "goTo('assessment.html?id=" + qid + "&tid=" + obj[0].tId + "');");
+            }
+            else {
+                myApp.hidePreloader();
+                myApp.alert("数据处理异常，请返回后重试。", function () {
+                    goTo("choose_assessment.html");
+                });
+            }
+        }
+        myApp.hidePreloader();
+    }
+}
+
+///获取历史做题记录值
+function getHistoryQuestionId(json) {
+    if (typeof (json) == "object") {
+        return json[0].qId;
+    } else
+        return 0;
+}
+
+function getLocalQList(tId, list) {
+    var tqList = getLocalStorage("tqList");
+    if (tqList == null) {
+        if (list == null)
+            return null;
+        var obj = { "data": [{ "tId": tId, "tqList": list }] };
+        addLocalStorage("tqList", JSON.stringify(obj));
+        return list;
+    } else {
+        tqList = JSON.parse(tqList);
+        var torf = false;
+        $.each(tqList.data, function (i, v) {
+            if (torf)
+                return false;
+            if (v.tId == tId) {
+                if (list == null) {
+                    list = v.tqList;
+                }
+                else {
+                    v.tqList = list;
+                }
+                torf = true;
+            }
+        });
+        if (!torf && list != null)
+            tqList.data.push({ "tId": tId, "tqList": list });
+        addLocalStorage("tqList", JSON.stringify(tqList));
+        return list;
+    }
+}
+
+function getQDetailNullObj(tId, qId) {
+    var tqRList = getLocalStorage("tqReportList");
+    if (tqRList == null) {
+        var list = getLocalQList(tId, null);
+        if (list == null)
+            return null;
+        var rlist = [];
+        $.each(list, function (i, v) {
+            rlist.push({
+                "nId": i,
+                "cId": v.cId,
+                "qId": v.qId,
+                "aId": "",
+                "aqId": ""
+            });
+        });
+        var obj = { "data": [{ "tId": tId, "tqReportList": rlist }] };
+        addLocalStorage("tqReportList", JSON.stringify(obj));
+        return rlist[0];
+    } else {
+        tqRList = JSON.parse(tqRList);
+        var qDetailObj = null;
+        var torf = false;
+        $.each(tqRList.data, function (num, value) {
+            if (torf)
+                return false;
+            if (value.tId == tId) {
+                $.each(value.tqReportList, function (inum, ivalue) {
+                    torf = true;
+                    if (ivalue.aId == "" || ivalue.qId == qId) {
+                        //当前做到第几道题
+                        $(".progress .progress-bar").attr("data-transitiongoal", inum);
+                        qDetailObj = ivalue;
+                        return false;
+                    }
+                });
+            }
+        });
+        if (!torf) {
+            var hlist = getLocalQList(tId, null);
+            if (hlist != null) {
+                var hrlist = [];
+                $.each(hlist, function (i, v) {
+                    hrlist.push({
+                        "nId": i,
+                        "cId": v.cId,
+                        "qId": v.qId,
+                        "aId": "",
+                        "aqId": ""
+                    });
+                });
+                tqRList.data.push({ "tId": tId, "tqReportList": hrlist });
+            }
+            addLocalStorage("tqReportList", JSON.stringify(tqRList));
+            return hrlist[0];
+        }
+        return qDetailObj;
+    }
+}
+
+function setQDetailNextObj(tId, qId, aId) {
+    var tqRList = getLocalStorage("tqReportList");
+    if (tqRList == null) {
+        return null;
+    } else {
+        tqRList = JSON.parse(tqRList);
+        var qDetailObj = null;
+        var torf = false;
+        $.each(tqRList.data, function (num, value) {
+            if (torf)
+                return false;
+            if (value.tId == tId) {
+                $.each(value.tqReportList, function (inum, ivalue) {
+                    if (ivalue.qId == qId) {
+                        ivalue.aId = aId;
+                        torf = true;
+                        return false;
+                    }
+                });
+            }
+        });
+        if (torf) {
+            addLocalStorage("tqReportList", JSON.stringify(tqRList));
+            return true;
+        }
+        return false;
+    }
+}
+
+function formQDetail(id) {
+    myApp.showPreloader();
+    var appUser = getLocalStorage("appUser");
+    if (appUser == null) {
+        myApp.hidePreloader();
+        myApp.alert("请先登录！", function () {
+            goTo("../../module/user/login.html");
+        });
+        return false;
+    }
+    var jsonStr = {
+        "userInfo": encodeURIComponent(appUser),
+        "qId": id
+    };
+    var json = '{"key": "AssessmentService", "name": "QuestionDetail", "jsonstr": ' + JSON.stringify(jsonStr) + '}';
+    createDataFrame(json, "frQDetail");
+    return true;
+}
+
+function callQDetailEvent() {
+    if (checkDataFrame(event.data, "QuestionDetail", "AssessmentService")) {
+        unBindWindowListener("frQDetail", callQDetailEvent);
+        myApp.showPreloader();
+        var obj = getDataFrame(event.data.d);
+        if (obj != null) {
+            showQDetail(obj);
+        }
+        myApp.hidePreloader();
+    }
+}
+
+function showQDetail(json) {
+    if (typeof (json) == "object") {
+        var template = $("<div />").append($("<div />").attr({ "class": "row-item", "dType": "{qType}" })
+            .append($("<span />").html("{qContent}"))
+            .append($("<input />").attr({
+                "type": "hidden",
+                "value": "{qId}"
+            })));
+        var itemTemplate = $("<div />").append($("<div />").attr({
+            "class": "row-item",
+            "dType": "2",
+            "onclick": "setQDetail(this);"
+        }).append($("<span />").html("{aContent}"))
+        .append($("<input />").attr({
+            "type": "hidden",
+            "value": "{qId},{aId},{aqId}"
+        })));
+        if (json.qType == 1) {
+            itemTemplate = $("<div />").append($("<div />").attr({
+                "class": "row-item",
+                "dType": "2",
+                "onclick": "setQDetailDouble(this);"
+            }).append($("<span />").html("{aContent}"))
+            .append($("<input />").attr({
+                "type": "hidden",
+                "value": "{qId},{aId},{aqId}"
+            })));
+        } else if (json.qType == 2) {
+            itemTemplate = $("<div />");
+            var fill = {};
+            console.log(json.qContent);
+            var tmpStr = $("<div />").html(json.qContent);
+            var nameObj = parserStrToJson(json.qContent);
+            while (nameObj != null) {
+                if (nameObj.name != null) {
+                    var rId = nameObj.name + "_" + parseInt(100 * Math.random());
+                    fill[nameObj.name] = "<input type=\"text\" name=\"txt" + rId + "\" id=\"txt" + rId + "\" class=\"form-control\"/>";
+                }
+                nameObj = parserStrToJson(nameObj.str);
+            }
+            json.qContent = tmpStr.strFormat(fill);
+        }
+        var item = $(".Assessment-wrap .group-item").first();
+        item.html("");
+        item.append(template.strFormat(json));
+        if (json.aList != null) {
+            $.each(json.aList, function (i, v) {
+                item.append(itemTemplate.strFormat(v));
+            });
+        }
+        $(".Assessment-wrap").css("height", function (i, v) {
+            return "auto";
+        });
+        processNext();
+    }
+}
+
+function processList(max) {
+    $('.progress .progress-bar').attr("aria-valuemax", max).progressbar({
+        display_text: 'center',
+        use_percentage: false,
+        amount_format: function (p, t) {
+            return "已做到第" + p + "题，共" + t + "题";
+        },
+        done: function () {
+            if ($('.progress .progress-bar').attr("data-transitiongoal") >= max) {
+                showToast("题目做完就可以提交了");
+                $(".right span").eq(1).removeClass("disabled");
+            } else {
+                $(".right span").eq(1).addClass("disabled");
+            }
+        }
+    });
+}
+
+function processClean() {
+    $(".progress .progress-bar").attr("data-transitiongoal", "").progressbar({
+        display_text: 'center',
+        use_percentage: false,
+        amount_format: function (p, t) {
+            return "已做到第" + p + "题，共" + t + "题";
+        }
+    });
+}
+
+function processNext() {
+    $(".progress .progress-bar").attr("data-transitiongoal", function (i, v) {
+        if (v == "")
+            v = 0;
+        var value = (parseFloat(v) + 1);
+        if (value <= $(this).attr("aria-valuemax"))
+            return (parseFloat(v) + 1);
+        return parseFloat(v);
+    }).progressbar({ display_text: 'center' });
+}
+
+function QDetailReset() {
+    showToast("重新评估");
+    var tId = $("#hiTId").val();
+    if (tId.trim() == "") {
+        myApp.alert("数据处理异常，请返回后重试");
+        return;
+    }
+    var QDetailObj = null;
+    var tqRList = getLocalStorage("tqReportList");
+    if (tqRList == null) {
+        var list = getLocalQList(tId, null);
+        if (list == null)
+            return null;
+        var rlist = [];
+        $.each(list, function (i, v) {
+            rlist.push({
+                "nId": i,
+                "cId": v.cId,
+                "qId": v.qId,
+                "aId": "",
+                "aqId": ""
+            });
+        });
+        var obj = { "data": [{ "tId": tId, "tqReportList": rlist }] };
+        addLocalStorage("tqReportList", JSON.stringify(obj));
+        QDetailObj = rlist[0];
+    } else {
+        tqRList = JSON.parse(tqRList);
+        var torf = false;
+        $.each(tqRList.data, function (num, value) {
+            if (value.tId == tId) {
+                tqRList.data.splice(num, 1);
+                torf = true;
+                return false;
+            }
+        });
+        var hlist = getLocalQList(tId, null);
+        var hrlist = [];
+        if (hlist != null) {
+            $.each(hlist, function (i, v) {
+                hrlist.push({
+                    "nId": i,
+                    "cId": v.cId,
+                    "qId": v.qId,
+                    "aId": "",
+                    "aqId": ""
+                });
+            });
+            tqRList.data.push({ "tId": tId, "tqReportList": hrlist });
+        }
+        addLocalStorage("tqReportList", JSON.stringify(tqRList));
+        QDetailObj = hrlist;
+    }
+    processClean();
+    if (QDetailObj != null) {
+        if (formQDetail(QDetailObj[0].qId))
+            bindWindowListener(callQDetailEvent);
+    }
+}
+
+function setQDetail(obj) {
+    var group = $(obj).parent(".group-item").first();
+    group.find("div .row-item").each(function () {
+        $(this).find("i[class='icon icon-checkmark']").remove();
+    });
+    $(obj).append($("<i />").addClass("icon icon-checkmark blue"));
+    myApp.showPreloader();
+    var hiValue = $(obj).find("input[type='hidden']").first();
+    var hiObj = hiValue.val().split(",");
+    var tId = $("#hiTId").val();
+    if (tId.trim() == "")
+        myApp.alert("数据处理异常，请返回后重试");
+    console.log("hiValue.val()=" + hiObj[0] + ";" + hiObj[1] + ":" + hiObj[2]);
+    var current = setQDetailNextObj(tId, hiObj[0], hiObj[1]);
+    if (current != null) {
+        if (current) {
+            var value = getQDetailNullObj(tId, null);
+            if (formQDetail(value.qId))
+                bindWindowListener(callQDetailEvent);
+        }
+    }
+    myApp.hidePreloader();
+}
+
+function setQDetailDouble(obj) {
+    var item = $(obj);
+    if (item.find("i").length > 0)
+        item.find("i").remove();
+    else
+        item.append($("<i />").addClass("icon icon-checkmark blue"));
+    var hiValue = $(obj).find("input[type='hidden']").first();
+    var hiObj = hiValue.val().split(",");
+    var tId = $("#hiTId").val();
+    if (tId.trim() == "")
+        myApp.alert("数据处理异常，请返回后重试");
+    var qId = $("div[dType='1']").first().find("input[type='hidden']").first();
+    var current = getQDetailNullObj(tId, qId.val());
+    console.log(JSON.stringify(current));
+    if (current != null) {
+        if (current.aId == "") {
+            current.aId = "," + hiObj[1] + ",";
+        } else {
+            if (current.aId.indexOf("," + hiObj[1] + ",") != -1) {
+                current.aId = current.aId.replace("," + hiObj[1] + ",", ",");
+                if ((current.aId.lastIndexOf(",") != (current.aId.length - 1)))
+                    current.aId = current.aId + ",";
+                else
+                    if (current.aId == ",")
+                        current.aId = "";
+            }
+            else
+                current.aId = current.aId + hiObj[1] + ",";
+        }
+        current = setQDetailNextObj(tId, hiObj[0], current.aId);
+    }
+}
+
+function formQDetailSumbit() {
+    var tId = $("#hiTId").val();
+    if (tId.trim() == "") {
+        myApp.alert("数据处理异常，请返回后重试");
+        return false;
+    }
+    var fList = $(".group-item").find("input");
+    var torf = true;
+    if (fList.length > 1)
+        torf = ckQFillType(tId, fList);
+    if (ckQList() && torf) {
+        showToast("提交生成报告");
+        return true;
+    } else {
+        if (torf)
+            myApp.alert("请给出当前答案才能提交报告");
+        return false;
+    }
+}
+
+function ckQDetail() {
+    var tId = $("#hiTId").val();
+    if (tId.trim() == "") {
+        myApp.alert("数据处理异常，请返回后重试");
+        return null;
+    }
+    var qObj = null;
+    for (var i = 0, l = 3 ; i < l; i++) {
+        qObj = $("div[dType='" + i + "']");
+        if (qObj.length > 0)
+            break;
+    }
+    if (qObj.length == 0) {
+        myApp.alert("数据处理异常，请返回后重试");
+        goTo("choose_assessment.html");
+        return false;
+    } else if (qObj.length == 1) {
+        if (qObj.attr("dType") != 2) {
+            var qIdObj = qObj.first().find("input");
+            var obj = null;
+            if (qIdObj.length != 1) {
+                myApp.alert("数据处理异常，请返回后重试");
+                goTo("choose_assessment.html");
+                return false;
+            } else {
+                obj = getQDetailNullObj(tId, qIdObj.first().val());
+                if (obj.aId == "") {
+                    myApp.alert("请给出当前答案才能跳至下一题");
+                    return false;
+                }
+            }
+            var value = getQDetailNullObj(tId, null);
+            if (formQDetail(value.qId))
+                bindWindowListener(callQDetailEvent);
+            return true;
+        } else {
+            var fqIdObj = qObj.first().find("input");
+            if (!ckQFillType(tId, fqIdObj))
+                return false;
+            var fvalue = getQDetailNullObj(tId, null);
+            if (fvalue != null) {
+                if (formQDetail(fvalue.qId))
+                    bindWindowListener(callQDetailEvent);
+            }
+            return true;
+        }
+    } else {
+        var qIdObjs = qObj.find("input");
+        if (!ckQFillType(tId, fqIdObj))
+            return false;
+        var qfvalue = getQDetailNullObj(tId, null);
+        if (qfvalue != null) {
+            if (formQDetail(qfvalue.qId))
+                bindWindowListener(callQDetailEvent);
+        }
+        return true;
+    }
+    return true;
+}
+
+function ckQFillType(tId, obj) {
+    if (obj != null && typeof (obj) == "object") {
+        var value = "";
+        var torf = false;
+        obj.each(function (i, v) {
+            var item = $(v);
+            console.log("item.val()=" + item.val());
+            if (item.val().trim() == "") {
+                torf = false;
+                myApp.alert("请给出当前答案才能跳至下一题");
+                return false;
+            }
+            if (item.attr("type") == "hidden") {
+                torf = true;
+                setQDetailNextObj(tId, item.val(), value);
+            } else {
+                value = value + item.val() + ",";
+            }
+        });
+        return torf;
+    }
+    return false;
+}
+
+function ckQList(tId) {
+    var tqRList = getLocalStorage("tqReportList");
+    if (tqRList == null) {
+        return false;
+    } else {
+        tqRList = JSON.parse(tqRList);
+        var qDetailObj = null;
+        var torf = true;
+        $.each(tqRList.data, function (num, value) {
+            if (value.tId == tId) {
+                $.each(value.tqReportList, function (inum, ivalue) {
+                    if (ivalue.aId == null || ivalue.aId == "") {
+                        torf = false;
+                        return false;
+                    }
+                });
+                return false;
+            }
+        });
+        return torf;
+    }
+}
+
+//function checkAssAnswer(name) {
+//    var answerList = getLocalStorage(name);
+//    if (answerList != null) {
+//        var list = JSON.parse(answerList);
+//        var torf = true;
+//        $.each(list, function (i, v) {
+//            if (v.val == "") {
+//                torf = false;
+//                return false;
+//            }
+//        });
+//        return torf;
+//    } else {
+//        return false;
+//    }
+//}
+
+//function callAssReport(id) {
+//    //if (!checkAssAnswer(id)) {
+//    //    myApp.alert("还有题目未完成");
+//    //    return;
+//    //}
+//    //myApp.alert("id=" + id);
+//    var data = "list=" + encodeURIComponent(getLocalStorage(id)) + "&name=" + encodeURIComponent(id);
+//    var url = ifUrl + "/Interface/iReportForApp.aspx";
+//    callAjaxJson(url, data, function (obj) {
+//        getAssReport(obj);
+//    });
+//}
+
+//function getAssReport(obj) {
+//    try {
+//        var json = JSON.parse(obj);
+//        var report = json.report;
+//        myApp.alert("评估报告已生成");
+//        goTo("report_assessment.html?calage=" + report.calage + "&bioage=" + report.bioage);
+//    } catch (err) {
+//        myApp.alert("网络连接异常，请稍后再试");
+//    }
+//    //{"success":true,"report":{"calage":31.7,"bioage":29.8,"report":{"health":{"bmi":["21.9",2],"whr":["0.9",3],"q5":1,"q18":"0","q23":2,"q24":1,"q25":3,"q26":3,"q65":3,"q66":1,"q67":1,"q68":2,"q69":2,"q70":3,"q30":3,"q64":"0.5","q71":1,"q72":1,"q73":2,"q74":3,"q75":3,"q76":2,"q77":2},"hereditary":2,"habits":{"q9":3,"q13":2,"q16":2,"q27":2,"q28":1,"q29":2,"q39":2,"q41":2},"diet":{"q14":2,"q15":2,"q31":1,"q32":2,"q33":2,"q34":1,"q35":2,"q36":2,"q37":2,"q38":2,"q40":2,"q42":2,"q43":1,"q44":1,"q45":1,"q46":2},"fitness":{"q17":1,"q19":2,"q20":1},"environment":{"q10":2,"q11":2,"q12":2},"stress":{"q52":1,"q54":1,"q56":2,"q57":1,"q58":2,"q59":2},"others":{"q7":1,"q49":2,"q53":1,"q55":1}},"profile":{"health":{"bmi":-0.5,"whr":1,"q5":"0","q18":"0","q23":"-1","q24":"-1","q25":"1","q26":"2","q65":"0.5","q66":"-1","q67":"0","q68":"0","q69":"0.5","q70":"-0.5","q30":"0","q64":"0.5","q71":"0","q72":"0","q73":"0","q74":"0","q75":"0","q76":"-0.5","q77":"0"},"hereditary":{"q47":"0","q48":"-0.5","q51":"-0.5","q50":"-0.5"},"habits":{"q9":"-3","q13":"0","q16":"-0.5","q21":1,"q22":"1","q27":"-1.5","q28":"1.5","q29":"-2","q39":"0.5","q41":"0"},"diet":{"q14":"-0.5","q15":"-0.5","q31":"-1","q32":"-1","q33":"-1","q34":"0","q35":"0","q36":"-1","q37":"-1","q38":"-2","q40":"-1","q42":"-1","q43":"0.5","q44":"0","q45":"0","q46":"0"},"fitness":{"q17":"0","q19":"-1","q20":"0.5"},"environment":{"q10":"0","q11":"0","q12":"0"},"stress":{"q52":"1","q54":"-0.5","q56":"-2","q57":"0","q58":"-1","q59":"0"},"others":{"q6":"-0.5","q7":"-0.5","q8":"-1","q49":"-0.5","q53":"0","q55":"1.5","q60":"0","q61":"-1.5","q62":"0","q63":"0"}}}}
+
+//}
+
+//function showAssReport(obj) {
+//    var reportTemplate = $("<div />").append($("<div />").addClass("row-item").html("您的日历年龄为{calage},您的生理年龄为{bioage}..."));
+//    //console.log(reportTemplate.strFormat(obj));
+//    $(".RAssessment-wrap .group-item").first().prepend(reportTemplate.strFormat(obj));
+//    $(".RAssessment-wrap").css("height", function (i, v) {
+//        return (parseFloat(v) + 50) + "px";
+//    });
+//}
+
+/* assessment end */
+
+/* medical begin */
+function formMedicalOurself() {
+    var mpList = getLocalStorage("MedicalPackage");
+    if (mpList != null) {
+        mpList = JSON.parse(mpList);
+        date = mpList.date;
+        if (date != null)
+            $(".mDate").html("预约日期为：" + date);
+        else
+            $(".mDate").html("请选择可预约日期");
+        var sname = mpList.store;
+        if (sname != null && sname != "") {
+            sid = isNaN(sname.split("-")[0]) ? 0 : parseInt(sname.split("-")[0]);
+            sname = sname.split("-")[1];
+            if (sname != "")
+                $(".mStore").html("预约门店为：" + sname);
+            else
+                $(".mStore").html("请选择可预约门店");
+        }
+    }
+    var mpList_1 = getLocalStorage("MedicalPackageList");
+    if (mpList_1 != null) {
+        mpList_1 = JSON.parse(mpList_1);
+        var medical = "";
+        $.each(mpList_1, function (i, v) {
+            if (v.CName != "")
+                medical = medical + v.CName + ",";
+        });
+        if (medical.lastIndexOf(",") != medical.length)
+            medical = medical.substring(0, medical.length - 1);
+        if (medical != "")
+            $(".mPackage").html("预约套餐为：" + medical);
+        else
+            $(".mPackage").html("请选择可预约套餐及加项包");
+    }
+}
+
+function formMedicalPackage(url) {
+    myApp.showPreloader();
+    var date = "";
+    var sid = 0;
+    var appUser = getLocalStorage("appUser");
+    if (appUser == null) {
+        myApp.alert("请先登录！", function () {
+            myApp.hidePreloader();
+            goTo("../../module/user/login.html");
+        });
+        return false;
+    }
+    var mpList = getLocalStorage("MedicalPackage");
+    if (mpList != null) {
+        mpList = JSON.parse(mpList);
+        date = mpList.date;
+        //if (date != null)
+        //    $(".mDate").html("您所选择的预约日期为：" + date);
+        //else
+        //    $(".mDate").html("请选择可预约日期");
+        var sname = mpList.store;
+        if (sname != null && sname != "") {
+            sid = isNaN(sname.split("-")[0]) ? 0 : parseInt(sname.split("-")[0]);
+            //sname = sname.split("-")[1];
+            //if (sname != "")
+            //    $(".mStore").html("您所选择的预约门店为：" + sname);
+            //else
+            //    $(".mStore").html("请选择可预约门店");
+        }
+
+        if (sid == 0) {
+            myApp.hidePreloader();
+            myApp.alert("请选择一家门店", function () {
+                goTo(url);
+            });
+            return false;
+        }
+    } else {
+        myApp.hidePreloader();
+        myApp.alert("请选择一家门店", function () {
+            goTo(url);
+        });
+        return false;
+    }
+    var jsonStr = {
+        "userInfo": encodeURIComponent(appUser),
+        "time": date,
+        "sid": sid
+    };
+    var json = '{"key": "MedicalBookingService", "name": "PackageList", "jsonstr": ' + JSON.stringify(jsonStr) + '}';
+    createDataFrame(json, "frMedicalPackage");
+    return true;
+}
+
+function callMedicalPackageEvent() {
+    if (checkDataFrame(event.data, "PackageList", "MedicalBookingService")) {
+        unBindWindowListener("frMedicalPackage", callMedicalPackageEvent);
+        myApp.showPreloader();
+        var obj = getDataFrame(event.data.d);
+        if (obj != null) {
+            showMedicalPackageList(obj);
+        }
+        myApp.hidePreloader();
+    }
+}
+
+function showMedicalPackageList(json) {
+    if (typeof (json) == "object") {
+        var template = $("<div />").append($("<a />").attr({
+            "class": "row-item collapsed",
+            "role": "button",
+            "data-toggle": "collapse",
+            "data-parent": "#accordion",
+            "href": "#{idName}",
+            "aria-expanded": "false",
+            "aria-controls": "{idName}",
+            "data-pid": "{pId}",
+            "data-sid": "{sId}"
+        }).append($("<span />").addClass("pull-left").html("{CName}")).append($("<i />").addClass("pull-right icon icon-chevron-right")))
+                .append($("<div />").attr({
+                    "id": "{idName}",
+                    "class": "panel-collapse collapse",
+                    "role": "tabpanel",
+                    "aria-labelledby": "headingOne"
+                })
+            .append($("<div />").addClass("panel-body").append($("<p />").html("{CContent}"))
+            .append($("<div />").addClass("hide").html("{hidden}"))
+            .append($("<div />").addClass("pull-right").append($("<i />").attr({
+                "class": "pull-right icon icon-checkmark",
+                "data-sid": "{sId}",
+                "onclick": "medicalSingleClick(this);"
+            }).html("&nbsp;选此套餐"))
+            .append($("<i />").attr({ "class": "pull-right icon icon-list2", "onclick": "showMedicalList(this);" }).html("&nbsp;查看更多")))));
+        var plusTemplate = $("<div />").append($("<div />").attr({ "class": "row-item disabled", "data-pid": "{pId}", "data-sid": "{sId}" })
+            .append($("<a />").attr({ "class": "pull-left row-item-title", "href": "#", "onclick": "showMedicalPlusList(this);" }).html("{CName}"))
+            //.append($("<i />").attr({ "class": "pull-right icon icon-cross", "onclick": "medicalDoubleClick(this, false);" }))
+            .append($("<i />").attr({ "class": "pull-right icon icon-checkmark", "onclick": "medicalDoubleClick(this);" }))
+            .append($("<div />").addClass("hide").html("{hidden}")));
+        var basic = $(".basic-package");
+        var plus = $(".plus-package");
+        var hra = $(".hra-package")
+        basic.html("");
+        plus.html("");
+        hra.html("");
+        $.each(json.PList, function (i, v) {
+            var label = $("<img class=\"pull-right\" src=\"../../img/recommend.gif\">");
+            v["hidden"] = JSON.stringify(v);
+            if (v.Type == 0) {
+                v["idName"] = "package" + i;
+                basic.append(template.strFormat(v));
+                if (v.Label != "0") {
+                    basic.find(".row-item").last().find(".pull-left").append(label);
+                }
+            } else if (v.Type == 1) {
+                var plusT = $("<div />").append(plusTemplate.strFormat(v));
+                //if (v.AType == 1) {
+                //    plusT.find("i[class='pull-right icon icon-checkmark']").addClass("blue");
+                //} else {
+                //    plusT.find("i[class='pull-right icon icon-cross']").addClass("blue");
+                //}
+                plus.append(plusT.html());
+                if (parseFloat(v.Price) > 0)
+                    plus.find(".row-item").last().find(".row-item-title").append($("<span />").addClass("pull-right").append($("<i />").addClass("icon icon-plus")).append(parseFloat(v.Price) + "元"));
+                if (v.Label == "0") {
+                    plus.find(".row-item").last().find(".row-item-title").append(label);
+                }
+            }
+        });
+
+        var mpList = getLocalStorage("MedicalPackage");
+        if (mpList != null) {
+            mpList = JSON.parse(mpList);
+            $.each(mpList.data, function (i, v) {
+                if (v.tId == 1) {
+                    if (v.mpList != null) {
+                        var pid = v.mpList.replace(/,/g, "");
+                        var pidObj = basic.find(".row-item[data-pid='" + pid + "']").first();
+                        pidObj.addClass("pid-selected");
+                        basic.find("div[id='" + pidObj.attr("aria-controls") + "']").addClass("pid-selected");;
+                        pidObj.find(".icon-checkmark").addClass("blue");
+                        plus.find("div[data-sid='" + pidObj.attr("data-sid") + "']").removeClass("disabled");
+                    }
+                } else if (v.tId == 2) {
+                    if (v.mpList != null) {
+                        $.each(v.mpList.split(","), function (i, v) {
+                            if (v != "") {
+                                plus.find("div[data-pid='" + v + "']").addClass("pid-selected").find("a").addClass("pid-selected");
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        if (json.HRAList != null) {
+            hra.append($("<div />").addClass("row-item"));
+            $.each(json.HRAList, function (i, v) {
+                hra.find("div").first().append("、" + v.pName);
+            });
+        }
+        if (basic.find(".row-item").length == 0) {
+            basic.remove();
+        }
+        if (plus.find(".row-item").length == 0) {
+            $(".plus-package-title").remove();
+            plus.remove();
+        }
+        if (hra.find(".row-item").length == 0) {
+            $(".hra-package-title").remove();
+            hra.remove();
+        }
+
+        $(".OMedical-wrap").css("height", function (i, v) {
+            return (parseFloat(v) + 70) + "px";
+        });
+    }
+}
+
+function medicalSingleClick(obj) {
+    try {
+        var singles = $(obj);
+        var singleSID = singles.attr("data-sid");
+        var basic = $(".basic-package");
+        var collapse = singles.parents(".panel-collapse").first();
+        if (!singles.parents(".panel-collapse").first().hasClass("pid-selected")) {
+            basic.find(".pid-selected").removeClass("pid-selected");
+            collapse.addClass("pid-selected").find(".content-block").addClass("pid-selected");
+            var rowitem = $(".row-item[aria-controls='" + collapse.attr("id") + "']");
+            rowitem.click();
+            rowitem.addClass("pid-selected");
+            var single = JSON.parse(collapse.find(".hide").first().html());
+            var plus = $(".plus-package");
+            plus.find(".row-item").addClass("disabled");
+            plus.find("div[data-sid='" + singleSID + "']").removeClass("disabled");
+            getLocalMedicalPackage(single);
+        } else {
+            basic.find(".pid-selected").removeClass("pid-selected");
+            var single = JSON.parse(collapse.find(".hide").first().html());
+            var plus = $(".plus-package");
+            plus.find("div[data-sid='" + singleSID + "']").addClass("disabled").removeClass("pid-selected").find("a").removeClass("pid-selected");
+            getLocalMedicalPackage(single);
+        }
+    } catch (err) {
+        myApp.alert("选择套餐异常");
+    }
+}
+
+function showMedicalList(obj) {
+    var detail = $(obj).parents(".panel-collapse").first().find(".hide").first().html();
+    var template = $("<div />").append($("<div />").addClass("row-item")
+        .append($("<span />").addClass("pull-left").html("{CName}："))
+        .append($("<div />").addClass("pull-right").html("{CContent}")));
+    var detailHtml = $("<div />").addClass("group-item");
+    detailHtml.html("");
+    if (detail != null && detail != "") {
+        var detailJson = JSON.parse(detail);
+        $.each(detailJson.ItemList, function (i, v) {
+            detailHtml.append(template.strFormat(v));
+        });
+        showPopupModal("套餐详情", detailHtml);
+    }
+}
+
+function medicalDoubleClick(obj) {
+    try {
+        var single = $(obj).parents("div").first();
+        var mpList = getLocalStorage("MedicalPackage");
+        if (mpList != null) {
+            var list = "";
+            mpList = JSON.parse(mpList);
+            var pmpList = mpList.data[1].mpList;
+            var torf = $(obj).parents(".row-item").first().hasClass("pid-selected");
+            if (!torf) {
+                if (pmpList == null || pmpList == "") {
+                    pmpList = "," + single.attr("data-pid") + ",";
+                } else {
+                    var added = false;
+                    $.each(pmpList.split(','), function (i, v) {
+                        if (v != "") {
+                            if (v == single.attr("data-pid")) {
+                                added = true;
+                                return true;
+                            }
+                        }
+                    });
+                    if (!added)
+                        pmpList = pmpList + single.attr("data-pid") + ",";
+                }
+                $(obj).parents(".row-item").first().addClass("pid-selected").find("a").addClass("pid-selected");
+            } else {
+                if (pmpList != null) {
+                    if (pmpList.indexOf("," + single.attr("data-pid") + ",") != -1) {
+                        $.each(pmpList.split(','), function (i, v) {
+                            if (v != "") {
+                                if (v == single.attr("data-pid"))
+                                    return true;
+                                list = list + v + ",";
+                            }
+                        });
+                        if (list != "")
+                            list = "," + list;
+                        pmpList = list;
+                    }
+                } else {
+                    mpList.data[1].mpList = "," + single.attr("data-pid") + ",";
+                }
+                $(obj).parents(".row-item").first().removeClass("pid-selected").find("a").removeClass("pid-selected");
+            }
+            mpList.data[1].mpList = pmpList;
+            addLocalStorage("MedicalPackage", JSON.stringify(mpList));
+        }
+    } catch (err) {
+        myApp.alert("选择加项包异常");
+    }
+}
+
+function showMedicalPlusList(obj) {
+    var detail = $(obj).parents(".row-item").first().find(".hide").first().html();
+    var template = $("<div />").append($("<div />").addClass("row-item")
+        .append($("<span />").addClass("pull-left").html("{CName}："))
+        .append($("<div />").addClass("pull-right").html("{CContent}")));
+    var detailHtml = $("<div />").addClass("group-item");
+    detailHtml.html("");
+    if (detail != null && detail != "") {
+        var detailJson = JSON.parse(detail);
+        $.each(detailJson.ItemList, function (i, v) {
+            detailHtml.append(template.strFormat(v));
+        });
+        showPopupModal("加项包详情", detailHtml);
+    }
+}
+
+function getLocalMedicalPackage(list) {
+    var mpList = getLocalStorage("MedicalPackage");
+    if (list == null)
+        return null;
+    var date = null;
+    var store = null;
+    var mpList_1 = null;
+    if (mpList != null) {
+        var mpJson = JSON.parse(mpList);
+        if (mpJson.data[0].mpList == null) {
+            date = mpJson.date;
+            store = mpJson.store;
+            mpList_1 = "," + list.pId + ",";
+        } else if (mpJson.data[0].mpList.indexOf(list.pId) != -1) {
+            date = mpJson.date;
+            store = mpJson.store;
+            $.each(mpJson.data[0].mpList.split(','), function (i, v) {
+                if (v != list.pId && v != "")
+                    mpList_1 = mpList_1 + v + ",";
+            });
+            if (mpList_1 != null)
+                mpList_1 = "," + mpList_1;
+        }
+        //else {
+        //    $(".plus-package .row-item").each(function (i, v) {
+        //        var obj = $(v);
+        //        var hide = obj.find("div[class='hide']").html();
+        //        if (hide != "") {
+        //            hide = JSON.parse(hide);
+        //            obj.find("i").removeClass("blue");
+        //            if (hide.AType) {
+        //                obj.find("i[class='pull-right icon icon-checkmark']").addClass("blue");
+        //            } else {
+        //                obj.find("i[class='pull-right icon icon-cross']").addClass("blue");
+        //            }
+        //        }
+        //    });
+        //}
+    }
+    var obj = { "data": [{ "tId": "1", "mpList": mpList_1 }, { "tId": "2", "mpList": null }], "date": date, "store": store };
+    addLocalStorage("MedicalPackage", JSON.stringify(obj));
+    return list;
+}
+
+function checkMedicalPackageList() {
+    try {
+        var mpList = [];
+        $(".pid-selected .hide").each(function (i, v) {
+            var json = JSON.parse($(this).html());
+            mpList[i] = {
+                "pId": json.pId, "sId": json.sId, "sName": json.sName, "CName": json.CName, "EName": json.EName,
+                "CContent": json.CContent, "EContent": json.Econtent, "Label": json.Label, "Type": json.Type, "Group": json.Group, "Price": json.Price,
+                "MarketPrice": json.MarketPrice, "Disable": json.Disable, "AType": json.AType, "Sort": json.Sort
+            };
+        });
+        addLocalStorage("MedicalPackageList", JSON.stringify(mpList));
+        return true;
+    }
+    catch (err) {
+        return false;
+    }
+}
+
+function formMedicalDate(url) {
+    myApp.showPreloader();
+    var sid = 0;
+    var pid = "";
+    var appUser = getLocalStorage("appUser");
+    if (appUser == null) {
+        myApp.hidePreloader();
+        myApp.alert("请先登录！", function () {
+            goTo("../../module/user/login.html");
+        });
+        return false;
+    }
+    var mpList = getLocalStorage("MedicalPackage");
+    if (mpList != null) {
+        mpList = JSON.parse(mpList);
+        $.each(mpList.data, function (i, v) {
+            if (v.tId == "1" && v.mpList != "") {
+                pid = v.mpList;
+            } else if (v.tId == "2" && v.mpList != "") {
+
+            }
+        });
+        //if (pid == "") {
+        //    myApp.alert("请选择至少一个体检套餐", function () {
+        //        myApp.hidePreloader();
+        //        goTo(url);
+        //    });
+        //    return false;
+        //}
+        var sname = mpList.store;
+        if (sname != null && sname != "") {
+            sid = isNaN(sname.split("-")[0]) ? 0 : parseInt(sname.split("-")[0]);
+        }
+    }
+    else {
+        myApp.hidePreloader();
+        myApp.alert("请选择一个门店", function () {
+            goTo(url);
+        });
+        return false;
+    }
+    var jsonStr = {
+        "userInfo": encodeURIComponent(appUser),
+        "pidStr": pid,
+        "sid": sid
+    };
+    var json = '{"key": "MedicalBookingService", "name": "BookingDate", "jsonstr": ' + JSON.stringify(jsonStr) + '}';
+    createDataFrame(json, "frMedicalDate");
+    return true;
+}
+
+function callMedicalDateEvent() {
+    if (checkDataFrame(event.data, "BookingDate", "MedicalBookingService")) {
+        unBindWindowListener("frMedicalDate", callMedicalDateEvent);
+        myApp.showPreloader();
+        var obj = getDataFrame(event.data.d);
+        if (obj != null) {
+            showMedicalDate(obj);
+        }
+        myApp.hidePreloader();
+    }
+}
+
+function showMedicalDate(obj) {
+    var events = "";
+    $.each(obj, function (i, v) {
+        if ((v.MaxNum - v.CurrentNum) > 0 && v.Status == 0) {
+            events += "{\"start\":\"" + v.Date.replace(" 00:00:00", "") + "\", \"overlap\": \"false\", \"rendering\": \"background\", \"color\": \"#99FF33\"},";
+        }
+    });
+    if (events != "") {
+        events = "[" + events.substring(0, events.length - 1) + "]";
+        var eventJson = JSON.parse(events);
+
+        $('.calendar').fullCalendar({
+            businessHours: true, // display business hours
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: ''
+            },
+            dayClick: function (date) {
+                var clickDate = showDateFormat(date);
+                var thisDate = $(this);
+                var torf = false;
+                $.each(eventJson, function (i, v) {
+                    if (clickDate == showDateFormat(v.start)) {
+                        torf = true;
+                        return false;
+                    }
+                });
+                if (!torf) {
+                    myApp.alert("请选择可预约的日期");
+                } else {
+                    var mpList = getLocalStorage("MedicalPackage");
+                    $(".ChooseBackground").removeClass("ChooseBackground");
+                    $(this).addClass("ChooseBackground");
+                    if (mpList != null) {
+                        var mpJson = JSON.parse(mpList);
+                        mpJson.date = clickDate;
+                        addLocalStorage("MedicalPackage", JSON.stringify(mpJson));
+                    } else {
+                        var obj = { "data": [{ "tId": "1", "mpList": null }, { "tId": "2", "mpList": null }], "date": clickDate, "store": null };
+                        addLocalStorage("MedicalPackage", JSON.stringify(obj));
+                    }
+                    $(".showDate").find("span").html(clickDate);
+                }
+            },
+            firstDay: 1,
+            editable: false,
+            timeFormat: 'H:mm',
+            axisFormat: 'H:mm',
+            events: eventJson
+        });
+        $(".fc-button.fc-button-next.fc-state-default.fc-corner-right").click(function () {
+            chooseDateHistory();
+        });
+        $(".fc-button.fc-button-prev.fc-state-default.fc-corner-left").click(function () {
+            chooseDateHistory();
+        });
+        $(".fc-button.fc-button-today.fc-state-default.fc-corner-left.fc-corner-right").click(function () {
+            chooseDateHistory();
+        });
+
+        chooseDateHistory();
+    }
+}
+
+function chooseDateHistory() {
+    var mpList = getLocalStorage("MedicalPackage");
+    if (mpList != null) {
+        var mpList = JSON.parse(mpList);
+        if (mpList.date != null) {
+            $("td[data-date='" + mpList.date + "']").addClass("ChooseBackground");
+            $(".showDate").find("span").html(mpList.date);
+        }
+    }
+}
+
+function formMedicalStore(url) {
+    myApp.showPreloader();
+    var date = "";
+    var pid = "";
+    var appUser = getLocalStorage("appUser");
+    if (appUser == null) {
+        myApp.hidePreloader();
+        myApp.alert("请先登录！", function () {
+            goTo("../../module/user/login.html");
+        });
+        return false;
+    }
+    var mpList = getLocalStorage("MedicalPackage");
+    if (mpList != null) {
+        mpList = JSON.parse(mpList);
+        date = mpList.date;
+        //$.each(mpList.data, function (i, v) {
+        //    if (v.tId == "1" && v.mpList != "") {
+        //        pid = v.mpList;
+        //    } else if (v.tId == "2" && v.mpList != "") {
+
+        //    }
+        //});
+        //if (pid == "") {
+        //    myApp.alert("请选择至少一个体检套餐", function () {
+        //        myApp.hidePreloader();
+        //        goTo(url);
+        //    });
+        //    return false;
+        //}
+    } else {
+        //myApp.alert("请选择至少一个体检套餐", function () {
+        //    myApp.hidePreloader();
+        //    goTo(url);
+        //});
+        //return false;
+    }
+    var jsonStr = {
+        "userInfo": encodeURIComponent(appUser),
+        "pidStr": "",
+        "time": date
+    };
+    var json = '{"key": "MedicalBookingService", "name": "SupplierStore", "jsonstr": ' + JSON.stringify(jsonStr) + '}';
+    createDataFrame(json, "frMedicalStore");
+    return true;
+}
+
+function callMedicalStoreEvent() {
+    if (checkDataFrame(event.data, "SupplierStore", "MedicalBookingService")) {
+        unBindWindowListener("frMedicalStore", callMedicalStoreEvent);
+        myApp.showPreloader();
+        var obj = getDataFrame(event.data.d);
+        if (obj != null) {
+            showMedicalStore(obj);
+        }
+        myApp.hidePreloader();
+    }
+}
+
+function showMedicalStore(obj) {
+    var template = $("<div />").append($("<a />").attr({
+        "class": "row-item",
+        "href": "#",
+        "data-sid": "{Id}",
+        "data-sname": "{Name}",
+        "data-pca": "{PCA}",
+        "onclick": "chooseStoreClick(this);"
+    })
+        .append($("<h4 />").html("{Name}-{SName}"))
+        .append($("<p />").addClass("pull-left").html("地址：{Address}"))
+        .append($("<div />").addClass("hide").html("{hidden}")));
+    var list = $(".CStoreMedical-wrap .group-item");
+    list.html("");
+    if (obj != null && obj != "") {
+        $.each(obj, function (i, v) {
+            v["hidden"] = JSON.stringify(v);
+            v["PCA"] = v.PCA.split(",")[0].split(":")[0];
+            list.append(template.strFormat(v));
+        });
+        chooseStoreHistory();
+    }
+    delLocalStorage("filterStore");
+}
+
+function chooseStoreClick(obj) {
+    var divItem = $(obj);
+    var hidden = divItem.find(".hide");
+    if (hidden.html() != null && hidden.html() != "") {
+        var list = $(".CStoreMedical-wrap .group-item .row-item");
+        list.find("i[class='pull-right icon icon-checkmark']").remove();
+        divItem.append($("<i />").addClass("pull-right icon icon-checkmark"));
+        var item = JSON.parse(hidden.html());
+        var mpList = getLocalStorage("MedicalPackage");
+        if (mpList != null) {
+            mpList = JSON.parse(mpList);
+            if (mpList.store != null) {
+                var store = mpList.store.split("-")[0];
+                if (store != item.Id) {
+                    delLocalStorage("MedicalPackageList");
+                    mpList.data[0].mpList = null;
+                    mpList.data[1].mpList = null;
+                }
+            }
+            mpList.store = item.Id + "-" + item.Name + item.SName;
+            addLocalStorage("MedicalPackage", JSON.stringify(mpList));
+        } else {
+            var obj = { "data": [{ "tId": "1", "mpList": null }, { "tId": "2", "mpList": null }], "date": null, "store": item.Id + "-" + item.Name + item.SName };
+            addLocalStorage("MedicalPackage", JSON.stringify(obj));
+        }
+    }
+}
+
+function chooseStoreHistory() {
+    var mpList = getLocalStorage("MedicalPackage");
+    if (mpList != null) {
+        var mpList = JSON.parse(mpList);
+        if (mpList.store != null) {
+            var sname = mpList.store;
+            if (sname != null && sname != "") {
+                sid = parseInt(sname.split("-")[0]);
+                if (sid != 0)
+                    $("a[data-sid='" + sid + "']").append($("<i />").addClass("pull-right icon icon-checkmark"));
+            }
+        }
+    }
+}
+
+function filterStore() {
+    myApp.showPreloader();
+    var appUser = getLocalStorage("appUser");
+    if (appUser == null) {
+        myApp.hidePreloader();
+        myApp.alert("请先登录！", function () {
+            goTo("../../module/user/login.html");
+        });
+        return false;
+    }
+    var supplier = ",";
+    var pca = ",";
+    $(".CStoreMedical-wrap .group-item .row-item div.hide").each(function (i, v) {
+        var obj = JSON.parse($(this).html());
+        if (supplier.indexOf("," + obj.Name + ",") == -1) {
+            supplier += obj.Name + ",";
+        }
+        if (pca.indexOf("," + obj.PCA.split(',')[0] + ",") == -1) {
+            pca += obj.PCA.split(',')[0] + ",";
+        }
+    });
+    var filterStore = { "supplier": [{ "id": 0, "name": "不限" }], "pca": [{ "id": 0, "name": "不限:不限" }] };
+    if (supplier.split(",").length > 2) {
+        $.each(supplier.split(","), function (i, v) {
+            if (v != "")
+                filterStore.supplier.push({ "id": i, "name": v });
+        });
+    }
+    if (pca.split(",").length > 2) {
+        $.each(pca.split(","), function (i, v) {
+            if (v != "")
+                filterStore.pca.push({ "id": i, "name": v });
+        });
+    }
+    var template = $("<div />").addClass("group-item").append($("<div />").addClass("row-item supplierRow")
+        .append($("<span />").addClass("pull-left").html("品牌：")))
+        .append($("<div />").addClass("row-item pcaRow")
+        .append($("<span />").addClass("pull-left").html("地区：")));
+    $.each(filterStore.supplier, function (i, v) {
+        template.find(".row-item:first").append($("<a />").attr({
+            "data-type": "supplier",
+            "data-value": v.name,
+            "href": "#",
+            "class": "btn btn-default",
+            "onclick": "clickFilterStore(this);"
+        }).html(v.name));
+    });
+    $.each(filterStore.pca, function (i, v) {
+        template.find(".row-item:last").append($("<a />").attr({
+            "data-type": "pca",
+            "data-value": v.name.split(":")[0],
+            "href": "#",
+            "class": "btn btn-default",
+            "onclick": "clickFilterStore(this);"
+        }).html(v.name.split(":")[1]));
+    });
+    showPopupModalCMsg("筛选项", "完成", template, "completeFilterStore();");
+    $(".supplierRow span").css("line-height", $(".supplierRow").height() + "px");
+    $(".pcaRow span").css("line-height", $(".pcaRow").height() + "px");
+    filterStoreHistory();
+    myApp.hidePreloader();
+    return true;
+}
+
+function filterStoreHistory() {
+    var fs = getLocalStorage("filterStore");
+    if (fs != null) {
+        fs = JSON.parse(fs);
+        $(".supplierRow a").attr("class", "btn btn-default");
+        $(".pcaRow a").attr("class", "btn btn-default");
+        $(".supplierRow a[data-value='" + fs["supplier"] + "']").attr("class", "btn btn-primary");
+        $(".pcaRow a[data-value='" + fs["pca"] + "']").attr("class", "btn btn-primary");
+    } else {
+        $(".supplierRow a").attr("class", "btn btn-default");
+        $(".supplierRow a[data-value='不限']").attr("class", "btn btn-primary");
+        $(".pcaRow a").attr("class", "btn btn-default");
+        $(".pcaRow a[data-value='不限']").attr("class", "btn btn-primary");
+    }
+}
+
+function clickFilterStore(obj) {
+    var supplier = $(obj);
+    supplier.parents(".row-item:first").find("a").attr("class", "btn btn-default");
+    supplier.attr("class", "btn btn-primary");
+}
+
+function completeFilterStore() {
+    var fs = getLocalStorage("filterStore");
+    if (fs == null)
+        fs = {};
+    else
+        fs = JSON.parse(fs);
+    $(".btn-primary").each(function (i, v) {
+        var obj = $(this);
+        if (obj.attr("data-type") == "supplier")
+            fs["supplier"] = obj.attr("data-value");
+        if (obj.attr("data-type") == "pca")
+            fs["pca"] = obj.attr("data-value");
+    });
+    $(".CStoreMedical-wrap .group-item .row-item").addClass("disabled");
+    if (fs["supplier"] == "不限" && fs["pca"] == "不限")
+        $(".CStoreMedical-wrap .group-item .row-item").removeClass("disabled");
+    else if (fs["supplier"] == "不限")
+        $(".CStoreMedical-wrap .group-item .row-item[data-pca='" + fs["pca"] + "']").removeClass("disabled");
+    else if (fs["pca"] == "不限")
+        $(".CStoreMedical-wrap .group-item .row-item[data-sname='" + fs["supplier"] + "']").removeClass("disabled");
+    else {
+        $(".CStoreMedical-wrap .group-item .row-item").each(function (i, v) {
+            var obj = $(this);
+            if (obj.attr("data-pca") == fs["pca"] && obj.attr("data-sname") == fs["supplier"])
+                obj.removeClass("disabled");
+        });
+    }
+    if ($(".CStoreMedical-wrap .group-item .row-item.disabled").has("i").length > 0) {
+        $(".CStoreMedical-wrap .group-item .row-item.disabled").has("i").find("i").remove();
+        delLocalStorage("MedicalPackage");
+    }
+    addLocalStorage("filterStore", JSON.stringify(fs));
+}
+
+function checkMedicalPackage() {
+    var mpList = getLocalStorage("MedicalPackage");
+    var mpList_1 = getLocalStorage("MedicalPackageList");
+    if (mpList != null && mpList_1 != null) {
+        mpList = JSON.parse(mpList);
+        mpList_1 = JSON.parse(mpList_1);
+        if (mpList.data != null) {
+            var tId1 = mpList.data[0].mpList;
+            var tId2 = mpList.data[1].mpList;
+            if (tId1 == null && tId2 == null) {
+                myApp.alert("请选择至少一个体检套餐");
+                return false;
+            }
+        } else {
+            myApp.alert("请选择至少一个体检套餐");
+            return false;
+        }
+        if (mpList_1.length < 1) {
+            myApp.alert("请选择至少一个体检套餐");
+            return false;
+        }
+        if (mpList.date == null) {
+            myApp.alert("请确认预约日期");
+            return false;
+        }
+        if (mpList.store == null) {
+            myApp.alert("请确认预约门店");
+            return false;
+        }
+        var medical = {
+            "sid": mpList.store,
+            "date": mpList.date,
+            "ppId": "",
+            "tprice": 0.00,
+            "dprice": 0.00,
+            "pprice": 0.00
+        };
+        $.each(mpList_1, function (i, v) {
+            if (v.Type == 0) {
+                if (medical["pId"] == null)
+                    medical["pId"] = v.pId + ":" + v.CName;
+                else
+                    medical["pId"] = medical["pId"] + "," + v.pId + ":" + v.CName;
+                medical.tprice = medical.tprice + parseFloat(v.Price);
+                medical.pprice = medical.pprice + parseFloat(v.Price);
+            } else if (v.Type == 1) {
+                medical["ppId"] = medical["ppId"] + v.pId + ":" + v.CName + ",";
+                medical.tprice = medical.tprice + parseFloat(v.Price);
+                medical.pprice = medical.pprice + parseFloat(v.Price);
+            }
+        });
+        addLocalStorage("ConfirmOrder", JSON.stringify(medical));
+        return true;
+    } else {
+        myApp.alert("请完善预约信息后点击预约！");
+    }
+    return false;
+}
+
+function formMedicalStoreMap() {
+    var mapList = [];
+    $(".CStoreMedical-wrap .group-item .row-item").each(function (i, v) {
+        var hide = $(v).find(".hide").html();
+        if (hide != null && hide != "") {
+            hide = JSON.parse(hide);
+            var map = { "no": i, "data": { "name": hide.Name + "——" + hide.SName, "address": hide.Address, "ing": hide.Ing, "lat": hide.Lat } };
+            mapList[i] = map;
+        }
+    });
+    if (mapList.length > 0) {
+        addLocalStorage("MedicalStoreMaps", JSON.stringify(mapList));
+    }
+    return true;
+}
+
+function showMedicalStoreMap() {
+    var mapList = getLocalStorage("MedicalStoreMaps");
+    if (mapList != null) {
+        myApp.showPreloader("地图加载中...");
+        initMap();
+        mapList = JSON.parse(mapList);
+        var ing = 0;
+        var lat = 0;
+        $.each(mapList, function (i, v) {
+            if (v != null) {
+                addMarker(v.data.ing, v.data.lat, v.no, v.data.name, v.data.address, '#');
+                ing = ing + parseFloat(v.data.ing);
+                lat = lat + parseFloat(v.data.lat);
+            }
+        });
+        setMapcenter(ing.div(mapList.length), lat.div(mapList.length));//这里面的值是上面所有坐标的平均值
+        myApp.hidePreloader();
+    }
+}
+/* medical end */
+
+/* order begin */
+function formConfirmOrder(url) {
+    var confirm = getLocalStorage("ConfirmOrder");
+    var appUser = getLocalStorage("appUser");
+    if (confirm != null && appUser != null) {
+        confirm = JSON.parse(confirm);
+        appUser = JSON.parse(appUser);
+        showConfirmOrder(confirm, appUser);
+    } else {
+        myApp.alert("订单数据异常，请返回重新选择", function () {
+            goTo(url);
+        });
+    }
+}
+
+function showConfirmOrder(obj, user) {
+    var userDetail = JSON.parse(user.Des.replace(/'/g, "\""));
+    var template = $("<div />").append($("<div />").addClass("group-item")
+        .append($("<div />").addClass("row-item").html("预约人：<big class='pull-right'>{ShowName}</big>"))
+        .append($("<div />").addClass("row-item").html("年龄：<big class='pull-right'>{age}岁</big>"))
+        .append($("<div />").addClass("row-item").html("证件号码：<big class='pull-right'>{idCard}</big>")))
+        .append($("<div />").addClass("group-item")
+        .append($("<div />").addClass("row-item").html("预约门店：<big class='pull-right'>{sid}</big>"))
+        .append($("<div />").addClass("row-item").html("预约时间：<big class='pull-right'>{date}</big>"))
+        .append($("<div />").addClass("row-item").html("所选套餐：<big class='pull-right'>{pId}</big>"))
+        .append($("<div />").addClass("row-item").html("所选加项包：<big class='pull-right'>{ppId}</big>")))
+        .append($("<div />").addClass("group-item")
+        .append($("<div />").addClass("row-item").html("总金额：<big class='pull-right'>{tprice}</big>"))
+        .append($("<div />").addClass("row-item").html("优惠金额：<big class='pull-right'>{dprice}</big>"))
+        .append($("<div />").addClass("row-item").html("支付金额：<big class='pull-right'>{pprice}</big>")))
+        .append($("<div />").addClass("group-item coDocument")
+        .append($("<a />").attr({ "class": "row-item cbDocument", "href": "#", "onclick": "chooseDocumentType();" })
+        .append($("<i />").addClass("pull-left icon icon-checkbox-checked").html("&nbsp;电子报告")))
+        .append($("<a />").attr({ "class": "row-item coAddress", "href": "#", "onclick": "chooseAddressType();" })
+        .append($("<i />").addClass("pull-left icon icon-checkbox-checked").html("&nbsp;纸质报告邮寄公司")))
+        .append($("<div />").addClass("row-item coAddress")
+        .append($("<input />").attr({
+            "class": "form-control", "id": "txtName", "name": "txtName", "type": "text",
+            "placeholder": "如需邮寄纸质报告，请取消电子报告并输入收件人"
+        })))
+        .append($("<div />").addClass("row-item coAddress")
+        .append($("<input />").attr({
+            "class": "form-control", "id": "txtPhone", "name": "txtPhone", "type": "text",
+            "placeholder": "如需邮寄纸质报告，请取消电子报告并输入收件电话"
+        })))
+        .append($("<div />").addClass("row-item coAddress")
+        .append($("<input />").attr({
+            "class": "form-control", "id": "txtAddress", "name": "txtAddress", "type": "text",
+            "placeholder": "如需邮寄纸质报告，请取消电子报告并输入收件地址"
+        }))));
+    template = $("<div />").append(template.strFormat(user));
+    template = $("<div />").append(template.strFormat(userDetail));
+    var order = $(".COrder-wrap");
+    order.html("");
+    order.append(template.strFormat(obj));
+    order.find(".row-item big").each(function (i, o) {
+        if (i == 3) {
+            $(o).html(function (n, v) {
+                return v.split('-')[1];
+            });
+        } else if (i == 5) {
+            $(o).html(function (n, v) {
+                return v.split(':')[1];
+            });
+        } else if (i == 6) {
+            $(o).html(function (n, v) {
+                if (v != "") {
+                    var temp = "";
+                    $.each(v.split(","), function (n, o) {
+                        if (o != "")
+                            temp = temp + o.split(':')[1] + ",";
+                    });
+                    if (temp != "")
+                        return temp.substring(0, temp.length - 1);
+                    return "无";
+                } else
+                    return "无";
+            });
+        } else if (i > 6 && i < 10) {
+            $(o).html(function (n, v) {
+                if (v != "")
+                    return parseFloat(v).toFixed(2);
+                return "";
+            });
+        }
+    });
+    $(".row-item.coAddress").attr("disabled", true);
+    if (obj.type == 1) {
+        $(".cbDocument").click();
+    } else if (obj.type == 2) {
+        $(".cbDocument").click();
+        $(".coAddress").click();
+        $("#txtName").val(obj.cuname);
+        $("#txtPhone").val(obj.cuphone);
+        $("#txtAddress").val(obj.cuaddress);
+    }
+    order.css("height", function (i, v) {
+        return (parseFloat(v) + 65) + "px";
+    });
+}
+
+function checkConfirmOrder() {
+    var confirm = getLocalStorage("ConfirmOrder");
+    var appUser = getLocalStorage("appUser");
+    if (appUser == null) {
+        myApp.hidePreloader();
+        myApp.alert("请先登录！", function () {
+            goTo("../../module/user/login.html");
+        });
+        return false;
+    }
+    if (confirm != null) {
+        confirm = JSON.parse(confirm);
+        appUser = JSON.parse(appUser);
+        var userDetail = JSON.parse(appUser.Des.replace(/'/g, "\""));
+        confirm["name"] = appUser.ShowName;
+        confirm["idCard"] = userDetail.idCard;
+        if ($(".row-item.cbDocument i").hasClass("icon-checkbox-checked")) {
+            confirm["type"] = 0;
+            confirm["cuname"] = null;
+            confirm["cuphone"] = null;
+            confirm["cuaddress"] = null;
+        } else if ($(".row-item.coAddress i").hasClass("icon-checkbox-checked")) {
+            confirm["type"] = 1;
+            confirm["cuname"] = null;
+            confirm["cuphone"] = null;
+            confirm["cuaddress"] = null;
+        } else {
+            if ($("#txtAddress").val() != "" && $("#txtName").val() != "" && $("#txtPhone").val() != "") {
+                confirm["type"] = 2;
+                confirm["cuname"] = $("#txtName").val();
+                confirm["cuphone"] = $("#txtPhone").val();
+                confirm["cuaddress"] = $("#txtAddress").val();
+            } else {
+                myApp.alert("如需邮寄纸质报告，请输入收件人、收件人电话、收件人地址");
+                return false;
+            }
+        }
+        addLocalStorage("ConfirmOrder", JSON.stringify(confirm));
+        return true;
+    } else {
+        myApp.alert("订单数据异常，请返回重新选择");
+        return false;
+    }
+}
+
+function chooseDocumentType() {
+    if ($(".row-item.cbDocument i").hasClass("icon-checkbox-checked")) {
+        $(".row-item.cbDocument i").removeClass("icon-checkbox-checked").addClass("icon-checkbox-unchecked");
+        $(".row-item.coAddress").eq(0).attr("disabled", false);
+    }
+    else {
+        $(".row-item.cbDocument i").removeClass("icon-checkbox-unchecked").addClass("icon-checkbox-checked");
+        $(".row-item.coAddress").attr("disabled", true);
+        $(".row-item.coAddress i").removeClass("icon-checkbox-unchecked").addClass("icon-checkbox-checked");
+        $("#txtAddress").val("");
+    }
+}
+
+function chooseAddressType() {
+    if ($(".row-item.coAddress i").hasClass("icon-checkbox-checked")) {
+        $(".row-item.coAddress i").removeClass("icon-checkbox-checked").addClass("icon-checkbox-unchecked");
+        $(".row-item.coAddress").eq(1).attr("disabled", false);
+        $(".row-item.coAddress").eq(2).attr("disabled", false);
+        $(".row-item.coAddress").eq(3).attr("disabled", false);
+    }
+    else {
+        $(".row-item.coAddress i").removeClass("icon-checkbox-unchecked").addClass("icon-checkbox-checked");
+        $(".row-item.coAddress").eq(1).attr("disabled", true);
+        $(".row-item.coAddress").eq(2).attr("disabled", true);
+        $(".row-item.coAddress").eq(3).attr("disabled", true);
+        $("#txtName").val("");
+        $("#txtPhone").val("");
+        $("#txtAddress").val("");
+    }
+}
+
+function payment() {
+    var confirm = getLocalStorage("ConfirmOrder");
+    if (confirm != null) {
+        confirm = JSON.parse(confirm);
+        showPaymentOrder(confirm);
+    } else {
+        myApp.alert("订单支付数据异常，请返回重新选择", function () {
+            goTo("../../module/service/index.html");
+        });
+    }
+}
+
+function showPaymentOrder(obj) {
+    $(".tprice").html(obj.tprice.toFixed(2));
+    $(".dprice").html(obj.dprice.toFixed(2));
+    $(".pprice").html(obj.pprice.toFixed(2));
+}
+
+function paymentType(obj) {
+    $(".payment-type").find("i").remove();
+    $(obj).append("<i class=\"pull-right icon icon-checkmark\"></i>");
+}
+
+function formPayment() {
+
+}
+
+function callPaymentEvent() {
+
+}
+
+function formCreateOrder() {
+    myApp.showPreloader("创建预约体检订单中...");
+    var appUser = getLocalStorage("appUser");
+    if (appUser == null) {
+        myApp.hidePreloader();
+        myApp.alert("请先登录！", function () {
+            goTo("../../module/user/login.html");
+        });
+        return false;
+    }
+    var confirm = getLocalStorage("ConfirmOrder");
+    var jsonStr = {
+        "userInfo": encodeURIComponent(appUser),
+        "confirm": confirm
+    };
+    var json = '{"key": "MedicalBookingService", "name": "CreateOrder", "jsonstr": ' + JSON.stringify(jsonStr) + '}';
+    createDataFrame(json, "frCreateOrder");
+    return true;
+}
+
+function callCreateOrderEvent() {
+    if (checkDataFrame(event.data, "CreateOrder", "MedicalBookingService")) {
+        unBindWindowListener("frCreateOrder", callMedicalStoreEvent);
+        myApp.showPreloader();
+        var obj = getDataFrameStr(event.data.d);
+        if (obj != null) {
+            myApp.hidePreloader();
+            myApp.alert("订单创建成功", function () {
+                goTo("status_order.html?id=" + obj);
+            });
+        } else {
+            myApp.hidePreloader();
+        }
+    }
+}
+
+function formOrderList() {
+    myApp.showPreloader();
+    var appUser = getLocalStorage("appUser");
+    if (appUser == null) {
+        myApp.hidePreloader();
+        myApp.alert("请先登录！", function () {
+            goTo("../../module/user/login.html");
+        });
+        return false;
+    }
+    var jsonStr = {
+        "userInfo": encodeURIComponent(appUser)
+    };
+    var json = '{"key": "MedicalBookingService", "name": "OrderList", "jsonstr": ' + JSON.stringify(jsonStr) + '}';
+    createDataFrame(json, "frOrderList");
+    return true;
+}
+
+function callOrderListEvent() {
+    if (checkDataFrame(event.data, "OrderList", "MedicalBookingService")) {
+        unBindWindowListener("frOrderList", callOrderListEvent);
+        myApp.showPreloader();
+        var obj = getDataFrame(event.data.d);
+        if (obj != null) {
+            showOrderList(obj);
+        }
+        myApp.hidePreloader();
+    }
+}
+
+function showOrderList(json) {
+    if (typeof (json) == "object") {
+        var template = $("<div />").append($("<li />")
+            .append($("<a />").attr({ "class": "item-content", "href": "#", "onclick": "goTo('detail_order.html?id={mId}');" })
+            .append($("<div />").addClass("class", "item-media")
+            .append($("<img />").attr("src", "../../img/logo.png").css("width", "50px")))
+            .append($("<div />").addClass("item-inner")
+            .append($("<div />").addClass("item-title").html("体检预约订单  {date}  {stitle}")))
+            .append($("<div />").addClass("hide").html("{hidden}"))));
+        var list = $(".OrderList-wrap .list-block ul");
+        list.html("");
+        $.each(json, function (i, v) {
+            v["hidden"] = JSON.stringify(v);
+            var des = JSON.parse(v.Des.replace(/'/g, "\""));
+            v["stitle"] = des.sid.split('-')[1];
+            v["date"] = des.date;
+            list.append(template.strFormat(v));
+        });
+    }
+}
+
+function formOrderDetail(id) {
+    myApp.showPreloader();
+    var appUser = getLocalStorage("appUser");
+    if (appUser == null) {
+        myApp.hidePreloader();
+        myApp.alert("请先登录！", function () {
+            goTo("../../module/user/login.html");
+        });
+        return false;
+    }
+    var jsonStr = {
+        "userInfo": encodeURIComponent(appUser),
+        "oId": id
+    };
+    var json = '{"key": "MedicalBookingService", "name": "OrderDetial", "jsonstr": ' + JSON.stringify(jsonStr) + '}';
+    createDataFrame(json, "frOrderDetail");
+    return true;
+}
+
+function callOrderDetailEvent() {
+    if (checkDataFrame(event.data, "OrderDetial", "MedicalBookingService")) {
+        unBindWindowListener("frOrderDetail", callOrderDetailEvent);
+        myApp.showPreloader();
+        var obj = getDataFrame(event.data.d);
+        if (obj != null) {
+            showOrderDetail(obj);
+        }
+        myApp.hidePreloader();
+    }
+}
+
+function showOrderDetail(json) {
+    if (typeof (json) == "object") {
+        var template = $("<div />").append($("<div />").addClass("group-item")
+            .append($("<div />").addClass("row-item").html("预约人：<big class='pull-right'>{name}</big>"))
+            .append($("<div />").addClass("row-item").html("证件号码：<big class='pull-right'>{idCard}</big>")))
+            .append($("<div />").addClass("group-item")
+            .append($("<div />").addClass("row-item").html("预约门店：<big class='pull-right'>{sid}</big>"))
+            .append($("<div />").addClass("row-item").html("预约时间：<big class='pull-right'>{date}</big>"))
+            .append($("<div />").addClass("row-item").html("所选套餐：<big class='pull-right'></big>"))
+            .append($("<div />").addClass("row-item").html("所选加项包：<big class='pull-right'></big>")))
+            .append($("<div />").addClass("group-item")
+            .append($("<div />").addClass("row-item").html("总金额：<big class='pull-right'>{tprice}</big>"))
+            .append($("<div />").addClass("row-item").html("优惠金额：<big class='pull-right'>{dprice}</big>"))
+            .append($("<div />").addClass("row-item").html("支付金额：<big class='pull-right'>{pprice}</big>")));
+        var basic = $(".OrderDetial-wrap");
+        var orderDes = JSON.parse(json.Des);
+        basic.html("");
+        basic.append(template.strFormat(orderDes));
+
+        basic.find(".row-item big").each(function (i, o) {
+            if (i == 2) {
+                $(o).html(function (n, v) {
+                    return v.split('-')[1];
+                });
+            } else if (i > 5 && i < 9) {
+                $(o).html(function (n, v) {
+                    if (v != "")
+                        return parseFloat(v).toFixed(2);
+                    return "";
+                });
+            }
+        });
+        $.each(orderDes.pId.split(','), function (i, v) {
+            if (v != "") {
+                var pid = v.split(':')[0];
+                $(".row-item big").eq(4).append($("<a />").attr({ "href": "#", "onclick": "showMedicalListForOrder(this);", "data-pid": pid }));
+            }
+        });
+        $.each(orderDes.ppId.split(','), function (i, v) {
+            if (v != "") {
+                var pid = v.split(':')[0];
+                $(".row-item big").eq(5).append($("<a />").attr({ "href": "#", "onclick": "showMedicalListForOrder(this);", "data-pid": pid }));
+            }
+        });
+        $.each(json.detailList, function (i, v) {
+            $("a[data-pid='" + v.pId + "']").append($("<div />").addClass("hide").html(v.pContent)).append(v.pName);
+        });
+        if (orderDes.type == 0) {
+            basic.append($("<div />").addClass("group-item").append($("<div />").addClass("row-item")
+                .append($("<div />").addClass("pull-left").html("报告类型：")).append($("<div />").addClass("pull-right").html("电子报告"))));
+        } else if (orderDes.type == 1) {
+            basic.append($("<div />").addClass("group-item").append($("<div />").addClass("row-item")
+                .append($("<div />").addClass("pull-left").html("报告类型：")).append($("<div />").addClass("pull-right").html("纸质报告")))
+                .append($("<div />").addClass("row-item").append($("<div />").addClass("pull-left").html("收件地址："))
+                .append($("<div />").addClass("pull-right").html("公司"))));
+        } else if (orderDes.type == 2) {
+            basic.append($("<div />").addClass("group-item").append($("<div />").addClass("row-item")
+                .append($("<div />").addClass("pull-left").html("报告类型：")).append($("<div />").addClass("pull-right").html("纸质报告")))
+                .append($("<div />").addClass("row-item").append($("<div />").addClass("pull-left").html("收件人："))
+                .append($("<div />").addClass("pull-right").html(orderDes.cuname)))
+                .append($("<div />").addClass("row-item").append($("<div />").addClass("pull-left").html("收件人电话："))
+                .append($("<div />").addClass("pull-right").html(orderDes.cuphone)))
+                .append($("<div />").addClass("row-item").append($("<div />").addClass("pull-left").html("收件地址："))
+                .append($("<div />").addClass("pull-right").html(orderDes.cuaddress))));
+        }
+    }
+}
+
+function showMedicalListForOrder(obj) {
+    var detail = $(obj).find(".hide").html();
+    if (detail != "") {
+        detail = JSON.parse(detail);
+        var template = $("<div />").append($("<div />").addClass("row-item")
+            .append($("<span />").addClass("pull-left").html("{CName}："))
+            .append($("<div />").addClass("pull-right").html("{CContent}")));
+        var detailHtml = $("<div />").addClass("group-item");
+        detailHtml.html("");
+        $.each(detail, function (i, v) {
+            var temp = v.split(':');
+            var str = { "CName": temp[0], "CContent": temp[1] };
+            detailHtml.append(template.strFormat(str));
+        });
+        showPopupModal("套餐详情", detailHtml);
+    }
+}
+
+function getOrderScore() {
+    var template = $("<div />").append($("<div />").attr({ "class": "row-item", "data-id": "{Id}" }).html("{Des}"))
+        .append($("<div />").attr({ "class": "row-item", "data-id": "{Id}" })
+        .append($("<div />").attr({ "class": "pull-right", "data-id": "{Id}" })));
+    var json = getOrderScoreList();
+    if (json != "") {
+        var list = $(".OScore-wrap .group-item");
+        list.html("");
+        $.each(json, function (i, v) {
+            list.append(template.strFormat(v));
+        });
+        $(".OScore-wrap .group-item .row-item .pull-right").raty({
+            width: 150,
+            click: function (score, evt) {
+                $(this).find("img").attr("src", function (i, o) {
+                    return o.replace("on", "off");
+                });
+                $(this).find("img").each(function (i, o) {
+                    if (i < score)
+                        $(o).attr("src", function (index, obj) {
+                            return obj.replace("off", "on");
+                        });
+                });
+                $(this).attr("data-score", score);
+            }
+        });
+        $(".OScore-wrap").append($("<div />").addClass("group-item").append($("<div />").addClass("row-item")
+            .append($("<textarea />").addClass("form-control edit").attr({ "name": "txtAdvice", "id": "txtAdvice", "maxlength": "300", "placeholder": "请简述意见或建议" }))));
+    }
+    $(".OScore-wrap").css("height", function (i, v) {
+        return "auto";
+    });
+}
+
+function getOrderScoreList() {
+    var jsonList = null;
+    $$.ajax({
+        type: "get",
+        async: false,
+        url: "../../js/source.json",
+        dataType: "jsonp",
+        success: function (json) {
+            if (json != null) {
+                $.each(JSON.parse(json), function (i, v) {
+                    if (v.No == "scoreItem")
+                        jsonList = v.list;
+                });
+            }
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
+    return jsonList;
+}
+/* order end */
+
+/* aid begin */
+function getAidList() {
+    var jsonList = null;
+    $$.ajax({
+        type: "get",
+        async: false,
+        url: "../../js/source.json",
+        dataType: "jsonp",
+        success: function (json) {
+            if (json != null) {
+                $.each(JSON.parse(json), function (i, v) {
+                    if (v.No == "aidList")
+                        jsonList = v.list;
+                });
+            }
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
+    return jsonList;
+}
+
+function getAidListById(id) {
+    myApp.showPreloader("数据查询中...");
+    var json = getAidList();
+    if (json != null) {
+        var list = null;
+        $.each(json, function (i, v) {
+            if (v.id == id) {
+                list = v.list;
+                return false;
+            }
+        });
+        if (list != null) {
+            var template = $("<div />").append($("<a />").attr({
+                "class": "row-item collapsed",
+                "role": "button",
+                "data-toggle": "collapse",
+                "data-parent": "#accordion",
+                "href": "#{idName}",
+                "aria-expanded": "false",
+                "aria-controls": "{idName}"
+            }).html("{name}").append($("<i />").addClass("pull-right icon icon-chevron-right")))
+                .append($("<div />").attr({
+                    "id": "{idName}",
+                    "class": "panel-collapse collapse",
+                    "role": "tabpanel",
+                    "aria-labelledby": "headingOne"
+                })
+            .append($("<div />").addClass("panel-body").append($("<p />").html("简介：{content}")).append($("<p />").html("地址：{address}"))
+            .append($("<p />").html("电话：{phone}")).append($("<div />").attr({ "data-lat": "{lat}", "data-lng": "{lng}" }))));
+            var wrap = $(".LSupplier-wrap");
+            $.each(list, function (i, v) {
+                v["idName"] = "Aid" + i;
+                wrap.append(template.strFormat(v));
+            });
+        }
+    }
+    myApp.hidePreloader();
+}
+
+/* aid end */
+
+/* consulting begin */
+function formCreateConsulting() {
+    myApp.showPreloader("创建健康咨询中...");
+    var appUser = getLocalStorage("appUser");
+    if (appUser == null) {
+        myApp.hidePreloader();
+        myApp.alert("请先登录！", function () {
+            goTo("../../module/user/login.html");
+        });
+        return false;
+    }
+    var question = $("#txtQuestion").val().trim();
+    if (question == "") {
+        myApp.hidePreloader();
+        myApp.alert("问题不能为空");
+        return false;
+    }
+    var name = $("#txtName").val().trim();
+    if (name == "") {
+        myApp.hidePreloader();
+        myApp.alert("姓名不能为空");
+        return false;
+    }
+    var contact = $("#txtContact").val().trim();
+    if (contact == "") {
+        myApp.hidePreloader();
+        myApp.alert("联系方式不能为空");
+        return false;
+    }
+    var jsonStr = {
+        "userInfo": encodeURIComponent(appUser),
+        "question": question,
+        "name": name,
+        "contact": contact
+    };
+    var json = '{"key": "ConsultService", "name": "CreateConsult", "jsonstr": ' + JSON.stringify(jsonStr) + '}';
+    createDataFrame(json, "frCreateConsult");
+    return true;
+}
+
+function callConsultingEvent() {
+    if (checkDataFrame(event.data, "CreateConsult", "ConsultService")) {
+        unBindWindowListener("frCreateConsult", callConsultingEvent);
+        myApp.showPreloader();
+        console.log(event.data.d);
+        var obj = getDataFrameStr(event.data.d);
+        if (obj == null) {
+
+        }
+        myApp.hidePreloader();
+    }
+}
+
+function formNewsList(obj, type) {
+    myApp.showPreloader();
+    var appUser = getLocalStorage("appUser");
+    if (appUser == null) {
+        myApp.hidePreloader();
+        myApp.alert("请先登录！", function () {
+            goTo("../../module/user/login.html");
+        });
+        return false;
+    }
+    var jsonStr = {
+        "userInfo": encodeURIComponent(appUser),
+        "type": type
+    };
+    var json = '{"key": "ConsultService", "name": "NewsList", "jsonstr": ' + JSON.stringify(jsonStr) + '}';
+    $("#Health .container-fluid").first().find("a").removeClass("active");
+    $(obj).addClass("active");
+    createDataFrame(json, "frNewsList");
+    return true;
+}
+
+function callNewsListEvent() {
+    if (checkDataFrame(event.data, "NewsList", "ConsultService")) {
+        unBindWindowListener("frNewsList", callNewsListEvent);
+        myApp.showPreloader();
+        var obj = getDataFrame(event.data.d);
+        if (obj != null && obj != "") {
+            showNewList(obj);
+        }
+        myApp.hidePreloader();
+    }
+}
+
+function showNewList(obj) {
+    var template = $("<div />").append($("<a />").attr({
+        "href": "#",
+        "class": "row-item",
+        "onclick": "goTo('news_detail.html?url={Url}');"
+    }).append($("<div />").addClass("pull-left").append($("<img />").attr("src", "{TitleImg}")))
+    .append($("<div />").addClass("pull-left").append($("<span />").html("{Title}"))));
+    var list = $(".news-list .group-item");
+    list.html("");
+    $.each(obj, function (i, v) {
+        if (v.TitleImg == "")
+            v.TitleImg = "../../img/newtemplate.png";
+        list.append(template.strFormat(v));
+    });
+}
+
+/* consulting end */
+

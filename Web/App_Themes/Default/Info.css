@@ -1,0 +1,162 @@
+﻿body
+{
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    font-size: 12px;
+}
+
+.GridViewStyle 
+{    
+    border-right: 2px solid #A7A6AA; 
+    border-bottom: 2px solid #A7A6AA; 
+    border-left: 2px solid white; 
+    border-top: 2px solid white; 
+    padding: 4px; 
+} 
+
+.GridViewHeaderStyle th 
+{ 
+    border-left: 1px solid #EBE9ED; 
+    border-right: 1px solid #EBE9ED; 
+}
+.GridViewHeaderStyle a 
+{ 
+	color: #ffffff; 
+} 
+
+.GridViewHeaderStyle 
+{ 
+    background-color: #5D7B9D; 
+    font-weight: bold; 
+    color: White; 
+} 
+
+.GridViewFooterStyle 
+{ 
+    background-color: #5D7B9D; 
+    font-weight: bold; 
+    color: White; 
+} 
+
+.GridViewRowStyle 
+{ 
+    background-color: #F7F6F3; 
+    color: #333333; 
+} 
+
+.GridViewRowStyle a,.GridViewAlternatingRowStyle a
+{ 
+    display: block;
+    text-decoration: underline;
+    padding-top: 2px;
+    padding-right: 5px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    float: left;
+    font-size: 12px;
+    font-weight: normal;
+    
+    
+} 
+.GridViewRowStyle a:hover ,.GridViewAlternatingRowStyle a:hover{
+	color: #0033FF;
+}
+
+
+.GridViewRowStyle a:link,.GridViewAlternatingRowStyle a:link {
+	color:Red;
+	text-decoration: underline;
+}
+
+.GridViewRowStyle a:visited,.GridViewAlternatingRowStyle a:visited {
+	color:Red;
+	text-decoration: underline;
+}
+
+.GridViewAlternatingRowStyle 
+{ 
+    background-color: #FFFFFF; 
+    color: #284775; 
+} 
+
+.GridViewRowStyle td, .GridViewAlternatingRowStyle td 
+{ 
+    border: 1px solid #EBE9ED; 
+} 
+
+.GridViewSelectedRowStyle 
+{ 
+    background-color: #E2DED6; 
+    font-weight: bold; 
+    color: #333333; 
+} 
+
+.GridViewPagerStyle 
+{ 
+    background-color: #284775; 
+    color: #FFFFFF; 
+    padding-left: 15px;
+    font-size: 18px;
+    text-align: center;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+} 
+
+.GridViewPagerStyle table /* to center the paging links*/ 
+{ 
+    margin: 0 auto 0 auto; 
+} 
+
+.GridViewPagerStyle a
+{
+    display: block;
+    text-decoration: none;
+    padding-top: 2px;
+    padding-right: 5px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    float: left;
+    font-size: 12px;
+    font-weight: normal;
+    color:Red;
+}
+.GridViewPagerStyle a:hover
+{
+    display: block;
+    text-decoration: none;
+    border: 1px solid #CCCCCC;
+}
+.Input {
+	border: 1px solid #5D7B9D;
+}
+.Tab {
+	line-height: 25px;
+	text-align: center;
+	
+	background-color: #799AE1;
+}
+.tr {
+	background-color: #FFFFFF;
+}
+.title {
+	font-family: "宋体";
+	font-size: 14px;
+	color: #FFFFFF;
+	text-decoration: underline;
+	background-color:#5D7B9D;
+	text-align: center;
+	height: 30px;
+}
+.button {
+	font-size: 12px;
+	color: #000000;
+	text-decoration: underline;
+	background-color: #FFFFFF;
+	border: 1px solid #5D7B9D;
+}

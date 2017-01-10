@@ -1,0 +1,186 @@
+﻿<%@ Page Language="C#" MasterPageFile="MasterPage.master" AutoEventWireup="true" CodeFile="ShowShop.aspx.cs" Inherits="IndexPage_ShowShop" Title="产品详细 Page" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+
+
+
+ <table width="665" border="0" align="center" cellpadding="0" cellspacing="0" style="background-repeat: repeat-y; height: 651px;">
+                    <tr>
+                        <td background="Images/newp_01.gif" style="height: 69px; width: 666px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" background="Images/cplist_02.gif" style="height: 33px; width: 666px;">
+                        </td>
+                    </tr>
+                    <tr>
+                    <td align="center" background="../Image/cplist_03.gif" style="background-image: url(Images/cplist_03.gif); height: 547px; width: 666px;">
+                    
+                    
+                    <table border="0" cellpadding="0" cellspacing="0" width="633" style="height: 8px">
+                    <tr>
+                    <td style="background-image: url(Images/cplist_03.gif); height: 175px;">
+                     <table align="left" border="0" cellpadding="0" cellspacing="0" width="633">
+                     
+                     <tr>
+                     <td style="height: 14px; background-image: url(Images/cplist_03.gif); width: 394px;">
+                         <asp:Image ID="Image1" runat="server" style="width: 420px; height: 533px" /></td>
+                         <td background="../Image/cpinfomain_03.gif" style="background-image: url(Images/cpinfomain_03.gif); width: 6px">&nbsp;</td>
+                      <td width="197" valign="top" background="../Image/lbbg.gif" bgcolor="#f7f7f7" style="height: 14px; background-image: url(Images/lbbg.gif);">
+                      <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                       <tr>
+                            <td colspan="2" align="left">商品名称：<asp:Label ID="Label7" runat="server" Text="Label"></asp:Label></td>
+                       </tr>
+                       <tr>
+                            <td align="left" style="height: 27px">市场价：</td>
+                            <td align="left" style="height: 27px"><font color="#888888">￥<asp:Label ID="Label1" runat="server" Height="10px" Text="L"
+                               Width="20px"></asp:Label>元</font></td>
+                        </tr>
+                        <tr>
+                      <td align="left" style="height: 27px">普通会员：</td>
+                      <td align="left" style="height: 27px"><strong>￥<asp:Label ID="Label2" runat="server" Height="10px" Text="L" Width="20px"></asp:Label>元</strong></td>
+                    </tr>
+                    <tr>
+                      <td align="left" style="height: 27px"><span class="unnamed1">商品数量：</span></td>
+                      <td align="left" style="height: 27px">
+                          <asp:Label ID="Label3" runat="server" Height="10px" Text="L" Width="33px"></asp:Label>件&nbsp;</td>
+                    </tr>
+                     <tr>
+                      <td align="left" style="height: 27px"><span class="unnamed1">商品单位：</span></td>
+                      <td align="left" style="height: 27px">
+                          美域高</td>
+                    </tr>
+                    <tr>
+                      <td align="left" style="height: 28px"><span class="unnamed1">商品面料：</span></td>
+                      <td align="left" style="height: 28px">
+                          全绵</td>
+                    </tr>
+                    <tr>
+                      <td style="height: 27px" align="left"><span class="unnamed1">费用附加：</span></td>
+                      <td style="height: 27px" align="left"><span class="unnamed1">￥2 元</span></td>
+                    </tr>
+                    <tr>
+                      <td style="height: 27px" align="left"><span class="unnamed1">商品日期：</span></td>
+                      <td style="height: 27px" align="left"><span class="unnamed1">
+                          <asp:Label ID="Label8" runat="server" Text="Label"></asp:Label></span></td>
+                    </tr>
+                    <tr>
+                      <td style="height: 29px" align="left"><span class="unnamed1">适用季节：</span></td>
+                      <td style="height: 29px" align="left"><span class="unnamed1">夏天</span></td>
+                    </tr>
+                    <tr>
+                      <td style="height: 27px" align="left"><span class="unnamed1">卖出数量：</span></td>
+                      <td style="height: 27px" align="left"><span class="unnamed1">20件</span></td>
+                    </tr>
+                    <tr>
+                      <td style="height: 26px" align="left"><span class="unnamed1">适合人群：</span></td>
+                      <td style="height: 26px" align="left"><span class="unnamed1">女青年人</span></td>
+                    </tr>
+                    <tr>
+                      <td style="height: 27px" align="left"><span class="unnamed1">商品产地：</span></td>
+                      <td style="height: 27px" align="left"><span class="unnamed1">各个机房</span></td>
+                    </tr>
+                    <tr>
+                      <td style="height: 28px" align="left"><span class="unnamed1">商品编码：</span></td>
+                      <td style="height: 28px" align="left"><span class="unnamed1">ND07016</span></td>
+                    </tr>
+                    <tr>
+                      <td style="height: 27px" align="left"><span class="unnamed1">合格编码：</span></td>
+                      <td style="height: 27px" align="left"><span class="unnamed1">ZR07016</span></td>
+                    </tr>
+                    
+                      </table>
+                          <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                          <tr>
+                          <td align="center" style="height: 29px">
+                        <a href="<%= img%>"> </a> 
+                          <img src="Images/cpinfobot_01.gif" width="75" height="23" border="0" id="IMG2" onclick="showDiv('<%= imgname%>')" />
+                              <a href='BuyThing.aspx?pid=<%=pid %>'><img src="Images/cpinfobot_02.gif" width="43" height="23" border="0" id="IMG1"></a>
+                          </td>
+                          </tr>
+                          </table>
+                          </td>
+                          
+                     
+                     </tr>
+                     </table>
+                     
+                     
+            </td>
+          </tr>
+                </table>
+                <tr>
+                <td style="width: 666px; height: 14px">
+                <img name="cplist_04" src="Images/cplist_04.gif" width="665" height="4" border="0" alt="" style="vertical-align: top">
+                </td>
+                </tr>
+                  </table><br>
+                <table width="665" border="0" align="center" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-right: #cccccc 1px solid; border-top: #cccccc 1px solid; border-left: #cccccc 1px solid; border-bottom: #cccccc 1px solid;">
+                <tr>
+                 <td align="center" style="height: 14px; width: 88px;">
+                     <asp:Image ID="Image2" runat="server" ImageUrl="~/Images/200661215213862084b.gif"
+                         Width="77px" /></td>
+                 <td align="center" style="height: 14px; width: 82px;"><asp:Image ID="Image9" runat="server" ImageUrl="~/Images/200661215213862084b.gif"
+                         Width="77px" />&nbsp;
+                 </td>
+                 <td width="83" align="left" style="height: 14px"><asp:Image ID="Image3" runat="server" ImageUrl="~/Images/200661215213862084b.gif"
+                         Width="77px" /></td>
+                 <td align="center" style="height: 14px; width: 83px;"><asp:Image ID="Image4" runat="server" ImageUrl="~/Images/200661215213862084b.gif"
+                         Width="77px" /></td>
+                 <td width="83" align="center" style="height: 14px"><asp:Image ID="Image5" runat="server" ImageUrl="~/Images/200661215213862084b.gif"
+                         Width="77px" /></td>
+                 <td width="83" align="center" style="height: 14px"><asp:Image ID="Image6" runat="server" ImageUrl="~/Images/200661215213862084b.gif"
+                         Width="77px" /></td>
+                 <td width="83" align="center" style="height: 14px"><asp:Image ID="Image7" runat="server" ImageUrl="~/Images/200661215213862084b.gif"
+                         Width="77px" /></td>
+                 <td width="83" align="center" style="height: 14px"><asp:Image ID="Image8" runat="server" ImageUrl="~/Images/200661215213862084b.gif"
+                         Width="77px" BorderStyle="Ridge" /></td>
+                 </tr>
+                </table>
+                     
+                <br>
+               
+                <table width="665" border="0" align="center" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="665"><img src="Images/cpinfo1.gif" width="665" height="40"></td>
+          </tr>
+          <tr>
+            <td bgcolor="#f7f7f7"><table width="99%"  border="0" align="center" cellpadding="3" cellspacing="2">
+              <tr>
+                <td align="left"> <br>
+                    <asp:Label ID="Label4" runat="server" Text="Label"></asp:Label><br>
+                  </td>
+              </tr>
+            </table></td>
+            <br>
+            </table>
+            <table width="665" border="0" align="center" cellpadding="0" cellspacing="0">
+            <tr>
+            <td width="665"><img src="Images/cpinfo2.gif" width="665" height="40"></td>
+            </tr>
+            <tr>
+        <td bgcolor="#f7f7f7" align="left"><TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0" align="center">
+                      <tr>
+                        
+                      <TR>
+                        <TD><table width="100%"  border="0" cellpadding="3" cellspacing="1" bgcolor="#E1E1E1">
+                            <tr bgcolor="#f7f7f7">
+                              <td width="11%" height="30"><strong>发表时间</strong></td>
+                              <td width="89%" height="30">&nbsp;<asp:Label ID="labdate" runat="server" Text="本功能有待完成"></asp:Label></td>
+                            </tr>
+                            <tr bgcolor="#FFFFFF">
+                              <td height="30"><strong>评论正文</strong></td>
+                              <td height="30">&nbsp;<asp:Label ID="labbody" runat="server" Text="本功能有待完成"></asp:Label></td>
+                            </tr>
+                            <tr bgcolor="#FFFFFF">
+                              <td height="30"><strong>管理回复</strong></td>
+                              <td height="30">&nbsp;<asp:Label ID="labAdmin" runat="server" Text="本功能有待完成"></asp:Label></td>
+                            </tr>
+                        </table></TD>
+                      </TR>
+         
+            </TABLE><br><input name="Submit3" type="submit" class="input_bot" ) value="我要发表评论" disabled="disabled"></td>
+      </tr>
+            </table>
+          
+</asp:Content>
+

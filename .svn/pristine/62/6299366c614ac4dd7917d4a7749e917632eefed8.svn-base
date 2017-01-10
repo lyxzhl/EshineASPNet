@@ -1,0 +1,72 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage2.master.cs" Inherits="MasterPage2" %>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="UserControl/footer.ascx"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<HTML lang=zh-CN xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN"><HEAD 
+id=Head>
+<TITLE>Midi-Plus</TITLE>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<META content="text/html; charset=UTF-8" http-equiv=Content-Type>
+<META content=text/javascript http-equiv=Content-Script-Type>
+<META content=text/css http-equiv=Content-Style-Type>
+<META id=MetaDescription name=DESCRIPTION content=BA2Login>
+<META id=MetaKeywords name=KEYWORDS content=BA2Login>
+<META id=MetaCopyright name=COPYRIGHT content="Copyright 2013 by Medi Plus">
+<META id=MetaAuthor name=AUTHOR content=MDTCHINA>
+<META name=RESOURCE-TYPE content=DOCUMENT>
+<META name=DISTRIBUTION content=GLOBAL>
+<META id=MetaRobots name=ROBOTS content="INDEX, FOLLOW">
+<META name=REVISIT-AFTER content="1 DAYS">
+<META name=RATING content=GENERAL>
+<META content=RevealTrans(Duration=0,Transition=1) http-equiv=PAGE-ENTER>
+<STYLE id=StylePlaceholder type=text/css></STYLE>
+
+<SCRIPT type=text/javascript src="JS/jquery.min.js"></SCRIPT>
+
+<STYLE type=text/css>.MyCalendar .ajax__calendar_title {
+	MARGIN: auto; WIDTH: 140px
+}
+</STYLE>
+
+
+
+<META name=GENERATOR content="MSHTML 10.00.9200.16660"></HEAD>
+<BODY id=Body>
+<FORM id=Form runat="server">
+
+<SPAN id=dnn_dnnSOLPARTMENU_ctldnnSOLPARTMENU_divOuterTables></SPAN>
+<LINK rel=stylesheet type=text/css href="CSS/skin.css">
+<SCRIPT type=text/javascript src="JS/jquery-1.7.2.min.js"></SCRIPT>
+<SCRIPT type=text/javascript src="JS/apac_common.js"></SCRIPT>
+
+<!--[if lte IE 6]><style>img, div, input { behavior: url("/BA2Web_WIP/Portals/MDTCHINA/Skins/BenefitAsia_New_UI/iepngfix.htc") }</style><![endif]-->
+
+
+<DIV class=wrapper>
+<DIV class=header>
+<DIV class=clientlogo><IMG style="MARGIN-TOP: 5px" src="Images/client_logo.jpg" /> </DIV>
+<DIV class=brandinglogo><IMG src="Images/brandinglogo.png" /> </DIV>
+<DIV class=clearboth></DIV>
+<DIV class="commonlinks hlinks">
+<UL>
+  <LI class=ddmenu> <asp:HyperLink ID="HyperLink1" runat="server" href='<%$ Resources:GResource,languagecode %>' Text='<%$ Resources:GResource,language %>'></asp:HyperLink>
+  </LI>
+  <LI><asp:LinkButton ID="LinkButton6" runat="server" onclick="LinkButton6_Click" 
+          meta:resourcekey="LinkButton6Resource1" CausesValidation="False">帮助中心</asp:LinkButton></LI>
+</UL></DIV></DIV>
+<DIV class=clearboth></DIV>
+
+<div  style="min-height:480px">
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+        </DIV>
+
+         <DIV class=clearboth></DIV>
+
+    <MPuc:footer ID="ucfooter" runat="server"/>
+
+    </DIV>
+
+
+ </FORM></BODY></HTML>

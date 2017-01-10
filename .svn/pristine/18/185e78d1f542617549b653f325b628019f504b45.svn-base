@@ -1,0 +1,21 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick" onclick="goTo('../../module/consulting/index.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </a>
+        <div class="center"></div>
+        <div class="right">
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="ConsultingNewsDetail" class="page">
+        <div class="page-content content_CNewsDetail">
+            <div class="CNewsDetail-wrap">
+                <iframe src="http://mp.weixin.qq.com/s?__biz=MzAwMDY2NTg5Ng==&mid=404406596&idx=4&sn=bf6759a48d0eb387f00d420cafc3410e&scene=1&srcid=0216ive00wJA91NlZ6ZAapMs&pass_ticket=LM9amF6KF4DmSqpEOMfgtchRX8gssQ4daBiFd3pefuQliRH7UcExDyA4OSv3Zkzb#rd"></iframe>
+            </div>
+        </div>
+    </div>
+</div>

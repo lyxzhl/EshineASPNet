@@ -1,0 +1,69 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text;
+using IDAL;
+
+namespace SQLServerDAL
+{
+    public class sql_Riskassessment:IDAL.RiskassessmentDal
+    {
+        DBunit.SQLAccess sql = new DBunit.SQLAccess();
+        DateTime baddate = DateTime.Parse("1900-01-01");
+        public int Add(Model.Riskassessment Riskassessment)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("insert into Riskassessment values (");
+            strsql.AppendFormat("N'{0}',", Riskassessment.TijianID);
+            strsql.AppendFormat("N'{0}',", Riskassessment.fenxname);
+            strsql.AppendFormat("N'{0}',", Riskassessment.wenjmiaoshu);
+            strsql.AppendFormat("N'{0}'", Riskassessment.cankaowens);
+            strsql.Append(") select SCOPE_IDENTITY()");
+            return Convert.ToInt32(sql.ExecuteSc(strsql.ToString()));
+        }
+
+
+        public Model.Riskassessment getRiskassessment(Model.Riskassessment Riskassessment1)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("select * from Riskassessment where ");
+            strsql.AppendFormat("id='{0}'", Riskassessment1.id);
+            DataTable dt = sql.ExecuteDataSet(strsql.ToString()).Tables[0];
+            if (dt.Rows.Count < 1) return null;
+
+            Model.Riskassessment Riskassessment = new Model.Riskassessment();
+            Riskassessment.id = Riskassessment1.id;
+            Riskassessment.TijianID = dt.Rows[0]["TijianID"].ToString();
+            Riskassessment.fenxname = dt.Rows[0]["fenxname"].ToString();
+            Riskassessment.wenjmiaoshu = dt.Rows[0]["wenjmiaoshu"].ToString();
+            Riskassessment.cankaowens = dt.Rows[0]["cankaowens"].ToString();
+            return Riskassessment;
+        }
+
+
+        public int update(Model.Riskassessment Riskassessment)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("update Riskassessment set ");
+            strsql.AppendFormat(" TijianID =N'{0}',", Riskassessment.TijianID);
+            strsql.AppendFormat(" fenxname =N'{0}',", Riskassessment.fenxname);
+            strsql.AppendFormat(" wenjmiaoshu =N'{0}',", Riskassessment.wenjmiaoshu);
+            strsql.AppendFormat(" cankaowens =N'{0}'", Riskassessment.cankaowens);
+            strsql.AppendFormat(" where id={0}", Riskassessment.id);
+            return sql.ExecuteNonQuery(strsql.ToString());
+        }
+
+
+        public int Delete(int id)
+        {
+            return sql.ExecuteNonQuery("delete from Riskassessment where id=" + id);
+        }
+        public DataTable Select(string ss)
+        {
+            return sql.ExecuteDataSet(ss).Tables[0];
+        }
+
+
+    }
+
+}

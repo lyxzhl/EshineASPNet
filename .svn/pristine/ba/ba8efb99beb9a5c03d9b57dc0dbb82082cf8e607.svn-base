@@ -1,0 +1,118 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+namespace SQLServerDAL
+{
+    public class sql_package:IDAL.packageDal
+    {
+
+        DBunit.SQLAccess sql = new DBunit.SQLAccess();
+        DateTime baddate = DateTime.Parse("1900-01-01");
+        public int Add(Model.tab_package package)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("insert into tab_package values (");
+            strsql.AppendFormat("'{0}',", package.packagecode);
+            strsql.AppendFormat("N'{0}',", package.supplier);
+            strsql.AppendFormat("N'{0}',", package.company);
+            strsql.AppendFormat("N'{0}',", package.period);
+            strsql.AppendFormat("N'{0}',", package.msg);
+            strsql.AppendFormat("'{0}',", package.msg_eng);
+            strsql.AppendFormat("{0},", package.budget);
+            strsql.AppendFormat("{0},", package.budgetshare);
+            strsql.AppendFormat("{0},", package.price);
+            strsql.AppendFormat("{0},", package.marketprice);
+            strsql.AppendFormat("{0},", package.addtime == baddate ? "null" : "'" + package.addtime.ToString() + "'");
+            strsql.AppendFormat("{0},", package.expiredate == baddate ? "null" : "'" + package.expiredate.ToString() + "'");
+            strsql.AppendFormat("N'{0}',", package.VIP);
+            strsql.AppendFormat("N'{0}',", package.note);
+            strsql.AppendFormat("'{0}',", package.note_eng);
+            strsql.AppendFormat("N'{0}',", package.type);
+            strsql.AppendFormat("N'{0}',", package.uppkgtype);
+            strsql.AppendFormat("N'{0}',", package.applytype);
+            strsql.AppendFormat("{0},", package.minage);
+            strsql.AppendFormat("{0}", package.maxage);
+            strsql.Append(") select SCOPE_IDENTITY()");
+            return Convert.ToInt32(sql.ExecuteSc(strsql.ToString()));
+        }
+
+
+        public Model.tab_package getpackage(Model.tab_package package1)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("select * from tab_package where ");
+            strsql.AppendFormat("id='{0}'", package1.id);
+            DataTable dt = sql.ExecuteDataSet(strsql.ToString()).Tables[0];
+            if (dt.Rows.Count < 1) return null;
+
+            Model.tab_package package = new Model.tab_package();
+            package.id = package1.id;
+            package.packagecode = dt.Rows[0]["packagecode"].ToString();
+            package.supplier = dt.Rows[0]["supplier"].ToString();
+            package.company = dt.Rows[0]["company"].ToString();
+            package.period = dt.Rows[0]["period"].ToString();
+            package.msg = dt.Rows[0]["msg"].ToString();
+            package.msg_eng = dt.Rows[0]["msg_eng"].ToString();
+            package.budget = dt.Rows[0]["budget"].ToString() == "" ? 0 : double.Parse(dt.Rows[0]["budget"].ToString());
+            package.budgetshare = dt.Rows[0]["budgetshare"].ToString() == "" ? 0 : double.Parse(dt.Rows[0]["budgetshare"].ToString());
+            package.price = dt.Rows[0]["price"].ToString() == "" ? 0 : double.Parse(dt.Rows[0]["price"].ToString());
+            package.marketprice = dt.Rows[0]["marketprice"].ToString() == "" ? 0 : double.Parse(dt.Rows[0]["marketprice"].ToString());
+            package.addtime = dt.Rows[0]["addtime"].ToString() == "" ? baddate : DateTime.Parse(dt.Rows[0]["addtime"].ToString());
+            package.expiredate = dt.Rows[0]["expiredate"].ToString() == "" ? baddate : DateTime.Parse(dt.Rows[0]["expiredate"].ToString());
+            package.VIP = dt.Rows[0]["VIP"].ToString();
+            package.note = dt.Rows[0]["note"].ToString();
+            package.note_eng = dt.Rows[0]["note_eng"].ToString();
+            package.type = dt.Rows[0]["type"].ToString();
+            package.uppkgtype = dt.Rows[0]["uppkgtype"].ToString();
+            package.applytype = dt.Rows[0]["applytype"].ToString();
+            package.minage = dt.Rows[0]["minage"].ToString() == "" ? 0 : int.Parse(dt.Rows[0]["minage"].ToString());
+            package.maxage = dt.Rows[0]["maxage"].ToString() == "" ? 0 : int.Parse(dt.Rows[0]["maxage"].ToString());
+            return package;
+        }
+
+
+        public int update(Model.tab_package package)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("update tab_package set ");
+            strsql.AppendFormat(" packagecode ='{0}',", package.packagecode);
+            strsql.AppendFormat(" supplier =N'{0}',", package.supplier);
+            strsql.AppendFormat(" company =N'{0}',", package.company);
+            strsql.AppendFormat(" period =N'{0}',", package.period);
+            strsql.AppendFormat(" msg =N'{0}',", package.msg);
+            strsql.AppendFormat(" msg_eng ='{0}',", package.msg_eng);
+            strsql.AppendFormat(" budget ='{0}',", package.budget);
+            strsql.AppendFormat(" budgetshare ='{0}',", package.budgetshare);
+            strsql.AppendFormat(" price ='{0}',", package.price);
+            strsql.AppendFormat(" marketprice ='{0}',", package.marketprice);
+            strsql.AppendFormat(" addtime ={0},", package.addtime == baddate ? "null" : "'" + package.addtime.ToString() + "'");
+            strsql.AppendFormat(" expiredate ={0},", package.expiredate == baddate ? "null" : "'" + package.expiredate.ToString() + "'");
+            strsql.AppendFormat(" VIP =N'{0}',", package.VIP);
+            strsql.AppendFormat(" note =N'{0}',", package.note);
+            strsql.AppendFormat(" note_eng ='{0}',", package.note_eng);
+            strsql.AppendFormat(" type =N'{0}',", package.type);
+            strsql.AppendFormat(" uppkgtype =N'{0}',", package.uppkgtype);
+            strsql.AppendFormat(" applytype =N'{0}',", package.applytype);
+            strsql.AppendFormat(" minage ='{0}',", package.minage);
+            strsql.AppendFormat(" maxage ='{0}'", package.maxage);
+            strsql.AppendFormat(" where id={0}", package.id);
+            return sql.ExecuteNonQuery(strsql.ToString());
+        }
+
+
+        public int Delete(int id)
+        {
+            return sql.ExecuteNonQuery("delete from tab_package where id=" + id);
+        }
+        public DataTable Select(string ss)
+        {
+            return sql.ExecuteDataSet(ss).Tables[0];
+        }
+
+        public string getuppkgtype(string packagecode)
+        {
+            return sql.ExecuteSc("select uppkgtype from tab_package where packagecode='" + packagecode + "'").ToString();
+        }
+    }
+}

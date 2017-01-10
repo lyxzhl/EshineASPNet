@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text;
+
+namespace DALFactory
+{
+      public class QuestionType_Factory
+    {
+        static readonly string path = System.Configuration.ConfigurationManager.AppSettings["DAL"];
+        public static IDAL.QuestionTypeDal Createusers()
+        {
+            string classname = path + ".sql_QuestionType";
+            return (IDAL.QuestionTypeDal)Assembly.Load(path).CreateInstance(classname);
+        }
+    }
+}

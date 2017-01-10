@@ -1,0 +1,59 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="jiaxiangbaoInfo.aspx.cs" Inherits="Admin_jiaxiangbaoInfo" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <asp:GridView ID="GridView1" runat="server" AllowPaging="True" AllowSorting="True" PageSize="20" AutoGenerateColumns="False" DataKeyNames="id" DataSourceID="SqlDataSource1" OnRowDeleting="GridView1_RowDeleting">
+            <Columns>
+                <asp:BoundField DataField="uppkgcode" HeaderText="uppkgcode" SortExpression="uppkgcode" />
+                <asp:BoundField DataField="packagecode" HeaderText="packagecode" SortExpression="packagecode" />
+                <asp:BoundField DataField="msg" HeaderText="msg" SortExpression="msg" />
+                <asp:BoundField DataField="msg_eng" HeaderText="msg_eng" SortExpression="msg_eng" />
+                <asp:BoundField DataField="price" HeaderText="price" SortExpression="price" />
+                <asp:BoundField DataField="marketprice" HeaderText="marketprice" SortExpression="marketprice" />
+                <asp:BoundField DataField="VIP" HeaderText="VIP" SortExpression="VIP" />
+                <asp:BoundField DataField="note" HeaderText="note" SortExpression="note" />
+                <asp:BoundField DataField="note_eng" HeaderText="note_eng" SortExpression="note_eng" />
+                <asp:BoundField DataField="id" HeaderText="id" InsertVisible="False" ReadOnly="True" SortExpression="id" />
+                <asp:CommandField ShowDeleteButton="True" />
+            </Columns>
+        </asp:GridView>
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:db_ConnectionString %>" ProviderName="System.Data.SqlClient" SelectCommand="SELECT * FROM [tab_uppkg]" DeleteCommand="DELETE FROM [tab_uppkg] WHERE [id] = @id" InsertCommand="INSERT INTO [tab_uppkg] ([uppkgcode], [packagecode], [msg], [msg_eng], [price], [marketprice], [VIP], [note], [note_eng]) VALUES (@uppkgcode, @packagecode, @msg, @msg_eng, @price, @marketprice, @VIP, @note, @note_eng)" UpdateCommand="UPDATE [tab_uppkg] SET [uppkgcode] = @uppkgcode, [packagecode] = @packagecode, [msg] = @msg, [msg_eng] = @msg_eng, [price] = @price, [marketprice] = @marketprice, [VIP] = @VIP, [note] = @note, [note_eng] = @note_eng WHERE [id] = @id">
+            <DeleteParameters>
+                <asp:Parameter Name="id" Type="Int32" />
+            </DeleteParameters>
+            <InsertParameters>
+                <asp:Parameter Name="uppkgcode" Type="String" />
+                <asp:Parameter Name="packagecode" Type="String" />
+                <asp:Parameter Name="msg" Type="String" />
+                <asp:Parameter Name="msg_eng" Type="String" />
+                <asp:Parameter Name="price" Type="Double" />
+                <asp:Parameter Name="marketprice" Type="Double" />
+                <asp:Parameter Name="VIP" Type="String" />
+                <asp:Parameter Name="note" Type="String" />
+                <asp:Parameter Name="note_eng" Type="String" />
+            </InsertParameters>
+            <UpdateParameters>
+                <asp:Parameter Name="uppkgcode" Type="String" />
+                <asp:Parameter Name="packagecode" Type="String" />
+                <asp:Parameter Name="msg" Type="String" />
+                <asp:Parameter Name="msg_eng" Type="String" />
+                <asp:Parameter Name="price" Type="Double" />
+                <asp:Parameter Name="marketprice" Type="Double" />
+                <asp:Parameter Name="VIP" Type="String" />
+                <asp:Parameter Name="note" Type="String" />
+                <asp:Parameter Name="note_eng" Type="String" />
+                <asp:Parameter Name="id" Type="Int32" />
+            </UpdateParameters>
+        </asp:SqlDataSource>
+    </div>
+    </form>
+</body>
+</html>

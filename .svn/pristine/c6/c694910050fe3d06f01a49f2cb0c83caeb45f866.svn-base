@@ -1,0 +1,191 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Net;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace ikang
+{
+    public class ikangservice 
+    {
+        static string saddr = "http://services.ikang.com/ikang-service/rs/cooperation/";
+        public ikangmember ikmember = new ikangmember();
+
+        private string getrequest(string url)
+        {
+            HttpWebRequest myReq;
+            HttpWebResponse res;
+            string result;
+
+            myReq = (HttpWebRequest)HttpWebRequest.Create(url);
+            myReq.ContentType = "text/html";
+            myReq.Method = "get";
+            myReq.Timeout = 600000;
+
+            try
+            {
+                res = (HttpWebResponse)myReq.GetResponse();
+                if (res != null)
+                {
+                    result = new StreamReader(res.GetResponseStream()).ReadToEnd();
+                    res.Close();
+                    return result;
+                }
+            }
+            catch (WebException ex)
+            {
+                result = "error:" + ex.ToString();
+                return result;
+            }
+            return "error";
+        }
+        public string GetDateStatus(string hospid)
+        {
+            string url = saddr +
+                "findServiceOrderDay?hospid=" + hospid +
+                "&onlycode=" + ikmember.onlycode +
+                "&signature=" + ikmember.signature +
+                "&version=" + ikmember.version;
+            return getrequest(url);
+        }
+        public string AddOrder(ikangmember mem)
+        {
+            DateTime regdate = DateTime.Parse( mem.regdate);
+            string xmlinfo = "<info>" +
+               "<cardnumber><![CDATA[" + mem.cardnumber + "]]></cardnumber>" +
+               "<regdate><![CDATA[" + regdate.ToString("yyyy-MM-dd") + "]]></regdate>" +
+               "<packagecode><![CDATA[" + mem.packagecode + "]]></packagecode>" +
+               "<hospid><![CDATA[" + mem.hospid + "]]></hospid>" +
+               "<name><![CDATA[" + mem.name + "]]></name>" +
+               "<sex><![CDATA[" + mem.sex + "]]></sex>" +
+                //"<married><![CDATA[" + mem.married + "]]></married>" +
+               "<married><![CDATA[0]]></married>" +
+               "<contacttel><![CDATA[18017588993]]></contacttel>" +
+               "<idnumber><![CDATA[" + mem.idnumber + "]]></idnumber>" +
+               "<reportaddress><![CDATA[" + mem.reportaddress + "]]></reportaddress>" +
+               "<thirdnum><![CDATA[" + mem.thirdnum + "]]></thirdnum>" +
+               "</info>";
+            xmlinfo = System.Web.HttpUtility.UrlEncode(xmlinfo, System.Text.Encoding.UTF8);
+
+            string url = saddr +
+                "saveOrderInfo?xmlinfo=" + xmlinfo +
+                "&onlycode=" + ikmember.onlycode +
+                "&signature=" + ikmember.signature +
+                "&version=" + ikmember.version;
+            return getrequest(url);
+        }
+        public string CancelOrder(string orderid, string cardnumber)
+        {
+
+            string url = saddr +
+                "cancelOrder?orderid=" + orderid +
+                "&cardnumber=" + cardnumber +
+                "&onlycode=" + ikmember.onlycode +
+                "&signature=" + ikmember.signature +
+                "&version=" + ikmember.version;
+            return getrequest(url);
+        }
+        public string UpdateDate(string orderid, string cardnumber, string hospid, string regdate)
+        {
+            string url = saddr +
+                "updateOrderDate?orderid=" + orderid +
+                "&cardnumber=" + cardnumber +
+                "&hospid=" + hospid +
+                "&regdate=" + regdate +
+                "&onlycode=" + ikmember.onlycode +
+                "&signature=" + ikmember.signature +
+                "&version=" + ikmember.version;
+            return getrequest(url);
+        }
+
+        public string UpdatePackage(string orderid, string cardnumber)
+        {
+            string url = saddr +
+                           "cancelOrder?orderid=" + orderid +
+                           "&cardnumber=" + cardnumber +
+                           "&onlycode=" + ikmember.onlycode +
+                           "&signature=" + ikmember.signature +
+                           "&version=" + ikmember.version;
+            return getrequest(url);
+        }
+        public string checkexam(ref ikangmember mem, ref byte[] array)
+        {
+            string url = saddr +
+                           "findCheckDataBack?orderid=" + mem.orderid +
+                           "&cardnumber=" + mem.cardnumber +
+                           "&onlycode=" + ikmember.onlycode +
+                           "&signature=" + ikmember.signature +
+                           "&version=" + ikmember.version;
+            string s = getrequest(url);
+            //string s = @"{""code"":""1"",""message"":""成功"",""list"":[{""id"":3960237,""cardnumber"":""0010900071284124"",""regdate"":1382457600000,""name"":""朱得德2"",""sex"":1,""married"":1,""packagecode"":""NONEM296080"",""packagename"":""朱磊套餐-男-体检分类套餐"",""hospid"":""089"",""idcard"":null,""contacttel"":""13800138001"",""workno"":""089-2020131023001"",""orderid"":6059785,""reportstatus"":1}]}";
+            Match match = Regex.Match(s, "message\":\"成功\"");
+            if (match.Success)
+            {
+                match = Regex.Match(s, "workno\":\"(?<workno>\\d+-\\d+)\"");
+                if (match.Groups["workno"].Value != "")
+                {
+                    mem.workno = match.Groups["workno"].Value;
+                    s = getreport(mem);
+                    match = Regex.Match(s, @"message"":""(?<message>.+)"",""list");
+                    if (match.Success)
+                    {
+                        array = Convert.FromBase64String(match.Groups["message"].Value);
+                        string shortpath = "~/Reports/" + mem.idnumber + "_" + DateTime.Now.ToString("yyyy-MM-dd") + ".pdf";
+                        //string path = Server.MapPath(shortpath);
+                        //FileStream objFileStream2 = File.Create(path);
+                        //objFileStream2.Write(array, 0, array.Length);
+                        //objFileStream2.Close();
+                        //mem.reportpath = path;
+                        return "ok:" + shortpath;
+                    }
+                    else
+                    {
+                        return "error:获取体检报告信息服务器响应不正常！";
+                    }
+                }
+                else
+                {
+                    return "error:没有到检信息！";
+                }
+            }
+            else
+            {
+                return "error:获取到检信息服务器响应不正常！";
+            }
+            return "error";
+        }
+        string getreport(ikangmember mem)
+        {
+            string url = saddr +
+                           "findReportInfo?cardnumber=" + mem.cardnumber +
+                           "&workno=" + mem.workno +
+                           "&onlycode=" + ikmember.onlycode +
+                           "&signature=" + ikmember.signature +
+                           "&version=" + ikmember.version;
+            return getrequest(url);
+        }
+        public string registercard(ikangmember mem)
+        {
+            string xmlinfo = "<info>" +
+              "<cardnumber><![CDATA[" + mem.cardnumber + "]]></cardnumber>" +
+              "<password><![CDATA[" + mem.password + "]]></password>" +
+              "<name><![CDATA[" + mem.name + "]]></name>" +
+              "<sex><![CDATA[" + mem.sex + "]]></sex>" +
+              "<married><![CDATA[" + mem.married + "]]></married>" +
+              "<contacttel><![CDATA[18017588993]]></contacttel>" +
+              "<idnumber><![CDATA[" + mem.idnumber + "]]></idnumber>" +
+              "</info>";
+            xmlinfo = System.Web.HttpUtility.UrlEncode(xmlinfo, System.Text.Encoding.UTF8);
+
+            string url = saddr +
+                "registrationUser?registrationXML=" + xmlinfo +
+                "&onlycode=" + ikmember.onlycode +
+                "&signature=" + ikmember.signature +
+                "&version=" + ikmember.version;
+            return getrequest(url);
+        }
+    }
+}

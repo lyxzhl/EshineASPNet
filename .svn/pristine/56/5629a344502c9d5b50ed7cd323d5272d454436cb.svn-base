@@ -1,0 +1,60 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <div class="left aClick" onclick="goTo('choose_assessment.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </div>
+        <div class="center">
+        </div>
+        <div class="right">
+            <span class="aClick" onclick="QDetailReset();">重新评估
+            </span>
+            <span class="disabled aClick" onclick="formQDetailSumbit();">提交</span>
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="Assessment" class="page">
+        <div class="page-content content_Assessment infinite-scroll">
+            <div class="Assessment-wrap">
+                <input type="hidden" id="hiTId" name="hiTId" />
+                <div class="group-item">
+                </div>
+                <ul id="myTab" class="nav nav-tabs hide">
+                    <li class="active">
+                        <a href="#Basic" data-toggle="tab">整体健康评估</a>
+                    </li>
+                    <li>
+                        <a href="#Disease" data-toggle="tab">疾病风险评估</a>
+                    </li>
+                    <li>
+                        <a href="#Mind" data-toggle="tab">心理健康评估
+                        </a>
+                    </li>
+                </ul>
+                <div id="myTabContent" class="tab-content hide">
+                    <div class="tab-pane fade in active" id="Basic">
+                        <div class="group-item">
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="Disease">
+                        <div class="group-item"></div>
+                    </div>
+                    <div class="tab-pane fade" id="Mind">
+                        <div class="group-item">
+                        </div>
+                    </div>
+                </div>
+                <div class="group-item">
+                    <div class="row-item">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" data-transitiongoal="" aria-valuemax=""></div>
+                        </div>
+                        <i class="icon icon-play" onclick="ckQDetail();">下一题</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text;
+
+namespace IDAL
+{
+     public interface AssessmentAnswerDal
+    {
+        int Add(Model.AssessmentAnswer AssessmentAnswer);
+        Model.AssessmentAnswer getAssessmentAnswer(Model.AssessmentAnswer AssessmentAnswer1);
+        int update(Model.AssessmentAnswer AssessmentAnswer);
+        int Delete(int AAID);
+        DataTable Select(string ss);
+
+    }
+}

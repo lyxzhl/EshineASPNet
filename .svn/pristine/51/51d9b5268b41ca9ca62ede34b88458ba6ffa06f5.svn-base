@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://service.ws.ctcoss.ctc.com/" name="ISmsService4XML" targetNamespace="http://service.ws.ctcoss.ctc.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types />
+  <wsdl:message name="balance">
+    <wsdl:part name="arg0" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="submit">
+    <wsdl:part name="arg0" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="deliver">
+    <wsdl:part name="arg0" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="report">
+    <wsdl:part name="arg0" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="balanceResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="deliverResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="submitResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="reportResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:portType name="ISmsService4XML">
+    <wsdl:operation name="balance">
+      <wsdl:input name="balance" message="ns1:balance" />
+      <wsdl:output name="balanceResponse" message="ns1:balanceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="deliver">
+      <wsdl:input name="deliver" message="ns1:deliver" />
+      <wsdl:output name="deliverResponse" message="ns1:deliverResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="submit">
+      <wsdl:input name="submit" message="ns1:submit" />
+      <wsdl:output name="submitResponse" message="ns1:submitResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="report">
+      <wsdl:input name="report" message="ns1:report" />
+      <wsdl:output name="reportResponse" message="ns1:reportResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

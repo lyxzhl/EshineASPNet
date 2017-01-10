@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text;
+
+namespace IDAL
+{
+    public interface AssessmentReportDal
+    {
+        int Add(Model.AssessmentReport AssessmentReport);
+        Model.AssessmentReport getAssessmentReport(Model.AssessmentReport AssessmentReport1);
+        int update(Model.AssessmentReport AssessmentReport);
+        int Delete(int ARID);
+        DataTable Select(string ss);
+    }
+}

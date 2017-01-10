@@ -1,0 +1,21 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <div class="left aClick" onclick="goTo('choose_assessment.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </div>
+        <div class="center">开始评估</div>
+        <div class="right">
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="StartAssessment" class="page">
+        <div class="page-content content_SAssessment">
+            <a href="#" id="aStart" class="SAssessment-wrap">
+                <img src="../../img/banner/banner1.png" />
+            </a>
+        </div>
+    </div>
+</div>

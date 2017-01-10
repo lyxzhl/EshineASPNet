@@ -1,0 +1,104 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Model
+{
+       public class QuestionClass
+    {
+        private int _QCID = 0;
+        private int _QTID = 0;
+        private string _QCName = "";
+        private string _QCShortName = "";
+        private string _QCDes = "";
+        private string _IName = "";
+        private int _IsSort = 0;
+        private DateTime _CreateTime = DateTime.Parse("1900-01-01");
+        private DateTime _UpdateTime = DateTime.Parse("1900-01-01");
+        private int _CreateUser = 0;
+        private int _UpdateUser = 0;
+        private int _IsShow = 0;
+        private int _IsDel = 0;
+
+
+        public int QCID
+        {
+            get { return _QCID; }
+            set { _QCID = value; }
+        }
+
+        public int QTID
+        {
+            get { return _QTID; }
+            set { _QTID = value; }
+        }
+
+        public string QCName
+        {
+            get { return _QCName; }
+            set { _QCName = value; }
+        }
+
+        public string QCShortName
+        {
+            get { return _QCShortName; }
+            set { _QCShortName = value; }
+        }
+
+        public string QCDes
+        {
+            get { return _QCDes; }
+            set { _QCDes = value; }
+        }
+
+        public string IName
+        {
+            get { return _IName; }
+            set { _IName = value; }
+        }
+
+        public int IsSort
+        {
+            get { return _IsSort; }
+            set { _IsSort = value; }
+        }
+
+        public DateTime CreateTime
+        {
+            get { return _CreateTime; }
+            set { _CreateTime = value; }
+        }
+
+        public DateTime UpdateTime
+        {
+            get { return _UpdateTime; }
+            set { _UpdateTime = value; }
+        }
+
+        public int CreateUser
+        {
+            get { return _CreateUser; }
+            set { _CreateUser = value; }
+        }
+
+        public int UpdateUser
+        {
+            get { return _UpdateUser; }
+            set { _UpdateUser = value; }
+        }
+
+        public int IsShow
+        {
+            get { return _IsShow; }
+            set { _IsShow = value; }
+        }
+
+        public int IsDel
+        {
+            get { return _IsDel; }
+            set { _IsDel = value; }
+        }
+
+
+    }
+}

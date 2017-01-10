@@ -1,0 +1,58 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Text;
+public partial class Admin_ordersAdmin_ordercheck : System.Web.UI.Page
+{
+    PublicClass pc = new PublicClass();
+    DBunit.SQLAccess dbsql = new DBunit.SQLAccess();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        
+    }
+    
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        string[] st = this.TextBox1.Text.Split('\n');
+        try
+        {
+            if (st[0] != "" && st[0] != "\r")
+            {
+                StringBuilder sb = new StringBuilder();
+                //sb.Append("update tab_orders set orderStatus=N'已体检' where personCompany=N'" + this.DropDownList1.SelectedItem.Text + "'  and orderStatus=N'约检成功' and (");
+                //sb.Append("customerCode='" + st[0]+"'");
+                for (int i = 0; i < st.Length; i++)
+                {
+                    if (st[i] != "" && st[i] != "\r")
+                    {
+                        if (st[i].Contains("-"))
+                        {
+                            string[] oid = st[i].Split('-');
+                            string s = "update tab_orders set orderStatus=N'" + this.DropDownList6.SelectedValue + "' where orderID>=" + oid[0] + " and orderID<=" + oid[1];
+                            dbsql.ExecuteNonQuery(s);
+                        }
+                        else
+                        {
+                            string s = "update tab_orders set orderStatus=N'" + this.DropDownList6.SelectedValue + "' where orderID=" + st[i];
+                            dbsql.ExecuteNonQuery(s);
+                        }
+                    }
+                }
+
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('更新成功！');</script>");
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('未更新任何条目！');</script>");
+            }
+        }
+        catch (Exception ex)
+        {
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('" + ex.ToString() + "！');</script>");
+        }
+    }
+}

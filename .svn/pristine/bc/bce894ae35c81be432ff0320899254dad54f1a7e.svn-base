@@ -1,0 +1,202 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Model
+{
+    public class AssessmentReport
+    {
+        private int _ARID = 0;
+        private int _customerID = 0;
+        private int _CType = 0;
+        private string _customerCode = "";
+        private int _customerGender = 0;
+        private DateTime _customerDOB = DateTime.Parse("1900-01-01");
+        private string _ARCode = "";
+        private int _customerAge = 0;
+        private int _QTID = 0;
+        private string _QTShortName = "";
+        private DateTime _ARCreate = DateTime.Parse("1900-01-01");
+        private int _ARStatus = 0;
+        private string _ARDetail = "";
+        private double _ARScore = 0.0;
+        private string _QTTemplate = "";
+        private string _QTPage = "";
+        private string _IRequest = "";
+        private string _IResponse = "";
+        private DateTime _IRequestTime = DateTime.Parse("1900-01-01");
+        private DateTime _IResponseTime = DateTime.Parse("1900-01-01");
+        private string _ARContent = "";
+        private DateTime _CreateTime = DateTime.Parse("1900-01-01");
+        private DateTime _UpdateTime = DateTime.Parse("1900-01-01");
+        private int _CreateUser = 0;
+        private int _UpdateUser = 0;
+        private int _IsShow = 0;
+        private int _IsDel = 0;
+
+
+        public int ARID
+        {
+            get { return _ARID; }
+            set { _ARID = value; }
+        }
+
+        public int customerID
+        {
+            get { return _customerID; }
+            set { _customerID = value; }
+        }
+
+        public int CType
+        {
+            get { return _CType; }
+            set { _CType = value; }
+        }
+
+        public string customerCode
+        {
+            get { return _customerCode; }
+            set { _customerCode = value; }
+        }
+
+        public int customerGender
+        {
+            get { return _customerGender; }
+            set { _customerGender = value; }
+        }
+
+        public DateTime customerDOB
+        {
+            get { return _customerDOB; }
+            set { _customerDOB = value; }
+        }
+
+        public string ARCode
+        {
+            get { return _ARCode; }
+            set { _ARCode = value; }
+        }
+
+        public int customerAge
+        {
+            get { return _customerAge; }
+            set { _customerAge = value; }
+        }
+
+        public int QTID
+        {
+            get { return _QTID; }
+            set { _QTID = value; }
+        }
+
+        public string QTShortName
+        {
+            get { return _QTShortName; }
+            set { _QTShortName = value; }
+        }
+
+        public DateTime ARCreate
+        {
+            get { return _ARCreate; }
+            set { _ARCreate = value; }
+        }
+
+        public int ARStatus
+        {
+            get { return _ARStatus; }
+            set { _ARStatus = value; }
+        }
+
+        public string ARDetail
+        {
+            get { return _ARDetail; }
+            set { _ARDetail = value; }
+        }
+
+        public double ARScore
+        {
+            get { return _ARScore; }
+            set { _ARScore = value; }
+        }
+
+        public string QTTemplate
+        {
+            get { return _QTTemplate; }
+            set { _QTTemplate = value; }
+        }
+
+        public string QTPage
+        {
+            get { return _QTPage; }
+            set { _QTPage = value; }
+        }
+
+        public string IRequest
+        {
+            get { return _IRequest; }
+            set { _IRequest = value; }
+        }
+
+        public string IResponse
+        {
+            get { return _IResponse; }
+            set { _IResponse = value; }
+        }
+
+        public DateTime IRequestTime
+        {
+            get { return _IRequestTime; }
+            set { _IRequestTime = value; }
+        }
+
+        public DateTime IResponseTime
+        {
+            get { return _IResponseTime; }
+            set { _IResponseTime = value; }
+        }
+
+        public string ARContent
+        {
+            get { return _ARContent; }
+            set { _ARContent = value; }
+        }
+
+        public DateTime CreateTime
+        {
+            get { return _CreateTime; }
+            set { _CreateTime = value; }
+        }
+
+        public DateTime UpdateTime
+        {
+            get { return _UpdateTime; }
+            set { _UpdateTime = value; }
+        }
+
+        public int CreateUser
+        {
+            get { return _CreateUser; }
+            set { _CreateUser = value; }
+        }
+
+        public int UpdateUser
+        {
+            get { return _UpdateUser; }
+            set { _UpdateUser = value; }
+        }
+
+        public int IsShow
+        {
+            get { return _IsShow; }
+            set { _IsShow = value; }
+        }
+
+        public int IsDel
+        {
+            get { return _IsDel; }
+            set { _IsDel = value; }
+        }
+
+
+    }
+}

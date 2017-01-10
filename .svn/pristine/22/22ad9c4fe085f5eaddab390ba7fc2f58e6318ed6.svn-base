@@ -1,0 +1,1155 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Data;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using Subgurim.Controles;
+using System.Text.RegularExpressions;
+using System.Web.Script.Serialization;
+using MeiNianWebRef;
+using ikang;
+using System.Text;
+/// <summary>
+/// reserveexamcommon 的摘要说明
+/// </summary>
+public class reserveexamcommon: System.Web.UI.Page
+{
+	public reserveexamcommon()
+	{
+		//
+		// TODO: 在此处添加构造函数逻辑
+		//
+	}
+
+    Bll.CustomerBll Cb = new Bll.CustomerBll();
+    Bll.SupplierBll sb = new Bll.SupplierBll();
+    Bll.packageBll pb = new Bll.packageBll();
+    Bll.uppkgBll ub = new Bll.uppkgBll();
+    Bll.OrdersBll ob = new Bll.OrdersBll();
+    Bll.examcardBll eb = new Bll.examcardBll();
+    Bll.companyBll comb = new Bll.companyBll();
+    PublicClass pc = new PublicClass();
+
+    public string initprovincecitydropdown(bool isrel, Model.tab_customers modelCu, DropDownList com_Province, DropDownList com_City)
+    {
+        try
+        {
+            DataTable dt;
+            if (isrel)
+            {
+                dt = MediPlus.reserveexam.getexamprovinceRel(modelCu.customerCompany);
+            }
+            else
+            {
+                dt = MediPlus.reserveexam.getexamprovince(modelCu.customerCompany);
+            }
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                com_Province.Items.Add(dt.Rows[i][0].ToString());
+            }
+            int proindex, cityindex;
+            string province = "", city = "";
+            if (modelCu.customerProvince != "")
+            {
+                province = modelCu.customerProvince;
+            }
+            else if (modelCu.customerCompanyProvince != "")
+            {
+                province = modelCu.customerCompanyProvince;
+            }
+
+            if (modelCu.customerCity != "")
+            {
+                city = modelCu.customerCity;
+            }
+            else if (modelCu.customerCompanyCity != "")
+            {
+                city = modelCu.customerCompanyCity;
+            }
+            if (province != "")
+            {
+                proindex = com_Province.Items.IndexOf(com_Province.Items.FindByText(province));
+                if (proindex > 0)
+                {
+                    com_Province.SelectedIndex = proindex;
+                    if (isrel)
+                    {
+                        com_Province_SelectedIndexChanged(true, modelCu.customerCompany, com_Province, com_City);
+
+                    }
+                    else
+                    {
+                        com_Province_SelectedIndexChanged(false, modelCu.customerCompany, com_Province, com_City);
+                    }
+
+                    if (city != "")
+                    {
+                        cityindex = com_City.Items.IndexOf(com_City.Items.FindByText(city));
+                        if (cityindex > 0)
+                        {
+                            com_City.SelectedIndex = cityindex;
+                            
+                        }
+                    }
+                }
+
+            }
+        }
+        catch (Exception)
+        {
+            return "error";
+        }
+        return "success";
+    }
+
+    public void initcitySupplier(bool isrel, ref string branchmapclass, Model.tab_customers modelCu, DropDownList com_Province,
+        DropDownList com_City, DropDownList DropDownList1, GMap GMap1, Literal Literal1, ref string hideik, ref string hidemn,
+        ref string continue2class, ref string supplierlistcontentikang, ref string supplierlistcontentciming, ref string supplierlistcontentmeinian,
+        Panel Panel14, Panel Panel15, Panel Panel16)
+    {
+        initprovincecitydropdown(isrel, modelCu, com_Province, com_City);
+        fillbranch(isrel, ref branchmapclass, modelCu, com_Province, com_City, DropDownList1, GMap1, Literal1, ref  hideik, ref  hidemn, ref  continue2class, ref  supplierlistcontentikang, ref  supplierlistcontentciming, ref  supplierlistcontentmeinian, Panel14, Panel15, Panel16);
+        //try
+        //{
+        //    DataTable dt;
+        //    if (isrel)
+        //    {
+        //        dt = MediPlus.reserveexam.getexamprovinceRel(modelCu.customerCompany);
+        //    }
+        //    else
+        //    {
+        //        dt = MediPlus.reserveexam.getexamprovince(modelCu.customerCompany);
+        //    }
+             
+        //    for (int i = 0; i < dt.Rows.Count; i++)
+        //    {
+        //        com_Province.Items.Add(dt.Rows[i][0].ToString());
+        //    }
+        //    int proindex, cityindex;
+        //    string province = "", city = "";
+        //    if (modelCu.customerProvince != "")
+        //    {
+        //        province = modelCu.customerProvince;
+        //    }
+        //    else if (modelCu.customerCompanyProvince != "")
+        //    {
+        //        province = modelCu.customerCompanyProvince;
+        //    }
+
+        //    if (modelCu.customerCity != "")
+        //    {
+        //        city = modelCu.customerCity;
+        //    }
+        //    else if (modelCu.customerCompanyCity != "")
+        //    {
+        //        city = modelCu.customerCompanyCity;
+        //    }
+        //    if (province != "")
+        //    {
+        //        proindex = com_Province.Items.IndexOf(com_Province.Items.FindByText(province));
+        //        if (proindex > 0)
+        //        {
+        //            com_Province.SelectedIndex = proindex;
+        //            if (isrel)
+        //            {
+        //                com_Province_SelectedIndexChanged(true,modelCu.customerCompany, com_Province, com_City);
+                        
+        //            }
+        //            else
+        //            {
+        //                com_Province_SelectedIndexChanged(false, modelCu.customerCompany, com_Province, com_City);
+        //            }
+                   
+        //            if (city != "")
+        //            {
+        //                cityindex = com_City.Items.IndexOf(com_City.Items.FindByText(city));
+        //                if (cityindex > 0)
+        //                {
+        //                    com_City.SelectedIndex = cityindex;
+        //                    branchmapclass = "";
+        //                    fillsupplier(modelCu, com_Province, com_City, DropDownList1);
+                         
+        //                    fillbranch(isrel, ref branchmapclass, modelCu, com_Province, com_City, DropDownList1, GMap1, Literal1, ref  hideik, ref  hidemn, ref  continue2class, ref  supplierlistcontentikang, ref  supplierlistcontentciming, ref  supplierlistcontentmeinian, Panel14, Panel15, Panel16);
+   
+
+        //                }
+        //            }
+        //        }
+
+        //    }
+        //}
+        //catch (Exception)
+        //{
+        //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('数据库连接错误！');</script>");
+        //}
+    }
+    public void com_Province_SelectedIndexChanged(bool isrel,string customerCompanyName, DropDownList com_Province,  DropDownList com_City)
+    {
+        com_City.Items.Clear();
+        com_City.Items.Add((string)GetGlobalResourceObject("GResource", "com_CityResource1"));
+        DataTable dt;
+        if (isrel)
+        {
+             dt = MediPlus.reserveexam.getexamcityRel(customerCompanyName, com_Province.Text);
+        }
+        else
+        {
+             dt = MediPlus.reserveexam.getexamcity(customerCompanyName, com_Province.Text);
+        }
+        if (dt.Rows.Count == 0)
+        {
+            com_City.Items.Add(com_Province.Text);
+        }
+        else
+        {
+            for (int i = 0; i < dt.Rows.Count; i++)
+                com_City.Items.Add(dt.Rows[i][0].ToString());
+        }
+        com_City.SelectedIndex = 0;
+
+    }
+
+    public void fillsupplier(Model.tab_customers modelCu, DropDownList com_Province, DropDownList com_City, DropDownList DropDownList1)
+    {
+        string s = "select distinct  supplier from tab_suppliers where id in (" 
+            + comb.getavailablesupplier(modelCu.customerCompany)
+            + ") and province like N'" + com_Province.SelectedValue + "'";
+        if (com_City.SelectedValue != (string)GetGlobalResourceObject("GResource", "com_CityResource1"))
+        {
+            s += " and city like N'" + com_City.SelectedValue + "'";
+        }
+
+        if (modelCu.disablebranch != "")
+        {
+            s += " and supplier not in (" + modelCu.disablebranch + ")";
+        }
+
+        DataTable dt = sb.GetAny(s);
+        DropDownList1.DataTextField = "supplier";//DropDownList1
+        DropDownList1.DataValueField = "supplier";
+        DropDownList1.DataSource = dt.DefaultView;
+        DropDownList1.DataBind();
+        DropDownList1.Items.Insert(0, new ListItem((string)GetGlobalResourceObject("GResource", "DropDownList1Resource1")));//
+
+    }
+
+    public void fillxiyasupplier(Model.tab_customers modelCu, DropDownList com_Province, DropDownList com_City, RadioButtonList RadioButtonList1)
+    {
+        string s = "select (supplier+branch+' '+address) branch from tab_xiyasuppliers where id in ("
+            + comb.getxiyasupplier(modelCu.customerCompany)
+            + ") and province like N'" + com_Province.SelectedValue + "'";
+        if (com_City.SelectedValue != (string)GetGlobalResourceObject("GResource", "com_CityResource1"))
+        {
+            s += " and city like N'" + com_City.SelectedValue + "'";
+        }
+
+        if (modelCu.disablebranch != "")
+        {
+            s += " and supplier not in (" + modelCu.disablebranch + ")";
+        }
+
+        DataTable dt = sb.GetAny(s);
+        for(int i=0;i<dt.Rows.Count;i++)
+        {
+            if(i<5)
+            RadioButtonList1.Items[i].Text = dt.Rows[i]["branch"].ToString();
+        }
+        for (int i = 0; i < RadioButtonList1.Items.Count; i++)
+        {
+            if (RadioButtonList1.Items[i].Text == "")
+            {
+                RadioButtonList1.Items[i].Attributes.Add("class", "hidden");
+            }
+        }
+
+    }
+    public void fillxiyasupplier(Model.tab_customers modelCu, string com_Province, string com_City, RadioButtonList RadioButtonList1)
+    {
+        string s = "select (supplier+branch+' '+address) branch from tab_xiyasuppliers where id in ("
+            + comb.getxiyasupplier(modelCu.customerCompany)
+            + ") and province like N'" + com_Province + "'";
+        if (com_City != (string)GetGlobalResourceObject("GResource", "com_CityResource1"))
+        {
+            s += " and city like N'" + com_City + "'";
+        }
+
+        if (modelCu.disablebranch != "")
+        {
+            s += " and supplier not in (" + modelCu.disablebranch + ")";
+        }
+
+        DataTable dt = sb.GetAny(s);
+        for (int i = 0; i < dt.Rows.Count; i++)
+        {
+            if (i < 5)
+                RadioButtonList1.Items[i].Text = dt.Rows[i]["branch"].ToString();
+        }
+        for (int i = 0; i < RadioButtonList1.Items.Count; i++)
+        {
+            if (RadioButtonList1.Items[i].Text == "")
+            {
+                RadioButtonList1.Items[i].Attributes.Add("class", "hidden");
+            }
+        }
+
+    }
+    public void fillbindsupplier(Model.tab_customers modelCu, RadioButtonList RadioButtonList1, DropDownList com_Province, DropDownList com_City)
+    {
+        string s = "select (supplier+branch+' '+address) branch,id from tab_suppliers where province='"+com_Province.SelectedValue+"' and id in ("
+            + comb.getavailablesupplier(modelCu.customerCompany)
+            + ") ";
+        if (com_City.SelectedValue != (string)GetGlobalResourceObject("GResource", "com_CityResource1"))
+        {
+            s += " and city like N'%" + com_City.SelectedValue + "%'";
+        }
+        
+        if (modelCu.disablebranch != "")
+        {
+            s += " and supplier not in (" + modelCu.disablebranch + ")";
+        }
+
+        DataTable dt = sb.GetAny(s);
+        for (int i = 0; i < dt.Rows.Count; i++)
+        {
+            if (i < 10)
+            {
+                RadioButtonList1.Items[i].Selected = false;
+                RadioButtonList1.Items[i].Text = dt.Rows[i]["branch"].ToString();
+                RadioButtonList1.Items[i].Value = dt.Rows[i]["id"].ToString();
+                RadioButtonList1.Items[i].Attributes.Remove("class");
+            }
+        }
+        for (int i = dt.Rows.Count; i < RadioButtonList1.Items.Count; i++)
+        {
+            //if (RadioButtonList1.Items[i].Text == "")
+            {
+                RadioButtonList1.Items[i].Text = "";
+                RadioButtonList1.Items[i].Attributes.Add("class", "hidden");
+            }
+        }
+
+    }
+
+
+    public void fillbranch(bool isrel, ref string branchmapclass, Model.tab_customers modelCu, DropDownList com_Province,
+        DropDownList com_City, DropDownList DropDownList1, GMap GMap1, Literal Literal1, ref string hideik, ref string hidemn, 
+        ref string continue2class, ref string supplierlistcontentikang, ref string supplierlistcontentciming, ref string supplierlistcontentmeinian,
+        Panel Panel14, Panel Panel15,Panel Panel16)
+    {
+        if (branchmapclass != "") return;
+
+        string city="", supplier="";
+
+        if (com_City.SelectedValue != (string)GetGlobalResourceObject("GResource", "com_CityResource1"))
+        {
+            city= com_City.SelectedValue;
+        }
+        //if (DropDownList1.SelectedValue !=(string)GetGlobalResourceObject("GResource", "DropDownList1Resource1") )
+        //{
+        //    supplier= DropDownList1.SelectedValue ;
+        //}
+
+        if (modelCu.disablebranch != "")
+        {
+            if (modelCu.disablebranch.Contains("爱康国宾"))
+            {
+                hideik = "hidden";
+            }
+            if (modelCu.disablebranch.Contains("美年大健康"))
+            {
+                hidemn = "hidden";
+            }
+        }
+
+        //int itemmax = fillbranchmap(GMap1, 
+        //    MediPlus.reserveexam.getbranchlist(modelCu,com_Province.SelectedValue,city,supplier),
+        //    ref continue2class, ref supplierlistcontentikang, ref supplierlistcontentciming, ref supplierlistcontentmeinian);
+
+        int itemmax;
+
+        if (isrel)
+        {
+            itemmax = fillbranchbaidumap(Literal1,
+              MediPlus.reserveexam.getbranchlistRel(modelCu, com_Province.SelectedValue, city, supplier),
+              ref continue2class, ref supplierlistcontentikang, ref supplierlistcontentciming, ref supplierlistcontentmeinian);
+        }
+        else
+        {
+            itemmax = fillbranchbaidumap(Literal1,
+                MediPlus.reserveexam.getbranchlist(modelCu, com_Province.SelectedValue, city, supplier),
+                ref continue2class, ref supplierlistcontentikang, ref supplierlistcontentciming, ref supplierlistcontentmeinian);
+        }
+
+        if (itemmax < 5)
+        {
+            Panel14.Height = itemmax * 80 + 60;
+            Panel15.Height = Panel14.Height;
+            Panel16.Height = Panel14.Height;
+        }
+        else
+        {
+            Panel14.Height = 440;
+            Panel15.Height = Panel14.Height;
+            Panel16.Height = Panel14.Height;
+        }
+        if(supplierlistcontentmeinian=="")
+        {
+            hidemn = "hidden";
+        }
+    }
+
+
+    public int fillbranchmap(GMap GMap1, DataTable dt, ref string continue2class, ref string supplierlistcontentikang, ref string supplierlistcontentciming, ref string supplierlistcontentmeinian)
+    {
+
+        GMap1.reset();
+
+        GMap1.Add(new GControl(GControl.preBuilt.GOverviewMapControl));
+        GMap1.Add(new GControl(GControl.preBuilt.LargeMapControl));
+
+        GIcon baseIcon = new GIcon();
+        baseIcon.shadow = "http://www.google.cn/mapfiles/shadow50.png";
+        baseIcon.iconSize = new GSize(20, 34);
+        baseIcon.shadowSize = new GSize(37, 34);
+        baseIcon.iconAnchor = new GPoint(9, 34);
+        baseIcon.infoWindowAnchor = new GPoint(9, 2);
+
+        GIcon letteredIcon;
+        GMarker marker;
+        GInfoWindow window;
+        double lat, lng, clat = 0.0, clng = 0.0;
+        int index = 0;
+        string letter, lilist = "", ballooncontent;
+        supplierlistcontentikang = "";
+        supplierlistcontentciming = "";
+        supplierlistcontentmeinian = "";
+        int itemik = 0, itemcm = 0, itemmn = 0;
+        foreach (DataRow dr in dt.Rows)
+        {
+            letter = ((char)((int)'A' + index++)).ToString();
+            letteredIcon = new GIcon(baseIcon);
+            letteredIcon.image = "http://www.google.cn/mapfiles/marker" + letter + ".png";
+
+            lat = Convert.ToDouble(dr["lat"]);
+            lng = Convert.ToDouble(dr["lng"]);
+            clat += lat;
+            clng += lng;
+            marker = new GMarker(new GLatLng(lat, lng), letteredIcon);
+
+            string sgm = "http://ditu.google.cn/maps?q=" + Server.UrlEncode(Server.UrlEncode(dr["branch"].ToString())) + "&hl=zh-CN&ie=UTF8"
+            + "&ll=" + lat + "," + lng + "&hq=" + Server.UrlEncode(Server.UrlEncode(dr["address"].ToString())) + "&z=15";
+
+            //string sgm = "http://ditu.google.cn/maps?q=" + dr["branch"].ToString() + "&hl=zh-CN&ie=UTF8"
+            //+ "&ll=" + lat + "," + lng + "&hq=" + dr["address"].ToString() + "&z=15";
+
+            ballooncontent = "<center><b>" + dr["supplier"].ToString() + "</b><br />"
+                + "<A href='javascript:void(window.open(\"" + sgm + "\",\"_blank\"));'>" + dr["branch"].ToString() + "</A><br />"
+                + "</center>";
+            window = new GInfoWindow(marker, ballooncontent, false);
+            GMap1.Add(window);
+
+            if (dt.Rows.Count == 1)
+            {
+                continue2class = "";
+                lilist = fillsupplierlist(index, letteredIcon.image, dr["supplier"].ToString(), dr["branch"].ToString(), dr["address"].ToString(), dr["id"].ToString(), true) + "\n\n";
+            }
+            else
+            {
+                lilist = fillsupplierlist(index, letteredIcon.image, dr["supplier"].ToString(), dr["branch"].ToString(), dr["address"].ToString(), dr["id"].ToString(), false) + "\n\n";
+            }
+
+            if (dr["supplier"].ToString() == "爱康国宾")
+            {
+                supplierlistcontentikang += lilist;
+                itemik++;
+            }
+            else if (dr["supplier"].ToString() == "美年大健康")
+            {
+                supplierlistcontentmeinian += lilist;
+                itemmn++;
+            }
+            else //if (dr["supplier"].ToString() == "慈铭体检")
+            {
+                supplierlistcontentciming += lilist;
+                itemcm++;
+            }
+        }
+
+
+        clat /= dt.Rows.Count;
+        clng /= dt.Rows.Count;
+        GMap1.enableHookMouseWheelToZoom = true;
+        GMap1.setCenter(new GLatLng(clat, clng), 12);
+
+        int itemmax = Math.Max(itemik, Math.Max(itemmn, itemcm));
+        return itemmax;
+    }
+
+    public int fillbranchbaidumap(Literal Literal1, DataTable dt, ref string continue2class, ref string supplierlistcontentikang, ref string supplierlistcontentciming, ref string supplierlistcontentmeinian)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine("<script type='text/javascript'>");
+        sb.AppendLine("initMap();");
+
+
+        double lat, lng, clat = 0.0, clng = 0.0;
+        int index = 0;
+        string letter, lilist = "";
+        string iconimage;
+        supplierlistcontentikang = "";
+        supplierlistcontentciming = "";
+        supplierlistcontentmeinian = "";
+        int itemik = 0, itemcm = 0, itemmn = 0;
+
+        try
+        {
+            foreach (DataRow dr in dt.Rows)
+            {
+                //letter = ((char)((int)'A' + index)).ToString();
+                //iconimage = "/Images/marker/marker" + letter + ".png";
+
+
+                if (index <= 26)
+                {
+                    letter = ((char)((int)'A' + index)).ToString();
+                    iconimage = "/Images/marker/marker" + letter + ".png";
+                }
+                else
+                {
+                    iconimage = "/Images/marker/" + index + ".png";
+                }
+
+                lat = Convert.ToDouble(dr["lat"]);
+                lng = Convert.ToDouble(dr["lng"]);
+                clat += lat;
+                clng += lng;
+
+                string sgm = "http://map.baidu.com/m?word=" + Server.UrlEncode(dr["address"].ToString()) + "&ie=utf-8";
+
+                sb.AppendLine("addMarker(" + lng + "," + lat + "," + index + ",'" +
+                    dr["supplier"] + " " + dr["branch"] + "', '" + dr["address"] + "', '" + sgm + "');");
+
+                if (dt.Rows.Count == 1)
+                {
+                    continue2class = "";
+                    lilist = fillsupplierlist(index, iconimage, dr["supplier"].ToString(), dr["branch"].ToString(), dr["address"].ToString(), dr["id"].ToString(), true) + "\n\n";
+                }
+                else
+                {
+                    lilist = fillsupplierlist(index, iconimage, dr["supplier"].ToString(), dr["branch"].ToString(), dr["address"].ToString(), dr["id"].ToString(), false) + "\n\n";
+                }
+
+                if (dr["supplier"].ToString() == "爱康国宾")
+                {
+                    supplierlistcontentikang += lilist;
+                    itemik++;
+                }
+                else if (dr["supplier"].ToString() == "美年大健康")
+                {
+                    supplierlistcontentmeinian += lilist;
+                    itemmn++;
+                }
+                else //if (dr["supplier"].ToString() == "慈铭体检")
+                {
+                    supplierlistcontentciming += lilist;
+                    itemcm++;
+                }
+                index++;
+            }
+        }
+        catch
+        {
+            throw new Exception ("加载地图标签出错，检查省份城市信息！");
+            return -1;
+        }
+
+
+        
+
+
+        clat /= dt.Rows.Count;
+        clng /= dt.Rows.Count;
+        sb.AppendLine("setMapcenter(" + clng + "," + clat + ");");
+        sb.AppendLine("</script>");
+
+        Literal1.Text = sb.ToString();
+
+        int itemmax = Math.Max(itemik, Math.Max(itemmn, itemcm));
+        return itemmax;
+    }
+    public string fillsupplierlist(int index, string letterimg, string supplier, string branch, string address, string id, bool ched)
+    {
+        string lilist;
+        if (ched)
+        {
+            lilist = "<LI ><a style='width:287px;'><DIV class='store'><DIV class='checked' id='brand" + index + "t' style='display:block; margin-top:10px; margin-bottom:-40px'></DIV>"
+                           + "<LABEL for='brand" + index + "' style='text-align:left;' id='brand" + index + "i' style='filter:alpha(opacity=50);-moz-opacity:0.5;-khtml-opacity: 0.5;opacity: 0.5;'>";
+        }
+        else
+        {
+            lilist = "<LI ><a style='width:287px;'><DIV class='store'><DIV class='checked' id='brand" + index + "t'></DIV>"
+                           + "<LABEL for='brand" + index + "' style='text-align:left;' id='brand" + index + "i'>";
+        }
+        if (supplier == "爱康国宾")
+        {
+            lilist += "<I class='icon3'><img src='" + letterimg + "' /></I>"
+                + "<H4><span style='color:#f15a22'>" + (string)GetGlobalResourceObject("GResource", "ikangs") + "</span>"
+                + branch + "</H4>";
+            //
+        }
+        else if (supplier == "美年大健康")
+        {
+            lilist += "<I class='icon5'><img src='" + letterimg + "' /></I>"
+                + "<H4><span style='color:#ed1266'>" + (string)GetGlobalResourceObject("GResource", "meinians") + "</span>"
+               + branch + "</H4>";
+            //;
+        }
+        else if (supplier == "慈铭体检")
+        {
+            lilist += "<I class='icon6'><img src='" + letterimg + "' /></I>"
+                + "<H4><span style='color:#0e8e35'>" + (string)GetGlobalResourceObject("GResource", "cimings") + "</span>"
+                + branch + "</H4>";
+            //;
+        }
+        else if (supplier == "华检体检")
+        {
+            lilist += "<I class='icon7'><img src='" + letterimg + "' /></I>"
+                + "<H4><span>" + (string)GetGlobalResourceObject("GResource", "huajians") + "</span>"
+                + branch + "</H4>";
+            //;
+        }
+        else if (supplier == "瑞慈体检")
+        {
+            lilist += "<I class='icon8'><img src='" + letterimg + "' /></I>"
+                + "<H4><span>" + (string)GetGlobalResourceObject("GResource", "ruicis") + "</span>"
+                + branch + "</H4>";
+            //;
+        }
+        else
+        {
+            lilist += "<I class='icon'><img src='" + letterimg + "' /></I>"
+                + "<H4><span >" + branch + "</span></H4>";
+        }
+        if (ched)
+        {
+            lilist += "<H5>" + address + "</H5></LABEL>"
+                       + "<INPUT name='checkboxstores' id='brand" + index + "' type='radio' value='" + id + "' checked='checked'></DIV></a></LI>";
+        }
+        else
+        {
+            lilist += "<H5 style=\"width:260px;\">" + address + "</H5></LABEL>"
+                + "<INPUT name='checkboxstores' id='brand" + index + "' type='radio' value='" + id + "'></DIV></a></LI>";
+        }
+        return lilist;
+    }
+    public void customizeitems(string customerCompanyName, RadioButton RadioButton9, RadioButton RadioButton5, RadioButton RadioButton6, Panel Panel_platformpay, TextBox TextBoxPA)
+    {
+        if (comb.getcanfrontpay(customerCompanyName) == "0")
+        {
+            RadioButton9.Visible = false;
+        }
+        if (comb.getcanplatformpay(customerCompanyName) == "0")
+        {
+            Panel_platformpay.Visible = false;
+            RadioButton9.Checked = true;
+        }
+        if (comb.getcandilivertocompany(customerCompanyName) == "0")
+        {
+            RadioButton5.Visible = false;
+            RadioButton6.Checked = false;
+            TextBoxPA.Text = (string)GetGlobalResourceObject("GResource", "fetchmyself");
+        }
+       
+    }
+
+    public string getvaliddate(string supplier, string hospid)
+    {
+        ikangservice iks = new ikangservice();
+        HealthService mns = new HealthService();
+        string s;
+        string validdate = "";
+        if (supplier == "爱康国宾")
+        {
+            s = iks.GetDateStatus(hospid);
+            if (s.Substring(0, 5) != "error")
+            {
+                JavaScriptSerializer jss = new JavaScriptSerializer();
+                Dictionary<string, object> json = (Dictionary<string, object>)jss.DeserializeObject(s);
+                object value;
+                if (json.TryGetValue("message", out value) && value.ToString() == "正确" && json.TryGetValue("list", out value) && value != null)
+                {
+                    validdate = s;
+                }
+                else
+                {
+                    validdate = s;
+                }
+            }
+        }
+        else if (supplier == "美年大健康")
+        {
+            s = mns.GetDateStatus(hospid);
+            if (s.IndexOf("可约]") > 0)
+            {
+                validdate = s;
+            }
+            else
+            {
+                validdate = s;
+            }
+        }
+
+        return validdate;
+    }
+
+    string[] Day = new string[] { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+    string[] Day_eng = new string[] { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+    public void fillnormaldate(string msg, DropDownList DropDownList4, DateTime startd,DateTime endd)
+    {
+        int i = 1, j = 2;
+
+        //Console.WriteLine(Day[Convert.ToInt16(DateTime.Now.DayOfWeek)]);
+        try
+        {
+            while (i <= 30 && j<90)
+            {
+                j++;
+                if (msg == "" || (!msg.Contains(Day[Convert.ToInt16(DateTime.Now.AddDays(j).DayOfWeek)]) && !msg.Contains(DateTime.Now.AddDays(j).ToString("yyyy-MM-dd"))))
+                {
+                    string sday;
+                    DateTime nowdate = DateTime.Now.AddDays(j);
+                    if (nowdate < startd) continue;
+                    if (nowdate > endd)
+                    {
+                        i++;
+                        continue;
+                    }
+                    if (Session["language"] != null && Session["language"].ToString() == "en-us")
+                    {
+                        sday = Day_eng[Convert.ToInt16(nowdate.DayOfWeek)];
+                    }
+                    else
+                    {
+                        sday = Day[Convert.ToInt16(DateTime.Now.AddDays(j).DayOfWeek)];
+                    }
+                    DropDownList4.Items.Add(nowdate.ToShortDateString() + "  " + sday);
+                    i++;
+                }
+
+            }
+        }
+        catch
+        {
+            throw new Exception("填充可选日期出错");
+        }
+        
+    }
+    public void fillavailbedate(string supplier, string msg, string validdate, DropDownList DropDownList4, string CompanyName)
+    {
+        
+        DateTime nowd;  
+        DateTime startd = DateTime.Parse(comb.getreservestartdate(CompanyName));
+        DateTime enddate = DateTime.Parse(comb.getreserveenddate(CompanyName));
+        if (validdate == "")
+        {
+            fillnormaldate(msg, DropDownList4, startd, enddate);
+        }
+        else
+        {
+            string nowdate;
+            if (supplier == "爱康国宾")
+            {
+                JavaScriptSerializer jss = new JavaScriptSerializer();
+                Dictionary<string, object> json = (Dictionary<string, object>)jss.DeserializeObject(validdate);
+                foreach (KeyValuePair<string, object> obj in json)
+                {
+                    if (obj.Key != "list")
+                        continue;
+                    object[] array = (object[])obj.Value;
+
+                    if (array==null||array.Length < 1)
+                    {
+                        fillnormaldate(msg, DropDownList4, startd, enddate);
+                        ViewState["errormsg"] += "\nerror:系统返回无可用日期\n";
+                        return;
+                    }
+
+                    int max, used;
+                    int j = 3;
+                    foreach (object obj2 in array)
+                    {
+                        Dictionary<string, object> dicSmsType = (Dictionary<string, object>)obj2;
+                        max = int.Parse(dicSmsType["maxNum"].ToString());
+                        used = int.Parse(dicSmsType["usedNum"].ToString());
+                        if (max > used)
+                        {
+                            nowdate = dicSmsType["strRegdate"].ToString();
+
+                            string sday;
+                             nowd = DateTime.Parse(nowdate);
+                             if (nowd < startd) continue;
+                             if (nowd >enddate) continue;
+                             if (nowd < DateTime.Now.AddDays(3)) continue;
+
+                             if (msg.Contains(Day[Convert.ToInt16(nowd.DayOfWeek)])) continue;
+                             if (msg.Contains(nowd.ToString("yyyy-MM-dd"))) continue;
+
+
+                            if (Session["language"] != null && Session["language"].ToString() == "en-us")
+                            {
+                                sday = Day_eng[Convert.ToInt16(nowd.DayOfWeek)];
+                            }
+                            else
+                            {
+                                sday = Day[Convert.ToInt16(nowd.DayOfWeek)];
+                            }
+
+                            DropDownList4.Items.Add(new ListItem(nowdate + "  " + sday + "    " + (string)GetGlobalResourceObject("GResource", "booked") + used + "/" + max, nowdate));
+                        }
+                    }
+
+                }
+            }
+            else if (supplier == "美年大健康")
+            {
+                MatchCollection matches = Regex.Matches(validdate, @"\[(?<date>\d{4}-\d{2}-\d{2})\]\[(?<status>\w+)\]");
+
+                if (matches.Count < 1)
+                {
+                    fillnormaldate(msg, DropDownList4, startd, enddate);
+                    ViewState["errormsg"] += "\nerror:系统返回无可用日期\n";
+                    return;
+                }
+                
+                foreach (Match match in matches)
+                {
+                    if (match.Groups["status"].Value == "可约")
+                    {
+                        string sd = match.Groups["date"].Value;
+
+                        string sday;
+                         nowd = DateTime.Parse(sd);
+                         if (nowd < startd) continue;
+                         if (nowd > enddate) continue;
+                         if (nowd < DateTime.Now.AddDays(3)) continue;
+
+                         if (msg.Contains(Day[Convert.ToInt16(nowd.DayOfWeek)])) continue;
+                         if (msg.Contains(nowd.ToString("yyyy-MM-dd"))) continue;
+
+                        if (Session["language"] != null && Session["language"].ToString() == "en-us")
+                        {
+                            sday = Day_eng[Convert.ToInt16(nowd.DayOfWeek)];
+                        }
+                        else
+                        {
+                            sday = Day[Convert.ToInt16(nowd.DayOfWeek)];
+                        }
+
+                        DropDownList4.Items.Add(sd + "  " + sday);
+                    }
+                }
+            }
+        }
+    }
+
+    Bll.supplierpackageBll spb = new Bll.supplierpackageBll();
+    public void checkboxlistChanged(CheckBoxList CheckBoxList, TextBox TextBoxCBL, int limit, DropDownList DropDownList2, string supplierpackagecode, Model.tab_customers modelCu,
+        Panel Panel9, Label Labelremainpoint, Label Labelbill, CheckBox CheckBox7
+        , CheckBoxList CheckBoxList1, CheckBoxList CheckBoxList2, CheckBoxList CheckBoxList3
+        , CheckBoxList CheckBoxList4, CheckBoxList CheckBoxList5, CheckBoxList CheckBoxList6, CheckBoxList CheckBoxList7, CheckBoxList CheckBoxList8
+        , CheckBoxList CheckBoxList9, CheckBoxList CheckBoxList10,bool isrel)
+    {
+        
+        if (limit == 0)
+        {
+            for (int i = 0; i < CheckBoxList.Items.Count; i++)
+            {
+                CheckBoxList.Items[i].Selected = false;
+            }
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('不能选择！');</script>");
+            return;
+        }
+
+        string com;
+        if (Session["Company"] != null && Session["Company"].ToString() != "")
+            com = "select standby2 from tab_company where CompanyName='" + Session["Company"] + "'";
+        else
+            com = "select standby2 from tab_company where CompanyName='" + modelCu.customerCompany + "'";
+        DataTable dtcom = comb.Select(com);
+
+        string uppkgtype = pb.getuppkgtype(DropDownList2.SelectedValue);
+
+        //string uppkgname = "";
+        //double remainpoint = double.Parse(this.Labelremainpoint.Text);
+        //double bill = double.Parse(this.TextBoxExCharge1.Text);
+        //double upprice = 0;
+
+
+
+        string[] ss = TextBoxCBL.Text.Split(',');
+        int countnow = 0;
+        for (int i = 0; i < CheckBoxList.Items.Count; i++)
+        {
+            if (CheckBoxList.Items[i].Selected)
+            {
+                if (CheckBoxList.Items[i].Text.Contains("洗牙"))
+                {
+                    Session["Panel17"] = "True";
+                }
+                countnow++;
+
+            }
+        }
+
+
+        if (limit == 1)
+        {
+            if (TextBoxCBL.Text != "")
+            {
+                CheckBoxList.Items[int.Parse(TextBoxCBL.Text)].Selected = false;
+            }
+            if (CheckBoxList.SelectedIndex >= 0)
+            {
+                TextBoxCBL.Text = CheckBoxList.SelectedIndex.ToString();
+
+            }
+            else
+            {
+                TextBoxCBL.Text = "";
+
+            }
+        }
+        else
+        {
+            if (TextBoxCBL.Text != "" && countnow > limit)
+            {
+                for (int i = 0; i < CheckBoxList.Items.Count; i++)
+                {
+                    if (TextBoxCBL.Text.Contains(i.ToString()))
+                    {
+                    }
+                    else
+                    {
+                        CheckBoxList.Items[i].Selected = false;
+
+                    }
+                }
+
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('请先取消一个！');</script>");
+                return;
+            }
+            else
+            {
+                TextBoxCBL.Text = "";
+                for (int i = 0; i < CheckBoxList.Items.Count; i++)
+                {
+                    if (CheckBoxList.Items[i].Selected)
+                    {
+                        if (TextBoxCBL.Text != "")
+                        {
+                            TextBoxCBL.Text += "," + i.ToString();
+                        }
+                        else
+                        {
+                            TextBoxCBL.Text = i.ToString();
+                        }
+
+
+                    }
+                }
+            }
+        }
+        supplierpackagecode = makepackagecode( DropDownList2,  CheckBoxList1,  CheckBoxList2,  CheckBoxList3
+        ,  CheckBoxList4,  CheckBoxList5,  CheckBoxList6,  CheckBoxList7,  CheckBoxList8
+        ,  CheckBoxList9,  CheckBoxList10);
+        //string s = "select price from supplierpackage where suppliercode='" + supplierpackagecode + "'";
+        string s = "select price from supplierpackage where mpcode='" + supplierpackagecode + "'";
+        DataTable dtprice = spb.Select(s);
+        if (dtprice.Rows.Count != 0)
+        {
+            double price = double.Parse(dtprice.Rows[0]["price"].ToString());
+            double budget = isrel ? 0 : modelCu.customerBudget + Cb.getbalance(modelCu.customerID);
+
+            double bill = price - budget;
+
+            if (bill > 0)
+            {
+                Panel9.Visible = true;
+                Labelremainpoint.Text = "0";
+                if (dtcom.Rows[0][0].ToString() != "1")
+                    Labelbill.Text = (price - budget).ToString();
+                else
+                {
+                    if (CheckBox7.Checked)
+                        Labelbill.Text = (price - budget + 30).ToString();
+                    else
+                        Labelbill.Text = (price - budget).ToString();
+                }
+
+            }
+            else
+            {
+                Labelremainpoint.Text = (budget - price).ToString();
+                if (dtcom.Rows[0][0].ToString() != "1")
+                    Labelbill.Text = "0";
+                else
+                {
+                    if (CheckBox7.Checked)
+                        Labelbill.Text = "30";
+                    else
+                        Labelbill.Text = "0";
+                }
+                if (Labelbill.Text != "0")
+                {
+                    Panel9.Visible = true;
+                }
+                else
+                    Panel9.Visible = false;
+            }
+
+        }
+        else
+        {
+            Labelbill.Text = "0";
+        }
+        if (Labelbill.Text == "0")
+        {
+            Panel9.Visible = false;
+        }
+        else
+        {
+            Panel9.Visible = true;
+        }
+    }
+    public string makepackagecode(DropDownList DropDownList2, CheckBoxList CheckBoxList1, CheckBoxList CheckBoxList2, CheckBoxList CheckBoxList3
+        , CheckBoxList CheckBoxList4, CheckBoxList CheckBoxList5, CheckBoxList CheckBoxList6, CheckBoxList CheckBoxList7, CheckBoxList CheckBoxList8
+        , CheckBoxList CheckBoxList9, CheckBoxList CheckBoxList10)
+    {
+        string mpcode = DropDownList2.SelectedValue;
+        for (int k = 0; k < CheckBoxList1.Items.Count; k++)
+        {
+            if (CheckBoxList1.Items[k].Text == "") continue;
+            if (CheckBoxList1.Items[k].Selected)
+            {
+                mpcode += CheckBoxList1.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        for (int k = 0; k < CheckBoxList2.Items.Count; k++)
+        {
+            if (CheckBoxList2.Items[k].Text == "") continue;
+            if (CheckBoxList2.Items[k].Selected)
+            {
+                mpcode += CheckBoxList2.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        for (int k = 0; k < CheckBoxList3.Items.Count; k++)
+        {
+            if (CheckBoxList3.Items[k].Text == "") continue;
+            if (CheckBoxList3.Items[k].Selected)
+            {
+                mpcode += CheckBoxList3.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        for (int k = 0; k < CheckBoxList4.Items.Count; k++)
+        {
+            if (CheckBoxList4.Items[k].Text == "") continue;
+            if (CheckBoxList4.Items[k].Selected)
+            {
+                mpcode += CheckBoxList4.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        for (int k = 0; k < CheckBoxList5.Items.Count; k++)
+        {
+            if (CheckBoxList5.Items[k].Text == "") continue;
+            if (CheckBoxList5.Items[k].Selected)
+            {
+                mpcode += CheckBoxList5.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        for (int k = 0; k < CheckBoxList6.Items.Count; k++)
+        {
+            if (CheckBoxList6.Items[k].Text == "") continue;
+            if (CheckBoxList6.Items[k].Selected)
+            {
+                mpcode += CheckBoxList6.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        for (int k = 0; k < CheckBoxList7.Items.Count; k++)
+        {
+            if (CheckBoxList7.Items[k].Text == "") continue;
+            if (CheckBoxList7.Items[k].Selected)
+            {
+                mpcode += CheckBoxList7.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        for (int k = 0; k < CheckBoxList8.Items.Count; k++)
+        {
+            if (CheckBoxList8.Items[k].Text == "") continue;
+            if (CheckBoxList8.Items[k].Selected)
+            {
+                mpcode += CheckBoxList8.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        for (int k = 0; k < CheckBoxList9.Items.Count; k++)
+        {
+            if (CheckBoxList9.Items[k].Text == "") continue;
+            if (CheckBoxList9.Items[k].Selected)
+            {
+                mpcode += CheckBoxList9.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        for (int k = 0; k < CheckBoxList10.Items.Count; k++)
+        {
+            if (CheckBoxList10.Items[k].Text == "") continue;
+            if (CheckBoxList10.Items[k].Selected)
+            {
+                mpcode += CheckBoxList10.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        string asd = mpcode;
+        //return spb.getsupplierpackage(mpcode);
+        return mpcode;
+    }
+}

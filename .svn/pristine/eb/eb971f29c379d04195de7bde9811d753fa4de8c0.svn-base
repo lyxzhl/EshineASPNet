@@ -1,0 +1,939 @@
+//var ifUrl = "http://test.qx831215.com";
+var ifUrl = "http://localhost:23489";
+var myApp = new Framework7({
+    // Default title for modals
+    modalTitle: '霓蝶健康',
+    // If it is webapp, we can enable hash navigation:
+    pushState: true,
+    pushStateSeparator: ' ',
+    modalButtonOk: "确定",
+    modalButtonCancel: "取消",
+    hideToolbarOnPageScroll: true,
+    //hideNavbarOnPageScroll: false,
+    showBarsOnPageScrollEnd: false,
+    smartSelectInPopup: true,
+    //swipeBackPage: true,
+    // Hide and show indicator during ajax requests
+    onAjaxStart: function (xhr) {
+        myApp.showIndicator();
+    },
+    onAjaxComplete: function (xhr) {
+        myApp.hideIndicator();
+    }
+});
+
+// We need to use custom DOM library, let's save it to $$ variable:
+var $$ = Framework7.$;
+
+//$$('.accordion-item').on('opened', function () {
+//    myApp.alert('Accordion item opened');
+//});
+
+//$$('.accordion-item').on('closed', function (e) {
+//    myApp.alert('Accordion item closed');
+//});
+
+// Add view
+var mainView = myApp.addView('.view-main', {
+    dynamicNavbar: true,
+    reloadPages: true
+});
+
+$.fn.strFormat = function (args) {
+    var result = this.html();
+    if (arguments.length > 0) {
+        if (arguments.length == 1 && typeof (args) == "object") {
+            for (var key in args) {
+                if (args[key] != undefined) {
+                    var reg = new RegExp("({" + key + "})", "g");
+                    result = result.replace(reg, args[key]);
+                }
+            }
+        } else {
+            for (var i = 0; i < arguments.length; i++) {
+                if (arguments[i] != undefined) {
+                    var reg = new RegExp("({[" + i + "]})", "g");
+                    result = result.replace(reg, arguments[i]);
+                }
+            }
+        }
+    }
+    return result;
+}
+
+function accDiv(arg1, arg2) {
+    var t1 = 0, t2 = 0, r1, r2;
+    try { t1 = arg1.toString().split(".")[1].length } catch (e) { }
+    try { t2 = arg2.toString().split(".")[1].length } catch (e) { }
+    with (Math) {
+        r1 = Number(arg1.toString().replace(".", ""))
+        r2 = Number(arg2.toString().replace(".", ""))
+        return (r1 / r2) * pow(10, t2 - t1);
+    }
+}
+
+Number.prototype.div = function (arg) {
+    return accDiv(this, arg);
+}
+
+function strJsonFormat(str, json) {
+    if (str.length > 0 && typeof (json) == "object") {
+        for (var key in json) {
+            if (json[key] != undefined) {
+                str = str.replace("{" + key + "}", json[key]);
+            }
+        }
+    }
+    return str;
+}
+
+function getInputType(type, id) {
+    if (typeof (type) != "undefined" && typeof (id) != "undefined") {
+        switch (type) {
+            case "date":
+                return $("<input />").attr({
+                    "id": id,
+                    "name": id,
+                    "type": "text",
+                    "data-format": "yyyy-MM-dd",
+                    "readonly": "readonly",
+                    "onclick": "pickDate(this);",
+                    "class": "form-control edit"
+                });
+                break;
+            case "double":
+                return $("<input />").attr({
+                    "id": id,
+                    "name": id,
+                    "type": "text",
+                    "data-format": "n.nn",
+                    "class": "form-control edit"
+                });
+                break;
+            case "int":
+                return $("<input />").attr({
+                    "id": id,
+                    "name": id,
+                    "type": "text",
+                    "data-format": "n",
+                    "class": "form-control edit"
+                });
+                break;
+            default:
+                return $("<input />").attr({
+                    "id": id,
+                    "name": id,
+                    "type": "text",
+                    "data-format": "s",
+                    "class": "form-control edit"
+                });
+                break;
+        }
+    }
+}
+
+var pays = {};
+
+var ws = null;
+var scan = null;
+var wgtVer = null;
+var auths = {};
+
+var barPage = ['Index', 'UserInfo'];
+
+function plusReady() {
+    // 隐藏滚动条
+    plus.webview.currentWebview().setStyle({
+        scrollIndicator: 'none'
+    });
+    // 获取支付通道
+    plus.payment.getChannels(function (channels) {
+        var txt = "支付通道信息：";
+        console.log(JSON.stringify(channels));
+        for (var i in channels) {
+            var channel = channels[i];
+            pays[channel.id] = channel;
+            console.log(channel);
+            checkServices(channel);
+        }
+    }, function (e) {
+        showToast("获取支付通道失败：" + e.message);
+    });
+    // Android处理返回键
+    plus.key.addEventListener('backbutton', function () {
+        if (mainView.url.indexOf("index.html") != -1) {
+            if (confirm('确认退出？')) {
+                plus.runtime.quit();
+            }
+        } else {
+            if (ws != null) { //二维码扫描返回
+                ws.close();
+            } else {
+                history.back();
+            }
+        }
+    }, false);
+
+    // 获取本地应用资源版本号
+    plus.runtime.getProperty(plus.runtime.appid, function (inf) {
+        wgtVer = inf.version;
+        //console.log("当前应用版本：" + wgtVer);
+    });
+}
+
+if (window.plus) {
+    plusReady();
+} else {
+    document.addEventListener('plusready', plusReady, false);
+}
+
+function getDistanceTime(cDate) {
+    var curDate = new Date();
+    var cTime = curDate - cDate;
+    if (cTime < 0) {
+        return "";
+    } else {
+        //console.log("相差" + (cTime / 1000 / 60 / 60) + "小时");
+        cTime = cTime / 1000;
+        if (cTime < 60) {
+            return "1分钟前";
+        } else if (cTime >= 60 && cTime < 360) {
+            var mod = parseInt(cTime / 60);
+            return mod + "分钟前";
+        } else if (cTime >= 360 && cTime < 3600 * 23) {
+            var mod = parseInt(cTime / 3600);
+            var ss = cTime % 3600;
+            mod = ss > 0 ? mod + 1 : mod;
+            return mod + "小时内";
+        } else if (cTime >= 3600 * 23 && cTime < 345600) {
+            var mod = parseInt(cTime / 86400);
+            var ss = cTime % 86400;
+            mod = ss > 0 ? mod + 1 : mod;
+            return mod + "天前";
+        } else {
+            return "N久前";
+        }
+    }
+}
+
+function addresskeydown(cell, event, objLabel) {
+    var liObj = $("#" + objLabel).parent();
+    var txt = $(cell);
+    $(liObj).removeClass("hide");
+    $("#" + objLabel).text(txt.val());
+    if (txt.val().trim() != "") {
+        $(liObj).show();
+    } else {
+        $(liObj).hide();
+    }
+}
+
+/**
+ * @description 从相册中选择图片
+ * @param {Object} img
+ * @param {Object} isCompress
+ * @param {Object} hdnImgBase64
+ * @param {Object} hdnFileName
+ */
+function GetGallery(img, isCompress, hdnImgBase64, hdnFileName) {
+    plus.gallery.pick(function (path) {
+        var ext = path.substr(path.lastIndexOf('.'));
+        var date = new Date();
+        var fileName = "ty" + date.getTime() + ext;
+        var savePath = "_doc/camera/" + fileName; //压缩后的新图片路径
+        if (isCompress) {
+            compressImage(path, savePath, img, hdnImgBase64, hdnFileName);
+        } else {
+            appendImage(path, img, hdnImgBase64, hdnFileName);
+        }
+    }, function (e) {
+
+    }, {
+        filter: "image"
+    });
+}
+
+var cmr = null;
+/**
+ * @description 调用摄像头拍摄照片
+ * @param {String} img img标签id或者class
+ * @param {Boolean} isCompress
+ * @param {String} hdnImgBase64	存放图片转换为base64的标签id或者class
+ * @param {String} hdnFileName 存放图片名的标签id或者class
+ */
+function GetCamera(img, isCompress, hdnImgBase64, hdnFileName) {
+    if (cmr != null)
+        return;
+    cmr = plus.camera.getCamera();
+    cmr.captureImage(function (p) {
+        var ext = p.substr(p.lastIndexOf('.'));
+        var date = new Date();
+        var fileName = "ty" + date.getTime() + ext;
+        var savePath = "_doc/camera/" + fileName; //压缩后的新图片路径
+        if (isCompress) {
+            compressImage(p, savePath, img, hdnImgBase64, hdnFileName);
+        } else {
+            appendImage(p, img, hdnImgBase64, hdnFileName);
+        }
+    }, function (e) {
+        //showToast("失败：" + e.message);
+    }, {
+        filename: "_doc/camera/",
+        index: 1
+    });
+    cmr = null;
+}
+
+/**
+ * @description 解析图片数据存放到隐藏域
+ * @param {String} url 文件路径
+ * @param {String} img img标签id或者class
+ * @param {String} hdnImgBase64	存放图片转换为base64的标签id或者class
+ * @param {String} hdnFileName 存放图片名的标签id或者class
+ */
+function appendImage(url, img, hdnImgBase64, hdnFileName) {
+    var newPath = plus.io.convertLocalFileSystemURL(url);
+    if (img != "") {
+        $(img).attr("src", "file://" + newPath);
+    }
+    plus.io.resolveLocalFileSystemURL(url, function (entry) {
+        entry.file(function (file) {
+            if (hdnFileName != "") {
+                $(hdnFileName).val(file.name);
+            }
+            //图片大小 file.size
+            var fileReader = new plus.io.FileReader();
+            fileReader.readAsDataURL(file, "utf-8");
+            fileReader.onloadend = function (evt) {
+                //evt.target.result Base64字符串，包含data:image/jpeg;base64,应该去掉第一个逗号（包含逗号）之前的字符串
+                if (hdnImgBase64 != "") {
+                    $(hdnImgBase64).val(encodeURIComponent(evt.target.result));
+                }
+            }
+        });
+    }, function (e) {
+        showToast("读取拍照文件错误：" + e.message);
+    });
+}
+
+/**
+ * @description 压缩并旋转图片，然后解析图片数据
+ * @param {String} oldPath 要转换的图片路径
+ * @param {String} newPath 转换后的图片路径
+ * @param {String} img img标签id或者class
+ * @param {String} hdnImgBase64 存放图片转换为base64的标签id或者class
+ * @param {String} hdnFileName 存放图片名的标签id或者class
+ */
+function compressImage(oldPath, newPath, img, hdnImgBase64, hdnFileName) {
+    plus.zip.compressImage({
+        src: oldPath,
+        dst: newPath,
+        quality: 20,
+        rotate: plus.os.name == 'iOS' ? 0 : 90 // android旋转90度
+    },
+		function () {
+		    //压缩旋转成功后，读取图片数据
+		    appendImage(newPath, img, hdnImgBase64, hdnFileName);
+		},
+		function (error) {
+		    myApp.alert("压缩图片失败.");
+		});
+}
+
+
+/***
+ * 检测支付服务
+ * @param {Object} pc
+ */
+function checkServices(pc) {
+    if (!pc.serviceReady) {
+        var txt = null;
+        switch (pc.id) {
+            case "alipay":
+                txt = "检测到系统未安装“支付宝快捷支付服务”，无法完成支付操作，是否立即安装？";
+                break;
+            default:
+                txt = "系统未安装“" + pc.description + "”服务，无法完成支付，是否立即安装？";
+                break;
+        }
+        plus.nativeUI.confirm(txt, function (e) {
+            if (e.index == 0) {
+                pc.installService();
+            }
+        }, pc.description);
+    }
+}
+
+function showToast(msg) {
+    plus.nativeUI.toast(msg, {
+        duration: "short"
+    });
+}
+
+function goTo(url) {
+    mainView.router.loadPage(url);
+}
+
+function goToForBar(obj, url) {
+    $(".toolbar-inner a").removeClass("active");
+    $(obj).addClass("active");
+    mainView.router.loadPage(url);
+}
+
+function regoTo(url) {
+    mainView.router.reloadPage(url);
+}
+
+function changeBarClick(name) {
+    if ($.inArray(name, barPage) != -1) {
+        if (name == "Index") {
+            $("img").each(function (i, o) {
+                $(o).attr("src", function (n, v) {
+                    if (v.indexOf("../../") != -1)
+                        return v.replace("../../img", "img");
+                    return v;
+                });
+            });
+            $(".toolbar-inner a").eq(0).removeAttr("onclick");
+            //$(".toolbar-inner a").eq(1).attr("onclick", "goToForBar(this, './module/User/messagelist.html');");
+            ////$(".toolbar-inner a").eq(2).attr("onclick", "goToForBar(this, './module/User/info.html');");
+            $(".toolbar-inner a").eq(3).attr("onclick", "goToForBar(this, './module/user/info.html');");
+            $(".toolbar-inner a img").each(function (i, o) {
+                if (i == 0) {
+                    $(o).attr("src", function (n, v) {
+                        return v = "img/1-press.png";
+                    });
+                } else {
+                    $(o).attr("src", function (n, v) {
+                        return v.replace("-press", "-n");
+                    });
+                }
+            });
+        } else {
+            $("img").each(function (i, o) {
+                $(o).attr("src", function (n, v) {
+                    if (v.indexOf("../../") == -1)
+                        return v.replace("img", "../../img");
+                    return v;
+                });
+            });
+            $(".toolbar-inner a img").each(function (i, o) {
+                $(o).attr("src", function (n, v) {
+                    return v.replace("-press", "-n");
+                });
+            });
+            $(".toolbar-inner a").eq(0).attr("onclick", "goToForBar(this, '../../index.html');");
+            //$(".toolbar-inner a").eq(1).attr("onclick", "goToForBar(this, '../../module/User/messagelist.html');");
+            ////$(".toolbar-inner a").eq(1).attr("onclick", "goToForBar(this, '../../module/User/messagelist.html');");
+            $(".toolbar-inner a").eq(3).attr("onclick", "goToForBar(this, '../../module/user/info.html');");
+            $(".toolbar-inner a img").eq(3).attr("src", function (n, v) {
+                return v.replace("-n", "-press");
+            });
+        }
+    } else {
+        if (name != "Index") {
+            $(".toolbar-inner a").eq(0).attr("onclick", "goToForBar(this, '../../index.html');");
+        }
+        $("img").each(function (i, o) {
+            $(o).attr("src", function (n, v) {
+                if (v.indexOf("../../") == -1)
+                    return v.replace("img", "../../img");
+                return v;
+            });
+        });
+        $(".toolbar-inner a img").each(function (i, o) {
+            $(o).attr("src", function (n, v) {
+                return v.replace("-press", "-n");
+            });
+        });
+        $(".toolbar-inner a").eq(3).attr("onclick", "goToForBar(this, '../../module/user/info.html');");
+        $(".toolbar-inner a").removeClass("active");
+    }
+}
+
+function addLocalStorage(name, value) {
+    if (typeof (localStorage[name]) == "undefined")
+        localStorage[name] = value;
+    localStorage[name] = value;
+}
+
+function getLocalStorage(name) {
+    if (typeof (localStorage[name]) == "undefined")
+        return null;
+    return localStorage[name];
+}
+
+function delLocalStorage(name) {
+    if (typeof (localStorage[name]) != "undefined")
+        localStorage.removeItem(name);
+}
+
+function createDataFrame(json, name) {
+    var device = getDeviceNumber();
+    if (device != null) {
+        var iframe = $("<iframe style='z-index:999999' id='" + name + "' width='0' height='0' frameborder='0'></iframe>");
+        $("div").eq(0).after(iframe);
+        iframe.attr("src", ifUrl + "/Service/GetService/" + device);
+        iframe.load(function () {
+            document.getElementById(name).contentWindow.postMessage(json, ifUrl + "/Service/GetService/" + device);
+        });
+    }
+}
+
+function getDeviceNumber() {
+    var device = getLocalStorage("device");
+    if (device == null) {
+        var json = '{ "key": "DeviceService", "name": "getDeviceNumber", "jsonstr": ""}';
+        var iframe = $("<iframe style='z-index:999990' id='frDevice' width='0' height='0' frameborder='0'></iframe>");
+        $("div").eq(0).after(iframe);
+        iframe.attr("src", ifUrl + "/Service/GetDevice");
+        iframe.load(function () {
+            document.getElementById("frDevice").contentWindow.postMessage(json, ifUrl + "/Service/GetDevice");
+        });
+        bindWindowListener(callGetDeviceEvent);
+        return null;
+    } else {
+        return device;
+    }
+}
+
+function checkDataFrame(msg, name, key) {
+    try {
+        var obj = msg;
+        if (obj.name == name && obj.key == key)
+            return true;
+        return false;
+    } catch (ex) {
+        myApp.alert($.fn.showErrorCode("3001"));
+        return false;
+    }
+}
+
+function getDataFrame(msg) {
+    try {
+        var obj = JSON.parse(msg);
+        if (obj.isSuccess) {
+            if (obj.ReturnVal.trim() == "") {
+                if (obj.ErrorCode.trim() != "" && obj.ErrorCode != "2018") {
+                    console.log("ErrorCode=" + obj.ErrorCode);
+                    //var errorMsg = $.fn.showErrorCode(obj.ErrorCode);
+                    //myApp.alert(errorMsg);
+                }
+                return null;
+            }
+            return JSON.parse(decodeURIComponent(obj.ReturnVal));
+        } else {
+            if (obj.ErrorCode.trim() != "") {
+                //var errorMsg = $.fn.showErrorCode(obj.ErrorCode);
+                //myApp.alert(errorMsg);
+                console.log("ErrorCode=" + obj.ErrorCode);
+            }
+            return null;
+        }
+    } catch (ex) {
+        myApp.alert(ex.message);
+        return null;
+    }
+}
+
+function getDataFrameStr(msg) {
+    try {
+        var obj = JSON.parse(msg);
+        if (obj.isSuccess) {
+            if (obj.ReturnVal.trim() == '') {
+                if (obj.ErrorCode.trim() != "") {
+                    var errorMsg = $.fn.showErrorCode(obj.ErrorCode);
+                    myApp.alert(errorMsg);
+                }
+                return null;
+            }
+            return obj.ReturnVal;
+        } else {
+            if (obj.ErrorCode.trim() != "") {
+                var errorMsg = $.fn.showErrorCode(obj.ErrorCode);
+                myApp.alert(errorMsg);
+            }
+            return null;
+        }
+    } catch (ex) {
+        myApp.alert(ex.message);
+        return null;
+    }
+}
+
+function callAjaxJson(url, data, callback) {
+    var msg = "";
+    $.ajax({
+        type: "post",
+        async: true,
+        data: data,
+        url: url,
+        success: function (json) {
+            callback(json);
+        },
+        error: function () {
+            myApp.alert($.fn.showErrorCode("3001"));
+        }
+    });
+    return msg;
+}
+
+function callGetDeviceEvent() {
+    if (checkDataFrame(event.data, "getDeviceNumber", "DeviceService")) {
+        var obj = event.data.d;
+        $("#frDevice").remove();
+        window.removeEventListener("message", callGetDeviceEvent, false);
+        if (obj != null && obj != "" && obj != "无效的访问权限") {
+            addLocalStorage("device", obj);
+        } else {
+            delLocalStorage("device");
+            myApp.alert($.fn.showErrorCode("3001"));
+        }
+        myApp.hidePreloader();
+    }
+}
+
+function clearFormVal(obj) {
+    $(obj).find("input").val(function (i, v) {
+        if ($(this).attr("disabled") == "disabled")
+            return v;
+        return "";
+    });
+    $(obj).find("select").val("-1");
+}
+
+function parserUrl(tourl) { //解析URL并转换为json形式
+    if (!tourl) return;
+    if (tourl.indexOf('?') == -1) return;
+    var paramsArr = tourl.split('?')[1].split('&');
+    var args = {},
+		argsStr = [],
+		param, name, value;
+    args['url'] = encodeURIComponent(tourl.split('?')[0]); //首先载入url,问号"?"前面的部分 
+    for (var i = 0; i < paramsArr.length; i++) {
+        param = paramsArr[i].split('=');
+        name = param[0], value = param[1];
+        if (name == "") name = "unkown";
+        if (typeof args[name] == "undefined") { //参数尚不存在 
+            args[name] = value;
+        } else if (typeof args[name] == "string") { //参数已经存在则保存为数组 
+            args[name] = [args[name]];
+            args[name].push(value);
+        } else { //已经是数组的 
+            args[name].push(value);
+        }
+    }
+
+    var showArg = function (x) { //转换不同数据的显示方式 
+        if (typeof (x) == "string" && !/\d+/.test(x)) return "'" + x + "'"; //字符串 
+        if (x instanceof Array) return "[" + x + "]"; //数组 
+        return x; //数字 
+    }
+    args.toString = function () { //组装成json格式 
+        for (var i in args) argsStr.push(i + ':' + showArg(args[i]));
+        return '{' + argsStr.join(',') + '}';
+    }
+    return args; //以json格式返回获取的所有参数 
+}
+
+function parserStrToJson(obj) {
+    var args = {};
+    if (obj != null && typeof (obj) == "string" && obj.trim() != "") {
+        if (obj.indexOf("{") != -1) {
+            args["str"] = obj.substring(obj.indexOf("{") + 1);
+            args["name"] = null;
+            return args;
+        } else if (obj.indexOf("}") != -1) {
+            args["str"] = obj.substring(obj.indexOf("}") + 1);
+            args["name"] = obj.substring(0, obj.indexOf("}"));
+            return args;
+        } else {
+            return null;
+        }
+    } else
+        return null;
+}
+
+function parserSplit(obj, char, index) {
+    if (obj != null && typeof (obj) == "string" && obj.length > 0) {
+        if (char == null || typeof (char) != "string" || char.length != 1)
+            return obj;
+        var list = obj.split(char);
+        if (index == null || typeof (index) != "number")
+            return list;
+        return obj.split(char)[index];
+    }
+    return null;
+}
+
+function showDateFormat(date) {
+    if (typeof (date) == "object") {
+        var month = (date.getMonth() + 1).toString().length != 2 ? 0 + (date.getMonth() + 1).toString() : (date.getMonth() + 1).toString();
+        var day = date.getDate().toString().length != 2 ? 0 + date.getDate().toString() : date.getDate().toString();
+        return date.getFullYear() + "-" + month + "-" + day;
+    }
+    return "";
+}
+
+function serviceDisabled() {
+    myApp.alert("功能正在建设中，请耐心等待更新版本发布...");
+}
+
+function showPopupModal(title, content) {
+    var doc = $("<div />").append($("<div />").addClass("popup popup-about").append($("<div />").addClass("content-block")
+        .append($("<h5 />").html(title))
+        .append($("<p />").append($("<a />").attr({ "href": "#", "class": "close-popup" }).html("关闭详情")))
+        .append(content)));
+    myApp.popup(doc.html());
+}
+
+function showPopupModalCMsg(title, close, content, callback) {
+    var doc = $("<div />").append($("<div />").addClass("popup popup-about").append($("<div />").addClass("content-block")
+        .append($("<h5 />").html(title))
+        .append($("<p />").append($("<a />").attr({ "href": "#", "class": "close-popup", "onclick": "" + callback + "" }).html(close)))
+        .append(content)));
+    myApp.popup(doc.html());
+}
+
+//绑定windows事件
+function bindWindowListener(callback) {
+    window.addEventListener("message", callback, false);
+}
+
+//取消绑定事件
+function unBindWindowListener(frameName, callback) {
+    $("#" + frameName).remove();
+    if (typeof (callback) == "function") {
+        window.removeEventListener("message", callback, false);
+    }
+    myApp.hidePreloader();
+}
+
+$$(document).on('pageInit', function (e) {
+    var page = e.detail.page;
+    var pageData = parserUrl(page.url);
+    switch (page.name) {
+        case "Index":
+            mainView.showNavbar();
+            $('#slides').slidesjs({
+                width: 828,
+                height: 320,
+                navigation: false,
+                play: {
+                    active: false,
+                    effect: "slide",
+                    interval: 5000,
+                    auto: true,
+                    swap: true,
+                    pauseOnHover: false,
+                    restartDelay: 5000
+                }
+            });
+            var page1 = $$(".pages").height();
+            var slides = $$("#slides").height();
+            var toolbar = $$(".toolbar").height();
+            var height = ((page1 - slides - toolbar) / 3 - 25);
+            if (height < 100)
+                height = 100;
+            var top = (height / 2) - 22;
+            $$(".metroAss").css({
+                "height": height + "px",
+                "line-height": height + "px"
+            });
+            $$(".metroCon").css({
+                "height": height + "px",
+                "line-height": height + "px"
+            });
+            $$(".metroSer").css({
+                "height": height + "px",
+                "line-height": height + "px"
+            });
+            $$(".metroRec").css({
+                "height": height + "px",
+                "line-height": height + "px"
+            });
+            $$(".metroRid").css({
+                "height": height + "px",
+                "line-height": height + "px"
+            });
+            delLocalStorage("init");
+            var device = getDeviceNumber();
+            mainView.showToolbar();
+            break;
+        case "Assessment":
+            $("#hiTId").val(pageData.tid);
+            var list = getLocalQList(pageData.tid, null);
+            var value = getQDetailNullObj(pageData.tid, null); //pageData.id
+            var msg = getLocalStorage("tqReportList");
+            if (value != null) {
+                if (formQDetail(value.qId))
+                    bindWindowListener(callQDetailEvent);
+            }
+            processList(parseFloat(list.length));
+            mainView.showToolbar();
+            break;
+        case "ChooseAssessment":
+            if (formAssType())
+                bindWindowListener(callAssTypeEvent);
+            mainView.showToolbar();
+            break;
+        case "ProAssessment":
+            mainView.showToolbar();
+            break;
+        case "ReportAssessment":
+            showAssReport(pageData);
+            mainView.showToolbar();
+            break;
+        case "ReportListAssessment":
+            mainView.showToolbar();
+            break;
+        case "StartAssessment":
+            if (formQList(pageData.id))
+                bindWindowListener(callQListEvent);
+            mainView.showToolbar();
+            break;
+        case "ServiceIndex":
+            delLocalStorage("MedicalPackage");
+            delLocalStorage("MedicalPackageList");
+            var appUser = getLocalStorage("appUser");
+            if (appUser == null) {
+                myApp.alert("请先登录！", function () {
+                    goTo("../../module/user/login.html");
+                });
+            }
+            mainView.showToolbar();
+            break;
+        case "CDateMedical":
+            $(".navbar-inner .left").attr("onclick", "goTo('" + pageData.refurl + "');");
+            $(".navbar-inner .right").attr("onclick", "goTo('" + pageData.refurl + "');");
+
+            if (formMedicalDate(pageData.refurl))
+                bindWindowListener(callMedicalDateEvent);
+            //setTimeout(
+            //$(".OMedical-wrap").css("height", function (i, v) {
+            //    return (parseFloat(v) + 70) + "px";
+            //});
+            mainView.showToolbar();
+            break;
+        case "CStoreMedical":
+            $(".navbar-inner .right .aConfirm").attr("onclick", "goTo('" + pageData.refurl + "');");
+            $(".navbar-inner .right .bdmap").attr("onclick", "if(formMedicalStoreMap())goTo('storemedicalmap.html?refurl=" + pageData.refurl + "');");
+
+            if (formMedicalStore(pageData.refurl))
+                bindWindowListener(callMedicalStoreEvent);
+            mainView.showToolbar();
+            break;
+        case "CPackageMedical":
+            $(".navbar-inner .left").attr("onclick", "goTo('" + pageData.refurl + "');");
+            $(".navbar-inner .right").attr("onclick", "if(checkMedicalPackageList())goTo('" + pageData.refurl + "');");
+            if (formMedicalPackage(pageData.refurl))
+                bindWindowListener(callMedicalPackageEvent);
+            mainView.showToolbar();
+            break;
+        case "OurselfMedical":
+            formMedicalOurself();
+            $(".OMedical-wrap .group-item").css("height", function (i, v) {
+                return (parseFloat(v) + 50) + "px";
+            });
+            //if (formMedicalPackage())
+            //    bindWindowListener(callMedicalPackageEvent);
+            mainView.showToolbar();
+            break;
+        case "StoreMedicalMap":
+            $(".navbar-inner .left").attr("onclick", "goTo('choosestore_medical.html?refurl=" + pageData.refurl + "');");
+            showMedicalStoreMap();
+            mainView.showToolbar();
+            break;
+        case "FamilyMember":
+            mainView.showToolbar();
+            break;
+        case "UserLogin":
+            mainView.showToolbar();
+            break;
+        case "UserRegister":
+            mainView.showToolbar();
+            break;
+        case "UserSetting":
+            mainView.showToolbar();
+            break;
+        case "UserInfo":
+            myApp.showPreloader();
+            var appUser = getLocalStorage("appUser");
+            if (appUser == null) {
+                myApp.hidePreloader();
+                myApp.alert("请先登录！", function () {
+                    goTo("../../module/user/login.html");
+                });
+            } else {
+                appUser = JSON.parse(appUser);
+                $("#appUserName").html(appUser.ShowName);
+            }
+            myApp.hidePreloader();
+            mainView.showToolbar();
+            break;
+        case "ConfirmOrder":
+            $(".navbar-inner .left").attr("onclick", "goTo('" + pageData.refurl + "');");
+            $(".navbar-inner .right .aClick").attr("onclick", "if(checkConfirmOrder())goTo('payment_order.html?refurl=" + pageData.refurl + "');");
+            formConfirmOrder(pageData.refurl);
+            mainView.showToolbar();
+            break;
+        case "PaymentOrder":
+            $(".navbar-inner .left").attr("onclick", "goTo('" + pageData.refurl + "');");
+            payment();
+            mainView.showToolbar();
+            break;
+        case "OrderList":
+            if (formOrderList())
+                bindWindowListener(callOrderListEvent);
+            mainView.showToolbar();
+            break;
+        case "OrderDetial":
+            if (pageData.refurl != undefined)
+                $(".left.aClick").attr("onclick", "goTo('" + pageData.refurl + "');");
+            if (formOrderDetail(pageData.id))
+                bindWindowListener(callOrderDetailEvent);
+            mainView.showToolbar();
+            break;
+        case "OrderStatus":
+            $(".oStatus").html("订单已生成");
+            $(".odetail").attr("onclick", "goTo('detail_order.html?id=" + pageData.id + "&refurl=../../index.html');");
+            mainView.showToolbar();
+            break;
+        case "ProfileIndex":
+            mainView.showToolbar();
+            break;
+        case "AidIndex":
+            mainView.showToolbar();
+            break;
+        case "ConsultingIndex":
+            $(".CIndex-wrap").css("height", function (i, v) {
+                return (parseFloat(v) + 50) + "px";
+            });
+            $("#Health .container-fluid a").first().click();
+            mainView.showToolbar();
+            break;
+        case "ListSupplier":
+            getAidListById(pageData.id);
+            $(".navbar-inner .left").attr("onclick", "goTo('../../module/aid/index.html');");
+            mainView.showToolbar();
+            break;
+        case "DetialSupplier":
+            mainView.showToolbar();
+            break;
+        case "FilterProvinces":
+            $(".page .list-index li").first().click();
+            mainView.hideToolbar();
+            break;
+        case "ViewPDF":
+            mainView.showToolbar();
+            break;
+        case "ConsultingNewsDetail":
+            mainView.showToolbar();
+            break;
+        case "OrderScore":
+            getOrderScore();
+            mainView.showToolbar();
+            break;
+    }
+    changeBarClick(page.name);
+});

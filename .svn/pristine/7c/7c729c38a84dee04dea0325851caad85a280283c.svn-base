@@ -1,0 +1,20 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </a>
+        <div class="center">门店地图</div>
+        <div class="right">
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="StoreMedicalMap" class="page">
+        <div class="page-content content_StoreMedicalMap">
+            <div id="dituContent" style="width: 100%; height: 100%;">
+            </div>
+        </div>
+    </div>
+</div>

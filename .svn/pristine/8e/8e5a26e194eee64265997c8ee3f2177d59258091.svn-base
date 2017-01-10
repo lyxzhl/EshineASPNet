@@ -1,0 +1,174 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="tijianwenti.aspx.cs" Inherits="Admin_tijianAdmin_tijianwenti" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head id="Head1" runat="server">
+    <title></title>
+    
+    <script src="http://files.cnblogs.com/rubylouvre/jquery1.83.js" > </script>
+     <script type="text/javascript" src="./JS/tipswindown.js"></script>
+
+    <script type="text/javascript">
+        /*
+        *弹出本页指定ID的内容于窗口
+        *id 指定的元素的id
+        *title:	window弹出窗的标题
+        *width:	窗口的宽,height:窗口的高
+        */
+        function showTipsWindown(title, id, width, height) {
+            tipsWindown(title, "id:" + id, width, height, "true", "", "true", id);
+        }
+
+        function confirmTerm(s) {
+            parent.closeWindown();
+            if (s == 1) {
+                parent.document.getElementById("isread").checked = true;
+            }
+        }
+
+        $(document).ready(function () {
+            $(".wanboxbtn4").click(function () {
+
+                //showTipsWindown("发送消息", 'simTestContent2', 600, 255);
+                $("#editmessage").fadeIn(400);
+                
+            }
+                );
+            $(".closemessage").click(function () {
+                $("#editmessage").hide();
+            });
+        });
+</script>
+    <style type="text/css">
+        .btn{display:inline-block;margin-bottom:0;font-weight:normal;text-align:center;vertical-align:middle;cursor:pointer;background-image:none;border:1px solid black;white-space:nowrap;letter-spacing:1px;padding:6px 12px;font-size:14px;line-height:1.428571429;border-radius:4px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none}
+.btn:focus{outline:thin dotted;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px}
+.btn:hover,.btn:focus{color:#333;text-decoration:none}
+
+.btn.btn--fb{background:#3b5998;color:#fff}
+.btn.btn--fb:hover{background:#23345b;color:#fff}
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+     <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
+            <tr>
+                <td class="title" colspan="5">
+                    体检调查问卷</td>
+            </tr>
+        </table>
+        <br>
+        <table border="0" cellpadding="0" cellspacing="0" class="adminContent" style="width: 100%">
+                    <tr>
+                        <td align="center" style="width: 100px; height: 24px; text-align:right;">
+                            <asp:FileUpload ID="FileUpload1" runat="server" ToolTip="选择.xls文件" Width="200px" /></td>
+                        <td style="width: 22px; height: 24px; text-align:left;">
+                            <asp:Button ID="Button3" runat="server" onclick="Button3_Click" Text="上传Excel文件" ToolTip="" /></td>
+                        <td align="center" style="width: 50px; height: 24px;">
+                            </td>
+                        <td style="width: 100px; height: 24px; text-align:right;">
+                            <asp:TextBox ID="TextBox1" runat="server" CssClass="TextBox" Width="175px"></asp:TextBox></td>
+                        <td style="width: 100px; height: 24px; text-align:left;">
+                            &nbsp;<asp:Button ID="Button2" runat="server" CssClass="button" Text="搜　索" OnClick="Button2_Click" /></td>
+                        <td  >
+                            <asp:Button ID="ButtonEE" runat="server" Text="导出excel" 
+                                onclick="ButtonEE_Click"  />
+                            </td>
+                        <td>
+                            <asp:Button ID="Button1" runat="server" Text="批量修改选中的问卷" Visible="false" OnClick="Button1_Click" />
+                            <a class="btn  wanboxbtn4">批量修改选中的问卷</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td >
+                            </td>
+                    </tr>
+                </table>
+
+
+        <div id="editmessage" style="display:none;position:fixed;left:30%;top:20%;z-index:99999;background-color:white;border:2px solid;width:600px;height:400px">
+
+	<div id="simTestContent2" class="simScrollCont">
+	
+		<div class="mainlist">
+			<table class="replymessage" style="width:100%; height:100%;border-spacing:3px;">
+                <tr><td colspan="2" align="right">
+                    <a href="javascript:;" class="closemessage"><img src="/Images/close.png"  /></a>
+                    </td></tr>
+                <tr>
+                    <td width="80">
+                        <asp:Label ID="Label6" runat="server" Text="备注:"></asp:Label>
+                    </td>
+                </tr>
+                <tr >
+                        <td style="padding-top:10px;">
+                        <asp:TextBox ID="TextBox7" runat="server" TextMode="MultiLine"  CssClass="form-control" Height="200" Width="500"></asp:TextBox>
+                        
+                    </td>
+                </tr>
+                <tr><td colspan="2" align="left">
+                    <a class="btn btn--fb" style="width:150px;white-space:normal;" runat="server"  onserverclick="updatenote">
+                            确定
+                        </a>
+                    </td></tr>
+			</table>
+		</div>
+		
+	</div><!--simTestContent end-->
+	
+</div>
+                <table border="0" cellpadding="0" cellspacing="0" class="adminContent" style="width: 100%">
+                <tr>
+                <td align="center">
+                
+                </td>
+                </tr>
+                </table>
+        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False"  AllowPaging="True"  PageSize="20" 
+          AllowSorting="True"   DataKeyNames="id" DataSourceID="SqlDataSource2"  PagerSettings-Mode="NumericFirstLast" PagerSettings-PageButtonCount="50">
+            <Columns>
+                <asp:BoundField DataField="id" HeaderText="id" 
+                    SortExpression="id" InsertVisible="False" ReadOnly="True" />
+                <asp:BoundField DataField="TijianID" HeaderText="问卷类别" 
+                    SortExpression="TijianID"  />
+                <asp:BoundField DataField="wentibhao" HeaderText="问题编号" 
+                    SortExpression="wentibhao" />
+                <asp:BoundField DataField="wentixshi" HeaderText="问题显示" 
+                    SortExpression="wentixshi" />
+                <asp:BoundField DataField="wentixzhi" HeaderText="问题性质" SortExpression="wentixzhi" />
+                <asp:BoundField DataField="beizhu" HeaderText="备注" 
+                    SortExpression="beizhu" />
+                <asp:BoundField DataField="wentifenlei" HeaderText="问题分类" SortExpression="wentifenlei" />
+                <asp:BoundField DataField="jiekodyinbma" HeaderText="分数值稿编号" SortExpression="jiekodyinbma" />
+                <asp:BoundField DataField="miaoshu" HeaderText="描述" SortExpression="miaoshu" />
+                <asp:BoundField DataField="Gender" HeaderText="适用人群" SortExpression="Gender" />
+                <asp:BoundField DataField="Agelimit" HeaderText="年龄界限" SortExpression="Agelimit" />
+                <asp:BoundField DataField="hunyinzhuangt" HeaderText="婚姻状态" SortExpression="hunyinzhuangt" />
+                
+                <asp:BoundField DataField="xunxiangshul" HeaderText="选项数量" SortExpression="xunxiangshul" />
+                <asp:BoundField DataField="miaoshuA" HeaderText="描述A" SortExpression="miaoshuA" />
+                <asp:BoundField DataField="fenzhiA" HeaderText="分值A" SortExpression="fenzhiA" />
+                <asp:BoundField DataField="miaoshuB" HeaderText="描述B" SortExpression="miaoshuB" />
+                <asp:BoundField DataField="fenzhiB" HeaderText="分值B" SortExpression="fenzhiB" />
+                <asp:BoundField DataField="miaoshuC" HeaderText="描述C" SortExpression="miaoshuC" />
+                <asp:BoundField DataField="fenzhiC" HeaderText="分值C" SortExpression="fenzhiC" />
+                <asp:BoundField DataField="miaoshuD" HeaderText="描述D" SortExpression="miaoshuD" />
+                <asp:BoundField DataField="fenzhiD" HeaderText="分值D" SortExpression="fenzhiD" />
+                <asp:BoundField DataField="miaoshuE" HeaderText="描述E" SortExpression="miaoshuE" />
+                <asp:BoundField DataField="fenzhiE" HeaderText="分值E" SortExpression="fenzhiE" />
+                <asp:BoundField DataField="miaoshuF" HeaderText="描述F" SortExpression="miaoshuF" />
+                <asp:BoundField DataField="fenzhiF" HeaderText="分值F" SortExpression="fenzhiF" />
+                
+            </Columns>
+
+<PagerSettings Mode="NumericFirstLast" PageButtonCount="50"></PagerSettings>
+        </asp:GridView>
+        <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:MediPlusConnectionString2 %>" SelectCommand="SELECT * FROM [tijianwenj]"></asp:SqlDataSource>
+    </div>
+    
+    
+    </form>
+</body>
+</html>
+

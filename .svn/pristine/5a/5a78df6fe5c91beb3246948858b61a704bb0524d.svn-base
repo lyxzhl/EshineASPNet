@@ -1,0 +1,135 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="orderconsult.aspx.cs" Inherits="Admin_ordersAdmin_orderconsult" %>
+
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head id="Head1" runat="server">
+    <title>健康咨询管理</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
+    </asp:ToolkitScriptManager>
+    <div>
+    <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
+            <tr>
+                <td class="title" colspan="5" style="height: 30px">
+                    健康咨询信息
+                    </td>
+            </tr>
+    </table>
+    <table border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                       
+                        <td align="center" style="width: 150px; height: 24px;" >
+                            <asp:TextBox ID="TextBox1" runat="server" placeholder="关键字" Width="145" Visible="False"></asp:TextBox>
+                            </td>
+                        <td style="width: 150px; height: 24px;" >
+                            <asp:Button ID="Button1" runat="server" Text="搜索" onclick="Button1_Click" Visible="False" />
+                            </td>
+                        <td style="width: 150px; height: 24px;" >
+                            <asp:Button ID="ButtonEE" runat="server" Text="导出excel" 
+                                onclick="ButtonEE_Click"  />
+                            </td>
+                    </tr>
+                    
+                </table>
+
+    <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
+    <tr>
+    <td align="center" style="height: 100%; width: 100%;">
+        <asp:GridView ID="GridView1" runat="server" AllowPaging="True" PageSize="25" AllowSorting="True"
+            AutoGenerateColumns="False" Width="100%" 
+            DataKeyNames="id" DataSourceID="SqlDataSource1">
+            <Columns>
+                <asp:CommandField ShowEditButton="True" />
+         <asp:BoundField DataField="adddate" HeaderText="咨询日期" HeaderStyle-Wrap="false" DataFormatString="{0:d}" 
+                    SortExpression="adddate"  ItemStyle-Wrap="False" >
+<HeaderStyle Wrap="False"></HeaderStyle>
+
+<ItemStyle Wrap="False"></ItemStyle>
+                </asp:BoundField>
+                <asp:BoundField DataField="customerName" HeaderText="姓名" HeaderStyle-Wrap="false"
+                    SortExpression="customerName"  ItemStyle-Wrap="False" >
+<HeaderStyle Wrap="False"></HeaderStyle>
+
+<ItemStyle Wrap="False"></ItemStyle>
+                </asp:BoundField>
+         <asp:BoundField DataField="hospital" HeaderText="医院" ItemStyle-Wrap="False" 
+                    SortExpression="hospital" >
+<ItemStyle Wrap="False"></ItemStyle>
+                </asp:BoundField>
+         <asp:BoundField DataField="doctor" HeaderText="医生" ItemStyle-Wrap="False" 
+                    SortExpression="doctor" >
+<ItemStyle Wrap="False"></ItemStyle>
+                </asp:BoundField>
+<asp:BoundField DataField="note" HeaderText="症状" ItemStyle-Wrap="False"  HeaderStyle-Wrap="false"
+                    SortExpression="note" >
+<HeaderStyle Wrap="False"></HeaderStyle>
+
+<ItemStyle Wrap="False"></ItemStyle>
+                </asp:BoundField>
+<asp:BoundField DataField="customerMobile" HeaderText="手机号" ItemStyle-Wrap="False"  HeaderStyle-Wrap="false"
+                    SortExpression="customerMobile" >
+<HeaderStyle Wrap="False"></HeaderStyle>
+
+<ItemStyle Wrap="False"></ItemStyle>
+                </asp:BoundField>
+<asp:BoundField DataField="status" HeaderText="咨询状态" ItemStyle-Wrap="False"  HeaderStyle-Wrap="false"
+                    SortExpression="status" >
+<HeaderStyle Wrap="False"></HeaderStyle>
+
+<ItemStyle Wrap="False"></ItemStyle>
+                </asp:BoundField>
+<asp:BoundField DataField="msg" HeaderText="备注" ItemStyle-Wrap="False" 
+                    SortExpression="msg" >
+<ItemStyle Wrap="False"></ItemStyle>
+                </asp:BoundField>
+<asp:BoundField DataField="id" HeaderText="id" ItemStyle-Wrap="False"  HeaderStyle-Wrap="false"
+                    SortExpression="id" InsertVisible="False" ReadOnly="True" >
+<HeaderStyle Wrap="False"></HeaderStyle>
+
+<ItemStyle Wrap="False"></ItemStyle>
+                </asp:BoundField>
+            </Columns>
+        </asp:GridView>
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
+            ConnectionString="<%$ ConnectionStrings:db_ConnectionString %>" 
+            DeleteCommand="DELETE FROM [tab_consult] WHERE [id] = @id" 
+            InsertCommand="INSERT INTO [tab_consult] ([adddate], [hospital], [doctor], [note], [status], [msg]) VALUES (@adddate, @hospital, @doctor, @note, @status, @msg)" 
+            SelectCommand="select adddate , customerName,  hospital, doctor, note,customerMobile, [status], msg, id  from (SELECT * FROM [tab_consult]) a left join (select customerName, customerMobile, customerID  from tab_customers) b on a.customerID=b.customerID ORDER BY id DESC" 
+            
+            UpdateCommand="UPDATE [tab_consult] SET [adddate] = @adddate, [hospital] = @hospital, [doctor] = @doctor, [note] = @note, [status] = @status, [msg] = @msg WHERE [id] = @id" 
+            ProviderName="System.Data.SqlClient">
+            <DeleteParameters>
+                <asp:Parameter Name="id" Type="Int32" />
+            </DeleteParameters>
+            <InsertParameters>
+                <asp:Parameter Name="adddate" Type="DateTime" />
+                <asp:Parameter Name="hospital" Type="String" />
+                <asp:Parameter Name="doctor" Type="String" />
+                <asp:Parameter Name="note" Type="String" />
+                <asp:Parameter Name="status" Type="String" />
+                <asp:Parameter Name="msg" Type="String" />
+            </InsertParameters>
+            <UpdateParameters>
+                <asp:Parameter Name="adddate" Type="DateTime" />
+                <asp:Parameter Name="hospital" Type="String" />
+                <asp:Parameter Name="doctor" Type="String" />
+                <asp:Parameter Name="note" Type="String" />
+                <asp:Parameter Name="status" Type="String" />
+                <asp:Parameter Name="msg" Type="String" />
+                <asp:Parameter Name="id" Type="Int32" />
+            </UpdateParameters>
+        </asp:SqlDataSource>
+    </td>
+    
+    </tr>
+    </table>
+    </div>
+    </form>
+</body>
+</html>

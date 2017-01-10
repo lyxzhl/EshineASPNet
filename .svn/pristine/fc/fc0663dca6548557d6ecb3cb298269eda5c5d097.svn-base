@@ -1,0 +1,250 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Drawing;
+using System.Text;
+using System.Web.UI.DataVisualization.Charting;
+
+public partial class reportdataanalysis : System.Web.UI.Page
+{
+    Bll.OrdersBll ob = new Bll.OrdersBll();
+    Bll.ProductBll pb = new Bll.ProductBll();
+
+    void inittable()
+    {
+        DataTable dt1 = pb.SelectPro("select productName,type,unit,uplimit,downlimit from tab_products");
+        DataTable dt2 = ob.Select("select ReportUploadDate,ReportContent from tab_orders where orderStatus=N'已完成' and customerID=" + Session["id"] + " order by ReportUploadDate");
+
+        //以下获取年份，如果多于5年则取最后的5年
+        int yearindex = 0;
+        int yearcount = 0;
+        if (dt2.Rows.Count > 5)
+        {
+            yearindex = dt2.Rows.Count - 5;
+            yearcount = 5;
+        }
+        else
+        {
+            yearcount = dt2.Rows.Count;
+        }
+        for (int i = 0; i < yearcount; i++)
+        {
+            this.Table1.Rows[2].Cells[i].Text = Convert.ToDateTime(dt2.Rows[yearindex+i]["ReportUploadDate"]).Year.ToString();
+        }
+
+        //以下分散每个人的所有数据到数组
+        string[][] syear = new string[yearcount][];
+        for (int i = 0; i < yearcount; i++)
+        {
+            syear[i] = dt2.Rows[i + yearindex]["ReportContent"].ToString().Split('|');
+        }
+
+        bool rowalter = true;
+        int rowindex = 3;//前3行为header，所以从3开始
+        //以下填充有数据的体检项目
+        for (int i = 0; i < dt1.Rows.Count; i++)
+        {
+            for (int j = 0; j < yearcount; j++)
+            {
+                if (syear[j][i] == "")
+                {
+                    continue;
+                }
+                else
+                {
+                    //建立行
+                    TableRow tr = new TableRow();
+                    if (rowalter)
+                    {
+                        tr.BackColor = ColorTranslator.FromHtml("#DDE7F3");
+                    }
+                    rowalter = !rowalter;
+                    tr.HorizontalAlign = HorizontalAlign.Center;
+                    tr.VerticalAlign = VerticalAlign.Middle;
+                    tr.Height = 24;
+
+                    //项目名
+                    TableCell tc = new TableCell();
+                    tc.BorderColor = ColorTranslator.FromHtml("#6487B3");
+                    tc.BorderStyle = BorderStyle.Solid;
+                    tc.BorderWidth = 1;
+                    tc.VerticalAlign = VerticalAlign.Middle;
+                    tc.Text = dt1.Rows[i]["productName"].ToString();
+                    tr.Controls.Add(tc);
+
+                    //每个项目数据
+                    for (int k = 0; k < yearcount; k++)
+                    {
+                        tc = new TableCell();
+                        tc.BorderColor = ColorTranslator.FromHtml("#6487B3");
+                        tc.BorderStyle = BorderStyle.Solid;
+                        tc.BorderWidth = 1;
+                        tc.VerticalAlign = VerticalAlign.Middle;
+                        tc.Text = syear[k][i];
+                        tr.Controls.Add(tc);
+                    }
+                    //不足5年补充后面的空格
+                    for (int k = 5; k > yearcount; k--)
+                    {
+                        tc = new TableCell();
+                        tc.BorderColor = ColorTranslator.FromHtml("#6487B3");
+                        tc.BorderStyle = BorderStyle.Solid;
+                        tc.BorderWidth = 1;
+                        tr.Controls.Add(tc);
+                    }
+
+                    //能比较的显示分析按钮，否则为空
+                    tc = new TableCell();
+                    tc.BorderColor = ColorTranslator.FromHtml("#6487B3");
+                    tc.BorderStyle = BorderStyle.Solid;
+                    tc.BorderWidth = 1;
+                    if (dt1.Rows[i]["type"].ToString() == "1")
+                    {
+                        LinkButton lb = new LinkButton();
+                        //按钮参数为，项目名，单位，上限，下限，年份，数据，年份，数据，年份，数据，。。。
+                        StringBuilder sb = new StringBuilder();
+                        sb.Append((rowindex+1).ToString() + "|");                        
+                        sb.Append(dt1.Rows[i]["productName"].ToString() + "|");
+                        sb.Append(dt1.Rows[i]["unit"].ToString() + "|");
+                        sb.Append(dt1.Rows[i]["uplimit"].ToString() + "|");
+                        sb.Append(dt1.Rows[i]["downlimit"].ToString() + "|");
+                        for (int k = 0; k < yearcount; k++)
+                        {
+                            sb.Append(this.Table1.Rows[2].Cells[k].Text+"|"+syear[k][i] + "|");
+                        }
+                        for (int k = 5; k > yearcount; k--)
+                        {
+                            sb.Append("||");
+                        }
+                        sb.Remove(sb.Length - 1, 1);
+
+                        lb.CommandArgument = sb.ToString();
+                        //lb.Click += new EventHandler(lb_Click);
+                        lb.OnClientClick = "return showanalysis("+(rowindex + 1) + ")";
+                        lb.Text = "分析";
+                        tc.VerticalAlign = VerticalAlign.Middle;
+                        tc.Controls.Add(lb);
+                    }
+                    tr.Controls.Add(tc);
+                    this.Table1.Controls.Add(tr);
+                    rowindex++;
+
+                    //能比较的话下一行要展开图片
+                    if (dt1.Rows[i]["type"].ToString() == "1")
+                    {
+                        tr = new TableRow();
+                        tr.HorizontalAlign = HorizontalAlign.Center;
+                        tr.VerticalAlign = VerticalAlign.Middle;
+                        tr.Height = 0;
+                        tc = new TableCell();
+                        tc.ColumnSpan = 7;
+
+                        Literal lit = new Literal();
+                        lit.Text = "<div id='analysis" + rowindex + "' style='display:none;'>";
+                        tc.Controls.Add(lit);
+
+                        Chart chart = mkchart();
+                        chart.Titles[0].Text = dt1.Rows[i]["productName"].ToString();
+                        for (int k = 0; k < yearcount; k++)
+                        {
+                            chart.Series[0].Points.AddY(syear[k][i]);
+                            chart.Series[0].Points[k].AxisLabel =this.Table1.Rows[2].Cells[k].Text ;
+                        }
+                        
+                       
+                        tc.Controls.Add(chart);
+                        lit = new Literal();
+                        lit.Text = "</div>";
+                        tc.Controls.Add(lit);
+
+                        tr.Controls.Add(tc);
+                        this.Table1.Controls.Add(tr);
+                        rowindex++;
+                    }
+                    break;
+                }
+            }
+
+        }
+    }
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!Page.IsPostBack)
+        {
+            
+        }
+        inittable();
+    }
+
+    Chart mkchart()
+    {
+        Chart chart = new Chart();
+        chart.Palette = ChartColorPalette.BrightPastel;
+        chart.BackColor = ColorTranslator.FromHtml("#D3DFF0");
+        chart.ImageType = ChartImageType.Png;
+        chart.Width = 412;
+        chart.Height = 296;
+        chart.BorderlineDashStyle = ChartDashStyle.Solid;
+        chart.BackGradientStyle = GradientStyle.TopBottom;
+        chart.BorderlineWidth = 2;
+        chart.BorderlineColor = Color.FromArgb(26, 59, 105);
+
+        System.Web.UI.DataVisualization.Charting.Title title = new Title();
+        title.ShadowColor = Color.FromArgb(32, 0, 0, 0);
+        title.Font = new Font("Trebuchet MS",14,FontStyle.Bold);
+        title.ShadowOffset = 3;
+        title.ForeColor = Color.FromArgb(26, 59, 105);
+        chart.Titles.Add(title);
+
+        chart.BorderSkin.SkinStyle = BorderSkinStyle.Emboss;
+
+        
+
+        ChartArea area = new ChartArea();
+        area.BorderColor = Color.FromArgb(64, 64, 64, 64);
+        area.BackSecondaryColor = Color.Transparent;
+        area.BackColor = Color.FromArgb(64, 165, 191, 228);
+        area.ShadowColor = Color.Transparent;
+        area.BackGradientStyle = GradientStyle.TopBottom;
+        area.Area3DStyle.Rotation = 10;
+        area.Area3DStyle.Perspective = 10;
+        area.Area3DStyle.Enable3D = true;
+        area.Area3DStyle.Inclination = 15;
+        area.Area3DStyle.IsRightAngleAxes = false;
+        area.Area3DStyle.IsClustered = false;
+        area.AxisX.LineColor = Color.FromArgb(64, 64, 64, 64);
+        area.AxisX.MajorGrid.LineColor = Color.FromArgb(64, 64, 64, 64);
+        area.AxisY.LineColor = Color.FromArgb(64, 64, 64, 64);
+        area.AxisY.MajorGrid.LineColor = Color.FromArgb(64, 64, 64, 64);
+        chart.ChartAreas.Add(area);
+
+        Series series = new Series("Series1");
+        series.ChartType = SeriesChartType.Column;
+        series.BorderColor = Color.FromArgb(180, 26, 59, 105);
+        series.BorderColor = Color.FromArgb(220, 65, 140, 240);
+        series.IsValueShownAsLabel = true;
+        series.ChartArea = area.Name;
+        chart.Series.Add(series);
+
+        return chart;
+    }
+    void lb_Click(object sender, EventArgs e)
+    {
+        LinkButton lb = (LinkButton)sender;
+        string[] sa = lb.CommandArgument.Split('|');
+        //this.Table1.Rows[int.Parse(sa[0])].Height = 50;
+        Literal lit = new Literal();
+        lit.Text="<div id='analysisimg' style='height:80px;'>";
+        this.Table1.Rows[int.Parse(sa[0])].Cells[0].Controls.Add(lit);
+        Button bt = new Button();
+        this.Table1.Rows[int.Parse(sa[0])].Cells[0].Controls.Add(bt);
+        lit = new Literal();
+        lit.Text = "</div>";
+        this.Table1.Rows[int.Parse(sa[0])].Cells[0].Controls.Add(lit);
+        lb.OnClientClick = "document.getElementById('analysisimg').style.height = '120px'; return false;";
+    }
+}

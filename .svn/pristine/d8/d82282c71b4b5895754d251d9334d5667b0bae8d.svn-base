@@ -1,0 +1,20 @@
+<!-- Navigation top-->
+<nav class="navbar">
+	<div class="navbar-inner">
+		<div class="left aClick" onclick="goTo('../../index.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+		</div>
+		<div class="center">评估列表</div>
+		<div class="right">
+		</div>
+	</div>
+</nav>
+<div class="pages navbar-through">
+	<div data-page="ReportListAssessment" class="page">
+		<div class="page-content content_RLAssessment">
+			<div class="RLAssessment-wrap">
+			</div>
+		</div>
+	</div>
+</div>

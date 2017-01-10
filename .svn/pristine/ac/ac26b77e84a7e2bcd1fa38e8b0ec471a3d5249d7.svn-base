@@ -1,0 +1,445 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using System.Web.Script.Serialization;
+using MeiNianWebRef;
+using System.Collections;
+using System.Collections.Generic;
+using ikang;
+using smsWebRef;
+using System.Text;
+using System.Web.Services;
+public partial class Admin_ordersAdmin_orderDet : System.Web.UI.Page
+{
+    Bll.OrdersBll ob = new Bll.OrdersBll();
+    Bll.CustomerBll cb = new Bll.CustomerBll();
+    Bll.companyBll comb = new Bll.companyBll();
+    Model.tab_orders orders = new Model.tab_orders();
+    Model.tab_orders modelod;
+    Model.tab_customers modelCu = new Model.tab_customers();
+    ikangservice iks = new ikangservice();
+    HealthService mns = new HealthService();
+    PublicClass pc = new PublicClass();
+
+    Bll.CustomerBll Cb = new Bll.CustomerBll();
+    Bll.loginlogBll ll = new Bll.loginlogBll();
+    Model.tab_loginlog log = new Model.tab_loginlog();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!Page.IsPostBack)
+        {
+            ViewState["orderID"] = Request.QueryString["Cid"];
+            if (Session["ordergridviewindex"] != null)
+            {
+                this.HyperLink2.NavigateUrl += Session["ordergridviewindex"].ToString();
+            }
+        }
+        orders.orderID = Convert.ToInt32(ViewState["orderID"].ToString());
+        orders = ob.getorders(orders);
+        modelod = orders;
+
+        modelCu.customerID = modelod.customerID;
+        modelCu = cb.getCustomer(modelCu);
+
+        if (!Page.IsPostBack)
+        {
+            init();
+            if (this.TextBox21.Text.IndexOf("网络预约成功") == -1)
+            {
+                //this.Button3.Visible = false;
+            }
+            else
+            {
+                this.Button3.Visible = true; ;
+            }
+        }
+    }
+    void init()
+    {
+
+        this.TextBox1.Text = orders.customerName != "" ? orders.customerName : orders.relativeName;
+        this.TextBox2.Text = orders.personSex;
+        this.TextBox3.Text = orders.personAge.ToString();
+        this.TextBox4.Text = orders.personIDcard;
+        this.TextBox5.Text = orders.personMobile;
+        this.TextBox6.Text = orders.personPrivateEmail;
+        this.TextBox7.Text = orders.personMarriageStatus;
+        this.TextBox8.Text = orders.personAddress;
+        this.TextBox9.Text = orders.examDate.ToShortDateString();
+        this.TextBox10.Text = orders.examCity;
+        this.TextBox11.Text = orders.examBranch;
+        this.TextBox12.Text = orders.examPackage;
+        this.TextBox13.Text = orders.examUpPkg;
+        this.TextBox14.Text = orders.examTotalFee.ToString();
+        this.TextBox15.Text = orders.examBill.ToString();
+        this.TextBox16.Text = orders.examInfo;
+        this.TextBox17.Text = orders.supplierOrderID;
+        this.TextBox18.Text = orders.cardNumber;
+        this.TextBox19.Text = orders.examhosip;
+        this.TextBox20.Text = orders.examWorkNo;
+        this.TextBox21.Text = orders.Msg;
+        this.TextBox22.Text = orders.personCompany;
+        //this.TextBox23.Text = orders.orderStatus;
+        DropDownList1.SelectedIndex = this.DropDownList1.Items.IndexOf(this.DropDownList1.Items.FindByText(orders.orderStatus));
+        this.TextBox24.Text = orders.payMethod;
+        this.TextBox25.Text = orders.payTime.ToShortDateString();
+        this.TextBox26.Text = orders.payRefNum;
+        this.HyperLink1.NavigateUrl = orders.Report;
+        this.TextBox27.Text = orders.Report;
+        this.TextBox28.Text = orders.ReportType;
+        this.TextBox29.Text = orders.ReportUploadDate.ToShortDateString();
+        this.TextBox30.Text = orders.ordernote;
+        this.TextBox34.Text = orders.xiya;
+
+        this.Label11.Text = orders.examWorkNo;
+        
+        if (orders.fapiaotitle=="")
+        {
+            DropDownList2.SelectedIndex = 0;
+        }
+         else if (orders.fapiaotitle == "个人")
+        {
+            DropDownList2.SelectedIndex = 1;
+        }
+        else
+        {
+            DropDownList2.SelectedIndex = 2;
+            TextBox31.Visible = true;
+        }
+        this.TextBox31.Text = orders.fapiaotitle;
+        this.TextBox32.Text = orders.fapiaocontent;
+        this.TextBox33.Text = orders.deliveryno;
+    }
+
+
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        orders.personMobile = this.TextBox5.Text;
+        orders.personAddress = this.TextBox8.Text;
+        orders.examDate = DateTime.Parse(this.TextBox9.Text);
+        orders.examCity = this.TextBox10.Text;
+        orders.examBranch = this.TextBox11.Text;
+        orders.examPackage = this.TextBox12.Text;
+        orders.examUpPkg = this.TextBox13.Text;
+        orders.examTotalFee = double.Parse(this.TextBox14.Text);
+        orders.examBill = double.Parse(this.TextBox15.Text);
+        orders.examInfo = this.TextBox16.Text;
+        orders.supplierOrderID = this.TextBox17.Text;
+        orders.cardNumber = this.TextBox18.Text;
+        orders.examhosip = this.TextBox19.Text;
+        orders.examWorkNo = this.TextBox20.Text;
+        orders.Msg = this.TextBox21.Text;
+        orders.xiya = this.TextBox34.Text;
+        if (this.DropDownList1.SelectedIndex > 0)
+        {
+            orders.orderStatus = this.DropDownList1.SelectedValue;
+        }
+        else
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('请选择订单状态');</script>");
+            return;
+        }
+        //orders.orderStatus = this.TextBox23.Text;
+        orders.Report = this.TextBox27.Text;
+        orders.ReportType = this.TextBox28.Text;
+        orders.ReportUploadDate = DateTime.Parse(this.TextBox29.Text);
+        orders.examWorkNo = Session["empName"].ToString();
+        if (DropDownList2.SelectedValue == "个人")
+        {
+            orders.fapiaotitle = "个人";
+        }
+        else
+        {
+            orders.fapiaotitle = DropDownList2.SelectedIndex == 0 ? "" : this.TextBox31.Text;
+        }
+            
+        orders.fapiaocontent = this.TextBox32.Text;
+        orders.deliveryno = this.TextBox33.Text;
+        //orders.ordernote = this.TextBox30.Text;
+        //int i = ob.Update(orders);
+        ob.Update(orders);
+        Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('更新成功');</script>");
+        modelCu.customerID = modelod.customerID;
+        modelCu = Cb.getCustomer(modelCu);
+        if (this.DropDownList1.SelectedValue == "已取消" && orders.customerName != "" && this.DropDownList1.SelectedIndex > 0)
+        {
+            modelCu.customerBudget += modelod.examTotalFee - modelod.examBill;
+            Cb.update(modelCu);
+        }
+        modelCu.customerorderstatus = this.DropDownList1.SelectedValue;
+        Cb.update(modelCu);
+       //if (i == 1)
+        //{
+        //    Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('更新成功');</script>");
+        //}
+        //else
+        //{
+        //    Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('更新失败');</script>");
+        //}
+    }
+    protected void Button3_Click(object sender, EventArgs e)
+    {
+        //modelod.orderID = int.Parse(((LinkButton)sender).CommandArgument);
+        modelod = ob.getorders(modelod);
+        if (modelod.customerName != "")
+        {
+            if (modelod.orderStatus != "待确认" && !cancelsupplierorder())
+            {
+                Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "alertcancelorderfail") + "'); </script>");
+                return;
+            }
+            modelod.orderStatus = "已取消";
+            ob.Update(modelod);
+            modelCu.customerID = modelod.customerID;
+            modelCu = Cb.getCustomer(modelCu);
+            modelCu.customerBudget += modelod.examTotalFee;
+            Cb.update(modelCu);
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "alertcancelordersucc") + "'); window.location.href = 'orderInfo.aspx';</script>");
+        }
+        else
+        {
+            if (modelod.orderStatus != "待确认" && !cancelsupplierRelorder())
+            {
+                Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "alertcancelorderfail") + "'); </script>");
+                return;
+            }
+            //ob.Delete(modelod.orderID);
+            modelod.orderStatus = "已取消";
+            ob.Update(modelod);
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "alertcancelordersucc") + "');window.location.href = 'orderInfo.aspx'; </script>");
+
+        }
+        Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "alertcancelordersucc") + "');window.location.href = 'orderInfo.aspx'; </script>");
+    }
+
+    bool cancelsupplierorder()
+    {
+        string s;
+        if (modelod.examSupplier == "爱康国宾")
+        {
+            s = iks.CancelOrder(modelod.supplierOrderID, modelod.cardNumber);
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            Dictionary<string, object> json = (Dictionary<string, object>)jss.DeserializeObject(s);
+            object value;////{"code":"1","message":"取消成功","list":null}
+            if (json.TryGetValue("code", out value) && value.ToString() == "1")
+            {
+                return true;
+            }
+        }
+        else if (modelod.examSupplier == "美年大健康")
+        {
+            s = mns.CancelOrder(modelCu.customerCompanycode, modelod.customerCode, modelod.examhosip);
+            if (s == "成功")
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool cancelsupplierRelorder()
+    {
+        string s;
+        if (modelod.examSupplier == "爱康国宾")
+        {
+            s = iks.CancelOrder(modelod.supplierOrderID, modelod.cardNumber);
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            Dictionary<string, object> json = (Dictionary<string, object>)jss.DeserializeObject(s);
+            object value;////{"code":"1","message":"取消成功","list":null}
+            if (json.TryGetValue("code", out value) && value.ToString() == "1")
+            {
+                return true;
+            }
+        }
+        else if (modelod.examSupplier == "美年大健康")
+        {
+            s = mns.CancelOrder(modelCu.customerCompanycode, modelod.personIDcard, modelod.examhosip);
+            if (s == "成功")
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+
+    protected static string GetAbcPwd(int num)//生成字母随机数
+    {
+        string a = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < num; i++)
+        {
+            sb.Append(a[new Random(Guid.NewGuid().GetHashCode()).Next(0, a.Length - 1)]);
+        }
+
+        return sb.ToString();
+    }
+
+   protected void Button4_Click(object sender, EventArgs e)
+    {
+        string a =   GetAbcPwd(22);
+        try
+        {
+            if (this.FileUpload1.HasFile)
+            {
+                upExcel ue = new upExcel();
+                if (ue.GetExtension(this.FileUpload1).ToLower() != ".pdf")
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('" + (string)GetGlobalResourceObject("GResource", "alertreportsldpdf") + "');</script>");
+                    return;
+                }
+                else
+                {
+
+                    string path = "~/Images/Reports/" + orders.personCompany + "_" + orders.orderID + ".pdf";
+                    //if (System.IO.File.Exists(Server.MapPath("image/" + FileUpload1.PostedFile.FileName)))
+                    //{
+                    //    Response.Write("<script>alert(\"文件已经存在！\");</script>");
+                    //}
+                    //else
+                    //{
+                    //    if (FileUpload1.HasFile)
+                    //    {
+                    //        FileUpload1.PostedFile.SaveAs(Server.MapPath("image/" + FileUpload1.PostedFile.FileName));
+                    //        Response.Write("<script>alert(\"OK!\");</script>");
+                    //    }
+                    //    else
+                    //        Response.Write("<script>alert(\"请先选择一个文件！\");</script>");
+                    //}
+                    string serverpath = Server.MapPath(path);
+                    FileUpload1.SaveAs(serverpath); //上传文件
+
+                    this.TextBox27.Text = path;
+                    //companylogo存储了体检类型
+                    string s = "select CompanyLogo from tab_company where CompanyName='" + modelCu.customerCompany + "'";
+                    DataTable dt = comb.Select(s);
+                    this.TextBox28.Text = dt.Rows[0][0].ToString();
+                    this.TextBox29.Text = DateTime.Now.ToString();
+                    this.DropDownList1.SelectedValue = "已完成";
+                    orders.ReportUploader = Session["empName"].ToString();
+                    this.Button1_Click(sender, e);
+                }
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('" + (string)GetGlobalResourceObject("GResource", "alertneedreportfile") + "');</script>");
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + ex.Message + "'); </script>");
+        }
+    }
+    protected void Button5_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("~/Admin/CustomersAdmin/customersUpdate.aspx?Cid=" + modelCu.customerID);
+    }
+    protected void sendsms(string Phone, string Content)
+    {
+        ISmsService4XML sms = new SmsService4XMLClient();
+
+        Bll.SupplierBll sb = new Bll.SupplierBll();
+        DataTable dttemp;
+
+        String Account = "dh7748";
+        String Password = PublicClass.smsmd5(System.Configuration.ConfigurationManager.AppSettings["smspassword"]);
+        //String Phone;
+        String sendtime = "";
+        String sign = "";
+        String subcode = "";
+        //String Content;
+        String message;
+
+        //Phone = "13023201670";
+        //Phone = modelCu.customerMobile;
+        //Content = "温馨提示：亲爱的服务咨询电话：400 099 3363";
+
+        //message = "<?xml version='1.0' encoding='UTF-8'?><message>"
+        //+ "<account>" + Account + "</account>" + "<password>"
+        //+ Password + "</password>"
+        //+ "<msgid></msgid>"
+        //+ "<phones>" + Phone + "</phones><content>"
+        //+ Content + "</content><sign>" + sign + "</sign>"
+        //+ "<subcode>" + subcode + "</subcode><sendtime>" + sendtime + "</sendtime>"
+        //+ "</message>";
+
+        //string s = sms.submit(message);
+        string msg;
+
+        bool torf = pc.ztsmsduanx(Phone, Content, out msg);
+        
+           
+    }
+    protected void Button2_Click(object sender, EventArgs e)   //发送预约未成功短信
+    {
+        string Content = "尊敬的" + (orders.customerName != "" ? orders.customerName : orders.relativeName) + "先生/小姐，您好。您预约的体检未成功，请及时致电咨询服务热线400-099-3363或发送邮件至service@medi-plus.com.cn进行改约。感谢您的理解与配合，谢谢！";
+        sendsms(orders.personMobile, Content);
+        Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('预约未成功短信已发送'); </script>");
+    }
+    protected void Button6_Click(object sender, EventArgs e)   //发送催款短信
+    {
+        string Content = "尊敬的" + modelCu.customerName + "先生／小姐，您好。您为" + (orders.customerName != "" ? orders.customerName : orders.relativeName) + "先生／小姐预约了" + orders.examDate + "的体检，需支付体检费用" + orders.examBill + "元。体检费用请于今天14:00前完成支付，如14点未确认到您的款项，您的预约将被取消，感谢您的理解与配合。支付方式如下:支付宝账号:pay@medi-plus.cn；银行转账:收款人帐户名称-霓蝶（上海）医疗科技有限公司;银行名称-中国建设银行安顺路支行;人民币帐号:31050174420000000043。服务咨询热线：400-099-3363。";
+        sendsms(orders.personMobile, Content);
+        Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('催款短信已发送'); </script>");
+    }
+    protected void Button7_Click(object sender, EventArgs e)  //发送报告已上传短信
+    {
+        string Content = "尊敬的" + (orders.customerName != "" ? orders.customerName : orders.relativeName) + "先生／小姐，您的体检报告已上传至http://www.medi-plus.com.cn/co/" + modelCu.customerCompany + "，用户名为您的员工号或身份证号，密码为身份证号后六位，请登录下载。服务咨询电话：400-099-3363。";
+        sendsms(orders.personMobile, Content);
+        Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('报告已上传短信已发送'); </script>");
+    }
+    
+    //[WebMethod]
+    //public static int DropDownList2_SelectedIndexChanged(string text)
+    //{
+    //    if (text == "公司")
+    //    {
+    //        return 1;
+    //    }
+    //    else return 0;
+    //}
+    protected void DropDownList2_SelectedIndexChanged1(object sender, EventArgs e)
+    {
+        if(DropDownList2.SelectedValue=="公司")
+        {
+            TextBox31.Visible = true;
+        }
+        else
+        {
+            TextBox31.Visible = false;
+        }
+    }
+    protected void Button8_Click(object sender, EventArgs e)    //发送预约取消短信
+    {
+        string Content = "尊敬的" + (orders.customerName != "" ? orders.customerName : orders.relativeName) + "先生/小姐您好，您预约的" + orders.examDate + orders.examBranch + "的体检服务，已为您取消。服务咨询电话：400-099-3363。";
+        sendsms(orders.personMobile, Content);
+        Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('预约取消短信已发送'); </script>");
+    }
+    protected void Button9_Click(object sender, EventArgs e)    //发送提醒付费短信
+    {
+        string Content = "尊敬的" + (orders.customerName != "" ? orders.customerName : orders.relativeName) + "先生/小姐，您好。您共需支付体检费用" + orders.examBill + "元。支付方式如下:支付宝账号:pay@medi-plus.cn；银行转账:收款人帐户名称-霓蝶（上海）医疗科技有限公司;银行名称-中国建设银行安顺路支行;人民币帐号:31050174420000000043";
+        sendsms(orders.personMobile, Content);
+        Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('提醒付费短信已发送'); </script>");
+    }
+    protected void Button10_Click(object sender, EventArgs e)
+    {
+
+        string sql = "select address from tab_suppliers where supplier+' '+branch='" + orders.examBranch + "'";
+        DataTable dt = ob.Select(sql);
+        string Content = "尊敬的" + (orders.customerName != "" ? orders.customerName : orders.relativeName) + "先生/小姐您好,您已成功预约" + orders.examBranch + "的体检服务,请于" + orders.examDate.ToShortDateString() + "  8：00—9：30到" + dt.Rows[0][0].ToString() + "体检。服务咨询电话：400-099-3363。";
+
+
+        sendsms(orders.personMobile, Content);
+        Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('预约成功短信已发送'); </script>");
+    }
+}

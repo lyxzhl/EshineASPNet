@@ -1,0 +1,31 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </a>
+        <div class="center">预约日期</div>
+        <div class="right">
+            <span class="aClick">确认</span>
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="CDateMedical" class="page">
+        <div class="page-content content_CDateMedical">
+            <div class="CDateMedical-wrap">
+                <div class="group-item">
+                    <div class="row-item">
+                        <div class="showDate">
+                            <h4><small>您所选择的预约日期为：</small><span></span></h4>
+                        </div>
+                    </div>
+                    <div class="row-item">
+                        <div class="calendar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

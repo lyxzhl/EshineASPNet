@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+namespace IDAL
+{
+    public interface examcardDal
+    {
+        int Add(Model.tab_examcard examcard);
+        Model.tab_examcard getexamcard(Model.tab_examcard examcard1);
+        int update(Model.tab_examcard examcard);
+        int Delete(int id);
+        DataTable Select(string ss);
+        string getcardnum(int id, string sname);
+        int markikcardinuse(string CardNumIKang);
+    }
+}

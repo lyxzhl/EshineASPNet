@@ -1,0 +1,90 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.IO;
+using System.Collections;
+public partial class uploadreport : PageBases
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        this.CheckUser((Hashtable)Application["Online"]);
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            if (this.TextBox1.Text == "")
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('" + (string)GetGlobalResourceObject("GResource", "alertneeddate") + "');</script>");
+                return;
+            }
+            else if (DateTime.Parse(this.TextBox1.Text) > DateTime.Now)
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('" + (string)GetGlobalResourceObject("GResource", "alertexamdatebefornow") + "');</script>");
+                this.TextBox1.Text = "";
+                return;
+            }
+            else if (this.DropDownList1.SelectedIndex <= 0)
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('" + (string)GetGlobalResourceObject("GResource", "alertneedreporttype") + "');</script>");
+                return;
+            }
+            else if (this.DropDownList2.SelectedIndex <= 0)
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('" + (string)GetGlobalResourceObject("GResource", "alertneedorgnization") + "');</script>");
+                return;
+            }
+        }
+        catch
+        {
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('未知错误，请重试');</script>");
+            return;
+        }
+
+        try
+        {
+            if (this.FileUpload1.HasFile)
+            {
+                upExcel ue = new upExcel();
+                if (ue.GetExtension(this.FileUpload1).ToLower() != ".pdf")
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('" + (string)GetGlobalResourceObject("GResource", "alertreportsldpdf") + "');</script>");
+                    return;
+                }
+                else
+                {
+                    Bll.OrdersBll ob = new Bll.OrdersBll();
+                    Model.tab_orders orders = new Model.tab_orders();
+
+                    string path = "~/Images/Reports/user_" + Session["id"].ToString() + "_" + DateTime.Now.Year+DateTime.Now.Month+DateTime.Now.Day+DateTime.Now.Hour+DateTime.Now.Minute+DateTime.Now.Second + ".pdf";
+                    string serverpath = Server.MapPath(path);
+                    FileUpload1.SaveAs(serverpath); //上传文件
+
+                    
+                    orders.customerID = int.Parse(Session["id"].ToString());
+                    orders.Report = path;
+                    orders.ReportType = this.DropDownList1.SelectedValue;
+                    orders.ReportUploadDate = DateTime.Now;
+                    orders.ReportUploader = Session["cus"].ToString();
+                    orders.examSupplier = this.DropDownList2.SelectedIndex<4?this.DropDownList2.SelectedValue: this.TextBox2.Text;
+                    orders.examDate = DateTime.Parse(this.TextBox1.Text);
+                    orders.orderStatus = "已完成";
+                    ob.Add(orders);
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('" + (string)GetGlobalResourceObject("GResource", "alertuploadsucceed") + "');window.location.href = 'report.aspx';</script>");
+                }
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('" + (string)GetGlobalResourceObject("GResource", "alertneedreportfile") + "');</script>");
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + ex.Message + "'); </script>");
+        }
+    }
+}

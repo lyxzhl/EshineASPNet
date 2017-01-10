@@ -1,0 +1,31 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick" onclick="goTo('../../index.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </a>
+        <div class="center">报告</div>
+        <div class="right">
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="ReportIndex" class="page">
+        <div class="page-content content_RIndex">
+            <div class="RIndex-wrap">
+                <div class="group-item">
+                    <a href="#" class="row-item" onclick="goTo('../../module/tools/view_pdf.html');">
+                        <span class="pull-left">体检报告</span>
+                        <i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                    <a href="#" class="row-item" onclick="goTo('../../module/tools/view_pdf.html');">
+                        <span class="pull-left">健康风险评估报告</span>
+                        <i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

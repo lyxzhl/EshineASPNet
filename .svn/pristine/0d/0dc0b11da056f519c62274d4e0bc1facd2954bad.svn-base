@@ -1,0 +1,114 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+namespace SQLServerDAL
+{
+    class sql_examcard:IDAL.examcardDal
+    {
+        DBunit.SQLAccess sql = new DBunit.SQLAccess();
+        DateTime baddate = DateTime.Parse("1900-01-01");
+        public int Add(Model.tab_examcard examcard)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("insert into tab_examcard values (");
+            strsql.AppendFormat("'{0}',", examcard.CardNumIKang);
+            strsql.AppendFormat("'{0}',", examcard.CardNumMeiNian);
+            strsql.AppendFormat("'{0}',", examcard.CardNumCiMing);
+            strsql.AppendFormat("'{0}',", examcard.CardNum1);
+            strsql.AppendFormat("'{0}',", examcard.CardNum2);
+            strsql.AppendFormat("'{0}',", examcard.CardNum3);
+            strsql.AppendFormat("N'{0}',", examcard.Cardstatus);
+            strsql.AppendFormat("N'{0}',", examcard.company);
+            strsql.AppendFormat("N'{0}',", examcard.name);
+            strsql.AppendFormat("'{0}',", examcard.orderID);
+            strsql.AppendFormat("'{0}',", examcard.IDcard);
+            strsql.AppendFormat("'{0}',", examcard.customerID);
+            strsql.AppendFormat("{0}", examcard.relativeID);
+            strsql.Append(")");
+            return sql.ExecuteNonQuery(strsql.ToString());
+        }
+
+
+        public Model.tab_examcard getexamcard(Model.tab_examcard examcard1)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("select * from tab_examcard where ");
+            strsql.AppendFormat("id='{0}'", examcard1.id);
+            DataTable dt = sql.ExecuteDataSet(strsql.ToString()).Tables[0];
+            if (dt.Rows.Count < 1) return null;
+
+            Model.tab_examcard examcard = new Model.tab_examcard();
+            examcard.CardNumIKang = dt.Rows[0]["CardNumIKang"].ToString();
+            examcard.CardNumMeiNian = dt.Rows[0]["CardNumMeiNian"].ToString();
+            examcard.CardNumCiMing = dt.Rows[0]["CardNumCiMing"].ToString();
+            examcard.CardNum1 = dt.Rows[0]["CardNum1"].ToString();
+            examcard.CardNum2 = dt.Rows[0]["CardNum2"].ToString();
+            examcard.CardNum3 = dt.Rows[0]["CardNum3"].ToString();
+            examcard.Cardstatus = dt.Rows[0]["Cardstatus"].ToString();
+            examcard.company = dt.Rows[0]["company"].ToString();
+            examcard.name = dt.Rows[0]["name"].ToString();
+            examcard.orderID = int.Parse(dt.Rows[0]["orderID"].ToString());
+            examcard.IDcard = dt.Rows[0]["IDcard"].ToString();
+            examcard.customerID = int.Parse(dt.Rows[0]["customerID"].ToString());
+            examcard.relativeID = int.Parse(dt.Rows[0]["relativeID"].ToString());
+            return examcard;
+        }
+
+
+        public int update(Model.tab_examcard examcard)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("update tab_examcard set ");
+            strsql.AppendFormat(" CardNumIKang ='{0}',", examcard.CardNumIKang);
+            strsql.AppendFormat(" CardNumMeiNian ='{0}',", examcard.CardNumMeiNian);
+            strsql.AppendFormat(" CardNumCiMing ='{0}',", examcard.CardNumCiMing);
+            strsql.AppendFormat(" CardNum1 ='{0}',", examcard.CardNum1);
+            strsql.AppendFormat(" CardNum2 ='{0}',", examcard.CardNum2);
+            strsql.AppendFormat(" CardNum3 ='{0}',", examcard.CardNum3);
+            strsql.AppendFormat(" Cardstatus =N'{0}',", examcard.Cardstatus);
+            strsql.AppendFormat(" company =N'{0}',", examcard.company);
+            strsql.AppendFormat(" name =N'{0}',", examcard.name);
+            strsql.AppendFormat(" orderID ='{0}',", examcard.orderID);
+            strsql.AppendFormat(" IDcard ='{0}',", examcard.IDcard);
+            strsql.AppendFormat(" customerID ='{0}',", examcard.customerID);
+            strsql.AppendFormat(" relativeID ='{0}'", examcard.relativeID);
+            strsql.AppendFormat(" where id={0}", examcard.id);
+            return sql.ExecuteNonQuery(strsql.ToString());
+        }
+
+
+        public int Delete(int id)
+        {
+            return sql.ExecuteNonQuery("delete from tab_examcard where id=" + id);
+        }
+        public DataTable Select(string ss)
+        {
+            return sql.ExecuteDataSet(ss).Tables[0];
+        }
+
+
+        public string getcardnum(int id, string sname)
+        {
+            string s = "", ss;
+            switch (sname)
+            {
+                case "爱康国宾": s = "CardNumIKang"; break;
+                case "美年大健康": s = "CardNumMeiNian"; break;
+                case "慈铭": s = "CardNumCiMing"; break;
+                case "CardNum1": s = "CardNum1"; break;
+                case "CardNum2": s = "CardNum2"; break;
+                case "CardNum3": s = "CardNum3"; break;
+            }
+            ss = "select " + s + " from tab_examcard where  (customerID=" + id + " or relativeID=" + id + ")";
+
+            return sql.ExecuteSc(ss).ToString();
+            //return sql.ExecuteDataSet(ss).Tables[0].Rows[0][s].ToString();
+        }
+
+        public int markikcardinuse(string CardNumIKang)
+        {
+            return sql.ExecuteNonQuery("update tab_examcard set Cardstatus='inuse' where CardNumIKang='" + CardNumIKang+"'");
+        }
+    }
+}

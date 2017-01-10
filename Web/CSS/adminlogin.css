@@ -1,0 +1,63 @@
+body {
+	text-align: center; font-size: 12px;
+}
+ul {
+	list-style: none;
+}
+li {
+	list-style: none;
+}
+a {
+	text-decoration: none;
+}
+* {
+	margin: 0px; padding: 0px;
+}
+img {
+	border: currentColor; display: block;
+}
+.r {
+	float: right;
+}
+.l {
+	float: left;
+}
+.c {
+	clear: both;
+}
+.logo_time {
+	margin: 0px auto; width: 850px; height: 99px;
+}
+.logo {
+	width: 71px;
+}
+.time {
+	width: 350px; height: auto; padding-top: 28px;
+}
+.time span {
+	text-align: right; color: rgb(255, 255, 255); line-height: 22px; display: block;
+}
+.login_password {
+	margin: 0px auto; width: 850px; height: 400px; text-align: left;
+}
+.login_img {
+	width: 455px; height: auto;
+}
+.login {
+	width: 330px; height: 390px; padding-top: 10px;
+}
+.img {
+	height: 50px; padding-left: 30px;
+}
+.w330 {
+	background: rgb(255, 255, 255); border: 1px solid rgb(187, 187, 187); width: 250px; height: 30px; color: rgb(100, 100, 100); line-height: 30px; padding-left: 5px; margin-top: 12px;
+}
+.w84 {
+	background: rgb(0, 154, 216); border: currentColor; width: 84px; height: 31px; color: rgb(255, 255, 255); line-height: 31px; margin-top: 14px; margin-left: 37px; cursor: pointer;
+}
+.footer {
+	margin: 0px auto; width: 850px; height: 86px;
+}
+.footer p {
+	color: rgb(163, 163, 163); padding-top: 15px;
+}

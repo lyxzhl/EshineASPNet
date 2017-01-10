@@ -1,0 +1,40 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+
+public partial class IndexPage_ShowShop : System.Web.UI.Page
+{
+    Bll.ProductBll b_Pro = new Bll.ProductBll();
+    public string pid;
+    public string img;
+    public string imgname;
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!Page.IsPostBack)
+        {
+             pid = Request.QueryString["pid"];
+                ViewState["pid"] = Convert.ToInt32(pid);
+                DataTable da = b_Pro.SelectPro("select * from tab_products where productID=" + pid);
+                img = this.Image1.ImageUrl = "..\\Images\\BigImages\\" + da.Rows[0]["productImg"].ToString();
+                imgname = da.Rows[0]["productImg"].ToString();
+                this.Label7.Text = da.Rows[0]["productName"].ToString();
+                this.Label1.Text = da.Rows[0]["productUnitPrice"].ToString();
+                this.Label2.Text = da.Rows[0]["productUnitPrice"].ToString();
+                this.Label3.Text = da.Rows[0]["productCount"].ToString();
+                this.Label8.Text = da.Rows[0]["productDate"].ToString().Substring(0, 10);
+                this.Label4.Text = da.Rows[0]["productContent"].ToString();
+        }
+
+    }
+    protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
+    {
+        //Response.Redirect(this.Image1.ImageUrl);
+    }
+}

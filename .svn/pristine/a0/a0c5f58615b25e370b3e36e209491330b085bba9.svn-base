@@ -1,0 +1,32 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </a>
+        <div class="center">套餐及加项包</div>
+        <a class="right aClick">
+            <span>确认</span>
+        </a>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="CPackageMedical" class="page">
+        <div class="page-content content_CPackageMedical">
+            <div class="CPackageMedical-wrap">
+                <div class="content-block-title basic-package-title">企业基础套餐</div>
+                <div class="basic-package group-item">
+                </div>
+                <div class="content-block-title plus-package-title">企业加项包：</div>
+                <div class="group-item plus-package">
+                </div>
+                <div class="content-block-title hra-package-title">HRA建议预约的其他体检项目：</div>
+                <div class="group-item hra-package">
+                    <div class="row-item">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,126 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text;
+
+namespace SQLServerDAL
+{
+   public class sql_tijianwenj:IDAL.tijianwenjDal
+    {
+        DBunit.SQLAccess sql = new DBunit.SQLAccess();
+        DateTime baddate = DateTime.Parse("1900-01-01");
+        public int Add(Model.tijianwenj tijianwenj)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("insert into tijianwenj values (");
+            strsql.AppendFormat("N'{0}',", tijianwenj.TijianID);
+            strsql.AppendFormat("N'{0}',", tijianwenj.wentibhao);
+            strsql.AppendFormat("N'{0}',", tijianwenj.wentixshi);
+            strsql.AppendFormat("N'{0}',", tijianwenj.wentixzhi);
+            strsql.AppendFormat("N'{0}',", tijianwenj.beizhu);
+            strsql.AppendFormat("N'{0}',", tijianwenj.wentifenlei);
+            strsql.AppendFormat("N'{0}',", tijianwenj.jiekodyinbma);
+            strsql.AppendFormat("N'{0}',", tijianwenj.miaoshu);
+            strsql.AppendFormat("N'{0}',", tijianwenj.Gender);
+            strsql.AppendFormat("N'{0}',", tijianwenj.Agelimit);
+            strsql.AppendFormat("N'{0}',", tijianwenj.hunyinzhuangt);
+            strsql.AppendFormat("N'{0}',", tijianwenj.xunxiangshul);
+            strsql.AppendFormat("N'{0}',", tijianwenj.miaoshuA);
+            strsql.AppendFormat("N'{0}',", tijianwenj.fenzhiA);
+            strsql.AppendFormat("N'{0}',", tijianwenj.miaoshuB);
+            strsql.AppendFormat("N'{0}',", tijianwenj.fenzhiB);
+            strsql.AppendFormat("N'{0}',", tijianwenj.miaoshuC);
+            strsql.AppendFormat("N'{0}',", tijianwenj.fenzhiC);
+            strsql.AppendFormat("N'{0}',", tijianwenj.miaoshuD);
+            strsql.AppendFormat("N'{0}',", tijianwenj.fenzhiD);
+            strsql.AppendFormat("N'{0}',", tijianwenj.miaoshuE);
+            strsql.AppendFormat("N'{0}',", tijianwenj.fenzhiE);
+            strsql.AppendFormat("N'{0}',", tijianwenj.miaoshuF);
+            strsql.AppendFormat("N'{0}'", tijianwenj.fenzhiF);
+            strsql.Append(") select SCOPE_IDENTITY()");
+            return Convert.ToInt32(sql.ExecuteSc(strsql.ToString()));
+        }
+
+
+        public Model.tijianwenj gettijianwenj(Model.tijianwenj tijianwenj1)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("select * from tijianwenj where ");
+            strsql.AppendFormat("id='{0}'", tijianwenj1.id);
+            DataTable dt = sql.ExecuteDataSet(strsql.ToString()).Tables[0];
+            if (dt.Rows.Count < 1) return null;
+
+            Model.tijianwenj tijianwenj = new Model.tijianwenj();
+            tijianwenj.id = tijianwenj1.id;
+            tijianwenj.TijianID = dt.Rows[0]["TijianID"].ToString();
+            tijianwenj.wentibhao = dt.Rows[0]["wentibhao"].ToString();
+            tijianwenj.wentixshi = dt.Rows[0]["wentixshi"].ToString();
+            tijianwenj.wentixzhi = dt.Rows[0]["wentixzhi"].ToString();
+            tijianwenj.beizhu = dt.Rows[0]["beizhu"].ToString();
+            tijianwenj.wentifenlei = dt.Rows[0]["wentifenlei"].ToString();
+            tijianwenj.jiekodyinbma = dt.Rows[0]["jiekodyinbma"].ToString();
+            tijianwenj.miaoshu = dt.Rows[0]["miaoshu"].ToString();
+            tijianwenj.Gender = dt.Rows[0]["Gender"].ToString();
+            tijianwenj.Agelimit = dt.Rows[0]["Agelimit"].ToString();
+            tijianwenj.hunyinzhuangt = dt.Rows[0]["hunyinzhuangt"].ToString();
+            tijianwenj.xunxiangshul = dt.Rows[0]["xunxiangshul"].ToString();
+            tijianwenj.miaoshuA = dt.Rows[0]["miaoshuA"].ToString();
+            tijianwenj.fenzhiA = dt.Rows[0]["fenzhiA"].ToString();
+            tijianwenj.miaoshuB = dt.Rows[0]["miaoshuB"].ToString();
+            tijianwenj.fenzhiB = dt.Rows[0]["fenzhiB"].ToString();
+            tijianwenj.miaoshuC = dt.Rows[0]["miaoshuC"].ToString();
+            tijianwenj.fenzhiC = dt.Rows[0]["fenzhiC"].ToString();
+            tijianwenj.miaoshuD = dt.Rows[0]["miaoshuD"].ToString();
+            tijianwenj.fenzhiD = dt.Rows[0]["fenzhiD"].ToString();
+            tijianwenj.miaoshuE = dt.Rows[0]["miaoshuE"].ToString();
+            tijianwenj.fenzhiE = dt.Rows[0]["fenzhiE"].ToString();
+            tijianwenj.miaoshuF = dt.Rows[0]["miaoshuF"].ToString();
+            tijianwenj.fenzhiF = dt.Rows[0]["fenzhiF"].ToString();
+            return tijianwenj;
+        }
+
+
+        public int update(Model.tijianwenj tijianwenj)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("update tijianwenj set ");
+            strsql.AppendFormat(" TijianID =N'{0}',", tijianwenj.TijianID);
+            strsql.AppendFormat(" wentibhao =N'{0}',", tijianwenj.wentibhao);
+            strsql.AppendFormat(" wentixshi =N'{0}',", tijianwenj.wentixshi);
+            strsql.AppendFormat(" wentixzhi =N'{0}',", tijianwenj.wentixzhi);
+            strsql.AppendFormat(" beizhu =N'{0}',", tijianwenj.beizhu);
+            strsql.AppendFormat(" wentifenlei =N'{0}',", tijianwenj.wentifenlei);
+            strsql.AppendFormat(" jiekodyinbma =N'{0}',", tijianwenj.jiekodyinbma);
+            strsql.AppendFormat(" miaoshu =N'{0}',", tijianwenj.miaoshu);
+            strsql.AppendFormat(" Gender =N'{0}',", tijianwenj.Gender);
+            strsql.AppendFormat(" Agelimit =N'{0}',", tijianwenj.Agelimit);
+            strsql.AppendFormat(" hunyinzhuangt =N'{0}',", tijianwenj.hunyinzhuangt);
+            strsql.AppendFormat(" xunxiangshul =N'{0}',", tijianwenj.xunxiangshul);
+            strsql.AppendFormat(" miaoshuA =N'{0}',", tijianwenj.miaoshuA);
+            strsql.AppendFormat(" fenzhiA =N'{0}',", tijianwenj.fenzhiA);
+            strsql.AppendFormat(" miaoshuB =N'{0}',", tijianwenj.miaoshuB);
+            strsql.AppendFormat(" fenzhiB =N'{0}',", tijianwenj.fenzhiB);
+            strsql.AppendFormat(" miaoshuC =N'{0}',", tijianwenj.miaoshuC);
+            strsql.AppendFormat(" fenzhiC =N'{0}',", tijianwenj.fenzhiC);
+            strsql.AppendFormat(" miaoshuD =N'{0}',", tijianwenj.miaoshuD);
+            strsql.AppendFormat(" fenzhiD =N'{0}',", tijianwenj.fenzhiD);
+            strsql.AppendFormat(" miaoshuE =N'{0}',", tijianwenj.miaoshuE);
+            strsql.AppendFormat(" fenzhiE =N'{0}',", tijianwenj.fenzhiE);
+            strsql.AppendFormat(" miaoshuF =N'{0}',", tijianwenj.miaoshuF);
+            strsql.AppendFormat(" fenzhiF =N'{0}'", tijianwenj.fenzhiF);
+            strsql.AppendFormat(" where id={0}", tijianwenj.id);
+            return sql.ExecuteNonQuery(strsql.ToString());
+        }
+
+
+        public int Delete(int id)
+        {
+            return sql.ExecuteNonQuery("delete from tijianwenj where id=" + id);
+        }
+        public DataTable Select(string ss)
+        {
+            return sql.ExecuteDataSet(ss).Tables[0];
+        }
+
+    }
+}

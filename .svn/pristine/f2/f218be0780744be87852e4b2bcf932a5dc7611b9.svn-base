@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+
+namespace IDAL
+{
+    public interface consultDal
+    {
+        int Add(Model.tab_consult consult);
+        Model.tab_consult getconsult(Model.tab_consult consult1);
+        int update(Model.tab_consult consult);
+        int Delete(int id);
+        DataTable Select(string ss);
+
+    }
+}

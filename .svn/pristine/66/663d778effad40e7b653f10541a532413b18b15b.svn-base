@@ -1,0 +1,53 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <div class="left aClick" onclick="goTo('../../index.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </div>
+        <div class="center">评估报告</div>
+        <a href="#" class="right" onclick="serviceDisabled();">
+            <span>其它报告</span>
+        </a>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="ReportAssessment" class="page">
+        <div class="page-content content_RAssessment">
+            <div class="RAssessment-wrap">
+                <div class="group-item">
+                    <div class="row-item">
+                        <span class="rp-item-title">身体质量指数 身体质量指数(BMI)</span>
+                        <p class="rp-item-content">
+                            简称体质指数或体重指数，是目前国际上常用的衡量人体胖瘦以及是否健康的一个标准，理想值在 18.5~24 之间。你的BMI是 58.0，属于 非常肥胖，建议你注意控制体重，适当减肥，最好将 非常肥胖，建议你注意控制体重，适当减肥，最好将BMI控制在 控制在 18.5~24 之间，关于减肥的具体指导，请参看医 之间，关于减肥的具体指导，请参看医 博士 博士(DrMed)减肥中心 减肥中心。 。 值得指出的是，BMI只是一个参考指标，如果你的肌肉比较发达或是运动员，这个指数会高估你的身体 脂肪含量，即在这种情况下，指数超重并不一定是肥胖；相反地，如果你的肌肉不发达，这个指数会低估你的身体脂肪。
+                        </p>
+                    </div>
+                    <div class="row-item">
+                        <span class="rp-item-title">腰围-臀围比</span>
+                        <p class="rp-item-content">
+                            就是腰围除以臀围的比值。一般来说，女性理想的“腰围-臀围比”应低于 0.85 ，男性应低于 0.9 。由于腰腹部堆积的脂肪比身体 其他部位的脂肪害处更大，因此，如果“腰围-臀围比”偏高，可引起很多健康问题，尤其是心脏病和糖尿病的风险会大大增加。你 的“腰围-臀围比”是 0.9，属于 偏高，建议你控制体重，减少腹部脂肪，将这个比值降到 偏高，建议你控制体重，减少腹部脂肪，将这个比值降到0.85(女性 女性)或 或0.9(男性 男性)以下。关于减肥 以下。关于减肥 的具体指导，请参看医博士 的具体指导，请参看医博士(DrMed)减肥中心 减肥中心。
+                        </p>
+                    </div>
+                    <div class="row-item">
+                        <span class="rp-item-title">成年后体重增加</span>
+                        <p class="rp-item-content">
+                            大多数人在成年后体重会有些变化，但如果出现大幅增加，则会对身体健康产生不良影响，包括升高糖尿病、心血管疾病以及一些 癌症(比如乳腺癌)的风险。你在20岁之后体重增加 超过了 超过了20公斤，应该注意控制体重，通过健康饮食和运动等进行适当减肥。关 公斤，应该注意控制体重，通过健康饮食和运动等进行适当减肥。关 于减肥的具体指导，请参看医博士 于减肥的具体指导，请参看医博士(DrMed)减肥中心 减肥中心。
+                        </p>
+                    </div>
+                    <div class="row-item">
+                        <span class="rp-item-title">静息心律</span>
+                        <p class="rp-item-content">
+                            它是指人在清醒和完全放松的情况下，一分钟内的心跳次数。测量静息心率的最佳时间是经过一晚充分睡眠之后，起床之前。静息 心律的快慢是由人体的能量代谢需求决定的，理想值大约在 55~65 之间。如果静息心率过高，会影响身体健康，包括增加心血管 疾病的风险。你的静息心律是 70~75 次 次/分，属于正常范围。
+                        </p>
+                    </div>
+                    <div class="row-item">
+                        <span class="rp-item-title">皮肤弹性</span>
+                        <p class="rp-item-content">
+                            与头发变白、出现皱纹一样，皮肤弹性变差也是正常衰老的一部分。经常晒太阳以及缺乏一些营养成分(比如维生素C和E)会加速皮 肤失去弹性。另外，一个人在大幅减肥之后，皮肤的弹性也会变差。根据测试结果，你的皮肤弹性 属于正常。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

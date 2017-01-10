@@ -1,0 +1,104 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ordersubmitted.aspx.cs" Inherits="ordersubmitted" %>
+
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+<%@ Register TagPrefix="MPuc" TagName="headcontent" Src="UserControl/headcontent.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="mobilenav" Src="UserControl/mobilenav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="desktopnav" Src="UserControl/desktopnav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="UserControl/footer1.ascx"%>
+<%@ Register Assembly="GMaps" Namespace="Subgurim.Controles" TagPrefix="cc1" %>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Medi-Plus - <asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,titletext %>'></asp:Localize></title>
+<MPuc:headcontent runat="server" ID="Unnamed1"/>
+<LINK rel=stylesheet type=text/css href="CSS/safecenter.css">
+<SCRIPT src="JS/mp.js" type="text/javascript"></SCRIPT>
+</head>
+<body class='signups'>
+<MPuc:mobilenav runat="server" ID="Unnamed2"/>
+<form id="Form1" runat="server">
+<div class='wrapper' data-behavior='Navigation'>
+<MPuc:desktopnav runat="server" ID="Unnamed3"/>
+
+
+<DIV class="container signup">
+<div class="simple_form new_signup_context" id="new_signup_context">
+
+
+
+     <asp:Panel class="signup_form tile" ID="Panel12" runat="server">
+<DIV class="row">
+<DIV class="twelvecol" style="height:35px;">
+<H1><asp:Localize ID="Localize17" runat="server" Text='<%$ Resources:GResource,yoursubmitok %>'></asp:Localize></H1>
+<H4></DIV></DIV>
+<DIV class="row sizes">
+<DIV class="fourcol"></DIV>
+<DIV class="fourcol">
+    <asp:Panel ID="Panel1" runat="server" Visible="False">
+    <DIV class="input string required" style="text-align:center;">
+        <img alt="" src="Images/Medi-Plus_2d.png" />
+        <asp:Label ID="Label2" runat="server" Text="Label"></asp:Label>&nbsp;&nbsp;
+        <asp:Label ID="Label1" runat="server" Text='<%$ Resources:GResource,qrnofee %>'></asp:Label>
+        <br />
+        如您已经付费，客服人员在工作时间确认后做相应安排！请耐心等待！
+        <br />
+      </DIV>
+    </asp:Panel>
+    <asp:Panel ID="Panel2" runat="server" Visible="False">
+        <DIV class="input string required">
+            <asp:LinkButton ID="LinkButton1" runat="server" Text='<%$ Resources:GResource,toalipay %>' OnClick="LinkButton1_Click"></asp:LinkButton>
+      </DIV>
+    </asp:Panel>
+
+    <asp:Panel ID="Panel13" runat="server" Visible="False">
+    <DIV class="expert">
+<DIV class="header" style=" background:none; text-align:left;">
+<br />
+<DIV>
+<asp:Label ID="Label10" runat="server" Text='<%$ Resources:GResource,transferbank %>' ></asp:Label>：
+<h3><asp:Label ID="Label11" runat="server" Text='<%$ Resources:GResource,guangdabank %>' ></asp:Label></h3>
+</DIV>
+<DIV>
+<asp:Label ID="Label12" runat="server" Text='<%$ Resources:GResource,accountname %>' ></asp:Label>：
+<h3><asp:Label ID="Label13" runat="server" Text='<%$ Resources:GResource,jinshicompanyname %>' ></asp:Label></h3>
+</DIV>
+<DIV>
+<asp:Label ID="Label14" runat="server" Text='<%$ Resources:GResource,accountnum %>' ></asp:Label>：
+<h3><asp:Label ID="Label15" runat="server" Text="31050174420000000043" ></asp:Label></h3>
+</DIV>
+<DIV>
+<asp:Label ID="Label16" runat="server" Text='<%$ Resources:GResource,transfersuccessthen %>' ></asp:Label>
+</DIV>
+</DIV></DIV>
+    </asp:Panel>
+
+    <DIV class="input string required">
+        <asp:HyperLink ID="HyperLink3" class="button blue_button " runat="server" style="width:100%" Text='<%$ Resources:GResource,reserveforrel %>' NavigateUrl="~/reserverelexam.aspx"></asp:HyperLink>
+      </DIV>
+      <DIV class="input string required">
+        <asp:HyperLink ID="HyperLink5" class="button blue_button " runat="server" style="width:100%" Text='<%$ Resources:GResource,goconsult %>' NavigateUrl="~/healthconsult.aspx">去健康咨询</asp:HyperLink>
+        </DIV>
+      <DIV class="input string required hidden">
+        <asp:HyperLink ID="HyperLink6" class="button blue_button " runat="server" style="width:100%" Text='<%$ Resources:GResource,goshopping %>' NavigateUrl="~/healthshop.aspx">逛健康商城</asp:HyperLink>
+    </DIV>
+    <DIV class="input string required">
+     <asp:HyperLink ID="HyperLink4" class="button blue_button " runat="server" style="width:100%" Text='<%$ Resources:GResource,vieworders %>' NavigateUrl="~/viewreservation.aspx">查看订单</asp:HyperLink>
+    </DIV>
+    </div>
+    <DIV class="fourcol last"></DIV>
+    </DIV>
+    </asp:Panel>
+
+   
+
+
+</div>
+</DIV></div>
+</form>
+
+
+<MPuc:footer ID="ucfooter" runat="server"/>
+ </body>
+</html>

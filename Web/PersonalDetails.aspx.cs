@@ -1,0 +1,168 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Text.RegularExpressions;
+using System.Collections;
+public partial class PersonalDetails : PageBases
+{
+    Model.tab_customers modelCu = new Model.tab_customers();
+    Model.tab_orders orders = new Model.tab_orders();
+    Bll.CustomerBll Cb = new Bll.CustomerBll();
+    Bll.SupplierBll sb = new Bll.SupplierBll();
+    Bll.OrdersBll ob = new Bll.OrdersBll();
+    Bll.companyBll comb = new Bll.companyBll();
+
+    string DOB;
+    public string classmale, classfemale, classmarried, classunmarried, supplierlistcontent, branchmapclass = "hidden", newaddressclass = "hidden";
+    
+
+    PublicClass pc = new PublicClass();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!Page.IsPostBack)
+        {
+            this.CheckUser((Hashtable)Application["Online"]);
+            if (Session["firstlogin"] != null && Session["firstlogin"] == "1")
+            {
+                this.Label1.Visible = false;
+                this.Label2.Visible = false;
+            }
+        }
+
+        modelCu.customerID = int.Parse(Session["id"].ToString());
+        modelCu = Cb.getCustomer(modelCu);
+
+        if (!Page.IsPostBack)
+        {
+            init();
+        }
+        displayage();
+    }
+    void init()
+    {
+
+        this.TextBox1.Text = modelCu.customerName;
+        this.TextBox2.Text = modelCu.customerPrivateEmail;
+
+        if (modelCu.customerIDcard != "")
+        {
+            if (modelCu.customerIDcard.Length == 18)
+            {
+                this.TextBox3.Text = modelCu.customerIDcard;
+            }
+            else
+            {
+                this.TextBox5.Text = modelCu.customerIDcard;
+            }
+        }
+        this.TextBox4.Text = modelCu.customerMobile;
+        this.TextBox13.Text = modelCu.customerNation;
+        this.TextBox7.Text = modelCu.customerCompany;
+        this.TextBox8.Text = modelCu.customerCode;
+        this.TextBox9.Text = modelCu.customerEmail;
+        this.TextBox10.Text = modelCu.customerCompanyTel;
+        this.TextBox11.Text = modelCu.customerCompanyAddress;
+        this.TextBox12.Text = modelCu.customerCompanyBU;
+
+
+        classmale = classfemale = classmarried = classunmarried = "";
+        if (modelCu.customerGender == "男")
+        {
+            this.RadioButton1.Checked = true;
+            classmale = "selected";
+        }
+        else if (modelCu.customerGender == "女")
+        {
+            this.RadioButton2.Checked = true;
+            classfemale = "selected";
+        }
+
+        if (modelCu.customerMarriageStatus == "未婚")
+        {
+            this.RadioButton3.Checked = true;
+            classunmarried = "selected";
+        }
+        else if (modelCu.customerMarriageStatus == "已婚")
+        {
+            this.RadioButton4.Checked = true;
+            classmarried = "selected";
+        }
+    }
+    void displayage()
+    {
+        int year = 1900, month = 0, day = 0, age = 0;
+        if (this.TextBox3.Text != "" && this.TextBox3.Text.Length == 18)
+        {
+            year = int.Parse(this.TextBox3.Text.Substring(6, 4));
+            month = int.Parse(this.TextBox3.Text.Substring(10, 2));
+            day = int.Parse(this.TextBox3.Text.Substring(12, 2));
+            age = DateTime.Now.Year - year;
+
+            if (int.Parse(this.TextBox3.Text.Substring(16, 1)) % 2 != 0)
+            {
+                this.RadioButton1.Checked = true;
+                classmale = "selected";
+            }
+            else
+            {
+                this.RadioButton1.Checked = false;
+                classfemale = "selected";
+            }
+        }
+        else
+        {
+            if (modelCu.customerDOB != null && modelCu.customerDOB != pc.baddate)
+            {
+                year = modelCu.customerDOB.Year;
+                month = modelCu.customerDOB.Month;
+                day = modelCu.customerDOB.Day;
+                age = DateTime.Now.Year - year;
+            }
+        }
+        if (age > 1)
+        {
+            this.TextBox6.Text = age.ToString();
+            DropDownListYear.SelectedIndex = DropDownListYear.Items.IndexOf(DropDownListYear.Items.FindByText(year.ToString()));
+            DropDownListMonth.SelectedIndex = DropDownListMonth.Items.IndexOf(DropDownListMonth.Items.FindByText(month.ToString()));
+            DropDownListDay.SelectedIndex = DropDownListDay.Items.IndexOf(DropDownListDay.Items.FindByText(day.ToString()));
+        }
+        
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        if (this.RadioButton1.Checked)
+            modelCu.customerGender = "男";
+        else if (this.RadioButton2.Checked)
+            modelCu.customerGender = "女";
+
+        if (this.RadioButton3.Checked)
+            modelCu.customerMarriageStatus = "未婚";
+        else if (this.RadioButton4.Checked)
+            modelCu.customerMarriageStatus = "已婚";
+        modelCu.customerDOB =DateTime.Parse( DropDownListYear.SelectedValue + "-" + DropDownListMonth.SelectedValue + "-" + DropDownListDay.SelectedValue);//出生日期
+        modelCu.customerNation = this.TextBox13.Text;
+        modelCu.customerIDcard = this.TextBox3.Text != "" ? this.TextBox3.Text : this.TextBox5.Text;
+        modelCu.customerMobile = this.TextBox4.Text;
+        modelCu.customerCompany = this.TextBox7.Text;
+        modelCu.customerPrivateEmail = this.TextBox2.Text;
+        modelCu.customerCompanyTel = this.TextBox10.Text;
+        modelCu.customerCompanyAddress = this.TextBox11.Text;
+        modelCu.customerCompanyBU = this.TextBox12.Text;
+
+        Cb.update(modelCu);
+
+        if (Session["firstlogin"] != null && Session["firstlogin"] == "1")
+        {
+            Session["firstlogin"] = "";
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "updatesuccess") + "'); window.location.href = 'index.aspx';</script>");
+        }
+        else
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "updatesuccess") + "');</script>");
+        }   
+    }
+}

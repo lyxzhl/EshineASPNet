@@ -1,0 +1,66 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+namespace SQLServerDAL
+{
+    public class sql_supplierpackage : IDAL.supplierpackageDal
+    {
+        DBunit.SQLAccess sql = new DBunit.SQLAccess();
+        DateTime baddate = DateTime.Parse("1900-01-01");
+        public int Add(Model.supplierpackage supplierpackage)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("insert into supplierpackage values (");
+            strsql.AppendFormat("N'{0}',", supplierpackage.suppliercode);
+            strsql.AppendFormat("N'{0}',", supplierpackage.mpcode);
+            strsql.AppendFormat("N'{0}',", supplierpackage.supplier);
+            strsql.AppendFormat("{0}", supplierpackage.price);
+            strsql.Append(") select SCOPE_IDENTITY()");
+            return Convert.ToInt32(sql.ExecuteSc(strsql.ToString()));
+        }
+
+
+        public Model.supplierpackage getsupplierpackage(Model.supplierpackage supplierpackage1)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("select * from supplierpackage where ");
+            strsql.AppendFormat("id='{0}'", supplierpackage1.id);
+            DataTable dt = sql.ExecuteDataSet(strsql.ToString()).Tables[0];
+            if (dt.Rows.Count < 1) return null;
+
+            Model.supplierpackage supplierpackage = new Model.supplierpackage();
+            supplierpackage.id = supplierpackage1.id;
+            supplierpackage.suppliercode = dt.Rows[0]["suppliercode"].ToString();
+            supplierpackage.mpcode = dt.Rows[0]["mpcode"].ToString();
+            supplierpackage.supplier = dt.Rows[0]["supplier"].ToString();
+            supplierpackage.price = dt.Rows[0]["price"].ToString() == "" ? 0 : double.Parse(dt.Rows[0]["price"].ToString());
+            return supplierpackage;
+        }
+
+
+        public int update(Model.supplierpackage supplierpackage)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("update supplierpackage set ");
+            strsql.AppendFormat(" suppliercode =N'{0}',", supplierpackage.suppliercode);
+            strsql.AppendFormat(" mpcode =N'{0}',", supplierpackage.mpcode);
+            strsql.AppendFormat(" supplier =N'{0}',", supplierpackage.supplier);
+            strsql.AppendFormat(" price ='{0}'", supplierpackage.price);
+            strsql.AppendFormat(" where id={0}", supplierpackage.id);
+            return sql.ExecuteNonQuery(strsql.ToString());
+        }
+
+
+        public int Delete(int id)
+        {
+            return sql.ExecuteNonQuery("delete from supplierpackage where id=" + id);
+        }
+        public DataTable Select(string ss)
+        {
+            return sql.ExecuteDataSet(ss).Tables[0];
+        }
+
+
+    }
+}

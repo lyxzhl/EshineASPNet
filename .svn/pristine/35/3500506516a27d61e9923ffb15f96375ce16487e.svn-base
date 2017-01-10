@@ -1,0 +1,113 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Model
+{
+    public class tab_examcard
+    {
+        private int _id = 0;
+        private string _CardNumIKang = "";
+        private string _CardNumMeiNian = "";
+        private string _CardNumCiMing = "";
+        private string _CardNum1 = "";
+        private string _CardNum2 = "";
+        private string _CardNum3 = "";
+        private string _Cardstatus = "";
+        private string _company = "";
+        private string _name = "";
+        private int _orderID = 0;
+        private string _IDcard = "";
+        private int _customerID = 0;
+        private int _relativeID = 0;
+
+
+        public int id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        public string CardNumIKang
+        {
+            get { return _CardNumIKang; }
+            set { _CardNumIKang = value; }
+        }
+
+        public string CardNumMeiNian
+        {
+            get { return _CardNumMeiNian; }
+            set { _CardNumMeiNian = value; }
+        }
+
+        public string CardNumCiMing
+        {
+            get { return _CardNumCiMing; }
+            set { _CardNumCiMing = value; }
+        }
+
+        public string CardNum1
+        {
+            get { return _CardNum1; }
+            set { _CardNum1 = value; }
+        }
+
+        public string CardNum2
+        {
+            get { return _CardNum2; }
+            set { _CardNum2 = value; }
+        }
+
+        public string CardNum3
+        {
+            get { return _CardNum3; }
+            set { _CardNum3 = value; }
+        }
+
+        public string Cardstatus
+        {
+            get { return _Cardstatus; }
+            set { _Cardstatus = value; }
+        }
+
+        public string company
+        {
+            get { return _company; }
+            set { _company = value; }
+        }
+
+        public string name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+
+        public int orderID
+        {
+            get { return _orderID; }
+            set { _orderID = value; }
+        }
+
+        public string IDcard
+        {
+            get { return _IDcard; }
+            set { _IDcard = value; }
+        }
+
+        public int customerID
+        {
+            get { return _customerID; }
+            set { _customerID = value; }
+        }
+
+        public int relativeID
+        {
+            get { return _relativeID; }
+            set { _relativeID = value; }
+        }
+
+
+
+
+    }
+}

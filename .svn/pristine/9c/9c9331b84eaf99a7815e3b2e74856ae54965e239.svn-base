@@ -1,0 +1,155 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+
+public partial class login3 : PageBases
+{
+    Model.tab_customers modelCu = new Model.tab_customers();
+    Model.tab_loginlog loginlog = new Model.tab_loginlog();
+    Bll.empBll emp = new Bll.empBll();
+    Model.tab_emps modelEmp = new Model.tab_emps();
+    Bll.loginlogBll lb = new Bll.loginlogBll();
+    Bll.newsBll nb = new Bll.newsBll();
+    Bll.CustomerBll Cb = new Bll.CustomerBll();
+    PublicClass pc = new PublicClass();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        Session["id"] = "";
+    }
+    void addloginlog()
+    {
+        loginlog.loginid = this.TextBox1.Text;
+        loginlog.loginpw = this.TextBox2.Text;
+        loginlog.time = DateTime.Now;
+        loginlog.loginip = getIp();
+        loginlog.loginbrowser = Request.Browser.Type;
+        loginlog.logindevice = Request.Browser.MobileDeviceManufacturer + " " + Request.Browser.MobileDeviceModel;
+        //loginlog.status = ;
+        loginlog.note = "IsMobileDevice:" + Request.Browser.IsMobileDevice + "|" +
+            "UserAgent:" + Request.UserAgent + "|" +
+           "ScreenPixelsHeight:" + Request.Browser.ScreenPixelsHeight + "|" +
+           "ScreenPixelsWidth:" + Request.Browser.ScreenPixelsWidth + "|" +
+           "http_X_UP_subno:" + Request.ServerVariables["http_X_UP_subno"] + "|" +
+           "http_x-up-calling-line-id:" + Request.ServerVariables["http_x-up-calling-line-id"] + "|" +
+           "http_user-agent:" + Request.ServerVariables["http_user-agent"] + "|" +
+           "http_x_up_calling_line_id:" + Request.ServerVariables["http_x_up_calling_line_id"] + "|" +
+           "deviceid:" + Request.ServerVariables["deviceid"] + "|" +
+           "x_up_calling_line_id:" + Request.ServerVariables["x_up_calling_line_id"] + "|" +
+           "x-up-calling-line-id:" + Request.ServerVariables["x-up-calling-line-id"] + "|" +
+           "user_agent:" + Request.ServerVariables["user_agent"] + "|" +
+           "user-agent:" + Request.ServerVariables["user-agent"] + "|" +
+           "http_x_up_bear_type:" + Request.ServerVariables["http_x_up_bear_type"];
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        if (this.TextBox1.Text != "" && this.TextBox2.Text != "")
+        {
+            if (StrSecurity.CheckStr(this.TextBox1.Text + this.TextBox2.Text) == false)
+            {
+                Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('用户提交非法字符')</script>");
+                return;
+            }
+            addloginlog();
+
+            modelCu.customerCode = this.TextBox1.Text;
+            modelCu.customerPwd = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(this.TextBox2.Text, "MD5").ToLower();
+            DataTable dt = Cb.CustomerSelect(modelCu);
+            if (dt.Rows.Count > 0)
+            {
+                loginlog.status = "ok";
+                lb.Add(loginlog);
+
+                Session["cus"] = dt.Rows[0]["customerName"];
+                Session["Companycode"] = dt.Rows[0]["customerCompanycode"];
+                Session["id"] = dt.Rows[0]["customerID"];
+
+                //更新最后登录时间
+                modelCu.customerID = int.Parse(dt.Rows[0]["customerID"].ToString());
+                modelCu = Cb.getCustomer(modelCu);
+                modelCu.customerLastLogin = DateTime.Now;
+                Cb.update(modelCu);
+
+
+                //检查日期是否为空，如果从来没修改过密码，则为首次登录
+                if (dt.Rows[0]["customerLastPWChanged"] == null || dt.Rows[0]["customerLastPWChanged"].ToString() == "" || Convert.ToDateTime(dt.Rows[0]["customerLastPWChanged"]) == pc.baddate)
+                {
+                    Session["firstlogin"] = "1";
+                    Response.Redirect("changepassword.aspx");
+                }
+                else if (dt.Rows[0]["customerMsg"] == null || dt.Rows[0]["customerMsg"].ToString() == "")//检查有没有打勾确认服务条款
+                {
+                    Session["firstlogin"] = "1";
+                    Response.Redirect("TermsOfService.aspx");
+
+                }
+
+
+                //检查是否密码已过期
+                if (DateTime.Now > DateTime.Parse(dt.Rows[0]["customerLastPWChanged"].ToString()).AddDays(180))
+                {
+                    Response.Redirect("changepassword.aspx");
+                }
+
+                Response.Redirect("index.aspx");
+                //Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('登陆成功')</script>");
+            }
+            else 
+            {
+                modelEmp.empName = this.TextBox1.Text;
+                modelEmp.empPwd = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(this.TextBox2.Text, "MD5").ToLower();
+                DataTable dr = emp.GetModel(modelEmp);
+                if (dr.Rows.Count > 0 && dr.Rows[0]["roleID"].ToString() == "10")
+                {
+                    loginlog.status = "ok";
+                    lb.Add(loginlog);
+                    Session["Companycode"] = this.TextBox1.Text;
+                    Response.Redirect("hrpage.aspx");
+                }
+                else
+                {
+                    loginlog.status = "failed";
+                    lb.Add(loginlog);
+
+                    Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('用户名或密码错误!!')</script>");
+                    this.TextBox1.Text = "";
+                    this.TextBox2.Text = "";
+                    this.TextBox1.Focus();
+                }
+
+            }
+
+            
+        }
+        else
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('用户名及密码不能为空')</script>");
+        }
+    }
+    public string getIp()
+    {
+        string ip2;
+        string ip = Request.ServerVariables["HTTP_X_FORWARDED_FOR"];//优先取得代理IP 
+        if (string.IsNullOrEmpty(ip))
+        {
+            //没有代理IP则直接取客户端IP 
+            ip = Request.ServerVariables["REMOTE_ADDR"];
+        }
+
+        ip2 = Request.UserHostAddress;
+
+        if (ip != ip2)
+        {
+            ip += "," + ip2;
+        }
+
+        return ip;
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("fetchpassword.aspx");
+    }
+}

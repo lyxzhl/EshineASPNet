@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+namespace IDAL
+{
+    public interface xiyasuppliersDal
+    {
+        int Add(Model.tab_xiyasuppliers xiyasuppliers);
+        Model.tab_xiyasuppliers getxiyasuppliers(Model.tab_xiyasuppliers xiyasuppliers1);
+        int update(Model.tab_xiyasuppliers xiyasuppliers);
+        int Delete(int supplier);
+        DataTable Select(string ss);
+
+    }
+}

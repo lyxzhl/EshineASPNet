@@ -1,0 +1,54 @@
+BODY {
+	SCROLLBAR-FACE-COLOR: #dedede; FONT-SIZE: 9pt; SCROLLBAR-HIGHLIGHT-COLOR: #f5f9ff; SCROLLBAR-SHADOW-COLOR: #828282; SCROLLBAR-3DLIGHT-COLOR: #828282; SCROLLBAR-ARROW-COLOR: #797979; SCROLLBAR-TRACK-COLOR: #efefef; FONT-FAMILY: "宋体"; SCROLLBAR-DARKSHADOW-COLOR: #ffffff
+}
+TD {
+	FONT-SIZE: 9pt; LINE-HEIGHT: 20px
+}
+.wenzhan {
+	FONT-SIZE: 10pt; COLOR: #333333; TEXT-INDENT: 2em; LINE-HEIGHT: 120%; LETTER-SPACING: 0.5pt
+}
+A:link {
+	FONT-SIZE: 9pt; COLOR: #333333; FONT-FAMILY: "宋体"; TEXT-DECORATION: none
+}
+A:visited {
+	FONT-SIZE: 9pt; COLOR: #666666; FONT-FAMILY: "宋体"; TEXT-DECORATION: none
+}
+A:hover {
+	FONT-SIZE: 9pt; COLOR: #ff6600; FONT-FAMILY: "宋体"; TEXT-DECORATION: none
+}
+.time {
+	FONT-SIZE: 9pt; COLOR: #ff9900; FONT-FAMILY: "宋体"; TEXT-DECORATION: none
+}
+.biaoti {
+	FONT-WEIGHT: normal; FONT-SIZE: 18pt; COLOR: #333333; FONT-FAMILY: "宋体"; TEXT-DECORATION: none
+}
+.button1 {
+	BORDER-RIGHT: #999999 1px double; BORDER-TOP: #999999 1px double; BORDER-LEFT: #999999 1px double; BORDER-BOTTOM: #999999 1px double
+}
+.button2 {
+	BORDER-RIGHT: #e1c486 1px outset; BORDER-TOP: #e1c486 1px outset; BORDER-LEFT: #e1c486 1px outset; COLOR: #ffffff; BORDER-BOTTOM: #e1c486 1px outset; HEIGHT: 18px; BACKGROUND-COLOR: #999999
+}
+.button3 {
+	BORDER-RIGHT: #e1c486 1px outset; BORDER-TOP: #e1c486 1px outset; BORDER-LEFT: #e1c486 1px outset; COLOR: #ffffff; BORDER-BOTTOM: #e1c486 1px outset; HEIGHT: 18px; BACKGROUND-COLOR: #c50000
+}
+.lanmu {
+	FONT-WEIGHT: bold; FONT-SIZE: 13pt; COLOR: #ff9900; FONT-FAMILY: "宋体"; TEXT-DECORATION: none
+}
+.bo1 {
+	BACKGROUND-COLOR: #ccffcc
+}
+.bo2 {
+	
+}
+.bo3 {
+	BACKGROUND-COLOR: #fff8dc
+}
+.imglink {
+	FONT-SIZE: 12px; BACKGROUND: #ebebeb repeat-x left top; FLOAT: left; MARGIN: 6px; WIDTH: 100px; HEIGHT: 150px; TEXT-ALIGN: center
+}
+.catabaner {
+	FONT-SIZE: 12px; BACKGROUND: #ebebeb repeat-x left top; FLOAT: left; MARGIN: 6px; WIDTH: 320px; HEIGHT: 190px
+}
+.sec_menu{
+    background-color:#FFFAFA;
+}

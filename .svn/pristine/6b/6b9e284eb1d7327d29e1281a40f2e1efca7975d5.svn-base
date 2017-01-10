@@ -1,0 +1,224 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" validateRequest="false" CodeFile="packageUpdate.aspx.cs" Inherits="Admin_packageAdmin_packageUpdate" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head id="Head1" runat="server">
+    <title>无标题页</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../kindeditor/themes/default/default.css" />
+	<link rel="stylesheet" href="../../kindeditor/plugins/code/prettify.css" />
+	<script charset="utf-8" src="../../kindeditor/kindeditor.js"></script>
+	<script charset="utf-8" src="../../kindeditor/lang/zh_CN.js"></script>
+	<script charset="utf-8" src="../../kindeditor/plugins/code/prettify.js"></script>
+	<script>
+	    KindEditor.ready(function (K) {
+	        var editor1 = K.create('#content1', {
+	            cssPath: '../../kindeditor/plugins/code/prettify.css',
+	            uploadJson: '../../kindeditor/asp.net/upload_json.ashx',
+	            fileManagerJson: '../../kindeditor/asp.net/file_manager_json.ashx',
+	            allowFileManager: true,
+	            afterCreate: function () {
+	                var self = this;
+	                K.ctrl(document, 13, function () {
+	                    self.sync();
+	                    K('form[name=example]')[0].submit();
+	                });
+	                K.ctrl(self.edit.doc, 13, function () {
+	                    self.sync();
+	                    K('form[name=example]')[0].submit();
+	                });
+	            }
+	        });
+	        prettyPrint();
+	    });
+function Button2_onclick() {
+
+}
+
+	</script>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+      <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
+            <tr>
+                <td class="title" colspan="5">
+                    <asp:Label ID="Label1" runat="server" Text="体检套餐更新"></asp:Label> </td>
+            </tr>
+<tr>
+                            <td align="center" style="width: 100px">
+                               
+                                        <asp:Button ID="Button1" runat="server" CssClass="button" OnClick="Button1_Click"
+                                            Text="更　新" />
+                                <asp:Button ID="Button4" runat="server"  CssClass="button" Text="提  交" onclick="Button4_Click" Visible="False" />
+                            </td>
+    
+                            <td colspan="2">
+                                <asp:Button ID="Button2" runat="server" class="button" Text="返　回" onclick="Button2_Click" />
+                                </td>
+          <br />
+                            <td colspan="1">
+                            </td>
+                            <td colspan="1">
+                            </td>
+                        </tr>
+
+        </table>
+    </div><br>
+      
+            <table border="1" cellpadding="1" cellspacing="1" class="adminContent" style="width: 100%">
+                <tr>
+                    <td align="center" style="width: 100px; height: 23px;" width="132">
+                        套餐代码：</td>
+                    <td style="width: 22px; height: 23px;" width="144">
+                        <asp:TextBox ID="TextBox1" runat="server" CssClass="TextBox" Width="175px"></asp:TextBox></td>
+                        <td align="center" style="width: 100px; height: 23px;" width="132">
+                        套餐名称：</td>
+                    <td style="width: 22px; height: 23px;" width="144">
+                        <asp:TextBox ID="TextBox9" runat="server" CssClass="TextBox" Width="175px"></asp:TextBox></td>
+                    
+                </tr>
+
+
+                <tr>
+                    <td align="center" style="width: 100px; height: 23px;" width="266">
+                        公司：</td>
+                    <td style="width: 100px; height: 23px;" width="243">
+                        <asp:TextBox ID="TextBox5" runat="server" CssClass="TextBox" Width="175px"></asp:TextBox></td>
+                    <td align="center" style="width: 100px">
+                        供应商：</td>
+                    <td style="width: 22px">
+                        <asp:TextBox ID="TextBox2" runat="server" CssClass="TextBox" Width="175px"></asp:TextBox></td>
+                </tr>
+
+
+
+                <tr>
+                    <td align="center" style="width: 100px; height: 23px;" width="266">
+                        预算：</td>
+                    <td style="width: 100px; height: 23px;" width="243">
+                        <asp:TextBox ID="TextBox10" runat="server" CssClass="TextBox" Width="175px"></asp:TextBox></td>
+                    <td align="center" style="width: 100px">
+                        VIP：</td>
+                    <td style="width: 100px">
+                        <asp:TextBox ID="TextBox3" runat="server" CssClass="TextBox" Width="175px"></asp:TextBox></td>
+                </tr>
+                
+                <tr>
+                    <td align="center" style="width: 100px">
+                        价格：</td>
+                    <td style="width: 22px">
+                        <asp:TextBox ID="TextBox4" runat="server" CssClass="TextBox" Width="175px"></asp:TextBox>
+                    </td>
+                    <td align="center" style="width: 100px">
+                    市场价：</td>
+                    <td style="width: 100px">
+                        <asp:TextBox ID="TextBox8" runat="server" CssClass="TextBox" Width="175px"></asp:TextBox>
+                    </td>
+                </tr>
+               <tr>
+                    <td align="center" style="width: 100px">
+                        到期日期：</td>
+                    <td style="width: 22px">
+                        <asp:TextBox ID="TextBox7" runat="server" CssClass="TextBox" Width="175px"></asp:TextBox></td>
+                    <td align="center" style="width: 100px">
+                    添加日期：</td>
+                    <td style="width: 100px">
+                        <asp:TextBox ID="TextBox6" runat="server" CssClass="TextBox" Width="175px" Enabled="False"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" valign="top">
+                        套餐内容：</td>
+                    <td colspan="3" >
+                        <textarea id="content1" cols="100" rows="8" style="width:700px;height:400px;visibility:hidden;" runat="server"></textarea>
+         
+                        </td>
+                </tr>
+                
+            </table>
+            <br />
+    <asp:Panel ID="Panel1" runat="server">
+<table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
+            <tr>
+                <td class="title" colspan="3">
+                    升级包管理</td>
+            </tr>
+<tr>
+                            <td align="center" style="width: 100px">
+                               
+                                        <asp:Button ID="Button3" runat="server" CssClass="button"
+                                            Text="新  增" onclick="Button3_Click" />
+                                
+                            </td>
+                        </tr>
+                        <caption>
+                            &nbsp;&nbsp;
+                            <tr>
+                                <td>
+                                </td>
+                                <td colspan="1">
+                                </td>
+                                <td colspan="1">
+                                </td>
+                            </tr>
+            </caption>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <asp:GridView ID="GridView1" runat="server" AllowSorting="True" 
+                        AutoGenerateColumns="False" DataKeyNames="id" DataSourceID="SqlDataSource1">
+                        <Columns>
+                            <asp:HyperLinkField DataNavigateUrlFields="id" 
+                                DataNavigateUrlFormatString="uppkgUpdate.aspx?Cid={0}" HeaderText="" 
+                                ItemStyle-Wrap="False" SortExpression="id" Text="编辑" />
+                            <asp:BoundField DataField="uppkgcode" HeaderText="uppkgcode" 
+                                SortExpression="uppkgcode" />
+                            <asp:BoundField DataField="note" HeaderText="note" SortExpression="note" />
+                            <asp:BoundField DataField="price" HeaderText="price" 
+                                SortExpression="price" />
+                            <asp:BoundField DataField="VIP" HeaderText="VIP" SortExpression="VIP" />
+                            <asp:BoundField DataField="id" HeaderText="id" InsertVisible="False" 
+                                ReadOnly="True" SortExpression="id" />
+                        </Columns>
+                    </asp:GridView>
+                    <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
+                        ConnectionString="<%$ ConnectionStrings:db_ConnectionString %>" 
+                        DeleteCommand="DELETE FROM [tab_uppkg] WHERE [id] = @original_id" 
+                        InsertCommand="INSERT INTO [tab_uppkg] ([uppkgcode], [note], [price], [VIP]) VALUES (@uppkgcode, @note, @price, @VIP)" 
+                        OldValuesParameterFormatString="original_{0}" 
+                        SelectCommand="SELECT [uppkgcode], [note], [price], [VIP], [id] FROM [tab_uppkg] WHERE ([packagecode] = @packagecode)" 
+                        
+                        UpdateCommand="UPDATE [tab_uppkg] SET [uppkgcode] = @uppkgcode, [note] = @note, [price] = @price, [VIP] = @VIP WHERE [id] = @original_id" 
+                        ProviderName="System.Data.SqlClient">
+                        <DeleteParameters>
+                            <asp:Parameter Name="original_id" Type="Int32" />
+                        </DeleteParameters>
+                        <InsertParameters>
+                            <asp:Parameter Name="uppkgcode" Type="String" />
+                            <asp:Parameter Name="note" Type="String" />
+                            <asp:Parameter Name="price" Type="Double" />
+                            <asp:Parameter Name="VIP" Type="String" />
+                        </InsertParameters>
+                        <SelectParameters>
+                            <asp:QueryStringParameter Name="packagecode" QueryStringField="Cid" 
+                                Type="String" />
+                        </SelectParameters>
+                        <UpdateParameters>
+                            <asp:Parameter Name="uppkgcode" Type="String" />
+                            <asp:Parameter Name="note" Type="String" />
+                            <asp:Parameter Name="price" Type="Double" />
+                            <asp:Parameter Name="VIP" Type="String" />
+                            <asp:Parameter Name="original_id" Type="Int32" />
+                        </UpdateParameters>
+                    </asp:SqlDataSource>
+                </td>
+            </tr>
+        </table>
+    </asp:Panel>
+            
+    <br /><br />
+    </form>
+</body>
+</html>

@@ -1,0 +1,127 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+
+public partial class IndexPage_ShopCar : System.Web.UI.Page
+{
+    Bll.ProductBll b_Pro = new Bll.ProductBll();
+    ShopingCar sh = new ShopingCar();
+    public string dy;
+    protected void Page_Load(object sender, EventArgs e)
+    { 
+        DataTable dt = (DataTable)Session["shop"];
+        if (Session["shop"] != null)
+        dy = sh.GetSum(dt).ToString();
+        if (!Page.IsPostBack)
+        {
+            if (Session["shop"] != null)
+            {       
+                dy = sh.GetSum(dt).ToString();
+                 this.DataList1.DataSource = dt;
+                this.DataList1.DataBind();
+                Session["zr"] = sh.GetSum(dt).ToString();
+            }
+            else
+            {
+                Page page = new Page();
+                page.RegisterClientScriptBlock("key", "<script>alter('sa')</script>");
+            }
+        }
+    }
+    protected void Submit1_ServerClick(object sender, EventArgs e)
+    {
+
+    }
+    protected void Submit2_ServerClick(object sender, EventArgs e)
+    {
+        if (Session["cus"] == null)
+        {
+            Session["url"] = "Pay.aspx";
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('您还没登陆！！！')</script>");
+            //ClientScript.RegisterStartupScript(GetType(), "", "<script language>alert('您还没登陆！！！')</script>");
+            Server.Transfer("BindPro.aspx?pid=0");
+        }
+        else
+        {
+            Server.Transfer("Pay.aspx");
+        }
+    }
+    protected void DataList1_ItemCommand(object source, DataListCommandEventArgs e)
+    {
+        //if (e.CommandName == "zr")
+        //{
+        //    DataTable dt = (DataTable)Session["shop"];
+        //    TextBox la = (TextBox)e.Item.FindControl("TextBox1");
+        //    string id = this.DataList1.DataKeys[e.Item.ItemIndex].ToString();
+        //    dt = sh.Update(Convert.ToInt32(id), Convert.ToInt32(la.Text), dt);
+        //    Session["shop"] = dt;
+        //    this.DataList1.DataSource = dt;
+        //    this.DataList1.DataBind();
+        //}
+    }
+    string proID="";
+    protected void U(object sender, EventArgs e)
+    {
+        try
+        {
+            DataTable dt = (DataTable)Session["shop"];
+            for (int i = 0; i < this.DataList1.Items.Count; i++)
+            {
+                CheckBox cb = (CheckBox)this.DataList1.Items[i].FindControl("CheckBox1");
+                if (cb.Checked)
+                {
+                    string id = this.DataList1.DataKeys[this.DataList1.Items[i].ItemIndex].ToString();
+                    proID += id + "|";
+                }
+
+            }
+            proID = proID.Remove(proID.Length - 1, 1);
+            try
+            {
+                for (int j = 0; j < this.DataList1.Items.Count; j++)
+                {
+
+                    TextBox tb = (TextBox)this.DataList1.Items[j].FindControl("TextBox1");
+                    if (Convert.ToInt32(tb.Text) > 0)
+                    {
+                        string[] str = proID.Split('|');
+                        dt = sh.Update(Convert.ToInt32(str[j]), Convert.ToInt32(tb.Text), dt);
+                        dy = sh.GetSum(dt).ToString();
+                    }
+                }
+
+            }
+            catch
+            {
+
+            } this.DataList1.DataSource = dt;
+            this.DataList1.DataBind();
+        }
+        catch
+        { }
+    }
+    protected void CheckBox1_CheckedChanged(object sender, EventArgs e)
+    {
+        DataTable dt = (DataTable)Session["shop"];
+        for (int i = 0; i < this.DataList1.Items.Count; i++)
+        {
+            CheckBox cb = (CheckBox)this.DataList1.Items[i].FindControl("CheckBox1");
+            if (!cb.Checked)
+            {
+                string id = this.DataList1.DataKeys[this.DataList1.Items[i].ItemIndex].ToString();
+                dt = sh.Delete(Convert.ToInt32(id), dt);
+                dy = sh.GetSum(dt).ToString();
+            }
+        }
+        this.DataList1.DataSource = dt;
+        this.DataList1.DataBind();
+        Response.Redirect("ShopCar.aspx");
+    }
+}

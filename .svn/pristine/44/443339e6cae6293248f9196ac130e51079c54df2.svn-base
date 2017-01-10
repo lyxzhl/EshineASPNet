@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+namespace Bll
+{
+    public class uppkgBll
+    {
+        IDAL.uppkgDal itu = DALFactory.uppkg_Factory.Createusers();
+        public int Add(Model.tab_uppkg uppkg)
+        {
+            return itu.Add(uppkg);
+        }
+        public Model.tab_uppkg getuppkg(Model.tab_uppkg uppkg1)
+        {
+            return itu.getuppkg(uppkg1);
+        }
+        public int update(Model.tab_uppkg uppkg)
+        {
+            return itu.update(uppkg);
+        }
+        public int Delete(int id)
+        {
+            return itu.Delete(id);
+        }
+        public DataTable Select(string ss)
+        {
+            return itu.Select(ss);
+        }
+
+        public int getuppkglimit(string uppkgcode, string packagecode)
+        {
+            DBunit.SQLAccess dbsql = new DBunit.SQLAccess();
+            string s = "select grouplimit from tab_uppkg where uppkgcode='" + uppkgcode + "' and packagecode='" + packagecode + "'";
+            if (dbsql.ExecuteSc(s) == null || dbsql.ExecuteSc(s).ToString() == "")
+                return 0;
+            else
+                return int.Parse(dbsql.ExecuteSc(s).ToString());
+        }
+    }
+
+}

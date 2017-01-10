@@ -1,0 +1,77 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <div class="left aClick" onclick="goTo('../../index.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </div>
+        <div class="center">
+            体检报告       
+        </div>
+        <div class="right">
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through hide-toolbar-on-scroll">
+    <div data-page="ViewPDF" class="page">
+        <div class="page-content  content_ViewPDF">
+            <div class="ViewPDF-wrap">
+                <!--<iframe src="http://www.qx831215.com/web/viewer.html" height="100%" width="100%"></iframe>-->
+                <div class="group-item">
+                    <div class="row-item">
+                        <div class="pull-left">体检号</div>
+                        <div class="pull-right">81-20151029-XXX</div>
+                    </div>
+                    <div class="row-item">
+                        <div class="pull-left">姓名</div>
+                        <div class="pull-right">夏珺</div>
+                    </div>
+                    <div class="row-item">
+                        <div class="pull-left">性别</div>
+                        <div class="pull-right">男</div>
+                    </div>
+                    <div class="row-item">
+                        <div class="pull-left">
+                            <p>尊敬的<big> 夏珺 </big>先生：您好！</p>
+                            <p>上海爱康国宾名门门诊部欢迎您的光临，感谢您对我们的信任和支持。</p>
+                            <p>现将您2015年10月29 日的体检报告呈上，希望能为维护您的健康提供参考。</p>
+                        </div>
+                    </div>
+                    <div class="row-item">
+                        <div class="pull-left">
+                            <p>报告阅读说明</p>
+                            <p>您本次体检报告由健康信息、本次体检主要异常指标汇总及专家指导建议和本次体检结果等部分组成。</p>
+                            <p>健康体检数据只是针对本次体检覆盖的相关器官的相关项目或指标的检查结果，并非能覆盖人体全部器官及全部指标。</p>
+                            <p>如果您提供健康信息不完整，可能会导致体检结果有偏差。</p>
+                            <p>由于体检选项及医学本身的局限性，本次体检未见异常并不代表没有疾病，如您有不适症状，请 及时到医院就诊。</p>
+                        </div>
+                    </div>
+                    <div class="row-item">
+                        <h5>一般项目检查</h5>
+                        <div class="row">
+                            <div class="col-20">检查项目</div>
+                            <div class="col-20">测量结果</div>
+                            <div class="col-20">单位</div>
+                            <div class="col-20">异常描述</div>
+                            <div class="col-20">正常参考值</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-20">身高</div>
+                            <div class="col-20">173.5</div>
+                            <div class="col-20">cm</div>
+                            <div class="col-20"></div>
+                            <div class="col-20"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-20">体重</div>
+                            <div class="col-20">84.5</div>
+                            <div class="col-20">kg</div>
+                            <div class="col-20"></div>
+                            <div class="col-20"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

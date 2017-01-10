@@ -1,0 +1,118 @@
+﻿using System;
+using System.Data;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class Admin_packageAdmin_packageUpdate : System.Web.UI.Page
+{
+    Bll.packageBll pb = new Bll.packageBll();
+    Model.tab_package modelpb = new Model.tab_package();
+    PublicClass pc = new PublicClass();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!Page.IsPostBack)
+        {
+            if (Request.QueryString["newpackage"] != null && Request.QueryString["newpackage"].ToString() == "yes")
+            {
+                this.Panel1.Visible = false;
+                this.Label1.Text = "新增体检套餐";
+                this.Button1.Visible = false;
+                this.Button4.Visible = true;
+                this.TextBox6.Text = DateTime.Now.ToString();
+            }
+            else
+            {
+                ViewState["id"] = Request.QueryString["Cid"];
+                modelpb.id = Convert.ToInt32( ViewState["id"]);
+                modelpb = pb.getpackage(modelpb);
+                //DataTable dt = pb.Select(modelpb);
+                this.TextBox1.Text = modelpb.packagecode;
+                
+                this.TextBox5.Text = modelpb.company;
+                this.TextBox2.Text = modelpb.supplier;
+                this.TextBox10.Text = modelpb.budget.ToString();
+                this.TextBox3.Text = modelpb.VIP;
+                this.TextBox7.Text = modelpb.expiredate.ToShortDateString();
+                this.TextBox6.Text = modelpb.addtime.ToShortDateString();
+                this.TextBox4.Text = modelpb.price.ToString();
+                this.TextBox8.Text = modelpb.marketprice.ToString();
+
+                if (Session["language"] != null && Session["language"].ToString() == "en-us")
+                {
+                    content1.Value = modelpb.msg_eng;
+                    this.TextBox9.Text = modelpb.note_eng;
+                }
+                else
+                {
+                    content1.Value = modelpb.msg;
+                    this.TextBox9.Text = modelpb.note;
+                }
+            }
+        }
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("packageInfo.aspx");
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        modelpb.id = Convert.ToInt32(ViewState["id"]);
+        modelpb = pb.getpackage(modelpb);
+        fillcommonmodel();
+        modelpb.addtime = this.TextBox6.Text == "" ? pc.baddate : DateTime.Parse(this.TextBox6.Text);
+        int i = pb.update(modelpb);
+        if (i != 0)
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('更新成功'); window.location.href = 'packageInfo.aspx';</script>");
+            
+        }
+    }
+
+    protected void Button3_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("uppkgUpdate.aspx?newpkg=" + ViewState["packagecode"]);
+    }
+
+    void fillcommonmodel()
+    {
+        modelpb.packagecode = this.TextBox1.Text;
+        
+        modelpb.company = this.TextBox5.Text;
+        modelpb.supplier = this.TextBox2.Text;
+        modelpb.budget = this.TextBox10.Text == "" ? 0 : double.Parse(this.TextBox10.Text);
+        modelpb.VIP = this.TextBox3.Text;
+        modelpb.expiredate = this.TextBox7.Text == "" ? pc.baddate : DateTime.Parse(this.TextBox7.Text);
+        modelpb.price = this.TextBox4.Text == "" ? 0 : double.Parse(this.TextBox4.Text);
+        modelpb.marketprice = this.TextBox8.Text == "" ? 0 : double.Parse(this.TextBox8.Text);
+        
+
+        if (Session["language"] != null && Session["language"].ToString() == "en-us")
+        {
+            modelpb.note_eng = this.TextBox9.Text;
+            modelpb.msg_eng = content1.Value.Replace("'", "''");
+            modelpb.msg = modelpb.msg.Replace("'", "''");
+        }
+        else
+        {
+            modelpb.note = this.TextBox9.Text;
+            modelpb.msg = content1.Value.Replace("'", "''");
+            modelpb.msg_eng = modelpb.msg_eng.Replace("'", "''");
+        }
+    }
+    protected void Button4_Click(object sender, EventArgs e)
+    {
+        
+        fillcommonmodel();
+
+        modelpb.addtime = DateTime.Now;
+        int i = pb.Add(modelpb);
+        if (i != 0)
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('添加成功'); window.location.href = 'packageInfo.aspx';</script>");
+            
+        }
+    }
+}

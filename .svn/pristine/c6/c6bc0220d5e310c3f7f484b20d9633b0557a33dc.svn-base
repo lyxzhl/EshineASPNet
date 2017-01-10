@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text;
+
+namespace IDAL
+{
+    public interface RiskassessmentDal
+    {
+        int Add(Model.Riskassessment Riskassessment);
+        Model.Riskassessment getRiskassessment(Model.Riskassessment Riskassessment1);
+        int update(Model.Riskassessment Riskassessment);
+        int Delete(int id);
+        DataTable Select(string ss);
+
+    }
+}

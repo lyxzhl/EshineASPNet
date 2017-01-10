@@ -1,0 +1,83 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Collections;
+using ikang;
+public partial class viewreport : PageBases
+{
+    Model.tab_customers modelCu = new Model.tab_customers();
+    Model.tab_orders modelod = new Model.tab_orders();
+    Bll.CustomerBll Cb = new Bll.CustomerBll();
+    Bll.OrdersBll ob = new Bll.OrdersBll();
+    ikangservice iks = new ikangservice();
+    ikangmember ikm = new ikangmember();
+
+    void checkiknewreport()
+    {
+        DataTable dt = ob.GetAny("select tab_orders.orderID,supplierOrderID,tab_examcard.CardNumIKang from tab_orders " +
+            "join tab_examcard on tab_orders.customerID=tab_examcard.customerID "
+            +"where tab_orders.customerID="+modelCu.customerID+
+            " and tab_orders.orderStatus=N'已预约' and tab_orders.examSupplier=N'爱康国宾'");
+        if (dt.Rows.Count > 0)
+        {
+            ikm.orderid = dt.Rows[0]["supplierOrderID"].ToString();
+            ikm.cardnumber = dt.Rows[0]["CardNumIKang"].ToString();
+            byte[] array=new byte[1000];
+            string result=iks.checkexam(ref ikm,ref array);
+            if (result.Substring(0, 2) == "ok")
+            {
+                string path = result.Substring(3, result.Length - 3);
+                ob.updatereportpath(Convert.ToInt32(dt.Rows[0]["orderID"]), path);
+            }
+
+        }
+    }
+    int fillreportbox()
+    {
+        string s = "SELECT examDate,Report FROM tab_orders WHERE customerID = " +
+            modelCu.customerID + " AND orderStatus =N'已完成' order by orderID desc";
+        DataTable dt = ob.GetAny(s);
+        this.DropDownList1.DataSource = dt.DefaultView;
+        this.DropDownList1.DataTextField = "examDate";
+        this.DropDownList1.DataValueField = "Report";
+        this.DropDownList1.DataTextFormatString = "{0:d}";
+        this.DropDownList1.DataBind();
+        return dt.Rows.Count;
+    }
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        modelCu.customerID = int.Parse(Session["id"].ToString());
+        modelCu = Cb.getCustomer(modelCu);
+        if (!Page.IsPostBack)
+        {
+            this.CheckUser((Hashtable)Application["Online"]);
+            //checkiknewreport();
+            if (fillreportbox() <= 0)
+            {
+                this.Label1.Visible = true;
+            }
+            else
+            {
+                DropDownList1_SelectedIndexChanged(sender, e);
+            }
+        }
+    }
+    protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        Literal li = new Literal();
+        string s = Server.MapPath(this.DropDownList1.SelectedValue);
+        //li.Text = "<iframe src='asdfa'  height='800' width='1280'></iframe>";
+        li.Text = "<object classid=\"clsid:CA8A9780-280D-11CF-A24D-444553540000\" width=\"746\" height=\"669\" border=\"0\">"
+   + "<param name=\"_Version\" value=\"65539\">"
+   + "<param name=\"_ExtentX\" value=\"20108\">"
+   + "<param name=\"_ExtentY\" value=\"10866\">"
+   + "<param name=\"_StockProps\" value=\"0\">"
+   + "<param name=\"SRC\" value=\""+s+"\">"
+ + "</object>";
+        this.Panel1.Controls.Add(li);
+    }
+}

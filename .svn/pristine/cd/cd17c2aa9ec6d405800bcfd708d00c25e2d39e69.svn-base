@@ -1,0 +1,61 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick" onclick="goTo('../../index.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </a>
+        <div class="center">为家人预约</div>
+        <div class="right">
+            <span class="aClick" onclick="goTo('../../module/order/confirm_order.html');">提交</span>
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="FamilyMedical" class="page">
+        <div class="page-content content_FMedical">
+            <div class="FMedical-wrap">
+                <div class="group-item">
+                    <a href="#" class="row-item" onclick="goTo('../../module/user/familymember.html');">
+                        <span class="pull-left">请选择家庭成员</span><i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                    <a href="#" class="row-item" onclick="goTo('choosedate_medical.html?refurl=family_medical.html');">
+                        <span class="pull-left">请选择可预约时间</span><i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                    <a href="#" class="row-item" onclick="goTo('choosestore_medical.html?refurl=family_medical.html');">
+                        <span class="pull-left">请选择可预约门店</span><i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                </div>
+                <div class="group-item">
+                    <div class="row-item">
+                        <span class="pull-left">套餐一</span><i class="pull-left icon icon-circle-down"></i><i class="pull-right icon icon-checkmark blue"></i><br />
+                        <span class="pull-left">套餐一内容简介。。。</span>
+                    </div>
+                    <div class="row-item">
+                        <span class="pull-left">套餐二</span><i class="pull-left icon icon-circle-down"></i><i class="pull-right icon icon-checkmark blue"></i>
+                    </div>
+                    <div class="row-item">
+                        <span class="pull-left">套餐三</span><i class="pull-left icon icon-circle-down"></i><i class="pull-right icon icon-checkmark blue"></i>
+                    </div>
+                </div>
+                <div class="group-item">
+                    <div class="row-item">
+                        <span class="pull-left">加项包一</span><i class="pull-left icon icon-circle-down"></i>
+                        <i class="pull-right icon icon-cross"></i>
+                        <i class="pull-right icon icon-checkmark blue"></i>
+                    </div>
+                    <div class="row-item">
+                        <span class="pull-left">加项包二</span><i class="pull-left icon icon-circle-down"></i>
+                        <i class="pull-right icon icon-cross"></i>
+                        <i class="pull-right icon icon-checkmark blue"></i>
+                    </div>
+                    <div class="row-item">
+                        <span class="pull-left">加项包三</span><i class="pull-left icon icon-circle-down"></i>
+                        <i class="pull-right icon icon-cross"></i>
+                        <i class="pull-right icon icon-checkmark blue"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

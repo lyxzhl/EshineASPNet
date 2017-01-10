@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+namespace IDAL
+{
+    public interface supplierpackageDal
+    {
+        int Add(Model.supplierpackage supplierpackage);
+        Model.supplierpackage getsupplierpackage(Model.supplierpackage supplierpackage1);
+        int update(Model.supplierpackage supplierpackage);
+        int Delete(int id);
+        DataTable Select(string ss);
+
+    }
+}

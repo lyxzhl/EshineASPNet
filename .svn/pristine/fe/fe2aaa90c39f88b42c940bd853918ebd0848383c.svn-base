@@ -1,0 +1,81 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+
+namespace SQLServerDAL
+{
+     public class sql_consult:IDAL.consultDal
+    {
+        DBunit.SQLAccess sql = new DBunit.SQLAccess();
+        DateTime baddate = DateTime.Parse("1900-01-01");
+        public int Add(Model.tab_consult consult)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("insert into tab_consult values (");
+            strsql.AppendFormat("{0},", consult.customerID);
+            strsql.AppendFormat("{0},", consult.adddate == baddate ? "null" : "'" + consult.adddate.ToString() + "'");
+            strsql.AppendFormat("{0},", consult.examdate == baddate ? "null" : "'" + consult.examdate.ToString() + "'");
+            strsql.AppendFormat("N'{0}',", consult.hospital);
+            strsql.AppendFormat("N'{0}',", consult.doctor);
+            strsql.AppendFormat("N'{0}',", consult.note);
+            strsql.AppendFormat("N'{0}',", consult.msg);
+            strsql.AppendFormat("N'{0}',", consult.status);
+            strsql.AppendFormat("N'{0}'", consult.consultant);
+            strsql.Append(")");
+            return sql.ExecuteNonQuery(strsql.ToString());
+        }
+
+
+        public Model.tab_consult getconsult(Model.tab_consult consult1)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("select * from tab_consult where ");
+            strsql.AppendFormat("id='{0}'", consult1.id);
+            DataTable dt = sql.ExecuteDataSet(strsql.ToString()).Tables[0];
+            if (dt.Rows.Count < 1) return null;
+
+            Model.tab_consult consult = new Model.tab_consult();
+            consult.id = consult1.id;
+            consult.customerID = int.Parse(dt.Rows[0]["customerID"].ToString());
+            consult.adddate = dt.Rows[0]["adddate"].ToString() == "" ? baddate : DateTime.Parse(dt.Rows[0]["adddate"].ToString());
+            consult.examdate = dt.Rows[0]["examdate"].ToString() == "" ? baddate : DateTime.Parse(dt.Rows[0]["examdate"].ToString());
+            consult.hospital = dt.Rows[0]["hospital"].ToString();
+            consult.doctor = dt.Rows[0]["doctor"].ToString();
+            consult.note = dt.Rows[0]["note"].ToString();
+            consult.msg = dt.Rows[0]["msg"].ToString();
+            consult.status = dt.Rows[0]["status"].ToString();
+            consult.consultant = dt.Rows[0]["consultant"].ToString();
+            return consult;
+        }
+
+
+        public int update(Model.tab_consult consult)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("update tab_consult set ");
+            strsql.AppendFormat(" customerID ='{0}',", consult.customerID);
+            strsql.AppendFormat(" adddate ={0},", consult.adddate == baddate ? "null" : "'" + consult.adddate.ToString() + "'");
+            strsql.AppendFormat(" examdate ={0},", consult.examdate == baddate ? "null" : "'" + consult.examdate.ToString() + "'");
+            strsql.AppendFormat(" hospital =N'{0}',", consult.hospital);
+            strsql.AppendFormat(" doctor =N'{0}',", consult.doctor);
+            strsql.AppendFormat(" note =N'{0}',", consult.note);
+            strsql.AppendFormat(" msg =N'{0}',", consult.msg);
+            strsql.AppendFormat(" status =N'{0}',", consult.status);
+            strsql.AppendFormat(" consultant =N'{0}'", consult.consultant);
+            strsql.AppendFormat(" where id={0}", consult.id);
+            return sql.ExecuteNonQuery(strsql.ToString());
+        }
+
+
+        public int Delete(int id)
+        {
+            return sql.ExecuteNonQuery("delete from tab_consult where id=" + id);
+        }
+        public DataTable Select(string ss)
+        {
+            return sql.ExecuteDataSet(ss).Tables[0];
+        }
+
+    }
+}

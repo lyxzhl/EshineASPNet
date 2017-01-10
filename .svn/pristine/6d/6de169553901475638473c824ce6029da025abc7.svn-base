@@ -1,0 +1,149 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Collections;
+public partial class uploadrelreport : PageBases
+{
+    Bll.RelativeBLL rb = new Bll.RelativeBLL();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!Page.IsPostBack)
+        {
+            this.CheckUser((Hashtable)Application["Online"]);
+        }
+
+        if (!Page.IsPostBack)
+        {
+            fillrel();
+        }
+    }
+    void fillrel()
+    {
+        DataTable dt = rb.RelativeSelect("SELECT relativeName,relativeID FROM tab_relatives WHERE relativeCustomer=" + Session["id"].ToString());
+        int relnum = dt.Rows.Count > 6 ? 6 : dt.Rows.Count;
+        CheckBox cbtemp = CheckBox1;
+        TextBox tbtemp = TextBox11;
+        for (int i = 0; i < relnum; i++)
+        {
+            switch (i)
+            {
+                case 0: cbtemp = CheckBox1; tbtemp = TextBox11; break;
+                case 1: cbtemp = CheckBox2; tbtemp = TextBox12; break;
+                case 2: cbtemp = CheckBox3; tbtemp = TextBox13; break;
+                case 3: cbtemp = CheckBox4; tbtemp = TextBox14; break;
+                case 4: cbtemp = CheckBox5; tbtemp = TextBox15; break;
+                case 5: cbtemp = CheckBox6; tbtemp = TextBox16; break;
+            }
+            cbtemp.Visible = true;
+            cbtemp.Text = dt.Rows[i]["relativeName"].ToString();
+            tbtemp.Text = dt.Rows[i]["relativeID"].ToString();
+        }
+
+    }
+    protected void CheckBox1_CheckedChanged(object sender, EventArgs e)
+    {
+        ViewState["relativeID"] = "";
+
+        CheckBox cbox = (CheckBox)sender;
+        CheckBox[] allbox = { this.CheckBox1, this.CheckBox2, this.CheckBox3, this.CheckBox4, this.CheckBox5, this.CheckBox6 };
+        TextBox[] alltextbox = { this.TextBox11, this.TextBox12, this.TextBox13, this.TextBox14, this.TextBox15, this.TextBox16 };
+        if (cbox.Checked)
+        {
+
+            this.TextBox1.Enabled = false;
+            for (int i = 0; i < allbox.Length; i++)
+            {
+                if (allbox[i] == cbox)
+                {
+                    ViewState["relativeID"] = int.Parse(alltextbox[i].Text);
+                }
+                else
+                {
+                    allbox[i].Checked = false;
+                }
+            }
+        }
+        else
+        {
+            cbox.Checked = true;
+        }
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        if (ViewState["relativeID"] == null || ViewState["relativeID"].ToString() == "")
+        {
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('" + (string)GetGlobalResourceObject("GResource", "alertneedrel") + "');</script>");
+            return;
+        }
+        else if (DateTime.Parse(this.TextBox1.Text) > DateTime.Now)
+        {
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('" + (string)GetGlobalResourceObject("GResource", "alertexamdatebefornow") + "');</script>");
+            this.TextBox1.Text = "";
+            return;
+        }
+        else if (this.DropDownList1.SelectedIndex <= 0)
+        {
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('" + (string)GetGlobalResourceObject("GResource", "alertneedreporttype") + "');</script>");
+            return;
+        }
+        else if (this.DropDownList2.SelectedIndex <= 0)
+        {
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('" + (string)GetGlobalResourceObject("GResource", "alertneedorgnization") + "');</script>");
+            return;
+        }
+
+        try
+        {
+            if (this.FileUpload1.HasFile)
+            {
+                upExcel ue = new upExcel();
+                if (ue.GetExtension(this.FileUpload1).ToLower() != ".pdf")
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('" + (string)GetGlobalResourceObject("GResource", "alertreportsldpdf") + "');</script>");
+                    return;
+                }
+                else
+                {
+                    Bll.OrdersBll ob = new Bll.OrdersBll();
+                    Model.tab_orders orders = new Model.tab_orders();
+
+                    string path = "~/Images/Reports/rel_" + Session["id"].ToString() + "_" + ViewState["relativeID"].ToString()+ "_"+ DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + DateTime.Now.Second + ".pdf";
+                    string serverpath = Server.MapPath(path);
+                    FileUpload1.SaveAs(serverpath); //上传文件
+
+                    
+
+                    Model.tab_relatives modelrel = new Model.tab_relatives();
+                    modelrel.relativeID = Convert.ToInt32(ViewState["relativeID"]);
+                    modelrel = rb.getRelative(modelrel);
+
+                    //orders.customerID = int.Parse(Session["id"].ToString());
+                    orders.relativeID = modelrel.relativeID;
+                    orders.relativeName = modelrel.relativeName;
+                    orders.Report = path;
+                    orders.ReportType = this.DropDownList1.SelectedValue;
+                    orders.ReportUploadDate = DateTime.Now;
+                    orders.ReportUploader = Session["cus"].ToString();
+                    orders.examSupplier = this.DropDownList2.SelectedIndex < 4 ? this.DropDownList2.SelectedValue : this.TextBox2.Text;
+                    orders.examDate = DateTime.Parse(this.TextBox1.Text);
+                    orders.orderStatus = "已完成";
+                    ob.Add(orders);
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('" + (string)GetGlobalResourceObject("GResource", "alertuploadsucceed") + "');window.location.href = 'report.aspx';</script>");
+                }
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('" + (string)GetGlobalResourceObject("GResource", "alertneedreportfile") + "');</script>");
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + ex.Message + "'); </script>");
+        }
+    }
+}

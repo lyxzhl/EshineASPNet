@@ -1,0 +1,709 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using System.Text;
+using System.Data.OleDb;
+using NPOI.XSSF.UserModel;
+using System.IO;
+using MediPlus;
+using System.Data;
+using System.Text;
+using System.Xml;
+using smsWebRef;
+using System.Security.Cryptography;
+public partial class Admin_ordersAdmin_orderInfo : System.Web.UI.Page
+{
+    Bll.OrdersBll ob = new Bll.OrdersBll();
+    Bll.CustomerBll cb = new Bll.CustomerBll();
+    Bll.parasBll pb = new Bll.parasBll();
+    Model.tab_orderDets modelOB = new Model.tab_orderDets();
+    DBunit.SQLAccess dbsql = new DBunit.SQLAccess();
+    PublicClass pc = new PublicClass();
+    upExcel ue = new upExcel();
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            Session["id"] = ""; //后台下订单会设置id，避免客服同时打开前台
+
+            fillcompanydroplist();
+            if (pb.getvalue("todaymsgsent") == DateTime.Now.ToShortDateString())
+            {
+                this.Buttonmsg.Enabled = false;
+                this.Buttonmsg.Text = "明日体检短信已发";
+            }
+
+
+
+        }
+        if (ViewState["orderselectcomm"] != null && ViewState["orderselectcomm"].ToString() != "")
+        {
+            this.SqlDataSource1.SelectCommand = ViewState["orderselectcomm"].ToString();
+        }
+
+        if (Request["setorderpageindex"] != null && Request["setorderpageindex"].ToString() != "")
+        {
+            this.GridView1.PageIndex = Convert.ToInt32(Request["setorderpageindex"]);
+        }
+
+    }
+    void fillcompanydroplist()
+    {
+        DataTable dt = cb.CustomerSelect("select distinct personCompany from tab_orders where personCompany is not null and personCompany<>'' ");
+        this.DropDownList2.DataSource = dt.DefaultView;
+        this.DropDownList2.DataTextField = "personCompany";
+        this.DropDownList2.DataValueField = "personCompany";
+        this.DropDownList2.DataBind();
+        this.DropDownList2.Items.Insert(0, "选择公司");
+
+        DataTable dt2 = ob.Select("select distinct ReportUploader from tab_orders where ReportUploader<>''");
+        this.DropDownList6.DataSource = dt2;
+        this.DropDownList6.DataTextField = "ReportUploader";
+        this.DropDownList6.DataValueField = "ReportUploader";
+        this.DropDownList6.DataBind();
+        this.DropDownList6.Items.Insert(0, "上传人");
+
+        Reportcount("");
+    }
+    void Reportcount(string ReportUploader)
+    {
+        string s = "select COUNT(*) from tab_orders where ReportUploader<>''";
+        if (ReportUploader != "")
+        {
+            s += " and ReportUploader='" + ReportUploader + "'";
+        }
+        Label1.Text = dbsql.ExecuteSc(s).ToString();
+    }
+    void fillpackage()
+    {
+        //DataTable dt = cb.CustomerSelect("select packagecode,note from tab_package where company='" + this.DropDownList2.SelectedItem.Text + "' and packagecode is not null union (select uppkgcode,note from tab_uppkg where packagecode in ( select packagecode from tab_package where company='" + this.DropDownList2.SelectedItem.Text + "')  and uppkgcode is not null )");
+        DataTable dt = cb.CustomerSelect("select distinct note from tab_package where company='" + this.DropDownList2.SelectedItem.Text + "'");
+        this.DropDownList4.DataSource = dt.DefaultView;
+        this.DropDownList4.DataTextField = "note";
+        this.DropDownList4.DataValueField = "note";
+        this.DropDownList4.DataBind();
+        this.DropDownList4.Items.Insert(0, "选择套餐");
+    }
+
+    void fillcity()
+    {
+        DataTable dt = cb.CustomerSelect("select distinct examCity from tab_orders where examCity<>'' and examCity is not null and personCompany='" + this.DropDownList2.SelectedItem.Text + "'");
+        this.DropDownList5.DataSource = dt.DefaultView;
+        this.DropDownList5.DataTextField = "examCity";
+        this.DropDownList5.DataValueField = "examCity";
+        this.DropDownList5.DataBind();
+        this.DropDownList5.Items.Insert(0, "选择城市");
+    }
+
+    protected void Button3_Click(object sender, EventArgs e)
+    {
+        int successfulcount = 0, errorcount = 0;
+        try
+        {
+            if (this.FileUpload1.HasFile)
+            {
+                if (!ue.SaveUpFile("~/Admin/temp/", this.FileUpload1))//上传文件
+                {
+                    throw new Exception("上传文件失败!");
+                }
+
+                DataTable inputdt = ue.InputExcel("Sheet1");
+                if (inputdt == null)
+                {
+                    throw new Exception("Excel文件读取失败!");
+                }
+
+                int j;
+                Bll.OrdersBll ob = new Bll.OrdersBll();
+                Model.tab_orders orders;
+                for (int i = 0; i < inputdt.Rows.Count; i++)
+                {
+                    j = 0;
+                    orders = new Model.tab_orders();
+
+                    orders.supplierOrderID = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.cardNumber = inputdt.Rows[i][j++].ToString().Trim();
+                    if (inputdt.Rows[i][j] == null || inputdt.Rows[i][j].ToString() == "")
+                    {
+                        j++;
+                    }
+                    else
+                    {
+                        orders.customerID = int.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    }
+                    orders.customerCode = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.customerName = inputdt.Rows[i][j++].ToString().Trim();
+                    if (inputdt.Rows[i][j] == null || inputdt.Rows[i][j].ToString() == "")
+                    {
+                        j++;
+                    }
+                    else
+                    {
+                        orders.relativeID = int.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    }
+                    orders.relativeName = inputdt.Rows[i][j++].ToString().Trim();
+                    if (inputdt.Rows[i][j] == null || inputdt.Rows[i][j].ToString() == "")
+                    {
+                        j++;
+                    }
+                    else
+                    {
+                        orders.orderDate = DateTime.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    }
+
+                    orders.orderStatus = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.personSex = inputdt.Rows[i][j++].ToString().Trim();
+                    if (inputdt.Rows[i][j] == null || inputdt.Rows[i][j].ToString() == "")
+                    {
+                        j++;
+                    }
+                    else
+                    {
+                        orders.personAge = int.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    }
+                    orders.personIDcard = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.personMobile = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.personPrivateEmail = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.personCompany = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.personCompanycode = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.personMarriageStatus = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.personAddress = inputdt.Rows[i][j++].ToString().Trim();
+                    if (inputdt.Rows[i][j] == null || inputdt.Rows[i][j].ToString() == "")
+                    {
+                        j++;
+                    }
+                    else
+                    {
+                        orders.examDate = DateTime.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    }
+                    orders.examCity = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.examSupplier = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.examBranch = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.examhosip = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.examPackage = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.examUpPkg = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.examTotalFee = double.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    orders.examBill = double.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    orders.examInfo = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.examWorkNo = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.Msg = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.Report = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.ReportContent = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.ReportType = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.ReportUploader = inputdt.Rows[i][j++].ToString().Trim();
+                    if (inputdt.Rows[i][j] == null || inputdt.Rows[i][j].ToString() == "")
+                    {
+                        j++;
+                    }
+                    else
+                    {
+                        orders.ReportUploadDate = DateTime.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    }
+                    orders.ReportNote = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.payMethod = inputdt.Rows[i][j++].ToString().Trim();
+                    orders.payRefNum = inputdt.Rows[i][j++].ToString().Trim();
+                    if (inputdt.Rows[i][j] == null || inputdt.Rows[i][j].ToString() == "")
+                    {
+                        j++;
+                    }
+                    else
+                    {
+                        orders.payTime = DateTime.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    }
+                    orders.payNote = inputdt.Rows[i][j++].ToString().Trim();
+
+
+
+                    try
+                    {
+                        // if (cust.CustomerAdd(customer) < 1)
+                        if (ob.Add(orders) < 1)
+                        {
+                            errorcount++;
+                        }
+                        else
+                        {
+                            successfulcount++;
+                        }
+
+                    }
+                    catch
+                    {
+                        errorcount++;
+                    }
+                }
+                Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('操作已完成！其中成功导入数据" + successfulcount + "条，失败" + errorcount + "条'); </script>");
+                GridView1.DataBind();
+            }
+            else
+            {
+                throw new Exception("请选择Excel文件!");
+            }
+        }
+        catch (Exception ex)
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + ex.Message + "'); </script>");
+        }
+    }
+
+    protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        updateselection();
+    }
+    void updateselection()
+    {
+        string s = this.TextBox1.Text;
+        string scmd = "SELECT *, (select top 1 type from tab_suppliers where hospid= examhosip and hospid<>'') suppliertype,(select customerName from tab_customers where customerID in (select  relativeCustomer from tab_relatives where relativeID=tab_orders.relativeID)) cusName,(select customerVIP from tab_customers where customerID=tab_orders.customerID) vip  FROM tab_orders where ReportType<>'商城' ";
+
+        if (this.DropDownList1.SelectedIndex == 1)
+        {
+            scmd += "and customerName<>'' ";
+        }
+        else if (this.DropDownList1.SelectedIndex == 2)
+        {
+            scmd += "and relativeName<>'' ";
+        }
+
+        if (this.DropDownList2.SelectedIndex > 0)
+        {
+            scmd += "and personCompany='" + this.DropDownList2.SelectedItem.Text + "' ";
+        }
+
+        if (this.DropDownList3.SelectedIndex > 0)
+        {
+            scmd += "and orderStatus='" + this.DropDownList3.SelectedItem.Text + "' ";
+        }
+
+        if (this.DropDownList4.SelectedIndex > 0)
+        {
+            scmd += "and examPackage='" + this.DropDownList4.SelectedItem.Text + "' ";
+        }
+
+        if (this.DropDownList5.SelectedIndex > 0)
+        {
+            scmd += "and examCity='" + this.DropDownList5.SelectedItem.Text + "' ";
+        }
+
+        if (this.TextBox3.Text != "")
+        {
+            scmd += "and orderDate>'" + this.TextBox3.Text + "' ";
+        }
+
+        if (this.TextBox4.Text != "")
+        {
+            scmd += "and orderDate<'" + this.TextBox4.Text + "' ";
+        }
+
+        if (this.TextBox5.Text != "")
+        {
+            scmd += "and examDate>'" + this.TextBox5.Text + "' ";
+        }
+
+        if (this.TextBox6.Text != "")
+        {
+            scmd += "and examDate<'" + this.TextBox6.Text + "' ";
+        }
+
+        if (this.TextBox1.Text != "")
+        {
+            scmd += "and (orderID like '%" + s + "%' or  supplierOrderID like '%" + s + "%' or  customerCode like '%" + s + "%' or "
++ "customerName like '%" + s + "%' or  relativeName like '%" + s + "%' or orderDate like '%" + s + "%' or "
++ "personAge like '%" + s + "%' or personIDcard like '%" + s + "%' or personMobile like '%" + s + "%' or "
++ "personPrivateEmail like '%" + s + "%' or examDate like '%" + s + "%' or examCity like '%" + s + "%' or "
++ "(select customerName from tab_customers where customerID in (select  relativeCustomer from tab_relatives where relativeID=tab_orders.relativeID)) like '%" + s + "%' or "
++ "(select customerVIP from tab_customers where customerID=tab_orders.customerID) like '%" + s + "%' or "
++ "examSupplier like '%" + s + "%' or examBranch like '%" + s + "%' or examBill like '%" + s + "%')";
+        }
+        scmd += " ORDER BY [orderID] DESC";
+        ViewState["orderselectcomm"] = scmd;
+        this.SqlDataSource1.SelectCommand = scmd;
+        this.SqlDataSource1.DataBind();
+    }
+    protected void DropDownList2_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        fillpackage();
+        fillcity();
+        updateselection();
+    }
+
+    protected void TextBox3_TextChanged(object sender, EventArgs e)
+    {
+        updateselection();
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        updateselection();
+    }
+
+    protected void ButtonEE_Click(object sender, EventArgs e)
+    {
+        PublicClass pc = new PublicClass();
+        GridView1.AllowPaging = false;// turn off paging 
+        GridView1.DataSourceID = "";
+        GridView1.DataSourceID = this.SqlDataSource1.ID;
+
+        GridView1.DataBind();
+
+        DataTable list = ((DataView)this.SqlDataSource1.Select(DataSourceSelectArguments.Empty)).Table;
+
+        string msg = string.Empty;
+        XSSFWorkbook work = login.Export(list, "", "测试记录", out msg);
+        Response.Clear();
+        Response.ClearHeaders();
+        if (work == null && !string.IsNullOrEmpty(msg))
+            throw new Exception(msg);
+        Response.Buffer = false;
+        Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";//ContentType;
+        Response.AppendHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode("MediPlusexport.xlsx", System.Text.Encoding.UTF8));
+        MemoryStream ms = new MemoryStream();
+        work.Write(ms);
+        //fs.Close();
+        Response.BinaryWrite(ms.ToArray());
+        work = null;
+        ms.Close();
+        ms.Dispose();
+        Response.Flush();
+        Response.End();
+
+        GridView1.AllowPaging = true;
+        GridView1.DataSourceID = "";
+        GridView1.DataSourceID = this.SqlDataSource1.ID;
+
+        GridView1.DataBind();
+    }
+
+    protected void Buttonmsg_Click(object sender, EventArgs e)
+    {
+        string s = "update tab_paras set pvalue='" + DateTime.Now.ToShortDateString() + "' where pname='todaymsgsent'";
+        pb.execmd(s);
+
+        sendsms();
+        this.Buttonmsg.Enabled = false;
+        this.Buttonmsg.Text = "明日体检短信已发";
+    }
+
+    //发送短信
+    protected void sendsms()
+    {
+
+        PublicClass pc = new PublicClass();
+
+        ISmsService4XML sms = new SmsService4XMLClient();
+        XmlDocument doc = new XmlDocument();
+
+        Bll.SupplierBll sb = new Bll.SupplierBll();
+        DataTable dttemp;
+
+        Bll.OrdersBll ob = new Bll.OrdersBll();
+        DataTable dt = ob.GetAny("select * from tab_orders where orderStatus='约检成功' and examDate='" + DateTime.Now.AddDays(1).ToShortDateString() + "'");
+
+        String Account = "dh7748";
+        String Password = PublicClass.smsmd5(System.Configuration.ConfigurationManager.AppSettings["smspassword"]);
+        String Phone;
+        String sendtime = "";
+        String sign = "";
+        String subcode = "";
+        String Content;
+        String message;
+        try
+        {
+
+        }
+        catch (Exception ex)
+        {
+
+        }
+
+        for (int i = 0; i < dt.Rows.Count; i++)
+        {
+
+            Phone = dt.Rows[i]["personMobile"].ToString();
+            Content = "温馨提示：亲爱的" + (dt.Rows[i]["customerName"].ToString() != "" ? dt.Rows[i]["customerName"].ToString() : dt.Rows[i]["relativeName"].ToString()) +
+            "先生/小姐，您将于" + DateTime.Parse(dt.Rows[i]["examDate"].ToString()).ToShortDateString() +
+            ",前往" + dt.Rows[i]["examBranch"].ToString().Replace("其他专业体检机构", "") +
+            "接受体检服务，地址：" + MediPlus.reserveexam.branchaddress(dt.Rows[i]["examBranch"].ToString(), dt.Rows[i]["examCity"].ToString()) + "。体检当日9:30前空腹前往，持本人身份证明原件，如需自取报告，请告知前台。由于体检旺季，部分科室等候时间较长，烦请耐心等待。400 099 3363。";
+
+            //message = "<?xml version='1.0' encoding='UTF-8'?><message>"
+            //+ "<account>" + Account + "</account>" + "<password>"
+            //+ Password + "</password>"
+            //+ "<msgid></msgid>"
+            //+ "<phones>" + Phone + "</phones><content>"
+            //+ Content + "</content><sign>" + sign + "</sign>"
+            //+ "<subcode>" + subcode + "</subcode><sendtime>" + sendtime + "</sendtime>"
+            //+ "</message>";
+
+            //sms.submit(message);
+            string msg;
+
+            bool torf = pc.ztsmsduanx(Phone, Content, out msg);
+            
+               
+
+            pc.addlog(dt.Rows[i]["customerName"].ToString(), "", "", "体检提醒短信", Content, "");
+        }
+
+        Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('发送短信" + dt.Rows.Count + "条'); </script>");
+
+    }
+    protected void GridView1_PageIndexChanged(object sender, EventArgs e)
+    {
+        Session["ordergridviewindex"] = this.GridView1.PageIndex;
+    }
+
+
+    protected void sendsmstest()
+    {
+        ISmsService4XML sms = new SmsService4XMLClient();
+        XmlDocument doc = new XmlDocument();
+
+        PublicClass pc = new PublicClass();
+        Bll.SupplierBll sb = new Bll.SupplierBll();
+        DataTable dttemp;
+
+        String Account = "dh7748";
+        String Password = PublicClass.smsmd5(System.Configuration.ConfigurationManager.AppSettings["smspassword"]);
+        String Phone;
+        String sendtime = "";
+        String sign = "";
+        String subcode = "";
+        String Content;
+        String message;
+
+        Phone = "15901720458";
+        Content = "温馨提示：亲爱的服务咨询电话：400 099 3363";
+
+        //message = "<?xml version='1.0' encoding='UTF-8'?><message>"
+        //+ "<account>" + Account + "</account>" + "<password>"
+        //+ Password + "</password>"
+        //+ "<msgid></msgid>"
+        //+ "<phones>" + Phone + "</phones><content>"
+        //+ Content + "</content><sign>" + sign + "</sign>"
+        //+ "<subcode>" + subcode + "</subcode><sendtime>" + sendtime + "</sendtime>"
+        //+ "</message>";
+
+        // string s=sms.submit(message);
+        string msg;
+
+        bool torf = pc.ztsmsduanx(Phone, Content, out msg);
+       
+            
+        //pc.addlog(dt.Rows[i]["customerName"].ToString(), "", "", "体检提醒短信", Content, "");
+
+        //Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('发送短信" + dt.Rows.Count + "条'); </script>");
+
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        sendsmstest();
+    }
+    protected void DropDownList6_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        Reportcount(DropDownList6.SelectedValue);
+    }
+    protected void Button4_Click(object sender, EventArgs e)   //勾选订单号,发送体检取消短信
+    {
+        string msg="";
+        int num = 0;
+        foreach (GridViewRow row in GridView1.Rows)
+        {
+            if ((row.FindControl("CheckBox1") as CheckBox).Checked)
+            {
+                int id = 0;
+                id = Convert.ToInt32(GridView1.DataKeys[row.RowIndex].Value);
+                ISmsService4XML sms = new SmsService4XMLClient();
+                XmlDocument doc = new XmlDocument();
+
+                Bll.SupplierBll sb = new Bll.SupplierBll();
+                DataTable dttemp;
+
+                Bll.OrdersBll ob = new Bll.OrdersBll();
+                //DataTable dt = ob.GetAny("select * from tab_orders where orderStatus='已取消' and examDate='" + DateTime.Now.AddDays(1).ToShortDateString() + "'");
+                DataTable dt = ob.Select("select * from tab_orders where orderID=" + id);
+
+                String Account = "dh7748";
+                String Password = PublicClass.smsmd5(System.Configuration.ConfigurationManager.AppSettings["smspassword"]);
+                String Phone;
+                String sendtime = "";
+                String sign = "";
+                String subcode = "";
+                String Content;
+                String message;
+                Phone = dt.Rows[0]["personMobile"].ToString();
+                Content = "尊敬的XX先生/小姐，您好。您预约的体检未成功，因电话无法接通，特此短信告知。您可通过400电话或service邮箱再次预约体检，感谢您的理解与配合。谢谢！";
+
+                //message = "<?xml version='1.0' encoding='UTF-8'?><message>"
+                //+ "<account>" + Account + "</account>" + "<password>"
+                //+ Password + "</password>"
+                //+ "<msgid></msgid>"
+                //+ "<phones>" + Phone + "</phones><content>"
+                //+ Content + "</content><sign>" + sign + "</sign>"
+                //+ "<subcode>" + subcode + "</subcode><sendtime>" + sendtime + "</sendtime>"
+                //+ "</message>";
+
+                //sms.submit(message);
+               
+
+                bool torf = pc.ztsmsduanx(Phone, Content, out msg);
+                if (!torf)
+                   // throw new Exception(msg);
+
+                //PublicClass pc = new PublicClass();
+                //pc.addlog(dt.Rows[0]["customerName"].ToString(), "", "", "体检提醒短信", Content, "");
+                num++;
+            }
+        }
+        Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('发送短信" + num + "条"+ msg + "'); </script>");
+    }
+    protected void Button5_Click(object sender, EventArgs e)  //发送催款短信
+    {
+        ISmsService4XML sms = new SmsService4XMLClient();
+        XmlDocument doc = new XmlDocument();
+        PublicClass pc = new PublicClass();
+        Bll.SupplierBll sb = new Bll.SupplierBll();
+        DataTable dttemp;
+
+        Bll.OrdersBll ob = new Bll.OrdersBll();
+        DataTable dt = ob.GetAny("select * from tab_orders where (orderStatus='待付款' or orderStatus='待转账') and examDate='" + DateTime.Now.AddDays(-2).ToShortDateString() + "'");
+
+        String Account = "dh7748";
+        String Password = PublicClass.smsmd5(System.Configuration.ConfigurationManager.AppSettings["smspassword"]);
+        String Phone;
+        String sendtime = "";
+        String sign = "";
+        String subcode = "";
+        String Content;
+        String message;
+
+        for (int i = 0; i < dt.Rows.Count; i++)
+        {
+
+            Phone = dt.Rows[i]["personMobile"].ToString();
+            Content = "尊敬的" + (dt.Rows[i]["customerName"].ToString() != "" ? dt.Rows[i]["customerName"].ToString() : dt.Rows[i]["relativeName"].ToString()) + "先生/小姐，您好。您为" + (dt.Rows[i]["customerName"].ToString() != "" ? dt.Rows[i]["customerName"].ToString() : dt.Rows[i]["relativeName"].ToString())
+                + "先生/小姐预约了" + DateTime.Parse(dt.Rows[i]["examDate"].ToString()).ToShortDateString() + "的体检，需支付体检费用" + dt.Rows[i]["examBill"].ToString() + "元。体检费用请于今天14:00前完成支付，如14点未确认到您的款项，您家属的预约将被取消，感谢您的理解与配合。支付方式如下:支付宝账号-pay@medi-plus.cn；银行转账:收款人帐户名称-霓蝶（上海）医疗科技有限公司;银行名称-中国建设银行安顺路支行;人民币帐号-31050174420000000043。服务咨询热线：400-099-3363。";
+
+            //message = "<?xml version='1.0' encoding='UTF-8'?><message>"
+            //+ "<account>" + Account + "</account>" + "<password>"
+            //+ Password + "</password>"
+            //+ "<msgid></msgid>"
+            //+ "<phones>" + Phone + "</phones><content>"
+            //+ Content + "</content><sign>" + sign + "</sign>"
+            //+ "<subcode>" + subcode + "</subcode><sendtime>" + sendtime + "</sendtime>"
+            //+ "</message>";
+            string msg;
+          
+            bool torf = pc.ztsmsduanx(Phone, Content, out msg);
+            if (!torf)
+                
+            pc.addlog(dt.Rows[i]["customerName"].ToString(), "", "", "体检提醒短信", Content, "");
+        }
+
+        Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('发送短信" + dt.Rows.Count + "条'); </script>");
+
+    }
+    protected void sendsms(string Phone, string Content)
+    {
+        ISmsService4XML sms = new SmsService4XMLClient();
+
+        Bll.SupplierBll sb = new Bll.SupplierBll();
+        DataTable dttemp;
+
+        String Account = "dh7748";
+        String Password = PublicClass.smsmd5(System.Configuration.ConfigurationManager.AppSettings["smspassword"]);
+        //String Phone;
+        String sendtime = "";
+        String sign = "";
+        String subcode = "";
+        //String Content;
+        String message;
+
+        //Phone = "13023201670";
+        //Phone = modelCu.customerMobile;
+        //Content = "温馨提示：亲爱的服务咨询电话：400 099 3363";
+
+        message = "<?xml version='1.0' encoding='UTF-8'?><message>"
+        + "<account>" + Account + "</account>" + "<password>"
+        + Password + "</password>"
+        + "<msgid></msgid>"
+        + "<phones>" + Phone + "</phones><content>"
+        + Content + "</content><sign>" + sign + "</sign>"
+        + "<subcode>" + subcode + "</subcode><sendtime>" + sendtime + "</sendtime>"
+        + "</message>";
+
+        string s = sms.submit(message);
+    }
+
+    protected void Button6_Click(object sender, EventArgs e)
+    {
+        int num = 0;
+        foreach (GridViewRow row in GridView1.Rows)
+        {
+            if ((row.FindControl("CheckBox1") as CheckBox).Checked)
+            {
+                int id = 0;
+                id = Convert.ToInt32(GridView1.DataKeys[row.RowIndex].Value);
+                ISmsService4XML sms = new SmsService4XMLClient();
+                XmlDocument doc = new XmlDocument();
+
+                Bll.SupplierBll sb = new Bll.SupplierBll();
+                DataTable dttemp;
+
+                Bll.OrdersBll ob = new Bll.OrdersBll();
+                //DataTable dt = ob.GetAny("select * from tab_orders where orderStatus='已取消' and examDate='" + DateTime.Now.AddDays(1).ToShortDateString() + "'");
+                DataTable dt = ob.Select("select * from tab_orders where orderID=" + id);
+
+                String Account = "dh7748";
+                String Password = PublicClass.smsmd5(System.Configuration.ConfigurationManager.AppSettings["smspassword"]);
+                String Phone;
+                String sendtime = "";
+                String sign = "";
+                String subcode = "";
+                String Content;
+                String message;
+                string examBranch;
+                string customerName;
+                string relativeName;
+                DateTime examDate;
+                examBranch = dt.Rows[0]["examBranch"].ToString();
+                customerName = dt.Rows[0]["customerName"].ToString();
+                relativeName = dt.Rows[0]["relativeName"].ToString();
+                examDate = DateTime.Parse(dt.Rows[0]["examDate"].ToString());
+                Phone = dt.Rows[0]["personMobile"].ToString();
+                string sql = "select address from tab_suppliers where supplier+' '+branch='" + examBranch + "'";
+                DataTable cb = ob.Select(sql);
+
+                Content = "尊敬的" + (customerName != "" ? customerName : relativeName) + "先生/小姐您好,您已成功预约" + examBranch + "的体检服务,请于" + examDate.ToShortDateString() + "  8：00—9：30到" + cb.Rows[0][0].ToString() + "体检,由于体检旺季，排队等候时间较长，请尽早到达。服务咨询电话：400-099-3363。";
+
+                //message = "<?xml version='1.0' encoding='UTF-8'?><message>"
+                //+ "<account>" + Account + "</account>" + "<password>"
+                //+ Password + "</password>"
+                //+ "<msgid></msgid>"
+                //+ "<phones>" + Phone + "</phones><content>"
+                //+ Content + "</content><sign>" + sign + "</sign>"
+                //+ "<subcode>" + subcode + "</subcode><sendtime>" + sendtime + "</sendtime>"
+                //+ "</message>";
+
+                //sms.submit(message);
+                string msg;
+
+                bool torf = pc.ztsmsduanx(Phone, Content, out msg);
+                if (!torf)
+                   
+                num++;
+                
+
+                //PublicClass pc = new PublicClass();
+                //pc.addlog(dt.Rows[0]["customerName"].ToString(), "", "", "体检提醒短信", Content, "");
+
+            }
+        }
+        Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('发送短信" + num + "条'); </script>");
+    }
+}

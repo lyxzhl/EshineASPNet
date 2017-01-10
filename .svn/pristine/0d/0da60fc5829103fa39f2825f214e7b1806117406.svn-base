@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://meinian.cn/WebService/HealthService" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://meinian.cn/WebService/HealthService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://meinian.cn/WebService/HealthService">
+      <s:element name="HelloWorld">
+        <s:complexType />
+      </s:element>
+      <s:element name="HelloWorldResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HelloWorldResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDateStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="in_factory" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDateStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDateStatusResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckBooking">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="dwdm" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="in_factory" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckBookingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CheckBookingResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="user" type="tns:HealthUser" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="HealthUser">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Price" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="Report" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Cid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Dwdm" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Fgs" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Dept1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Dept2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Factory" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="YYSJ" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdCard" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sex" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MaritalStatus" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="mPhone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="JxreMark" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Package" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Crsq" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Djremark" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Remark" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TcName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddOrderResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddEHOOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="user" type="tns:HealthUser" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddEHOOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddEHOOrderResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="dwdm" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="in_factory" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CancelOrderResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateYYDate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="dwdm" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="date" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="in_factory" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateYYDateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateYYDateResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateUserInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="dwdm" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="idCard" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="phone" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="csrq" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="in_factory" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateUserInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateUserInfoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBookDate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="in_factory" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBookDateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetBookDateResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddYYinfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="vid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="in_factory" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="date" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddYYinfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddYYinfoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddYYShenZhen">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="vid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="in_factory" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="date" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="phone" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddYYShenZhenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddYYShenZhenResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTCList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="vid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="in_factory" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTCListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTCListResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddYYBuyCard">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="user" type="tns:HealthUser" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddYYBuyCardResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddYYBuyCardResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTjReports">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pwd" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTjReportsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTjReportsResult" type="tns:ArrayOfReport" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfReport">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Report" nillable="true" type="tns:Report" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Report">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Dwmc" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BornDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TjCard" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdCard" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sex" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TjDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Vid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="JJZH" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Dwdm" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RItems" type="tns:ArrayOfReportItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfReportItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ReportItem" nillable="true" type="tns:ReportItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ReportItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Result" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Unit" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Range" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Category" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Doctor" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="HelloWorldSoapIn">
+    <wsdl:part name="parameters" element="tns:HelloWorld" />
+  </wsdl:message>
+  <wsdl:message name="HelloWorldSoapOut">
+    <wsdl:part name="parameters" element="tns:HelloWorldResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDateStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDateStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetDateStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDateStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckBookingSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckBooking" />
+  </wsdl:message>
+  <wsdl:message name="CheckBookingSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckBookingResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:AddOrder" />
+  </wsdl:message>
+  <wsdl:message name="AddOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:AddOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddEHOOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:AddEHOOrder" />
+  </wsdl:message>
+  <wsdl:message name="AddEHOOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:AddEHOOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="CancelOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:CancelOrder" />
+  </wsdl:message>
+  <wsdl:message name="CancelOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:CancelOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateYYDateSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateYYDate" />
+  </wsdl:message>
+  <wsdl:message name="UpdateYYDateSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateYYDateResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateUserInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateUserInfo" />
+  </wsdl:message>
+  <wsdl:message name="UpdateUserInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateUserInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetBookDateSoapIn">
+    <wsdl:part name="parameters" element="tns:GetBookDate" />
+  </wsdl:message>
+  <wsdl:message name="GetBookDateSoapOut">
+    <wsdl:part name="parameters" element="tns:GetBookDateResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddYYinfoSoapIn">
+    <wsdl:part name="parameters" element="tns:AddYYinfo" />
+  </wsdl:message>
+  <wsdl:message name="AddYYinfoSoapOut">
+    <wsdl:part name="parameters" element="tns:AddYYinfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddYYShenZhenSoapIn">
+    <wsdl:part name="parameters" element="tns:AddYYShenZhen" />
+  </wsdl:message>
+  <wsdl:message name="AddYYShenZhenSoapOut">
+    <wsdl:part name="parameters" element="tns:AddYYShenZhenResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTCListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTCList" />
+  </wsdl:message>
+  <wsdl:message name="GetTCListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTCListResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddYYBuyCardSoapIn">
+    <wsdl:part name="parameters" element="tns:AddYYBuyCard" />
+  </wsdl:message>
+  <wsdl:message name="AddYYBuyCardSoapOut">
+    <wsdl:part name="parameters" element="tns:AddYYBuyCardResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTjReportsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTjReports" />
+  </wsdl:message>
+  <wsdl:message name="GetTjReportsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTjReportsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="HealthServiceSoap">
+    <wsdl:operation name="HelloWorld">
+      <wsdl:input message="tns:HelloWorldSoapIn" />
+      <wsdl:output message="tns:HelloWorldSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDateStatus">
+      <wsdl:input message="tns:GetDateStatusSoapIn" />
+      <wsdl:output message="tns:GetDateStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckBooking">
+      <wsdl:input message="tns:CheckBookingSoapIn" />
+      <wsdl:output message="tns:CheckBookingSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddOrder">
+      <wsdl:input message="tns:AddOrderSoapIn" />
+      <wsdl:output message="tns:AddOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddEHOOrder">
+      <wsdl:input message="tns:AddEHOOrderSoapIn" />
+      <wsdl:output message="tns:AddEHOOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CancelOrder">
+      <wsdl:input message="tns:CancelOrderSoapIn" />
+      <wsdl:output message="tns:CancelOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateYYDate">
+      <wsdl:input message="tns:UpdateYYDateSoapIn" />
+      <wsdl:output message="tns:UpdateYYDateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUserInfo">
+      <wsdl:input message="tns:UpdateUserInfoSoapIn" />
+      <wsdl:output message="tns:UpdateUserInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBookDate">
+      <wsdl:input message="tns:GetBookDateSoapIn" />
+      <wsdl:output message="tns:GetBookDateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddYYinfo">
+      <wsdl:input message="tns:AddYYinfoSoapIn" />
+      <wsdl:output message="tns:AddYYinfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddYYShenZhen">
+      <wsdl:input message="tns:AddYYShenZhenSoapIn" />
+      <wsdl:output message="tns:AddYYShenZhenSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTCList">
+      <wsdl:input message="tns:GetTCListSoapIn" />
+      <wsdl:output message="tns:GetTCListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddYYBuyCard">
+      <wsdl:input message="tns:AddYYBuyCardSoapIn" />
+      <wsdl:output message="tns:AddYYBuyCardSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTjReports">
+      <wsdl:input message="tns:GetTjReportsSoapIn" />
+      <wsdl:output message="tns:GetTjReportsSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="HealthServiceSoap" type="tns:HealthServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HelloWorld">
+      <soap:operation soapAction="http://meinian.cn/WebService/HealthService/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDateStatus">
+      <soap:operation soapAction="http://meinian.cn/WebService/HealthService/GetDateStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckBooking">
+      <soap:operation soapAction="http://meinian.cn/WebService/HealthService/CheckBooking" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddOrder">
+      <soap:operation soapAction="http://meinian.cn/WebService/HealthService/AddOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddEHOOrder">
+      <soap:operation soapAction="http://meinian.cn/WebService/HealthService/AddEHOOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelOrder">
+      <soap:operation soapAction="http://meinian.cn/WebService/HealthService/CancelOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateYYDate">
+      <soap:operation soapAction="http://meinian.cn/WebService/HealthService/UpdateYYDate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUserInfo">
+      <soap:operation soapAction="http://meinian.cn/WebService/HealthService/UpdateUserInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBookDate">
+      <soap:operation soapAction="http://meinian.cn/WebService/HealthService/GetBookDate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddYYinfo">
+      <soap:operation soapAction="http://meinian.cn/WebService/HealthService/AddYYinfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddYYShenZhen">
+      <soap:operation soapAction="http://meinian.cn/WebService/HealthService/AddYYShenZhen" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTCList">
+      <soap:operation soapAction="http://meinian.cn/WebService/HealthService/GetTCList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddYYBuyCard">
+      <soap:operation soapAction="http://meinian.cn/WebService/HealthService/AddYYBuyCard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTjReports">
+      <soap:operation soapAction="http://meinian.cn/WebService/HealthService/GetTjReports" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="HealthServiceSoap12" type="tns:HealthServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HelloWorld">
+      <soap12:operation soapAction="http://meinian.cn/WebService/HealthService/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDateStatus">
+      <soap12:operation soapAction="http://meinian.cn/WebService/HealthService/GetDateStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckBooking">
+      <soap12:operation soapAction="http://meinian.cn/WebService/HealthService/CheckBooking" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddOrder">
+      <soap12:operation soapAction="http://meinian.cn/WebService/HealthService/AddOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddEHOOrder">
+      <soap12:operation soapAction="http://meinian.cn/WebService/HealthService/AddEHOOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelOrder">
+      <soap12:operation soapAction="http://meinian.cn/WebService/HealthService/CancelOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateYYDate">
+      <soap12:operation soapAction="http://meinian.cn/WebService/HealthService/UpdateYYDate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUserInfo">
+      <soap12:operation soapAction="http://meinian.cn/WebService/HealthService/UpdateUserInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBookDate">
+      <soap12:operation soapAction="http://meinian.cn/WebService/HealthService/GetBookDate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddYYinfo">
+      <soap12:operation soapAction="http://meinian.cn/WebService/HealthService/AddYYinfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddYYShenZhen">
+      <soap12:operation soapAction="http://meinian.cn/WebService/HealthService/AddYYShenZhen" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTCList">
+      <soap12:operation soapAction="http://meinian.cn/WebService/HealthService/GetTCList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddYYBuyCard">
+      <soap12:operation soapAction="http://meinian.cn/WebService/HealthService/AddYYBuyCard" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTjReports">
+      <soap12:operation soapAction="http://meinian.cn/WebService/HealthService/GetTjReports" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="HealthService">
+    <wsdl:port name="HealthServiceSoap" binding="tns:HealthServiceSoap">
+      <soap:address location="http://218.80.235.195/WebServices/HealthService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="HealthServiceSoap12" binding="tns:HealthServiceSoap12">
+      <soap12:address location="http://218.80.235.195/WebServices/HealthService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

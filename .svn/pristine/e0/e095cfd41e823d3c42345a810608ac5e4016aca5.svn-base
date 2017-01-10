@@ -1,0 +1,96 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text;
+
+namespace SQLServerDAL
+{
+      public class sql_QuestionType :IDAL.QuestionTypeDal
+    {
+        DBunit.SQLAccess sql = new DBunit.SQLAccess();
+        DateTime baddate = DateTime.Parse("1900-01-01");
+        public int Add(Model.QuestionType QuestionType)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("insert into QuestionType values (");
+            strsql.AppendFormat("N'{0}',", QuestionType.QTName);
+            strsql.AppendFormat("'{0}',", QuestionType.QTShortName);
+            strsql.AppendFormat("N'{0}',", QuestionType.QTDes);
+            strsql.AppendFormat("N'{0}',", QuestionType.QTDocument);
+            strsql.AppendFormat("N'{0}',", QuestionType.QTTemplate);
+            strsql.AppendFormat("N'{0}',", QuestionType.QTPage);
+            strsql.AppendFormat("'{0}',", QuestionType.IName);
+            strsql.AppendFormat("{0},", QuestionType.IsSort);
+            strsql.AppendFormat("{0},", QuestionType.CreateTime == baddate ? "null" : "'" + QuestionType.CreateTime.ToString() + "'");
+            strsql.AppendFormat("{0},", QuestionType.UpdateTime == baddate ? "null" : "'" + QuestionType.UpdateTime.ToString() + "'");
+            strsql.AppendFormat("{0},", QuestionType.CreateUser);
+            strsql.AppendFormat("{0},", QuestionType.UpdateUser);
+            strsql.AppendFormat("{0},", QuestionType.IsShow);
+            strsql.AppendFormat("{0}", QuestionType.IsDel);
+            strsql.Append(") select SCOPE_IDENTITY()");
+            return Convert.ToInt32(sql.ExecuteSc(strsql.ToString()));
+        }
+
+
+        public Model.QuestionType getQuestionType(Model.QuestionType QuestionType1)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("select * from QuestionType where ");
+            strsql.AppendFormat("QTID='{0}'", QuestionType1.QTID);
+            DataTable dt = sql.ExecuteDataSet(strsql.ToString()).Tables[0];
+            if (dt.Rows.Count < 1) return null;
+
+            Model.QuestionType QuestionType = new Model.QuestionType();
+            QuestionType.QTID = QuestionType1.QTID;
+            QuestionType.QTName = dt.Rows[0]["QTName"].ToString();
+            QuestionType.QTShortName = dt.Rows[0]["QTShortName"].ToString();
+            QuestionType.QTDes = dt.Rows[0]["QTDes"].ToString();
+            QuestionType.QTDocument = dt.Rows[0]["QTDocument"].ToString();
+            QuestionType.QTTemplate = dt.Rows[0]["QTTemplate"].ToString();
+            QuestionType.QTPage = dt.Rows[0]["QTPage"].ToString();
+            QuestionType.IName = dt.Rows[0]["IName"].ToString();
+            QuestionType.IsSort = int.Parse(dt.Rows[0]["IsSort"].ToString());
+            QuestionType.CreateTime = dt.Rows[0]["CreateTime"].ToString() == "" ? baddate : DateTime.Parse(dt.Rows[0]["CreateTime"].ToString());
+            QuestionType.UpdateTime = dt.Rows[0]["UpdateTime"].ToString() == "" ? baddate : DateTime.Parse(dt.Rows[0]["UpdateTime"].ToString());
+            QuestionType.CreateUser = int.Parse(dt.Rows[0]["CreateUser"].ToString());
+            QuestionType.UpdateUser = int.Parse(dt.Rows[0]["UpdateUser"].ToString());
+            QuestionType.IsShow = int.Parse(dt.Rows[0]["IsShow"].ToString());
+            QuestionType.IsDel = int.Parse(dt.Rows[0]["IsDel"].ToString());
+            return QuestionType;
+        }
+
+
+        public int update(Model.QuestionType QuestionType)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("update QuestionType set ");
+            strsql.AppendFormat(" QTName =N'{0}',", QuestionType.QTName);
+            strsql.AppendFormat(" QTShortName ='{0}',", QuestionType.QTShortName);
+            strsql.AppendFormat(" QTDes =N'{0}',", QuestionType.QTDes);
+            strsql.AppendFormat(" QTDocument =N'{0}',", QuestionType.QTDocument);
+            strsql.AppendFormat(" QTTemplate =N'{0}',", QuestionType.QTTemplate);
+            strsql.AppendFormat(" QTPage =N'{0}',", QuestionType.QTPage);
+            strsql.AppendFormat(" IName ='{0}',", QuestionType.IName);
+            strsql.AppendFormat(" IsSort ='{0}',", QuestionType.IsSort);
+            strsql.AppendFormat(" CreateTime ={0},", QuestionType.CreateTime == baddate ? "null" : "'" + QuestionType.CreateTime.ToString() + "'");
+            strsql.AppendFormat(" UpdateTime ={0},", QuestionType.UpdateTime == baddate ? "null" : "'" + QuestionType.UpdateTime.ToString() + "'");
+            strsql.AppendFormat(" CreateUser ='{0}',", QuestionType.CreateUser);
+            strsql.AppendFormat(" UpdateUser ='{0}',", QuestionType.UpdateUser);
+            strsql.AppendFormat(" IsShow ='{0}',", QuestionType.IsShow);
+            strsql.AppendFormat(" IsDel ='{0}'", QuestionType.IsDel);
+            strsql.AppendFormat(" where QTID={0}", QuestionType.QTID);
+            return sql.ExecuteNonQuery(strsql.ToString());
+        }
+
+
+        public int Delete(int QTID)
+        {
+            return sql.ExecuteNonQuery("delete from QuestionType where QTID=" + QTID);
+        }
+        public DataTable Select(string ss)
+        {
+            return sql.ExecuteDataSet(ss).Tables[0];
+        }
+
+    }
+}

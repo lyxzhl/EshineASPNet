@@ -1,0 +1,62 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="fetchpassword.aspx.cs" Inherits="fetchpassword"  culture="auto" meta:resourcekey="PageResource1" uiculture="auto" %>
+
+<%@ Register TagPrefix="MPuc" TagName="headcontent" Src="UserControl/headcontent.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="mobilenav" Src="UserControl/mobilenav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="desktopnav" Src="UserControl/desktopnav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="UserControl/footer1.ascx"%>
+<!DOCTYPE html>
+<html>
+<head>
+<title>EshineAspNet - <asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,titletext %>'></asp:Localize></title>
+<MPuc:headcontent ID="Headcontent1" runat="server"/>
+<SCRIPT src="JS/mp.js" type="text/javascript"></SCRIPT>
+</head>
+<body class='logins'>
+<MPuc:mobilenav ID="Mobilenav1" runat="server"/>
+<form id="Form1" runat="server">
+<div class='wrapper' data-behavior='Navigation'>
+<MPuc:desktopnav ID="Desktopnav1" runat="server"/>
+
+<div class='container' style="margin-bottom:100px;">
+<div class='row'>
+<div class='twelvecol last'>
+<div class='tile'>
+<div id='errors'></div>
+<h3><asp:Label ID="Label4" runat="server" Text="获取密码" meta:resourcekey="Label4Resource1"></asp:Label></h3>
+<div class='fields'>
+<div  class="simple_form new_login_context" id="new_login_context">
+    <asp:Panel ID="Panel1" runat="server" Visible="False"  meta:resourcekey="Panel1Resource1">
+<P>
+<asp:Label ID="Label2" runat="server" Text="密码已发送至" meta:resourcekey="Label2Resource1"></asp:Label>
+<asp:Label ID="Label1" runat="server" Text="Label" meta:resourcekey="Label1Resource1"></asp:Label>
+<asp:Label ID="Label3" runat="server" Text="，请查收！" meta:resourcekey="Label3Resource1"></asp:Label> </P>
+<asp:HyperLink ID="HyperLink1" class="action blue_button button session_button" runat="server" Text="<%$ Resources:GResource,back %>" NavigateUrl="login2.aspx"></asp:HyperLink>
+    </asp:Panel>
+
+    <asp:Panel ID="Panel2" runat="server" meta:resourcekey="Panel2Resource1">
+<div class="input email required">
+<asp:TextBox  class="string email required" ID="TextBox1" runat="server"  placeholder='<%$ Resources:Label5Resource1.Text%>' size="50" type="email" ></asp:TextBox>
+</div>
+<div class="input password required">
+<asp:TextBox class=" required" minlength="4" ID="TextBox2" runat="server"  placeholder='<%$ Resources:Label6Resource1.Text%>'></asp:TextBox>
+<div class='submit_button'>
+<div class='spinner'></div>
+<asp:HyperLink ID="HyperLink2" class="action blue_button button session_button" runat="server" Text="<%$ Resources:GResource,back %>" NavigateUrl="login.aspx"></asp:HyperLink>
+<asp:Button ID="Button1"  class="action blue_button button session_button" runat="server" Text="send passwordsdfsd" onclick="Button1_Click" meta:resourcekey="Button1Resource2"/>
+<asp:ImageButton ID="ImageButton1" class=" button" runat="server" ImageUrl="~/Admin/login/CheckCode.aspx"  onclick="ImageButton1_Click" style="float:right; margin-right:-8px;"/>
+</div>
+    </asp:Panel>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</form>
+<MPuc:footer ID="ucfooter" runat="server"/>
+
+</body>
+</html>

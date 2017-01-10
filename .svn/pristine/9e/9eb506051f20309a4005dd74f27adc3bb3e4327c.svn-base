@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Model
+{
+    public  class Riskassessment
+    {
+
+        private int _id = 0;
+        private string _TijianID = "";
+        private string _fenxname = "";
+        private string _wenjmiaoshu = "";
+        private string _cankaowens = "";
+
+
+        public int id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        public string TijianID
+        {
+            get { return _TijianID; }
+            set { _TijianID = value; }
+        }
+
+        public string fenxname
+        {
+            get { return _fenxname; }
+            set { _fenxname = value; }
+        }
+
+        public string wenjmiaoshu
+        {
+            get { return _wenjmiaoshu; }
+            set { _wenjmiaoshu = value; }
+        }
+
+        public string cankaowens
+        {
+            get { return _cankaowens; }
+            set { _cankaowens = value; }
+        }
+
+
+    }
+}

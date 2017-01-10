@@ -1,0 +1,179 @@
+﻿using Model.WebApp;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web.Script.Serialization;
+
+namespace MediPlus
+{
+      public class drmedAPI
+    {
+        /// <summary>
+        /// 疾病评估API
+        /// </summary>
+        /// <param name="disease"></param>
+        /// <param name="postapi"></param>
+        /// <returns></returns>
+        public static string drmedapi(string disease, string postapi)
+        {
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            System.Collections.Specialized.NameValueCollection PostVars;
+            PostVars = new System.Collections.Specialized.NameValueCollection();
+
+
+            //string output = jss.Serialize(postapi);
+            //PostVars.Add("answer", output);
+            //PostVars.Add("disease", disease);
+
+            //info info1 = new info();
+            //info1.answer = ans;
+            //info1.disease = "heart-attack";
+            //info1.user = "1235";
+
+            string temp;
+            string url = "http://www.drmed.cn/api/disease";
+
+            url += "?appkey=" + "b32a34fabefe7f04";
+            temp = ((DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000).ToString();
+
+            url += "&timestamp=" + temp;
+            temp = "b32a34fabefe7f04" + "-" + "2c6bcc543f6f0c07435b5a6dcb90c96a" + "-" + temp;
+
+            url += "&token=" + System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(temp, "MD5").ToLower();
+
+            url += "&version=1.1";
+
+            string s = string.Empty;
+            //s= PublicClass.postrequest(url, PostVars);
+            s = getrequest(url, jss.Serialize("1"));
+            return s;
+        }
+
+
+        private static string getrequest(string url, string JSONData)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(JSONData);
+            HttpWebRequest myReq;
+            HttpWebResponse res;
+            string result;
+
+            myReq = (HttpWebRequest)HttpWebRequest.Create(url);
+            myReq.ContentType = "application/json";
+            myReq.ContentLength = bytes.Length;
+            myReq.Method = "post";
+            Stream reqstream = myReq.GetRequestStream();
+            reqstream.Write(bytes, 0, bytes.Length);
+
+
+            myReq.Timeout = 600000;
+
+            try
+            {
+                res = (HttpWebResponse)myReq.GetResponse();
+                if (res != null)
+                {
+                    result = new StreamReader(res.GetResponseStream()).ReadToEnd();
+                    res.Close();
+                    return result;
+                }
+            }
+            catch (WebException ex)
+            {
+                result = "error:" + ex.ToString();
+                return result;
+            }
+            return "error";
+        }
+
+        /// <summary>
+        /// 整体健康评估API
+        /// </summary>
+        /// <param name="weiyi">唯一的标识</param>
+        /// <returns></returns>
+        public static string zhengtijiank(string weiyi)
+        {
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            System.Collections.Specialized.NameValueCollection PostVars;
+            PostVars = new System.Collections.Specialized.NameValueCollection();
+
+            List<iAnswerItem> list = new List<iAnswerItem>();
+            List<iAnswer> listcall = new List<iAnswer>();
+
+
+            iAssessmentReport info1 = new iAssessmentReport();
+            info1.alist = new List<iAnswer>();
+            info1.alist = listcall;
+            info1.user = weiyi;
+
+            string temp;
+            string url = "http://www.drmed.cn/api/overall";
+
+            url += "?appkey=" + "b32a34fabefe7f04";
+            temp = ((DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000).ToString();
+
+            url += "&timestamp=" + temp;
+            temp = "b32a34fabefe7f04" + "-" + "2c6bcc543f6f0c07435b5a6dcb90c96a" + "-" + temp;
+
+            url += "&token=" + System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(temp, "MD5").ToLower();
+
+            url += "&version=1.1";
+
+            string s;
+            //s= PublicClass.postrequest(url, PostVars);
+            
+            s = getrequest(url, getJsonToInerface(info1));
+            return s;
+        }
+
+        /// <summary>
+        /// 根据实体转换成接口认可的数据格式
+        /// </summary>
+        /// <param name="report">实体对象</param>
+        /// <returns></returns>
+        public static string  getJsonToInerface(iAssessmentReport report)
+        {
+            JavaScriptSerializer javascript = new JavaScriptSerializer();
+            Dictionary<string, object> dictReport = new Dictionary<string, object>();
+            if (dictReport != null)
+            {
+                string answer = string.Empty;
+                Dictionary<string, object> dictAnswer = new Dictionary<string, object>();
+                foreach (var aitem in report.alist)
+                {
+                    if (checkItemStr(aitem.qclass) == "")
+                        continue;
+                    if (aitem.qlist.Count() < 1)
+                        continue;
+                    Dictionary<string, object> dictAnswerList = new Dictionary<string, object>();
+                    foreach (var qitem in aitem.qlist)
+                    {
+                        if (checkItemStr(qitem.qid) == "")
+                            continue;
+                        dictAnswerList.Add(qitem.qid, qitem.qvalue);
+                    }
+                    dictAnswer.Add(aitem.qclass, dictAnswerList);
+                }
+                dictReport.Add("answer", dictAnswer);
+                dictReport.Add("user", "xxxx");
+            }
+            return javascript.Serialize(dictReport);
+        }
+
+        /// <summary>
+        /// 检查字符串值
+        /// </summary>
+        /// <param name="value">所判断的值</param>
+        /// <returns></returns>
+        public static string checkItemStr(string value)
+        {
+            if (!string.IsNullOrEmpty(value) && value.Trim().ToString() != "")
+                return value;
+            return "";
+        }
+
+    }
+}

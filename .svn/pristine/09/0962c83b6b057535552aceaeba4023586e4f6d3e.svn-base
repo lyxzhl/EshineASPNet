@@ -1,0 +1,146 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="test3.aspx.cs" Inherits="test3" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="bootstrap-3.2.0-dist/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="bootstrap-3.2.0-dist/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="bootstrap-3.2.0-dist/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="bootstrap-3.2.0-dist/css/bootstrap.min.css" />
+    <script src="bootstrap-3.2.0-dist/js/bootstrap.js"></script>
+    <script src="bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <ul class="pagination">
+            <li class="disabled"><a href="#">&laquo;</a></li>
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">&raquo;</a></li>
+            <li class="active"><span>1 <span class="sr-only">(current)</span></span></li>
+        </ul>
+        <ul class="pager">
+            <li><a href="#">上一页</a></li>
+            <li><a href="#">下一页</a></li>
+        </ul>
+        <span class="glyphicon glyphicon-search"></span>
+
+
+        <button type="button" class="btn btn-default btn-lg">
+            <span class="glyphicon glyphicon-star"></span>Star
+        </button>
+
+
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                Dropdown
+   
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+                <li role="presentation" class="divider"></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+            </ul>
+        </div>
+
+
+        <asp:DropDownList ID="DropDownList1" runat="server" class="dropdown">
+            <asp:ListItem>Dropdown</asp:ListItem>
+            <asp:ListItem>Dropdown</asp:ListItem>
+            <asp:ListItem>Dropdown</asp:ListItem>
+            <asp:ListItem>4</asp:ListItem>
+            <asp:ListItem>5</asp:ListItem>
+        </asp:DropDownList>
+        <asp:DropDownList ID="DropDownList2" runat="server">
+            <asp:ListItem>Dropdown</asp:ListItem>
+            <asp:ListItem>Dropdown</asp:ListItem>
+            <asp:ListItem>Dropdown</asp:ListItem>
+            <asp:ListItem>4</asp:ListItem>
+            <asp:ListItem>5</asp:ListItem>
+        </asp:DropDownList>
+
+
+        <div class="btn-group-vertical">
+            <button type="button" class="btn btn-default">1</button>
+            <button type="button" class="btn btn-default">2</button>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Dropdown
+     
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Dropdown link</a></li>
+                    <li><a href="#">Dropdown link</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <button type="button" class="btn">1</button>
+        <asp:Button ID="Button1" runat="server" Text="Button" class="btn btn-default" />
+        <asp:Button ID="Button2" runat="server" Text="Button" />
+
+
+        <!-- Split button -->
+        <div class="btn-group">
+            <button type="button" class="btn btn-danger">Action</button>
+            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Separated link</a></li>
+            </ul>
+        </div>
+
+
+
+
+        <div class="input-group">
+            <span class="input-group-addon">@</span>
+            <input type="text" class="form-control" placeholder="Username">
+        </div>
+
+        <div class="input-group">
+            <input type="text" class="form-control">
+            <span class="input-group-addon">.00</span>
+        </div>
+
+        <div class="input-group">
+            <span class="input-group-addon">$</span>
+            <input type="text" class="form-control">
+            <span class="input-group-addon">.00</span>
+        </div>
+
+        <center><asp:TextBox ID="TextBox1" runat="server" class="form-control" Width="100" TextMode="MultiLine"></asp:TextBox></center>
+
+        <div class="input-group">
+            <span class="input-group-btn">
+                <asp:Button ID="Button3" runat="server" Text="Button" CssClass="btn" /></span>
+            <asp:TextBox ID="TextBox2" runat="server" CssClass="form-control"></asp:TextBox>
+        </div>
+
+
+        <ul class="nav nav-tabs" role="tablist">
+            <li><a href="#">Home</a></li>
+            <li class="active" ><a href="#">Profile</a></li>
+            <li ><a href="#">Messages</a></li>
+        </ul>
+
+    </form>
+</body>
+</html>

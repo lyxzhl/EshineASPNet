@@ -1,0 +1,36 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <div class="left aClick" onclick="goTo('info.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </div>
+        <div class="center">用户设置</div>
+        <div class="right">
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="UserSetting" class="page">
+        <div class="page-content content_USetting">
+            <div class="USetting-wrap">
+                <div class="group-item">
+                    <a class="row-item" href="#">
+                        <span>关于我们</span><i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                    <a class="row-item" href="#">
+                        <span>许可服务协议</span><i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                    <a class="row-item" data-toggle="modal" data-target="#myModal">
+                        <span>清除缓存(已使用0.87M)</span><i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                </div>
+                <div class="group-item btn-item">
+                    <div class="row-item">
+                        <button id="btnOutLogin" type="submit" class="btn btn-block btn-danger" data-toggle="modal" data-target="#myModal" onclick="formLogout();">安全登出</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,314 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using System.Text;
+using System.Data.OleDb;
+using Model;
+using Bll;
+public partial class Admin_CustomersAdmin_CustomerInfo : System.Web.UI.Page
+{
+    Bll.CustomerBll cb = new Bll.CustomerBll();
+    Model.tab_customers modelCb = new Model.tab_customers();
+    PublicClass pc = new PublicClass();
+    upExcel ue = new upExcel();
+    Bll.OrdersBll ob = new Bll.OrdersBll();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        Session["from"] = null;
+        if (!IsPostBack)
+        {
+            fillcompanydroplist();
+        }
+        if (ViewState["cusselectcomm"] != null && ViewState["cusselectcomm"].ToString() != "")
+        {
+            this.SqlDataSource1.SelectCommand = ViewState["cusselectcomm"].ToString();
+        }
+    }
+    void fillcompanydroplist()
+    {
+        DataTable dt = cb.CustomerSelect("SELECT distinct customerCompany, customerCompanycode FROM [tab_customers]");
+        this.DropDownList1.DataSource = dt.DefaultView;
+        this.DropDownList1.DataTextField = "customerCompany";
+        this.DropDownList1.DataValueField = "customerCompany";
+        this.DropDownList1.DataBind();
+        this.DropDownList1.Items.Insert(0, "选择公司");
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        updateselection();
+    }
+
+
+    protected void Button3_Click(object sender, EventArgs e)
+    {
+        int successfulcount = 0, errorcount = 0;
+        string location = "";
+        try
+        {
+            if (this.FileUpload1.HasFile)
+            {
+                if (!ue.SaveUpFile("~/Admin/temp/", this.FileUpload1))//上传文件
+                {
+                    throw new Exception("上传文件失败!");
+                }
+
+                DataTable inputdt = ue.InputExcel("员工信息");
+                if (inputdt == null)
+                {
+                    throw new Exception("Excel文件读取失败!");
+                }
+
+                int j;
+                CustomerBll cust = new CustomerBll();
+                tab_customers customer;
+                StringBuilder erroritem = new StringBuilder();
+
+                for (int i = 0; i < inputdt.Rows.Count; i++)
+                {
+                    j = 0;
+                    customer = new tab_customers();
+                    customer.customerCode = inputdt.Rows[i][j++].ToString().Trim();//0
+                    customer.customerName = inputdt.Rows[i][j++].ToString().Trim();
+                    location = customer.customerName + "customerEmail";
+                    customer.customerEmail = inputdt.Rows[i][j++].ToString().Trim();
+                    location = customer.customerName + "customerPrivateEmail";
+                    customer.customerPrivateEmail = inputdt.Rows[i][j++].ToString().Trim();
+                    location = customer.customerName + "customerMobile";
+                    customer.customerMobile = inputdt.Rows[i][j++].ToString().Trim();
+                    location = customer.customerName + "customerTel";
+                    customer.customerTel = inputdt.Rows[i][j++].ToString().Trim();//5
+                    customer.customerProvince = inputdt.Rows[i][j++].ToString().Trim();
+                    customer.customerCity = inputdt.Rows[i][j++].ToString().Trim();
+                    customer.customerZone = inputdt.Rows[i][j++].ToString().Trim();
+                    customer.customerAddress = inputdt.Rows[i][j++].ToString().Trim();
+                    customer.customerAllAddr = inputdt.Rows[i][j++].ToString().Trim();//10
+                    customer.customerDefaultAddr = inputdt.Rows[i][j++].ToString().Trim();
+                    customer.customerGender = inputdt.Rows[i][j++].ToString().Trim();
+                    customer.customerMarriageStatus = inputdt.Rows[i][j++].ToString().Trim();
+                    location = customer.customerName + "customerDOB";
+                    if (inputdt.Rows[i][j] == null || inputdt.Rows[i][j].ToString() == "")
+                    {
+                        //customer.customerDOB = DateTime.Parse("1800-1-1");
+                        j++;
+                    }
+                    else
+                    {
+                        customer.customerDOB = DateTime.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    }
+                    customer.customerNation = inputdt.Rows[i][j++].ToString().Trim();//15
+                    location = customer.customerName + "customerIDcard";
+                    customer.customerIDcard = inputdt.Rows[i][j++].ToString().Trim();
+                    //if (customer.customerIDcard =="")
+                    //{
+                    //    this.Label1.Text = "身份证不能为空";
+                    //    continue;
+                    //}
+                    string sq = "select customerIDcard from tab_customers where customerIDcard='" + customer.customerIDcard + "'";
+                    DataTable ds = cb.CustomerSelect(sq);
+                    if (ds.Rows.Count > 0 && customer.customerIDcard != "")
+                    {
+                        erroritem.Append("身份证重复" + customer.customerIDcard + ",\n");
+                        this.Label1.Text = erroritem.ToString();
+                        continue;
+                    }
+                    if (customer.customerIDcard.Length == 18)
+                    {
+                        try
+                        {
+                            string sid = customer.customerIDcard;
+                            customer.customerDOB = DateTime.Parse(sid.Substring(6, 4) + "-" + sid.Substring(10, 2) + "-" + sid.Substring(12, 2));
+                            customer.customerGender = (int.Parse(sid.Substring(16, 1)) % 2 == 1) ? "男" : "女";
+                        }
+                        catch
+                        { }
+                    }
+
+
+                    customer.customerCompany = inputdt.Rows[i][j++].ToString().Trim();
+                    customer.customerCompanycode = inputdt.Rows[i][j++].ToString().Trim();
+                    customer.customerClass = inputdt.Rows[i][j++].ToString().Trim();
+                    location = customer.customerName + "customerCompanyTel";
+                    customer.customerCompanyTel = inputdt.Rows[i][j++].ToString().Trim();//20
+                    customer.customerCompanyProvince = inputdt.Rows[i][j++].ToString().Trim();
+                    customer.customerCompanyCity = inputdt.Rows[i][j++].ToString().Trim();
+                    customer.customerCompanyZone = inputdt.Rows[i][j++].ToString().Trim();
+                    customer.customerCompanyAddress = inputdt.Rows[i][j++].ToString().Trim();
+                    customer.customerCompanyBU = inputdt.Rows[i][j++].ToString().Trim();//25
+                    customer.customerVIP = inputdt.Rows[i][j++].ToString().Trim();
+                    location = customer.customerName + "customerBalance";
+                    customer.customerBalance = double.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    location = customer.customerName + "packagecode";
+                    customer.packagecode = inputdt.Rows[i][j++].ToString().Trim();
+                    location = customer.customerName + "customerBudget";
+                    customer.customerBudget = double.Parse(inputdt.Rows[i][j++].ToString().Trim());
+                    try
+                    {
+                        if (cust.CustomerAdd(customer) < 1)
+                        {
+                            errorcount++;
+                        }
+                        else
+                        {
+                            successfulcount++;
+                        }
+
+                    }
+                    catch
+                    {
+                        errorcount++;
+                        erroritem.Append(customer.customerCode + ",\n");
+                    }
+                }
+
+
+                GridView1.DataBind();
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", " <script>alert('操作已完成！其中成功导入数据" + successfulcount + "条，失败" + errorcount + "条" + erroritem.ToString() + "'); </script>");
+            }
+            else
+            {
+                throw new Exception("请选择Excel文件!");
+            }
+        }
+        catch (Exception ex)
+        {
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", " <script>alert('error:" + ex.Message + location + "'); </script>");
+        }
+    }
+
+    protected void GridView1_RowCommand(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            string customerID = GridView1.DataKeys[e.Row.RowIndex].Value.ToString();
+            /*
+            Image oimage = (Image)e.Row.FindControl("Image1");
+            if (oimage != null)
+            {
+                string imgpath = "images/userpic/" + memberid + ".jpg";
+                if (File.Exists(Server.MapPath(imgpath)))
+                {
+                    System.Drawing.Image img = System.Drawing.Image.FromFile(Server.MapPath(imgpath));
+                    if (img.Height > 200)
+                    {
+                        int newwidth = img.Width * 200 / img.Height;
+                        oimage.Width = newwidth;
+                        oimage.Height = 200;
+                    }
+                    oimage.ImageUrl = imgpath;
+                }
+            }*/
+            GridView oGridView = (GridView)e.Row.FindControl("GridView2");
+            if (oGridView != null)
+            {
+
+                string s = "SELECT * FROM [tab_orders] where ReportType<>N'商城' and (customerID='" + customerID + "')  ORDER BY [orderID] DESC";
+                DataTable dt = ob.GetAny(s);
+                oGridView.DataSource = dt;
+                oGridView.DataBind();
+            }
+            GridView oGridView3 = (GridView)e.Row.FindControl("GridView3");
+            if (oGridView3 != null)
+            {
+
+                string s = "SELECT * FROM [tab_orders] where ReportType=N'商城' and (customerID='" + customerID + "')  ORDER BY [orderID] DESC";
+                DataTable dt = ob.GetAny(s);
+                oGridView3.DataSource = dt;
+                oGridView3.DataBind();
+            }
+        }
+    }
+    protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (this.DropDownList2.SelectedIndex != 0)
+            DropDownList2_SelectedIndexChanged(sender, e);
+        else
+            updateselection();
+    }
+    void updateselection()
+    {
+        string s = this.TextBox1.Text;
+        string scmd = "SELECT * FROM tab_customers where 1=1 ";
+
+        if (this.DropDownList1.SelectedIndex == 0)
+        {
+
+        }
+        else
+        {
+            scmd += "and customerCompany='" + this.DropDownList1.SelectedValue + "' ";
+        }
+
+        if (this.TextBox1.Text != "")
+        {
+            scmd += " and (customerName like '%" + s + "%' or  customerCode like '%" + s + "%' or "
++ "customerEmail like '%" + s + "%' or  customerPrivateEmail like '%" + s + "%' or customerMobile like '%" + s + "%' or "
++ "customerProvince like '%" + s + "%' or customerCity like '%" + s + "%' or customerAddress like '%" + s + "%' or "
++ "customerDOB like '%" + s + "%' or customerNation like '%" + s + "%' or customerIDcard like '%" + s + "%' or "
++ "customerCompany like '%" + s + "%' or customerClass like '%" + s + "%' or customerBalance like '%" + s + "%')";
+        }
+        ViewState["cusselectcomm"] = scmd;
+        this.SqlDataSource1.SelectCommand = scmd;
+        this.SqlDataSource1.DataBind();
+    }
+
+    protected void ButtonEE_Click(object sender, EventArgs e)
+    {
+        PublicClass pc = new PublicClass();
+        GridView1.AllowPaging = false;// turn off paging 
+        GridView1.DataSourceID = "";
+        GridView1.DataSourceID = this.SqlDataSource1.ID;
+        GridView1.DataBind();
+        for (int i = 0; i < GridView1.Rows.Count; i++)
+        {
+            GridView1.Rows[i].Cells[14].Attributes.Add("style", "vnd.ms-excel.numberformat:@;");
+            
+        }
+        //DataTable dt = (DataTable)GridView1.DataSource;
+
+        pc.gridviewtoexcel(GridView1, "MediPlusexport");
+        GridView1.AllowPaging = true;
+        GridView1.DataSourceID = "";
+        GridView1.DataSourceID = this.SqlDataSource1.ID;
+
+        GridView1.DataBind();
+    }
+    protected void DropDownList2_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string s = "select distinct * from tab_customers where customerCode in (SELECT  a.customerCode FROM tab_customers a,tab_orders o where a.customerID=o.customerID ";
+        //string s = "SELECT a.*,o.orderID,o.orderStatus FROM tab_customers a,tab_orders o where a.customerID=o.customerID ";
+        if (this.DropDownList1.SelectedIndex != 0)
+        {
+            s += " and a.customerCompany='" + this.DropDownList1.SelectedValue + "' ";
+        }
+        if (this.DropDownList2.SelectedIndex != 0)
+        {
+            s += " and o.orderStatus='" + this.DropDownList2.SelectedValue + "' ";
+        }
+        s += ")";
+        this.SqlDataSource1.SelectCommand = s;
+        this.SqlDataSource1.DataBind();
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        string memberidlist = "";
+        foreach (GridViewRow row in GridView1.Rows)
+        {
+            if ((row.FindControl("CheckBox1") as CheckBox).Checked)
+            {
+                int id = 0;
+                id = Convert.ToInt32(GridView1.DataKeys[row.RowIndex].Value);
+                if (memberidlist != "")
+                    memberidlist += ",";
+                memberidlist += id;
+            }
+        }
+        Response.Redirect("customerBuorder.aspx?completeorder=yes&memberidlist=" + memberidlist);
+    }
+}

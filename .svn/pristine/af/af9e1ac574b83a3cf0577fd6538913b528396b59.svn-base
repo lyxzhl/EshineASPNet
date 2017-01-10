@@ -1,0 +1,41 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+namespace Bll
+{
+    public class supplierpackageBll
+    {
+        IDAL.supplierpackageDal itu = DALFactory.supplierpackage_Factory.Createusers();
+        DBunit.SQLAccess dbsql = new DBunit.SQLAccess();
+        public int Add(Model.supplierpackage supplierpackage)
+        {
+            return itu.Add(supplierpackage);
+        }
+        public Model.supplierpackage getsupplierpackage(Model.supplierpackage supplierpackage1)
+        {
+            return itu.getsupplierpackage(supplierpackage1);
+        }
+        public int update(Model.supplierpackage supplierpackage)
+        {
+            return itu.update(supplierpackage);
+        }
+        public int Delete(int id)
+        {
+            return itu.Delete(id);
+        }
+        public DataTable Select(string ss)
+        {
+            return itu.Select(ss);
+        }
+        public string getsupplierpackage(string mpcode)
+        {
+            string s = "select suppliercode from supplierpackage where mpcode='" + mpcode + "'";
+            if (dbsql.ExecuteSc(s) == null)
+                return "";
+            else
+            return dbsql.ExecuteSc(s).ToString();
+        }
+    }
+
+}

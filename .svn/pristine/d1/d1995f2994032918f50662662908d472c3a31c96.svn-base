@@ -1,0 +1,2051 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Text.RegularExpressions;
+using MeiNianWebRef;
+using System.Web.Script.Serialization;
+using Subgurim.Controles;
+using System.IO;
+using System.Xml;
+using Com.Alipay;
+using System.Collections;
+using ikang;
+
+
+public partial class reserverelexam : PageBases
+{
+    DBunit.SQLAccess dbsql = new DBunit.SQLAccess();
+    Model.tab_customers modelCu = new Model.tab_customers();
+    Model.tab_relatives modelrel = new Model.tab_relatives();
+    Model.tab_orders orders = new Model.tab_orders();
+    Bll.CustomerBll Cb = new Bll.CustomerBll();
+    Bll.SupplierBll sb = new Bll.SupplierBll();
+    Bll.packageBll pb = new Bll.packageBll();
+    Bll.uppkgBll ub = new Bll.uppkgBll();
+    Bll.OrdersBll ob = new Bll.OrdersBll();
+    Bll.examcardBll eb = new Bll.examcardBll();
+    Bll.companyBll comb = new Bll.companyBll();
+    Bll.RelativeBLL rb = new Bll.RelativeBLL();
+    Bll.supplierpackageBll spb = new Bll.supplierpackageBll();
+    reserveexamcommon rc = new reserveexamcommon();
+
+    Bll.deliveryaddressBll db = new Bll.deliveryaddressBll();
+
+    GMap GMap1 = new GMap();
+
+    PublicClass pc = new PublicClass();
+    ikangservice iks = new ikangservice();
+    ikangmember ikm = new ikangmember();
+    HealthService mns = new HealthService();
+    //接收省份的集合
+    DataSet ds_Province;
+    //接收市的集合
+    DataSet ds_City;
+    //接收区的集合
+    DataSet ds_Area;
+    DateTime firstdate;
+    DateTime lastdate;
+    string DOB;
+    public string classmale, classfemale, classmarried, classunmarried, branchmapclass = "hidden", newaddressclass = "hidden", closscompanyaddressclass = "hidden";
+    public string supplierlistcontentikang, supplierlistcontentciming, supplierlistcontentmeinian;
+    int uppkgcount = -1;
+    public string continue2class = "hidden", xiyaclass = "hidden";
+    public string hideik = "", hidemn = "";
+    public int limit1, limit2, limit3, limit4, limit5, limit6, limit7, limit8, limit9, limit10;
+    public string supplierpackagecode = "";
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!Page.IsPostBack)
+        {
+            Session["relativeID"] = null;
+            //this.CheckUser((Hashtable)Application["Online"]);
+            
+        }
+        //return;
+        //if (Session["from"].ToString()!="pf")
+        //{
+        //    Session["htai"] = Session["htai"].ToString();
+        //}
+
+
+        modelCu.customerID = int.Parse(Session["id"].ToString());
+        modelCu = Cb.getCustomer(modelCu);
+        
+        if (!Page.IsPostBack)
+        {
+            fillrel();
+            rc.initcitySupplier(true, ref branchmapclass, modelCu, com_Province, com_City, DropDownList1, GMap1,Literal1, ref  hideik, ref  hidemn, ref  continue2class, ref  supplierlistcontentikang, ref  supplierlistcontentciming, ref  supplierlistcontentmeinian, Panel14, Panel15, Panel16);
+            initcityDilivery(sender, e);
+            rc.customizeitems(modelCu.customerCompany, RadioButton9, RadioButton5, RadioButton6, Panel_platformpay, this.TextBoxPA);
+        }
+        if (this.CheckBox1.Checked==false&&this.CheckBox2.Checked==false&&this.CheckBox3.Checked==false&&this.CheckBox4.Checked==false&&this.CheckBox5.Checked==false&&this.CheckBox6.Checked==false)
+        {
+            
+        }
+        else if (Session["relativeID"] != null && Session["relativeID"].ToString() != "" && Session["relativeID"].ToString() != "0")
+        {
+            modelrel.relativeID = int.Parse(Session["relativeID"].ToString());
+            modelrel = rb.getRelative(modelrel);
+            displayage();
+        }
+
+        checkredirect();
+
+        branchmapclass = "hidden";
+        if (this.Panel4.Visible)
+        {
+            processpanel();
+        }
+    }
+
+    void processpanel()
+    {
+        filladdresses();
+        //if (this.RadioButton7.Checked)
+        //{
+        //    newaddressclass = "";
+        //}
+        if (this.RadioButton5.Checked)
+        {
+            closscompanyaddressclass = "";
+        }
+        for (int i = 0; i < this.CheckBoxList1.Items.Count; i++)
+        {
+            if (this.CheckBoxList1.Items[i].Text == "")
+            {
+                if (uppkgcount == -1) uppkgcount = i;
+                this.CheckBoxList1.Items[i].Attributes.Add("class", "hidden");
+            }
+            else
+            {
+                this.CheckBoxList1.Items[i].Attributes.Remove("class");
+            }
+        }
+        for (int i = 0; i < this.CheckBoxList2.Items.Count; i++)
+        {
+            if (this.CheckBoxList2.Items[i].Text == "")
+            {
+                if (uppkgcount == -1) uppkgcount = i;
+                this.CheckBoxList2.Items[i].Attributes.Add("class", "hidden");
+            }
+        }
+        for (int i = 0; i < this.CheckBoxList3.Items.Count; i++)
+        {
+            if (this.CheckBoxList3.Items[i].Text == "")
+            {
+                if (uppkgcount == -1) uppkgcount = i;
+                this.CheckBoxList3.Items[i].Attributes.Add("class", "hidden");
+            }
+        }
+        for (int i = 0; i < this.CheckBoxList4.Items.Count; i++)
+        {
+            if (this.CheckBoxList4.Items[i].Text == "")
+            {
+                if (uppkgcount == -1) uppkgcount = i;
+                this.CheckBoxList4.Items[i].Attributes.Add("class", "hidden");
+            }
+        }
+        for (int i = 0; i < this.CheckBoxList5.Items.Count; i++)
+        {
+            if (this.CheckBoxList5.Items[i].Text == "")
+            {
+                if (uppkgcount == -1) uppkgcount = i;
+                this.CheckBoxList5.Items[i].Attributes.Add("class", "hidden");
+            }
+        }
+        for (int i = 0; i < this.CheckBoxList6.Items.Count; i++)
+        {
+            if (this.CheckBoxList6.Items[i].Text == "")
+            {
+                if (uppkgcount == -1) uppkgcount = i;
+                this.CheckBoxList6.Items[i].Attributes.Add("class", "hidden");
+            }
+        }
+        for (int i = 0; i < this.CheckBoxList7.Items.Count; i++)
+        {
+            if (this.CheckBoxList7.Items[i].Text == "")
+            {
+                if (uppkgcount == -1) uppkgcount = i;
+                this.CheckBoxList7.Items[i].Attributes.Add("class", "hidden");
+            }
+        }
+        for (int i = 0; i < this.CheckBoxList8.Items.Count; i++)
+        {
+            if (this.CheckBoxList8.Items[i].Text == "")
+            {
+                if (uppkgcount == -1) uppkgcount = i;
+                this.CheckBoxList8.Items[i].Attributes.Add("class", "hidden");
+            }
+        }
+        for (int i = 0; i < this.CheckBoxList9.Items.Count; i++)
+        {
+            if (this.CheckBoxList9.Items[i].Text == "")
+            {
+                if (uppkgcount == -1) uppkgcount = i;
+                this.CheckBoxList9.Items[i].Attributes.Add("class", "hidden");
+            }
+        }
+        for (int i = 0; i < this.CheckBoxList10.Items.Count; i++)
+        {
+            if (this.CheckBoxList10.Items[i].Text == "")
+            {
+                if (uppkgcount == -1) uppkgcount = i;
+                this.CheckBoxList10.Items[i].Attributes.Add("class", "hidden");
+            }
+        }
+        if (CheckBoxList1.Items[0].Text != "")
+            limit1 = ub.getuppkglimit(CheckBoxList1.Items[0].Value.Split(',')[1], this.DropDownList2.SelectedValue);
+        if (CheckBoxList2.Items[0].Text != "")
+            limit2 = ub.getuppkglimit(CheckBoxList2.Items[0].Value.Split(',')[1], this.DropDownList2.SelectedValue);
+        if (CheckBoxList3.Items[0].Text != "")
+            limit3 = ub.getuppkglimit(CheckBoxList3.Items[0].Value.Split(',')[1], this.DropDownList2.SelectedValue);
+        if (CheckBoxList4.Items[0].Text != "")
+            limit4 = ub.getuppkglimit(CheckBoxList4.Items[0].Value.Split(',')[1], this.DropDownList2.SelectedValue);
+        if (CheckBoxList5.Items[0].Text != "")
+            limit5 = ub.getuppkglimit(CheckBoxList5.Items[0].Value.Split(',')[1], this.DropDownList2.SelectedValue);
+        if (CheckBoxList6.Items[0].Text != "")
+            limit6 = ub.getuppkglimit(CheckBoxList6.Items[0].Value.Split(',')[1], this.DropDownList2.SelectedValue);
+        if (CheckBoxList7.Items[0].Text != "")
+            limit7 = ub.getuppkglimit(CheckBoxList7.Items[0].Value.Split(',')[1], this.DropDownList2.SelectedValue);
+        if (CheckBoxList8.Items[0].Text != "")
+            limit8 = ub.getuppkglimit(CheckBoxList8.Items[0].Value.Split(',')[1], this.DropDownList2.SelectedValue);
+        if (CheckBoxList9.Items[0].Text != "")
+            limit9 = ub.getuppkglimit(CheckBoxList9.Items[0].Value.Split(',')[1], this.DropDownList2.SelectedValue);
+        if (CheckBoxList10.Items[0].Text != "")
+            limit10 = ub.getuppkglimit(CheckBoxList10.Items[0].Value.Split(',')[1], this.DropDownList2.SelectedValue);
+        Label60.Text = "可选" + limit1 + "项";
+        Label61.Text = "可选" + limit2 + "项";
+        Label62.Text = "可选" + limit3 + "项";
+        Label63.Text = "可选" + limit4 + "项";
+        Label64.Text = "可选" + limit5 + "项";
+        Label65.Text = "可选" + limit6 + "项";
+        Label66.Text = "可选" + limit7 + "项";
+        Label67.Text = "可选" + limit8 + "项";
+        Label68.Text = "可选" + limit9 + "项";
+        Label69.Text = "可选" + limit10 + "项";
+        if (CheckBoxList1.Items[0].Text == "")
+            Label60.Visible = false;
+        if (CheckBoxList2.Items[0].Text == "")
+            Label61.Visible = false;
+        if (CheckBoxList3.Items[0].Text == "")
+            Label62.Visible = false;
+        if (CheckBoxList4.Items[0].Text == "")
+            Label63.Visible = false;
+        if (CheckBoxList5.Items[0].Text == "")
+            Label64.Visible = false;
+        if (CheckBoxList6.Items[0].Text == "")
+            Label65.Visible = false;
+        if (CheckBoxList7.Items[0].Text == "")
+            Label66.Visible = false;
+        if (CheckBoxList8.Items[0].Text == "")
+            Label67.Visible = false;
+        if (CheckBoxList9.Items[0].Text == "")
+            Label68.Visible = false;
+        if (CheckBoxList10.Items[0].Text == "")
+            Label69.Visible = false;
+
+    }
+
+    void init()
+    {
+        //选择公司洗牙分店
+        string s4 = "select canxiya from tab_company where CompanyName='" + Session["Company"].ToString() + "'";
+        DataTable dt4 = comb.Select(s4);
+        if (dt4.Rows[0][0].ToString() == "1")
+        {
+            this.Panel17.Visible = true;
+            xiyaclass = "";
+            rc.fillxiyasupplier(modelCu, this.com_Province, this.com_City, this.RadioButtonList1);
+        }
+        else
+        {
+            this.Panel17.Visible = false;
+        }
+    }
+
+    void fillrel()
+    {
+        if (Session["Company"] != null && Session["Company"].ToString() != "")
+        {
+            string s = "select standby1 from tab_company where CompanyName='" + Session["Company"].ToString() + "'";
+            DataTable dt3 = comb.Select(s);
+            if (dt3.Rows[0][0].ToString() != "")
+            {
+                this.Label18.Text = dt3.Rows[0][0].ToString();
+                this.Label18.Visible = true;
+            }
+            else
+            {
+                this.Label18.Visible = false;
+            }
+
+
+            if (comb.getdisplayfuke(modelCu.customerCompany) != "1")
+            {
+                CheckBox7.Visible = false;
+            }
+            else
+            {
+                string s2 = "select standby2 from tab_company where CompanyName='" + Session["Company"].ToString() + "'";
+                DataTable dt2 = comb.Select(s2);
+                if (dt2.Rows[0][0].ToString() == "1")
+                {
+                    CheckBox7.Text = (string)GetGlobalResourceObject("GResource", "attendwomensub1");
+
+                    if (this.RadioButton3.Checked)
+                        CheckBox7.Visible = true;
+                    else
+                    {
+                        CheckBox7.Visible = false;
+                    }
+                }
+                else
+                {
+                    CheckBox7.Text = (string)GetGlobalResourceObject("GResource", "attendwomensub");
+                    if (this.RadioButton3.Checked)
+                        CheckBox7.Visible = true;
+                    else
+                    {
+                        CheckBox7.Visible = false;
+                    }
+                }
+            }
+
+            
+        }
+        
+
+        DataTable dt = rb.RelativeSelect("SELECT relativeName,relativeID FROM tab_relatives WHERE relativeCustomer=" + Session["id"].ToString());
+        int relnum = dt.Rows.Count > 6 ? 6 : dt.Rows.Count;
+        CheckBox cbtemp = CheckBox1;
+        TextBox tbtemp = TextBox11;
+        for (int i = 0; i < relnum; i++)
+        {
+            switch (i) {
+                case 0: cbtemp = CheckBox1; tbtemp = TextBox11; break;
+                case 1: cbtemp = CheckBox2; tbtemp = TextBox12; break;
+                case 2: cbtemp = CheckBox3; tbtemp = TextBox13; break;
+                case 3: cbtemp = CheckBox4; tbtemp = TextBox14; break;
+                case 4: cbtemp = CheckBox5; tbtemp = TextBox15; break;
+                case 5: cbtemp = CheckBox6; tbtemp = TextBox16; break;
+            }
+            cbtemp.Visible = true;
+            cbtemp.Text = dt.Rows[i]["relativeName"].ToString();
+            tbtemp.Text = dt.Rows[i]["relativeID"].ToString();
+            if (ob.hasSpecRelarrangement(int.Parse(tbtemp.Text)))
+            {
+                cbtemp.Enabled = false;
+            }
+        }
+        
+    }
+    private void checkredirect()
+    {
+        if (!Page.IsPostBack && Request.QueryString["relativeID"] != null)
+        {
+
+            string relativeID = Request.QueryString["relativeID"].ToString();
+            this.TextBox1.Enabled = false;
+            Session["relativeID"] = modelrel.relativeID;
+            if (relativeID == this.TextBox11.Text)
+            {
+                this.CheckBox1.Checked = true;
+                modelrel.relativeID = int.Parse(this.TextBox11.Text);
+            }
+            else if (relativeID == this.TextBox12.Text)
+            {
+                this.CheckBox2.Checked = true;
+                modelrel.relativeID = int.Parse(this.TextBox12.Text);
+            }
+            else if (relativeID == this.TextBox13.Text)
+            {
+                this.CheckBox3.Checked = true;
+                modelrel.relativeID = int.Parse(this.TextBox13.Text);
+            }
+            else if (relativeID == this.TextBox14.Text)
+            {
+                this.CheckBox4.Checked = true;
+                modelrel.relativeID = int.Parse(this.TextBox14.Text);
+            }
+            else if (relativeID == this.TextBox15.Text)
+            {
+                this.CheckBox5.Checked = true;
+                modelrel.relativeID = int.Parse(this.TextBox15.Text);
+            }
+            else if (relativeID == this.TextBox16.Text)
+            {
+                this.CheckBox6.Checked = true;
+                modelrel.relativeID = int.Parse(this.TextBox16.Text);
+            }
+            initrel();
+        }
+    }
+    void initrel()
+    {
+        modelrel = rb.getRelative(modelrel);
+
+        this.TextBox1.Text = modelrel.relativeName;
+        this.TextBox2.Text = modelrel.relativeEmail;
+        if (modelrel.relativeIDcard != "")
+        {
+            if (modelrel.relativeIDcard.Length == 18)
+            {
+                this.TextBox3.Text = modelrel.relativeIDcard;
+            }
+            else
+            {
+                this.TextBox5.Text = modelrel.relativeIDcard;
+            }
+        }
+        this.TextBox4.Text = modelrel.relativeMobile;
+
+        if (modelrel.relativeGender == "男")
+        {
+            this.RadioButton1.Checked = true;
+            this.CheckBox7.Visible = false;
+            classmale = "selected";
+        }
+        else if (modelrel.relativeGender == "女")
+        {
+            this.RadioButton2.Checked = true;
+            classfemale = "selected";
+        }
+
+        if (modelrel.relativeMarriageStatus == "未婚")
+        {
+            this.RadioButton3.Checked = true;
+            classunmarried = "selected";
+        }
+        else if (modelrel.relativeMarriageStatus == "已婚")
+        {
+            this.RadioButton4.Checked = true;
+            classmarried = "selected";
+        }
+
+        if (modelrel.relativeRelationship == "配偶")
+        {
+            this.RadioButton14.Checked = true;
+        }
+        else if (modelrel.relativeRelationship == "子女")
+        {
+            this.RadioButton15.Checked = true;
+        }
+        else if (modelrel.relativeRelationship == "父母")
+        {
+            this.RadioButton16.Checked = true;
+        }
+        else if (modelrel.relativeRelationship == "其他")
+        {
+            this.RadioButton17.Checked = true;
+        }
+        displayage();
+    }
+
+    void initcityDilivery(object sender, EventArgs e)
+    {
+        try
+        {
+
+            ds_Province = DBHelper.GetSet("select * from province");
+            for (int i = 0; i < ds_Province.Tables[0].Rows.Count; i++)
+            {
+                com_Province1.Items.Add(ds_Province.Tables[0].Rows[i][2].ToString());
+            }
+            int proindex, cityindex;
+            string province = "", city = "";
+            if (modelCu.customerProvince != "")
+            {
+                province = modelCu.customerProvince;
+            }
+            else if (modelCu.customerCompanyProvince != "")
+            {
+                province = modelCu.customerCompanyProvince;
+            }
+
+            if (modelCu.customerCity != "")
+            {
+                city = modelCu.customerCity;
+            }
+            else if (modelCu.customerCompanyCity != "")
+            {
+                city = modelCu.customerCompanyCity;
+            }
+            if (province != "")
+            {
+                proindex = this.com_Province1.Items.IndexOf(this.com_Province1.Items.FindByText(province));
+                if (proindex > 0)
+                {
+                    com_Province1.SelectedIndex = proindex;
+                    com_Province1_SelectedIndexChanged(sender, e);
+                    if (city != "")
+                    {
+                        cityindex = this.com_City.Items.IndexOf(this.com_City1.Items.FindByText(city));
+                        if (cityindex > 0)
+                        {
+                            com_City1.SelectedIndex = cityindex;
+                            com_City1_SelectedIndexChanged(sender, e);
+
+                        }
+                    }
+                }
+
+            }
+        }
+        catch (Exception)
+        {
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('数据库连接错误！');</script>");
+        }
+    }
+    protected void com_Province1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        com_City1.Items.Clear();
+        com_City1.Items.Add((string)GetGlobalResourceObject("GResource", "selectCity"));
+        ds_City = DBHelper.GetSet(string.Format("select name from city where provinceId in (select code from province where name='{0}')", com_Province1.Text));
+        if (ds_City.Tables[0].Rows.Count == 0)
+            com_City1.Items.Add(com_Province1.Text);
+        for (int i = 0; i < ds_City.Tables[0].Rows.Count; i++)
+            com_City1.Items.Add(ds_City.Tables[0].Rows[i][0].ToString());
+        com_City1.SelectedIndex = 0;
+    }
+    void displayage()
+    {
+        int year = 1900, month = 0, day = 0, age = 0;
+        if (this.TextBox3.Text != "" && this.TextBox3.Text.Length == 18)
+        {
+            year = int.Parse(this.TextBox3.Text.Substring(6, 4));
+            month = int.Parse(this.TextBox3.Text.Substring(10, 2));
+            day = int.Parse(this.TextBox3.Text.Substring(12, 2));
+            age = DateTime.Now.Year - year;
+
+            if (int.Parse(this.TextBox3.Text.Substring(16, 1)) % 2 != 0)
+            {
+                this.RadioButton1.Checked = true;
+                this.RadioButton2.Checked = false;
+                classmale = "selected";
+            }
+            else
+            {
+                this.RadioButton1.Checked = false;
+                this.RadioButton2.Checked = true;
+                classfemale = "selected";
+            }
+        }
+        else
+        {
+            if (modelrel.relativeDOB != null && modelrel.relativeDOB != pc.baddate)
+            {
+                year = modelrel.relativeDOB.Year;
+                month = modelrel.relativeDOB.Month;
+                day = modelrel.relativeDOB.Day;
+                age = DateTime.Now.Year - year;
+            }
+        }
+        if (age > 1)
+        {
+            this.TextBox6.Text = age.ToString();
+            DropDownListYear.SelectedIndex = DropDownListYear.Items.IndexOf(DropDownListYear.Items.FindByText(year.ToString()));
+            DropDownListMonth.SelectedIndex = DropDownListMonth.Items.IndexOf(DropDownListMonth.Items.FindByText(month.ToString()));
+            DropDownListDay.SelectedIndex = DropDownListDay.Items.IndexOf(DropDownListDay.Items.FindByText(day.ToString()));
+        }
+        
+    }
+    protected void com_Province_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        branchmapclass = "";
+        try
+        {
+            rc.com_Province_SelectedIndexChanged(true, modelCu.customerCompany, this.com_Province, this.com_City);
+
+            rc.fillsupplier(modelCu, this.com_Province, this.com_City, this.DropDownList1);
+            rc.fillbranch(true, ref branchmapclass, modelCu, com_Province, com_City, DropDownList1, GMap1, Literal1, ref  hideik, ref  hidemn, ref  continue2class, ref  supplierlistcontentikang, ref  supplierlistcontentciming, ref  supplierlistcontentmeinian, Panel14, Panel15, Panel16);
+        }
+        catch (Exception ex)
+        {
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('error:" + ex.Message + "');</script>");
+        }
+    }
+  
+    
+    protected void com_City_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        branchmapclass = "";
+        //com_Area.Items.Clear();
+        //com_Area.Items.Add("请选择区");
+        //ds_Area = DBHelper.GetSet(string.Format("select name from area where cityId in (select code from city where name='{0}')", com_City.Text));
+        //if (ds_Area.Tables[0].Rows.Count == 0)
+        //    com_Area.Items.Add(com_City.Text);
+        //for (int i = 0; i < ds_Area.Tables[0].Rows.Count; i++)
+        //    com_Area.Items.Add(ds_Area.Tables[0].Rows[i][0].ToString());
+        //com_Area.SelectedIndex = 0;
+
+        {
+            com_City1.Items.Clear();
+            com_City1.Items.Add((string)GetGlobalResourceObject("GResource", "selectCity"));
+            ds_City = DBHelper.GetSet(string.Format("select name from city where provinceId in (select code from province where name='{0}')", com_Province1.Text));
+            if (ds_City.Tables[0].Rows.Count == 0)
+                com_City1.Items.Add(com_Province1.Text);
+            for (int i = 0; i < ds_City.Tables[0].Rows.Count; i++)
+                com_City1.Items.Add(ds_City.Tables[0].Rows[i][0].ToString());
+            com_City1.SelectedIndex = 0;
+        }
+    }
+    protected void com_City1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        com_Area1.Items.Clear();
+        com_Area1.Items.Add((string)GetGlobalResourceObject("GResource", "selectZone"));
+        ds_Area = DBHelper.GetSet(string.Format("select name from area where cityId in (select code from city where name='{0}')", com_City1.Text));
+        if (ds_Area.Tables[0].Rows.Count == 0)
+            com_Area1.Items.Add(com_City1.Text);
+        for (int i = 0; i < ds_Area.Tables[0].Rows.Count; i++)
+            com_Area1.Items.Add(ds_Area.Tables[0].Rows[i][0].ToString());
+        com_Area1.SelectedIndex = 0;
+    }
+    
+   
+
+
+    protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+         this.DropDownList4.Items.Clear();
+        branchmapclass = "";
+        rc.fillbranch(true, ref branchmapclass, modelCu, com_Province, com_City, DropDownList1, GMap1, Literal1, ref  hideik, ref  hidemn, ref  continue2class, ref  supplierlistcontentikang, ref  supplierlistcontentciming, ref  supplierlistcontentmeinian, Panel14, Panel15, Panel16);
+
+    }
+
+    protected void Button3_Click(object sender, EventArgs e)
+    {
+        int mun = saverelinfo();
+        if (mun == 2)
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('身份证号重复!'); </script>");
+            return;
+        }
+        else
+        {
+            Session["num"] = mun;
+            Response.Redirect("reserverelexam2.aspx");
+        }
+        int num = saverelinfo();
+        if (num != 0)
+            Session["relativeID"] = num;
+        this.Panel2.Visible = false;
+        branchmapclass = "";
+        rc.fillbranch(true, ref branchmapclass, modelCu, com_Province, com_City, DropDownList1, GMap1, Literal1, ref  hideik, ref  hidemn, ref  continue2class, ref  supplierlistcontentikang, ref  supplierlistcontentciming, ref  supplierlistcontentmeinian, Panel14, Panel15, Panel16);
+        
+    }
+    protected void Button6_Click(object sender, EventArgs e)
+    {
+        this.Panel4.Visible = false;
+        branchmapclass = "";
+        rc.fillbranch(true, ref branchmapclass, modelCu, com_Province, com_City, DropDownList1, GMap1, Literal1, ref  hideik, ref  hidemn, ref  continue2class, ref  supplierlistcontentikang, ref  supplierlistcontentciming, ref  supplierlistcontentmeinian, Panel14, Panel15, Panel16);
+    }
+    void cloosecompanyaddress(string company, string provence)
+    {
+        string s = "select * from deliveryaddress where company='" + company + "' and provence='" + provence + "'";
+        DataTable dt = db.Select(s);
+        //this.Repeater1.DataSource = dt;
+        //this.Repeater1.DataBind();
+        for (int i = 0; i < dt.Rows.Count; i++)
+        {
+            switch (i)
+            {
+                case 0: RadioButton11.Text = dt.Rows[0]["address"].ToString(); break;
+                case 1: RadioButton12.Text = dt.Rows[1]["address"].ToString(); break;
+                case 2: RadioButton13.Text = dt.Rows[2]["address"].ToString(); break;
+                case 3: RadioButton18.Text = dt.Rows[3]["address"].ToString(); break;
+                case 4: RadioButton19.Text = dt.Rows[4]["address"].ToString(); break;
+                default: break;
+            }
+
+        }
+        if (RadioButton11.Text == "") RadioButton11.Attributes.Add("class", "hidden");
+        if (RadioButton12.Text == "") RadioButton12.Attributes.Add("class", "hidden");
+        if (RadioButton13.Text == "") RadioButton13.Attributes.Add("class", "hidden");
+        if (RadioButton18.Text == "") RadioButton18.Attributes.Add("class", "hidden");
+        if (RadioButton19.Text == "") RadioButton19.Attributes.Add("class", "hidden");
+
+        //if (company.ToLower() == "exeltis" && provence != "上海市")
+        //{
+        //    this.RadioButton5.Visible = false;
+        //}
+        //else
+        //{
+        //    this.RadioButton5.Visible = true;
+        //}
+    }
+    protected void Button4_Click(object sender, EventArgs e)
+    {
+        cloosecompanyaddress(Session["Company"].ToString(), com_Province.SelectedValue);
+        init();
+        if (!fillbranchexam(sender, e))
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "bindikcardfailed") + "');</script>");
+            branchmapclass = "";
+            return;
+        }
+        if (false && this.DropDownList4.Items.Count <= 0)
+        {
+            this.Button6_Click(sender, e);
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "alertnoavailabedate") + "'); </script>");
+            return;
+        }
+        filladdresses();
+        this.Panel4.Visible = true;
+    }
+    private bool fillbranchexam(object sender, EventArgs e)
+    {
+        string validdate = "";
+        this.DropDownList4.Items.Clear();
+        string s = "select type,supplier,branch,hospid,note,city from tab_suppliers where id='" + Request.Form["checkboxstores"].ToString() + "'";
+        DataTable dt = sb.GetAny(s);
+
+        if (dt.Rows[0]["supplier"].ToString() == "爱康国宾")
+        {
+            //if (!bindikcard())
+            if (!MediPlus.reserveexam.bindikcard(modelrel, modelCu,
+                this.TextBox1.Text, this.RadioButton1.Checked ? "1" : "0", this.RadioButton3.Checked ? "0" : "1",
+                this.TextBox4.Text, this.TextBox3.Text != "" ? this.TextBox3.Text : this.TextBox5.Text))
+            {
+                Session["bindcard"] = "error";
+                //return false;
+            }
+        }
+        this.Label44.Text = dt.Rows[0]["city"].ToString();
+        this.Label48.Text = dt.Rows[0]["supplier"].ToString() + " " + dt.Rows[0]["branch"].ToString();
+        ViewState["branchtype"] = dt.Rows[0]["type"].ToString().Substring(0, 2);
+        ViewState["hospid"] = dt.Rows[0]["hospid"].ToString();
+        if (ViewState["branchtype"].ToString() == "网络")
+        {
+            if (this.Panel4.Visible == false)
+            {
+                validdate = rc.getvaliddate(dt.Rows[0]["supplier"].ToString(), dt.Rows[0]["hospid"].ToString());
+            }
+        }
+
+        rc.fillavailbedate(dt.Rows[0]["supplier"].ToString(), dt.Rows[0]["note"].ToString(), validdate, this.DropDownList4, modelCu.customerCompany);
+
+        Session["currentsupplier"] = dt.Rows[0]["supplier"];
+
+        pc.fillbranchexam2(this.RadioButton1.Checked, this.RadioButton3.Checked, this.CheckBox7, Session["currentsupplier"].ToString(), this.DropDownList2, this.Panelremainmoney, modelCu, modelrel, true, sender, e);
+        this.DropDownList2_SelectedIndexChanged(sender, e);
+        
+        return true;
+    }
+
+ 
+
+
+    private void filladdresses()
+    {
+        string address = modelCu.customerAllAddr;
+        if (!string.IsNullOrEmpty(address))
+        {
+            string[] sArray = address.Split('|');
+            
+            foreach (string s in sArray)
+            {
+                Literal div = new Literal();
+                div.Text = "<div>";
+                Literal divend = new Literal();
+                divend.Text = "</div>";
+
+                this.Panel3.Controls.Add(div);
+                RadioButton rbtn = new RadioButton();
+                rbtn.GroupName = "reportaddr";
+                rbtn.Text = (string)GetGlobalResourceObject("GResource", "Toaddress") + s;
+                rbtn.Attributes.Add("class", "radiopaperaddr");
+                this.Panel3.Controls.Add(rbtn);
+                this.Panel3.Controls.Add(divend);
+            }
+        }
+    }
+
+    void fillpackage()
+    {
+        string com = "select standby2 from tab_company where CompanyName='" + Session["Company"] + "'";
+        DataTable dtcom = comb.Select(com);
+        string s;
+        DataTable dt;
+
+        string isvip = dbsql.ExecuteSc("select VIP from tab_package where packagecode='" + this.DropDownList2.SelectedValue + "'").ToString();
+        this.HyperLink2.NavigateUrl = "viewpackagedetail.aspx?pc=" + this.DropDownList2.SelectedValue + "&isvip=" + isvip;
+
+        supplierpackagecode = makepackagecode();
+        s = "select price from supplierpackage where suppliercode='" + supplierpackagecode + "'";
+        DataTable dtprice = spb.Select(s);
+
+        s = "select budget,price,msg from tab_package where packagecode='" + this.DropDownList2.SelectedValue + "' order by price";
+        dt = pb.Select(s);
+        Literal lit = new Literal();
+        lit.Text = dt.Rows[0]["msg"].ToString();
+
+        double price = double.Parse(dt.Rows[0]["price"].ToString());
+        //double price = double.Parse(dtprice.Rows[0]["price"].ToString());
+        double budget = Cb.getbalance(modelCu.customerID);
+        ViewState["doubleprice"] = price;
+        ViewState["doublebudget"] = budget;
+
+        this.TextBoxCharge1.Text = Math.Round(price, 2).ToString();
+        double bill = price;
+        this.TextBoxExCharge1.Text = Math.Round(bill, 2).ToString();
+
+        if (bill > 0)
+        {
+            this.Panel9.Visible = true;
+            this.Labelremainpoint.Text = "0";
+            if (dtcom.Rows[0][0].ToString() != "1")
+                this.Labelbill.Text = (price).ToString();
+            else
+            {
+                if (this.CheckBox7.Checked)
+                {
+                    this.Labelbill.Text = (price + 30).ToString();
+                    this.TextBoxCharge1.Text = (double.Parse(this.TextBoxCharge1.Text) + 30).ToString();
+                }
+                else
+                    this.Labelbill.Text = (price).ToString();
+            }
+        }
+        else
+        {
+            this.Labelremainpoint.Text = (budget - price).ToString();
+            if (dtcom.Rows[0][0].ToString() != "1")
+                this.Labelbill.Text = "0";
+            else
+            {
+                if (this.CheckBox7.Checked)
+                {
+                    this.Labelbill.Text = "30";
+                    this.TextBoxCharge1.Text = (double.Parse(this.TextBoxCharge1.Text) + 30).ToString();
+                }
+                else
+                    this.Labelbill.Text = "0";
+            }
+            this.Panel9.Visible = false;
+        }
+        this.TextBoxCharge2.Text = "0";
+
+    }
+    protected void DropDownList2_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string s;
+        DataTable dt;
+
+        if (DropDownList2.SelectedIndex <= 0)
+        {
+            return;
+        }
+
+        for (int j = 0; j < 10; j++)
+        {
+            CheckBoxList1.Items[j].Text = "";
+            CheckBoxList2.Items[j].Text = "";
+            CheckBoxList3.Items[j].Text = "";
+            CheckBoxList4.Items[j].Text = "";
+            CheckBoxList5.Items[j].Text = "";
+            CheckBoxList6.Items[j].Text = "";
+            CheckBoxList7.Items[j].Text = "";
+            CheckBoxList8.Items[j].Text = "";
+            CheckBoxList9.Items[j].Text = "";
+            CheckBoxList10.Items[j].Text = "";
+            CheckBoxList1.Items[j].Selected = false;
+            CheckBoxList2.Items[j].Selected = false;
+            CheckBoxList3.Items[j].Selected = false;
+            CheckBoxList4.Items[j].Selected = false;
+            CheckBoxList5.Items[j].Selected = false;
+            CheckBoxList6.Items[j].Selected = false;
+            CheckBoxList7.Items[j].Selected = false;
+            CheckBoxList8.Items[j].Selected = false;
+            CheckBoxList9.Items[j].Selected = false;
+            CheckBoxList10.Items[j].Selected = false;
+        }
+        fillpackage();
+        //清空每个CheckBoxList
+
+        s = "select * from tab_uppkg where packagecode='" + this.DropDownList2.SelectedValue + "'";
+        dt = ub.Select(s);
+        //this.DropDownList3.Items.Clear();
+        //this.DropDownList3.Items.Add((String)GetLocalResourceObject("DropDownList3Resource1"));
+        string title;
+        double price;
+        
+        string isvip = dbsql.ExecuteSc("select VIP from tab_package where packagecode='" + this.DropDownList2.SelectedValue + "'").ToString();
+        int i;
+        if (dt.Rows.Count > 0)
+        {
+            this.CheckBoxList1.Visible = true;
+            this.HyperLink8.Visible = true;
+            this.HyperLink8.NavigateUrl = "viewuppackagedetail.aspx?pc=" + dt.Rows[0]["uppkgcode"] + "&isvip=" + isvip;
+        }
+        else
+        {
+            this.Label59.Visible = false;
+            this.HyperLink8.Visible = false;
+            this.CheckBoxList1.Visible = false;
+        }
+        int currentgroup = 0;
+        int currentindex = 0;
+        CheckBoxList cblist;
+
+        if (dt.Rows.Count > 0)
+        {
+            currentgroup = 1;
+            for (i = 0; i < dt.Rows.Count; i++)
+            {
+                if (Session["language"] != null && Session["language"].ToString() == "en-us")
+                {
+                    title = dt.Rows[i]["note_eng"].ToString();
+                }
+                else
+                {
+                    title = dt.Rows[i]["note"].ToString();
+                }
+
+                price = double.Parse(dt.Rows[i]["price"].ToString());
+                if (price > 0.0)
+                {
+                    title += " +" + Math.Round(price, 2).ToString() + (string)GetGlobalResourceObject("GResource", "Yuan");
+                }
+
+                if (dt.Rows[i]["groupname"].ToString() == currentgroup.ToString())
+                {
+
+                }
+                else
+                {
+                    switch (currentgroup)
+                    {
+                        case 1: cblist = this.CheckBoxList1; break;
+                        case 2: cblist = this.CheckBoxList2; break;
+                        case 3: cblist = this.CheckBoxList3; break;
+                        case 4: cblist = this.CheckBoxList4; break;
+                        case 5: cblist = this.CheckBoxList5; break;
+                        case 6: cblist = this.CheckBoxList6; break;
+                        case 7: cblist = this.CheckBoxList7; break;
+                        case 8: cblist = this.CheckBoxList8; break;
+                        case 9: cblist = this.CheckBoxList9; break;
+                        case 10: cblist = this.CheckBoxList10; break;
+                        default: cblist = this.CheckBoxList1; break;
+                    }
+                    //processpanel();
+
+
+
+                    currentgroup++;
+                    currentindex = 0;
+
+                }
+
+                switch (currentgroup)
+                {
+                    case 1: cblist = this.CheckBoxList1; break;
+                    case 2: cblist = this.CheckBoxList2; break;
+                    case 3: cblist = this.CheckBoxList3; break;
+                    case 4: cblist = this.CheckBoxList4; break;
+                    case 5: cblist = this.CheckBoxList5; break;
+                    case 6: cblist = this.CheckBoxList6; break;
+                    case 7: cblist = this.CheckBoxList7; break;
+                    case 8: cblist = this.CheckBoxList8; break;
+                    case 9: cblist = this.CheckBoxList9; break;
+                    case 10: cblist = this.CheckBoxList10; break;
+                    default: cblist = this.CheckBoxList1; break;
+                }
+
+                cblist.Items[currentindex].Text = title;
+                cblist.Items[currentindex].Value = price.ToString() + "," + dt.Rows[i]["uppkgcode"];
+
+                currentindex++;
+            }
+
+        }
+        processpanel();
+
+
+
+        //下面的for不要了
+        /*
+        for (i = 0; i < dt.Rows.Count; i++)
+        {
+            if (Session["language"] != null && Session["language"].ToString() == "en-us")
+            {
+                title = dt.Rows[i]["note_eng"].ToString();
+            }
+            else
+            {
+                title = dt.Rows[i]["note"].ToString();
+            }
+            price = double.Parse(dt.Rows[i]["price"].ToString());
+            if (price > 0.0)
+            {
+                title += "+" + Math.Round(price, 2).ToString() + (string)GetGlobalResourceObject("GResource", "Yuan");
+            }
+            //if (Session["language"] != null && Session["language"].ToString() == "en-us")
+            //{
+            //    title += " " + dt.Rows[i]["msg_eng"].ToString();
+            //}
+            //else
+            //{
+            //    title += " " + dt.Rows[i]["msg"].ToString();
+            //}
+            this.CheckBoxList1.Items[i].Text = title;
+            this.CheckBoxList1.Items[i].Value = price.ToString() + "," + dt.Rows[i]["uppkgcode"];
+            this.CheckBoxList1.Items[i].Selected = false;
+            //this.DropDownList3.Items.Add(new ListItem(title, dt.Rows[i]["id"].ToString()));
+        }
+        //i--;
+        for (int j = 0; j < 12; j++)
+        {
+            if (this.CheckBoxList1.Items[j].Text == "")
+            {
+                if (uppkgcount == -1) uppkgcount = j;
+                this.CheckBoxList1.Items[j].Attributes.Add("class", "hidden");
+            }
+        }*/
+
+    }
+    protected void DropDownList3_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        this.TextBoxCharge2.Text = "";
+        if (DropDownList3.SelectedIndex <= 0) return;
+
+        filluppkg();
+    }
+    void filluppkg()
+    {
+        string s;
+        DataTable dt;
+
+        s = "select price,msg from tab_uppkg where id=" + this.DropDownList3.SelectedValue;
+        dt = ub.Select(s);
+
+        this.TextBoxCharge2.Text = Math.Round(double.Parse(dt.Rows[0]["price"].ToString()), 2).ToString();
+        this.Panel9.Visible = true;
+
+        Literal lit = new Literal();
+        lit.Text = dt.Rows[0]["msg"].ToString();
+    }
+    protected void Button5_Click(object sender, EventArgs e)
+    {
+        if (this.Panel9.Visible)
+        {
+            if (this.RadioButton8.Checked || this.RadioButton9.Checked || this.RadioButton10.Checked)
+            { }
+            else
+            {
+                Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (String)GetLocalResourceObject("errorpaymothod") + "');</script>");
+                return;
+            }
+            
+        }
+        //if (this.TextBoxPA.Text == "")
+        //{
+        //    Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (string)GetGlobalResourceObject("GResource", "alertneedpapermethod") + "');</script>");
+        //    return;
+        //}
+        this.Label23.Text = this.TextBox1.Text;
+        if (this.RadioButton1.Checked)
+            this.Label24.Text = (string)GetGlobalResourceObject("GResource", "male");
+        else if (this.RadioButton2.Checked)
+            this.Label24.Text = (string)GetGlobalResourceObject("GResource", "female");
+        this.Label26.Text = this.TextBox6.Text;
+        this.Label28.Text = this.TextBox3.Text!=""?this.TextBox3.Text:this.TextBox5.Text;
+        this.Label30.Text = this.TextBox4.Text;
+        this.Label32.Text = this.TextBox2.Text;
+
+        if (this.RadioButton14.Checked)
+            this.Label34.Text = (String)GetLocalResourceObject("RadioButton14Resource1.Text");
+        else if (this.RadioButton15.Checked)
+            this.Label34.Text = (String)GetLocalResourceObject("RadioButton15Resource1.Text");
+        else if (this.RadioButton16.Checked)
+            this.Label34.Text = (String)GetLocalResourceObject("RadioButton16Resource1.Text");
+        else if (this.RadioButton17.Checked)
+            this.Label34.Text = (String)GetLocalResourceObject("RadioButton17Resource1.Text");
+
+        if (this.RadioButton3.Checked)
+            this.Label38.Text = (string)GetGlobalResourceObject("GResource", "unmarried");
+        else if (this.RadioButton4.Checked)
+            this.Label38.Text = (string)GetGlobalResourceObject("GResource", "married");
+        this.Label40.Text = this.CheckBox9.Checked ? this.TextBoxPA.Text : "不需要纸质报告";
+        this.Label42.Text = this.DropDownList4.SelectedValue;
+        //this.Label44.Text = this.com_City.SelectedValue;
+        //this.Label48.Text = this.DropDownList1.SelectedValue + " " + this.DropDownList4.SelectedItem.Text;
+
+        for (int i = 0; i < this.RadioButtonList1.Items.Count; i++)
+        {
+            if (this.RadioButtonList1.Items[i].Selected)
+            {
+                Label72.Text = this.RadioButtonList1.Items[i].Text;
+            }
+        }
+        this.Label50.Text = this.DropDownList2.SelectedItem.Text;
+        if (this.CheckBox7.Checked)
+        {
+            this.Label50.Text += " +妇科检查";
+        }
+        this.Label52.Text = "";
+        for (int i = 0; i < 10; i++)
+        {
+            if (CheckBoxList1.Items[i].Selected)
+            {
+                if (this.Label52.Text != "")
+                    this.Label52.Text += ",";
+                this.Label52.Text += CheckBoxList1.Items[i].Text;
+            }
+        }
+        for (int i = 0; i < 10; i++)
+        {
+            if (CheckBoxList2.Items[i].Selected)
+            {
+                if (this.Label52.Text != "")
+                    this.Label52.Text += ",";
+                this.Label52.Text += CheckBoxList2.Items[i].Text;
+            }
+        }
+        for (int i = 0; i < 10; i++)
+        {
+            if (CheckBoxList3.Items[i].Selected)
+            {
+                if (this.Label52.Text != "")
+                    this.Label52.Text += ",";
+                this.Label52.Text += CheckBoxList3.Items[i].Text;
+            }
+        }
+        for (int i = 0; i < 10; i++)
+        {
+            if (CheckBoxList4.Items[i].Selected)
+            {
+                if (this.Label52.Text != "")
+                    this.Label52.Text += ",";
+                this.Label52.Text += CheckBoxList4.Items[i].Text;
+            }
+        }
+        for (int i = 0; i < 10; i++)
+        {
+            if (CheckBoxList5.Items[i].Selected)
+            {
+                if (this.Label52.Text != "")
+                    this.Label52.Text += ",";
+                this.Label52.Text += CheckBoxList5.Items[i].Text;
+            }
+        }
+        for (int i = 0; i < 10; i++)
+        {
+            if (CheckBoxList6.Items[i].Selected)
+            {
+                if (this.Label52.Text != "")
+                    this.Label52.Text += ",";
+                this.Label52.Text += CheckBoxList6.Items[i].Text;
+            }
+        }
+        for (int i = 0; i < 10; i++)
+        {
+            if (CheckBoxList7.Items[i].Selected)
+            {
+                if (this.Label52.Text != "")
+                    this.Label52.Text += ",";
+                this.Label52.Text += CheckBoxList7.Items[i].Text;
+            }
+        }
+        for (int i = 0; i < 10; i++)
+        {
+            if (CheckBoxList8.Items[i].Selected)
+            {
+                if (this.Label52.Text != "")
+                    this.Label52.Text += ",";
+                this.Label52.Text += CheckBoxList8.Items[i].Text;
+            }
+        }
+        for (int i = 0; i < 10; i++)
+        {
+            if (CheckBoxList9.Items[i].Selected)
+            {
+                if (this.Label52.Text != "")
+                    this.Label52.Text += ",";
+                this.Label52.Text += CheckBoxList9.Items[i].Text;
+            }
+        }
+        for (int i = 0; i < 10; i++)
+        {
+            if (CheckBoxList10.Items[i].Selected)
+            {
+                if (this.Label52.Text != "")
+                    this.Label52.Text += ",";
+                this.Label52.Text += CheckBoxList10.Items[i].Text;
+            }
+        }
+        //if (this.DropDownList3.SelectedValue != (String)GetLocalResourceObject("DropDownList3Resource1"))
+        //    this.Label52.Text = this.DropDownList3.SelectedItem.Text;
+        //else
+        //    this.Label52.Text = "";
+        supplierpackagecode = makepackagecode();
+        string s = "select price from supplierpackage where suppliercode='" + supplierpackagecode + "'";
+        DataTable dt = spb.Select(s);
+        this.Label54.Text = dt.Rows[0]["price"].ToString();
+        //this.Label54.Text = Math.Round(double.Parse(this.TextBoxCharge1.Text) + double.Parse(this.TextBoxCharge2.Text), 2).ToString();
+        this.Label56.Text = double.Parse(this.Labelbill.Text).ToString();
+
+        string notecontent = makenote();
+        this.Label58.Text = notecontent != "" ? notecontent : (string)GetGlobalResourceObject("GResource", "na");
+
+        this.Panel4.Visible = false;
+        this.Panel6.Visible = true;
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        this.Panel4.Visible = true;
+        this.Panel6.Visible = false;
+        this.CheckBox9.Checked = false;
+        processpanel();
+    }
+    protected void Button7_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            int ordernum;
+            ordernum = saveorder();
+
+            if (ordernum == 9999)
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('已有一个订单！');</script>");
+                return;
+            }
+
+            saverelinfo();
+
+           
+
+            Bll.messageBll mb = new Bll.messageBll();
+            mb.sendmsg(1004, modelCu, orders);
+
+            if (this.Label56.Text != "" && this.Label56.Text != "0")
+            {
+                if (this.RadioButton8.Checked)
+                {
+                    Response.Redirect("ordersubmitted.aspx?onlinepay=" + ordernum, true);
+                    //goalipay(ordernum);
+                }
+                else if (this.RadioButton10.Checked)
+                {
+                    Response.Redirect("ordersubmitted.aspx?tran=" + ordernum, true);
+                    //this.Panel13.Visible = true;
+                }
+                else
+                {
+                    Response.Redirect("ordersubmitted.aspx", true);
+                }
+            }
+            else
+            {
+                Response.Redirect("ordersubmitted.aspx", true);
+            }
+
+
+            //this.Panel6.Visible = false;
+            //this.Panel12.Visible = true;
+
+            //Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('预约成功！'); window.location.href = 'viewarrangement.aspx';");
+            //Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (String)GetLocalResourceObject("alertsubmitok") + "');</script>");
+        }
+        catch (Exception ex)
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (String)GetLocalResourceObject("alertsubmitfailed") + ex.Message + "'); window.location.href = 'reserverelexam.aspx';</script>");
+        }
+    }
+    bool submittosupplier(int ordernum)
+    {
+        string s;
+
+        if (Session["bindcard"] != null && Session["bindcard"] == "error")
+        {
+            return false;
+        }
+
+
+
+        if (this.Label48.Text.Contains("爱康国宾"))
+        {
+            ikm.cardnumber = eb.getcardnum(modelrel.relativeID, "爱康国宾");
+            ikm.regdate = this.Label42.Text;
+            if (false && this.CheckBoxList1.SelectedIndex >= 0)
+            {
+                ikm.packagecode = this.CheckBoxList1.SelectedValue.Split(',')[1];
+            }
+            else
+            {
+                if (supplierpackagecode != "")
+                    ikm.packagecode = supplierpackagecode;
+                else
+                {
+                    ikm.packagecode = this.DropDownList2.SelectedValue;
+                }
+            }
+            ikm.hospid = ViewState["hospid"].ToString();
+            ikm.name = this.Label23.Text;
+            ikm.sex = this.Label24.Text == (string)GetGlobalResourceObject("GResource", "male") ? "1" : "0";
+            ikm.married = this.Label38.Text == (string)GetGlobalResourceObject("GResource", "married") ? "1" : "0";
+            //ikm.contacttel = this.Label30.Text;
+            ikm.contacttel = "18017588993";
+            ikm.idnumber = this.Label28.Text;
+            ikm.reportaddress = orders.personAddress;
+            ikm.thirdnum = ordernum.ToString();
+
+
+            s = iks.AddOrder(ikm);
+            orders.Msg += s;
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            Dictionary<string, object> json = (Dictionary<string, object>)jss.DeserializeObject(s);
+            object value;
+            if (json.TryGetValue("code", out value) && value.ToString() == "1")
+            {
+                json.TryGetValue("message", out value);
+                orders.supplierOrderID = value.ToString().Split('|')[0];
+                orders.cardNumber = ikm.cardnumber;
+                return true;
+            }
+            else
+            {
+                ViewState["errormsg"] = s;
+                return false;
+            }
+
+        }
+        else if (this.Label48.Text.Contains("美年大健康"))
+        {
+            HealthUser mUser = new HealthUser
+            {
+                Cid = this.Label28.Text,	//员工号
+                Dwdm = modelCu.customerCompanycode,	//单位代码
+                Crsq = DOB,	//出生日期
+                Email = this.Label32.Text,	//邮件
+                Dept1 = "",	//部门1
+                Dept2 = string.Empty, 	//部门2
+                Djremark = "[标记:" + modelCu.customerID +
+                "][网址：http://www.medi-plus.cn/admin/login.aspx]" +
+                "[纸质报告寄送地址:" + orders.personAddress + "]",	//到检备注 预约号+网址 我方工作人员到该网址更新到检状态
+                Factory = ViewState["hospid"].ToString(),	//体检门店
+                Fgs = string.Empty, 	//分公司
+                IdCard = this.Label28.Text,	//身份证号
+                JxreMark = this.Label58.Text,	// 加选项备注 如加选项目名称，价格，挂帐还是自付费
+                MaritalStatus = this.Label38.Text == (string)GetGlobalResourceObject("GResource", "married") ? "1" : "0", 	//婚姻状况 1为已婚 0 未婚
+                //mPhone = this.Label30.Text,	//电话
+                mPhone = "18017588993",
+                Name = this.Label23.Text,	//姓名
+                Package = supplierpackagecode == "" ? this.DropDownList2.SelectedValue : supplierpackagecode,	//套餐
+                TcName = this.DropDownList2.SelectedItem.Text,
+                Remark = string.Empty,	//备注
+                Sex = this.Label24.Text == (string)GetGlobalResourceObject("GResource", "male") ? "1" : "0", 	//性别 1为男性 0 为女性
+                YYSJ = this.Label42.Text.Substring(0, 10)//预约日期
+            };
+
+            s = mns.AddOrder(mUser);
+            orders.Msg += s;
+            if (s == "成功")
+            {
+                return true;
+            }
+            else
+            {
+                ViewState["errormsg"] = s;
+                return false;
+            }
+
+        }
+        return false;
+    }
+    string makenote()
+    {
+        string paymentnote="";
+        if (this.Label56.Text != "" && this.Label56.Text != "0")
+        {
+            paymentnote = "加项包：";
+            if (this.RadioButton8.Checked || this.RadioButton10.Checked)
+            {
+                paymentnote += this.Label52.Text + " 挂账";
+            }
+            else
+            {
+                paymentnote += this.Label52.Text + " 自费";
+                if (this.TextBoxExCharge1.Text != "" && this.TextBoxExCharge1.Text != "0")
+                {
+                    paymentnote += " 另外主套餐额外" + this.TextBoxExCharge1.Text + "自费";
+                }
+            }
+        }
+
+        if (this.CheckBox8.Checked)
+        {
+            paymentnote += ",需要英文陪检服务";
+        }
+
+        if (this.CheckBox10.Checked)
+        {
+            paymentnote += ",需要英文报告";
+        }
+
+        if (this.CheckBox7.Checked)
+        {
+            paymentnote += " 参加妇科项目";
+        }
+        return paymentnote;
+    }
+    int saverelinfo()
+    {
+
+
+
+            DOB = DropDownListYear.SelectedValue + "-" + DropDownListMonth.SelectedValue + "-" + DropDownListDay.SelectedValue;//出生日期
+
+
+
+            //modelrel.relativeEmail = this.Label32.Text;
+            modelrel.relativeMobile = this.TextBox4.Text;
+
+            if (this.RadioButton14.Checked)
+            {
+                modelrel.relativeRelationship = "配偶";
+            }
+            else if (this.RadioButton15.Checked)
+            {
+                modelrel.relativeRelationship = "子女";
+            }
+            else if (this.RadioButton16.Checked)
+            {
+                modelrel.relativeRelationship = "父母";
+            }
+            else if (this.RadioButton17.Checked)
+            {
+                modelrel.relativeRelationship = "其他";
+            }
+
+
+            modelrel.relativeGender = this.RadioButton1.Checked ? "男" : "女";
+            modelrel.relativeMarriageStatus = this.RadioButton3.Checked ? "未婚" : "已婚";
+            modelrel.relativeDOB = DateTime.Parse(DOB);
+            modelrel.relativeIDcard = this.TextBox3.Text != "" ? this.TextBox3.Text : this.TextBox5.Text;
+            
+
+
+            if (Session["relativeID"] == null || Session["relativeID"].ToString() == "")
+            {
+                modelrel.relativeName = this.TextBox1.Text;
+                modelrel.relativeCustomer = modelCu.customerID;
+                DataTable dt = rb.RelativeSelect("select  relativeIDcard from tab_relatives where relativeIDcard='" + this.TextBox3.Text + "'");
+                if (dt.Rows.Count <= 0)
+                {
+                    return rb.RelativeAdd(modelrel);
+                }
+                else
+                {
+                    Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('身份证号重复!'); </script>");
+                    return 2;
+                }
+                
+            }
+            else
+                {
+                    rb.update(modelrel);
+                    return 0;
+                }
+            return 0;
+    }
+   
+
+
+    protected void CheckBox1_CheckedChanged(object sender, EventArgs e)
+    {
+        Session["relativeID"] = "";
+
+        CheckBox cbox = (CheckBox)sender;
+        CheckBox[] allbox = { this.CheckBox1, this.CheckBox2, this.CheckBox3, this.CheckBox4, this.CheckBox5, this.CheckBox6 };
+        TextBox[] alltextbox = { this.TextBox11, this.TextBox12, this.TextBox13, this.TextBox14, this.TextBox15, this.TextBox16 };
+        if (cbox.Checked)
+        {
+            
+            this.TextBox1.Enabled = false;
+            for (int i = 0; i < allbox.Length; i++)
+            {
+                if (allbox[i] == cbox)
+                {
+                    modelrel.relativeID = int.Parse(alltextbox[i].Text);
+                }
+                else
+                {
+                    allbox[i].Checked = false;
+                }
+            }
+
+            Session["relativeID"] = modelrel.relativeID;
+            initrel();
+        }
+        else
+        {
+            this.TextBox1.Enabled = true;
+            this.TextBox1.Text = "";
+        }
+    }
+
+    int  saveorder()
+    {
+        if (ob.checkorder(modelCu.customerID, modelrel.relativeID)>0)
+        {
+            return 9999;
+        }
+        modelCu.customerBalance = double.Parse(this.Labelremainpoint.Text);
+        Cb.update(modelCu);
+
+        orders.personAddress = this.Label40.Text;
+        if (this.Label56.Text != "" && this.Label56.Text != "0")
+        {
+            if (this.RadioButton8.Checked)
+            {
+                orders.payMethod = "网上支付";
+            }
+            else if (this.RadioButton9.Checked)
+            {
+                orders.payMethod = "前台支付";
+            }
+            else if (this.RadioButton10.Checked)
+            {
+                orders.payMethod = "转账支付";
+            }
+        }
+
+        DOB = DropDownListYear.SelectedValue + "-" + DropDownListMonth.SelectedValue + "-" + DropDownListDay.SelectedValue;//出生日期
+
+        if (this.Label56.Text != "" && this.Label56.Text != "0")
+        {
+            if (this.RadioButton8.Checked)
+            {
+                orders.orderStatus = "待付款";
+            }
+            else if (this.RadioButton10.Checked)
+            {
+                orders.orderStatus = "待转账";
+            }
+        }
+        else
+        {
+            orders.orderStatus = "待确认";
+        }
+        //orders.orderStatus = "待确认";
+        orders.customerID = modelCu.customerID;
+        orders.relativeID = modelrel.relativeID;
+        orders.relativeName = this.Label23.Text;
+        orders.orderDate = DateTime.Now;
+        orders.personSex = this.Label24.Text;
+        orders.personAge = int.Parse(this.Label26.Text);
+        orders.personIDcard = this.Label28.Text;
+        orders.personMobile = this.Label30.Text;
+        orders.personPrivateEmail = this.Label32.Text;
+        orders.personCompany = modelCu.customerCompany;
+        orders.personMarriageStatus = this.Label38.Text;
+        orders.examDate = DateTime.Parse(this.Label42.Text);
+        orders.examCity = this.Label44.Text;
+        orders.xiya = this.Label72.Text;
+        if (this.Label48.Text.Contains("爱康国宾"))
+        {
+            orders.examSupplier = "爱康国宾";
+            //orders.cardNumber = eb.getcardnum(modelCu.customerID, "爱康国宾"); 
+        }
+        else if (this.Label48.Text.Contains("美年大健康"))
+        {
+            orders.examSupplier = "美年大健康";
+        }
+        else if (this.Label48.Text.Contains("慈铭体检"))
+        {
+            orders.examSupplier = "慈铭体检";
+        }
+        orders.examBranch = this.Label48.Text;
+        orders.examhosip = ViewState["hospid"].ToString();
+        orders.examPackage = this.Label50.Text;
+        orders.examUpPkg = this.Label52.Text;
+        orders.examTotalFee = double.Parse(this.Label54.Text);
+        orders.examBill = double.Parse(this.Label56.Text);
+        orders.examInfo = this.Label58.Text;
+
+        if (Session["htai"] != null && Session["htai"].ToString() == "htai")
+        {
+            orders.examWorkNo = Session["empName"].ToString();
+             orders.Msg = "用户后台下单。";
+        }
+        orders.Msg = "用户前台下单。";
+
+
+        if (ViewState["branchtype"].ToString() != "网络")
+        {
+            orders.Msg += "非网络预约门店。";
+        }
+        else
+        {
+            orders.Msg += "网络预约情况：";
+        }
+
+        //判断是否已经下单
+        //DataTable dtis = ob.Select("select * from tab_orders where customerID='" + modelCu.customerID + "' and ReportType<>'商城' and orderStatus<>'已取消' and orderStatus<>'已完成'");
+        //if (dtis.Rows.Count >= 0)
+        //{
+        //    return 0;
+        //}
+
+        int ordernum = ob.Add(orders);
+        supplierpackagecode = makepackagecode();
+        //orders.orderStatus = "已提交";
+        if (ViewState["branchtype"].ToString() == "网络")
+        {
+            if (ViewState["errormsg"] == null || ViewState["errormsg"].ToString() == "")
+            {
+                ViewState["errormsg"] = "";
+                bool submitsuccess = false;
+
+                try
+                {
+                    submitsuccess = submittosupplier(ordernum);
+                }
+                catch
+                { }
+
+
+
+                if (!submitsuccess)
+                {
+                    orders.Msg += "网络日期选择成功，网络提交失败，转人工预约！ (error:" + ViewState["errormsg"].ToString() + ")";
+                }
+                else
+                {
+                    //orders.orderStatus = "已预约";
+                    if (this.Label56.Text != "" && this.Label56.Text!="0")
+                    {
+                        if (this.RadioButton8.Checked)
+                        {
+                            orders.orderStatus = "待付款";
+                        }
+                        else if (this.RadioButton9.Checked)
+                        {
+                            orders.orderStatus = "约检成功";//前台支付就当作已付款
+                        }
+                        else if (this.RadioButton10.Checked)
+                        {
+                            orders.orderStatus = "待转账";
+                        }
+                    }
+                    else
+                    {
+                        orders.orderStatus = "约检成功";
+                    }
+                    orders.Msg += "网络预约成功";
+                }
+            }
+            else
+            {
+                orders.Msg = "供应商网络出错，转人工预约！ (error:" + ViewState["errormsg"].ToString() + ")";
+            }
+        }
+        orders.orderID = ordernum;
+        ob.Update(orders);
+
+        eb.markikcardinuse(orders.cardNumber);
+        return ordernum;
+    }
+    string makepackagecode()
+    {
+        string mpcode = this.DropDownList2.SelectedValue;
+        for (int k = 0; k < CheckBoxList1.Items.Count; k++)
+        {
+            if (CheckBoxList1.Items[k].Text == "") continue;
+            if (CheckBoxList1.Items[k].Selected)
+            {
+                mpcode += CheckBoxList1.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        for (int k = 0; k < CheckBoxList2.Items.Count; k++)
+        {
+            if (CheckBoxList2.Items[k].Text == "") continue;
+            if (CheckBoxList2.Items[k].Selected)
+            {
+                mpcode += CheckBoxList2.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        for (int k = 0; k < CheckBoxList3.Items.Count; k++)
+        {
+            if (CheckBoxList3.Items[k].Text == "") continue;
+            if (CheckBoxList3.Items[k].Selected)
+            {
+                mpcode += CheckBoxList3.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        for (int k = 0; k < CheckBoxList4.Items.Count; k++)
+        {
+            if (CheckBoxList4.Items[k].Text == "") continue;
+            if (CheckBoxList4.Items[k].Selected)
+            {
+                mpcode += CheckBoxList4.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        for (int k = 0; k < CheckBoxList5.Items.Count; k++)
+        {
+            if (CheckBoxList5.Items[k].Text == "") continue;
+            if (CheckBoxList5.Items[k].Selected)
+            {
+                mpcode += CheckBoxList5.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        for (int k = 0; k < CheckBoxList6.Items.Count; k++)
+        {
+            if (CheckBoxList6.Items[k].Text == "") continue;
+            if (CheckBoxList6.Items[k].Selected)
+            {
+                mpcode += CheckBoxList6.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        for (int k = 0; k < CheckBoxList7.Items.Count; k++)
+        {
+            if (CheckBoxList7.Items[k].Text == "") continue;
+            if (CheckBoxList7.Items[k].Selected)
+            {
+                mpcode += CheckBoxList7.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        for (int k = 0; k < CheckBoxList8.Items.Count; k++)
+        {
+            if (CheckBoxList8.Items[k].Text == "") continue;
+            if (CheckBoxList8.Items[k].Selected)
+            {
+                mpcode += CheckBoxList8.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        for (int k = 0; k < CheckBoxList9.Items.Count; k++)
+        {
+            if (CheckBoxList9.Items[k].Text == "") continue;
+            if (CheckBoxList9.Items[k].Selected)
+            {
+                mpcode += CheckBoxList9.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        for (int k = 0; k < CheckBoxList10.Items.Count; k++)
+        {
+            if (CheckBoxList10.Items[k].Text == "") continue;
+            if (CheckBoxList10.Items[k].Selected)
+            {
+                mpcode += CheckBoxList10.Items[k].Value.Split(',')[1];
+            }
+            else
+            {
+                mpcode += "";
+            }
+        }
+        string asd = mpcode;
+        return spb.getsupplierpackage(mpcode);
+    }
+    void goalipay(int ordernum)
+    {
+
+        //支付类型
+        string payment_type = "1";
+        string notify_url = System.Configuration.ConfigurationManager.AppSettings["notify_url"];
+        string return_url = System.Configuration.ConfigurationManager.AppSettings["return_url"];
+        string seller_email = "pay@medi-plus.cn";
+
+        string out_trade_no = ordernum.ToString();
+        //订单名称
+        string subject = (string)GetGlobalResourceObject("GResource", "MPpackage");
+        //付款金额
+        string total_fee = orders.examBill.ToString();
+        //订单描述
+        string body = orders.examPackage;
+        //商品展示地址
+        string show_url = "";
+
+        //防钓鱼时间戳
+        string anti_phishing_key = Submit.Query_timestamp();
+        //若要使用请调用类文件submit中的query_timestamp函数
+
+        //客户端的IP地址
+        string exter_invoke_ip = "";
+        //非局域网的外网IP地址，如：221.0.0.1
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //把请求参数打包成数组
+        SortedDictionary<string, string> sParaTemp = new SortedDictionary<string, string>();
+        sParaTemp.Add("partner", Config.Partner);
+        sParaTemp.Add("_input_charset", Config.Input_charset.ToLower());
+        sParaTemp.Add("service", "create_direct_pay_by_user");
+        sParaTemp.Add("payment_type", payment_type);
+        sParaTemp.Add("notify_url", notify_url);
+        sParaTemp.Add("return_url", return_url);
+        sParaTemp.Add("seller_email", seller_email);
+        sParaTemp.Add("out_trade_no", out_trade_no);
+        sParaTemp.Add("subject", subject);
+        sParaTemp.Add("total_fee", total_fee);
+        sParaTemp.Add("body", body);
+        sParaTemp.Add("show_url", show_url);
+        sParaTemp.Add("anti_phishing_key", anti_phishing_key);
+        sParaTemp.Add("exter_invoke_ip", exter_invoke_ip);
+
+        //建立请求
+        string sHtmlText = Submit.BuildRequest(sParaTemp, "get", "确认");
+        Response.Write(sHtmlText + "<script>window.location.href = 'ordersubmitted.aspx?onlinepay=yes';</script>");
+    }
+    protected void CheckBoxList1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        /*
+        string com = "select standby2 from tab_company where CompanyName='" + Session["Company"] + "'";
+        DataTable dtcom = comb.Select(com);
+
+        string uppkgtype = pb.getuppkgtype(this.DropDownList2.SelectedValue);
+        string uppkgname = "";
+        double remainpoint = double.Parse(this.Labelremainpoint.Text);
+        double bill = double.Parse(this.TextBoxExCharge1.Text);
+        double upprice = 0;
+
+        if (uppkgtype == "1")
+        {
+            if (this.TextBoxCBL.Text != "")
+            {
+                this.CheckBoxList1.Items[int.Parse(this.TextBoxCBL.Text)].Selected = false;
+            }
+            if (this.CheckBoxList1.SelectedIndex >= 0)
+            {
+                this.TextBoxCBL.Text = this.CheckBoxList1.SelectedIndex.ToString();
+                this.TextBoxCharge2.Text = this.CheckBoxList1.SelectedItem.Value.Split(',')[0];
+                upprice = double.Parse(this.TextBoxCharge2.Text);
+                uppkgname = this.CheckBoxList1.SelectedItem.Text;
+            }
+            else
+            {
+                this.TextBoxCBL.Text = "";
+                this.TextBoxCharge2.Text = "0";
+            }
+        }
+        else
+        {
+            for (int i = 0; i < uppkgcount; i++)
+            {
+                if (this.CheckBoxList1.Items[i].Selected)
+                {
+                    upprice += double.Parse(this.CheckBoxList1.Items[i].Value.Split(',')[0]);
+                    uppkgname += this.CheckBoxList1.Items[i].Text + ",";
+                }
+            }
+            if (uppkgname.Length > 0)
+            {
+                uppkgname = uppkgname.Substring(0, uppkgname.Length - 1);
+            }
+        }
+
+        this.TextBoxCharge2.Text = upprice.ToString();
+
+        if (remainpoint > 0)
+        {
+            if (remainpoint - upprice >= 0)
+            {
+                this.Labelremainpoint.Text = (remainpoint - upprice).ToString();
+                if (dtcom.Rows[0][0].ToString() != "1")
+                    this.Labelbill.Text = "0";
+                else
+                {
+                    if (this.CheckBox7.Checked)
+                        this.Labelbill.Text = "30";
+                    else
+                        this.Labelbill.Text = "0";
+                }
+                if (this.Labelbill.Text == "0")
+                {
+                    this.Panel9.Visible = false;
+                }
+                else
+                {
+                    this.Panel9.Visible = true;
+                }
+            }
+            else
+            {
+                this.Labelremainpoint.Text = "0";
+                if (dtcom.Rows[0][0].ToString() != "1")
+                    this.Labelbill.Text = (bill + upprice - remainpoint).ToString();
+                else
+                {
+                    if (this.CheckBox7.Checked)
+                        this.Labelbill.Text = (bill + upprice - remainpoint + 30).ToString();
+                    else
+                        this.Labelbill.Text = (bill + upprice - remainpoint).ToString();
+                }
+                //this.Labelbill.Text = (bill + upprice - remainpoint).ToString();
+                this.Panel9.Visible = true;
+            }
+
+        }
+        else
+        {
+            if (dtcom.Rows[0][0].ToString() != "1")
+                this.Labelbill.Text = (bill + upprice).ToString();
+            else
+            {
+                if (this.CheckBox7.Checked)
+                    this.Labelbill.Text = (bill + upprice + 30).ToString();
+                else
+                    this.Labelbill.Text = (bill + upprice).ToString();
+            }
+            //this.Labelbill.Text = (bill + upprice).ToString();
+            if (bill + upprice > 0)
+            {
+                this.Panel9.Visible = true;
+            }
+            else
+            {
+                this.Panel9.Visible = false;
+            }
+        }
+
+        this.Label52.Text = uppkgname != "" ? uppkgname : (string)GetGlobalResourceObject("GResource", "na");*/
+        rc.checkboxlistChanged(CheckBoxList1, TextBoxCBL, limit1, DropDownList2, supplierpackagecode, modelCu,
+         Panel9, Labelremainpoint, Labelbill, CheckBox7
+        , CheckBoxList1, CheckBoxList2, CheckBoxList3
+        , CheckBoxList4, CheckBoxList5, CheckBoxList6, CheckBoxList7, CheckBoxList8
+        , CheckBoxList9, CheckBoxList10,true);
+    }
+
+    protected void CheckBox7_CheckedChanged(object sender, EventArgs e)
+    {
+        pc.fillbranchexam2(this.RadioButton1.Checked, this.RadioButton3.Checked, this.CheckBox7, Session["currentsupplier"].ToString(), this.DropDownList2, this.Panelremainmoney, modelCu, modelrel, true, sender, e);
+        this.DropDownList2_SelectedIndexChanged(sender, e);
+    }
+    protected void CheckBoxList2_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        //limit2 = ub.getuppkglimit(CheckBoxList2.Items[0].Value.Split(',')[1], this.DropDownList2.SelectedValue);
+        rc.checkboxlistChanged(CheckBoxList2, TextBoxCBL2, limit2, DropDownList2, supplierpackagecode, modelCu,
+         Panel9, Labelremainpoint, Labelbill, CheckBox7
+        , CheckBoxList1, CheckBoxList2, CheckBoxList3
+        , CheckBoxList4, CheckBoxList5, CheckBoxList6, CheckBoxList7, CheckBoxList8
+        , CheckBoxList9, CheckBoxList10, true);
+    }
+    protected void CheckBoxList3_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        rc.checkboxlistChanged(CheckBoxList3, TextBoxCBL3, limit3, DropDownList2, supplierpackagecode, modelCu,
+         Panel9, Labelremainpoint, Labelbill, CheckBox7
+        , CheckBoxList1, CheckBoxList2, CheckBoxList3
+        , CheckBoxList4, CheckBoxList5, CheckBoxList6, CheckBoxList7, CheckBoxList8
+        , CheckBoxList9, CheckBoxList10, true);
+    }
+    protected void CheckBoxList4_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        rc.checkboxlistChanged(CheckBoxList4, TextBoxCBL4, limit4, DropDownList2, supplierpackagecode, modelCu,
+          Panel9, Labelremainpoint, Labelbill, CheckBox7
+         , CheckBoxList1, CheckBoxList2, CheckBoxList3
+         , CheckBoxList4, CheckBoxList5, CheckBoxList6, CheckBoxList7, CheckBoxList8
+         , CheckBoxList9, CheckBoxList10, true);
+    }
+    protected void CheckBoxList5_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        rc.checkboxlistChanged(CheckBoxList5, TextBoxCBL5, limit5, DropDownList2, supplierpackagecode, modelCu,
+         Panel9, Labelremainpoint, Labelbill, CheckBox7
+        , CheckBoxList1, CheckBoxList2, CheckBoxList3
+        , CheckBoxList4, CheckBoxList5, CheckBoxList6, CheckBoxList7, CheckBoxList8
+        , CheckBoxList9, CheckBoxList10, true);
+    }
+    protected void CheckBoxList6_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        rc.checkboxlistChanged(CheckBoxList6, TextBoxCBL6, limit6, DropDownList2, supplierpackagecode, modelCu,
+         Panel9, Labelremainpoint, Labelbill, CheckBox7
+        , CheckBoxList1, CheckBoxList2, CheckBoxList3
+        , CheckBoxList4, CheckBoxList5, CheckBoxList6, CheckBoxList7, CheckBoxList8
+        , CheckBoxList9, CheckBoxList10, true);
+    }
+    protected void CheckBoxList7_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        rc.checkboxlistChanged(CheckBoxList7, TextBoxCBL7, limit7, DropDownList2, supplierpackagecode, modelCu,
+         Panel9, Labelremainpoint, Labelbill, CheckBox7
+        , CheckBoxList1, CheckBoxList2, CheckBoxList3
+        , CheckBoxList4, CheckBoxList5, CheckBoxList6, CheckBoxList7, CheckBoxList8
+        , CheckBoxList9, CheckBoxList10, true);
+    }
+    protected void CheckBoxList8_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        rc.checkboxlistChanged(CheckBoxList8, TextBoxCBL8, limit8, DropDownList2, supplierpackagecode, modelCu,
+         Panel9, Labelremainpoint, Labelbill, CheckBox7
+        , CheckBoxList1, CheckBoxList2, CheckBoxList3
+        , CheckBoxList4, CheckBoxList5, CheckBoxList6, CheckBoxList7, CheckBoxList8
+        , CheckBoxList9, CheckBoxList10, true);
+    }
+    protected void CheckBoxList9_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        rc.checkboxlistChanged(CheckBoxList9, TextBoxCBL9, limit9, DropDownList2, supplierpackagecode, modelCu,
+         Panel9, Labelremainpoint, Labelbill, CheckBox7
+        , CheckBoxList1, CheckBoxList2, CheckBoxList3
+        , CheckBoxList4, CheckBoxList5, CheckBoxList6, CheckBoxList7, CheckBoxList8
+        , CheckBoxList9, CheckBoxList10, true);
+    }
+    protected void CheckBoxList10_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        rc.checkboxlistChanged(CheckBoxList10, TextBoxCBL10, limit10, DropDownList2, supplierpackagecode, modelCu,
+         Panel9, Labelremainpoint, Labelbill, CheckBox7
+        , CheckBoxList1, CheckBoxList2, CheckBoxList3
+        , CheckBoxList4, CheckBoxList5, CheckBoxList6, CheckBoxList7, CheckBoxList8
+        , CheckBoxList9, CheckBoxList10, true);
+    }
+    protected void RadioButton11_CheckedChanged(object sender, EventArgs e)
+    {
+        if (RadioButton11.Checked)
+        {
+            this.TextBoxPA.Text = this.RadioButton11.Text;
+        }
+        else if (RadioButton12.Checked)
+        {
+            this.TextBoxPA.Text = this.RadioButton12.Text;
+        }
+        else if (RadioButton13.Checked)
+        {
+            this.TextBoxPA.Text = this.RadioButton13.Text;
+        }
+        else if (RadioButton18.Checked)
+        {
+            this.TextBoxPA.Text = this.RadioButton14.Text;
+        }
+        else if (RadioButton19.Checked)
+        {
+            this.TextBoxPA.Text = this.RadioButton15.Text;
+        }
+
+    }
+}

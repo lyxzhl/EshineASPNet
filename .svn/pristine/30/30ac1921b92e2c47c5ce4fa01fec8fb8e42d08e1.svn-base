@@ -1,0 +1,273 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="test2.aspx.cs" Inherits="test2" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+<%@ Register TagPrefix="MPuc" TagName="headcontent" Src="UserControl/headcontent.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="mobilenav" Src="UserControl/mobilenav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="desktopnav" Src="UserControl/desktopnav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="UserControl/footer1.ascx"%>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<title>Medi-Plus - 体检专家</title>
+<MPuc:headcontent runat="server" ID="Unnamed1"/>
+<SCRIPT src="JS/mp.js" type="text/javascript"></SCRIPT>
+
+  <link rel="stylesheet" href="CSS/gb.css" type="text/css" media="screen">
+<link rel="stylesheet" href="CSS/style_yixun.css" type="text/css" media="screen" />
+
+</head>
+<body class='blogs ic_rwd'>
+<div class='wrapper' data-behavior='Navigation'>
+<nav class='mobile_hidden' id='desktop'>
+<SCRIPT>
+    function sendemail(email) {
+        window.location.href = "mailto:" + escape(email);
+    }
+		</SCRIPT>
+<div class='container'>
+<a class='logo' href='index.aspx'>
+<img alt='Medi-Plus' src='Images/logo2.png'>
+</a>
+<asp:HyperLink class='button gray_button' ID="HyperLink4" runat="server" href='<%$ Resources:GResource,languagecode %>' Text='<%$ Resources:GResource,language %>'></asp:HyperLink>
+
+<asp:Panel ID="Panel2" runat="server" style="padding-top:8px;">
+<ul class='desktop_navigation' >
+<li style="color:#6c98cf; font-size:18px;">
+021-50522113
+</li>
+<li>
+<A href="javascript:sendemail('service@medi-plus.com.cn');" style="padding-top:0; font-size:14px">service@medi-plus.com.cn</A>
+</li>
+</ul>
+</asp:Panel>
+</div>
+</nav>
+
+
+
+<form id="Form1" runat="server">
+    <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ToolkitScriptManager>
+<div class='container' data-behavior='Blog'>
+<div class='row' style="padding-top:30px">
+    
+    
+    
+
+  <div class="ic_content xcontent">    
+
+    <!--S xcontent_row2 -->
+    <div class="grid_c1 xcontent_row2" >
+      <div class="grid_s">
+          <!--S 产品图集 -->
+          <div class="xgallery">
+                        
+            <!--S 展示图 -->
+            <div id="xgalleryShow" class="xgallery_show oxzoom_standard">
+              <a href="javascript:" ytag="21001">
+                <img class="xgallery_img" itemprop="image" id="xgalleryImg" src="Images/UploadFile/shop1.jpg" idx="1">
+                <i class="xico xico_zoom"></i>
+                <span class="oxzoom_lens" style="left: 20.5px; top: 170px;"></span>
+              </a>
+            </div>
+            <!--S 展示图 -->
+
+            <!--S 放大图 -->
+            <div class="xgallery_zoom oxzoom_box" id="xgalleryZoom">
+              <div class="oxzoom_box_inner">
+                              <img class="oxzoom_img" width="800" height="800" style="margin-left: -55.66343042071197px; margin-top: -427.5px;">
+                              <div class="oxzoom_loader"></div>
+                          </div>
+            </div>
+            <!--E 放大图 -->
+
+
+            <!--S 缩略图 -->
+            <div class="xgallery_thumb" id="pic_small_wrapper">
+              <div class="xgallery_thumb_wrapper" id="list_smallpic">
+                <!-- xgallery_thumb_list li 加类名 current 表示选中-->
+                <ul class="xgallery_thumb_list clearfix" style="width: 213px;">
+                    <li idx="0" class=""><a href="javascript:" hidefocus="true">
+                        <img src="Images/UploadFile/shop1.jpg" ></a></li>
+                    <li idx="1" class="current"><a href="javascript:" hidefocus="true">
+                        <img src="Images/UploadFile/shop2.jpg"></a></li>
+                    <li idx="2"><a href="javascript:" hidefocus="true">
+                        <img src="Images/UploadFile/shop3.jpg" "></a></li>
+                    <li idx="3"><a href="javascript:" hidefocus="true">
+                        <img src="Images/UploadFile/shop2.jpg""></a></li></ul>
+              </div>
+              <a ytag="21002" class="xgallery_prev xgallery_prev_disabled" href="javascript:"><i></i></a>
+              <a ytag="21003" class="xgallery_next xgallery_next_disabled" href="javascript:"><i></i></a>
+            </div>
+            <!--E 缩略图 -->
+          </div>
+          <!--E 产品图集 -->
+
+      
+        
+      </div>
+      <div class="grid_m">
+          <!--S 商品主要信息 -->
+          <div class="xbase">
+            <div class="xbase_row1">
+              <h1 class="xname" itemprop="name">full circle榨汁水瓶 红色</h1>
+              <a href="http://item.yixun.com/item-1873691.html" class="hidden" itemprop="url"></a>
+              
+			  <p class="xdesc" itemprop="description" id="sea_desc">正品美国进口！环保玻璃柠檬杯！食用安全放心！</p>
+			  
+              
+            </div>
+
+            <div class="xbase_row2" >
+            
+            	
+        		<dl class="xbase_item xprice">
+                <dt class="xbase_col1">Medi-Plus价</dt>
+                <dd class="xbase_col2">
+                  <span class="mod_price xprice_val" itemprop="price"><i itemprop="priceCurrency" content="CNY">¥</i>170.00</span>	
+	            
+	            
+            	
+	            </dd>
+              </dl>
+            
+            
+            
+            
+          
+        </div>
+                        
+            <div class="xbase_row3">
+              
+              
+              
+			  
+              <!-- 商品SKU S-->
+              <!--  规则没选提示加 xsku_attention 类名-->
+              <div id="sea_sale_attr_wrap" class="hide" style="display: block;"><div class="xsku"><dl class="xbase_item xcolor">
+                  <dt class="xbase_col1">品类</dt><dd class="xbase_col2">
+                  <ul class="xoption_list clearfix" rel="49">
+                         <li class='xoption xoption_selected'><a href='viewshopitem_multi.aspx?productID=177' hidefocus='true'>
+<img src='Images/UploadFile/shop2.jpg' width='30' height='30'>
+<span class='xoption_val'>蓝色</span>
+<i class='xoption_ico_selected'></i></a></li>
+
+
+                      <li class="xoption"><a href="/item-1873675.html?chid=0" hidefocus="true" ytag="22401">
+                      <img src="Images/UploadFile/shop1.jpg" width="30" height="30"><span class="xoption_val">绿色</span></a></li>
+                  <li class="xoption"><a href="/item-1873648.html?chid=0" hidefocus="true" ytag="22402">
+                      <img src="Images/UploadFile/shop2.jpg" width="30" height="30"><span class="xoption_val">蓝色</span></a></li>
+                  <li class="xoption xoption_selected"><a href="javascript:" hidefocus="true">
+                      <img src="Images/UploadFile/shop3.jpg" width="30" height="30"><span class="xoption_val">红色</span><i class="xoption_ico_selected"></i></a></li></ul></dd></dl></div></div>              
+              <!-- 商品SKU E-->
+              
+              
+              
+              	  
+              
+              <dl class="xbase_item xnumber">
+                <dt class="xbase_col1">数量</dt>
+                  <dd>
+
+<asp:ImageButton ID="ImageButton1" runat="server" AlternateText="-" ImageUrl="~/Images/minus.jpg" ImageAlign="Middle" />
+                <asp:TextBox ID="num" runat="server" Width="25px" Text="0" onchange="updatePrice();" class="uniprice" BackColor="White"></asp:TextBox>
+                <asp:ImageButton ID="ImageButton2" runat="server" AlternateText="+" ImageUrl="~/Images/plus.jpg" ImageAlign="Middle" />
+                <asp:NumericUpDownExtender ID="NumericUpDownExtender1" runat="server" Maximum="10" Minimum="0" TargetButtonUpID="ImageButton2" TargetButtonDownID="ImageButton1" TargetControlID="num"></asp:NumericUpDownExtender>
+         
+
+                  </dd>
+                <dd class="xbase_col2 hidden">
+                    <span class="x_mod_number">
+
+ <a href="javascript:" hidefocus="true" class="x_mod_number_minus sea_order_minus x_mod_number_minus_disabled" ytag="22701"></a>
+                      <input type="text" id="order_num" maxlength="2" maxnumlimit="99" minnumlimit="1" value="1" class="x_mod_number_input">
+                      <a href="javascript:" hidefocus="true" class="x_mod_number_plus sea_order_add" ytag="22702"></a>
+                    </span>
+                    
+                    
+                </dd>
+              </dl>
+            </div>
+
+            <div class="xbase_row4">
+              <dl class="xbase_item xselected" id="attr_selected_wrap"><dt class="xbase_col1">已选择</dt><dd class="xbase_col2"><p class="xselected_prop">“红色”</p></dd></dl>
+              <!--S 购物按钮 -->
+                            
+              <div class="xaction xaction_scan clearfix" id="sea_buy_wrap">
+              
+              	<a ytag="23004" href="javascript:" class="xbtn_inform" id="sea_notify">到货通知</a>
+          	  
+                
+              </div>
+              <!--E 购物按钮 -->
+
+      
+			  
+
+            </div>
+            <div class="xbase_row5 hidden">
+              <div class="xtips"><p class="xtips_seven"><i class="xico xico_seven"></i>此商品支持七天无理由退货。</p>
+              
+	              <p>注意：此商品可提供普通发票，可提供增值税发票。</p>
+	              
+              </div>
+            </div>
+          </div>
+          <!--E 商品主要信息 -->      
+      </div>
+          
+    </div>
+
+    <!--E xcontent_row2-->
+
+    
+  </div>
+  <div class="xzoom" id="sea_zoom_wrap" style="top: -102px;">
+      <div class="xzoom_tit">大图预览</div>
+      <div class="xzoom_img">
+        <img src="Images/UploadFile/shop1.jpg" alt="full circle榨汁水瓶 红色" id="sea_zoom_pic" width="600" heigt="600" idx="1">
+        <a href="javascript:" class="xzoom_prev" ytag="21004"></a>
+        <a href="javascript:" class="xzoom_next" ytag="21005"></a>
+      </div>      
+      <ul class="xzoom_thumb_list clearfix">
+          <li idx="0" class=""><a href="javascript:" hidefocus="true">
+              <img src="Images/UploadFile/shop1.jpg"></a></li>
+          <li idx="1" class="current"><a href="javascript:" hidefocus="true">
+              <img src="Images/UploadFile/shop2.jpg"></a></li>
+          <li idx="2"><a href="javascript:" hidefocus="true">
+              <img src="Images/UploadFile/shop3.jpg" ></a></li>
+       </ul>
+      <a href="javascript:" class="xzoom_close" id="sea_zoom_close"></a>
+  </div>
+  <div id="sea_window" class="xmask"></div> 
+<script type="text/javascript" src="JS/sea-combo.js" charset="utf-8"></script><!--[if !IE]>|xGv00|c970cb4125a1363e85d1b0024204fa4d<![endif]-->
+  <script type="text/javascript" src="JS/global.js" charset="gb2312"></script>
+
+<script type="text/javascript">
+    
+
+
+
+</script>
+     <!--script type="text/javascript" src="JS/yixun_order_input_lyx.js" charset="gb2312"></script-->
+    <script type="text/javascript" src="JS/yixun_image_lyx.js" charset="gb2312"></script>
+
+   <script type="text/javascript">
+
+       var itemInfo = { "pic_num": 3 };
+       newInit("", itemInfo);
+
+</script>
+<!--[if !IE]>|xGv00|a2c08e7b0b24ccdf227d225b9c3c982e<![endif]-->
+<div class="mod_backtop hide" id="j_backtop"><a href="javascript:" title="回顶部" ytag="72300">回顶部</a></div>
+
+
+
+    </div>
+</div>
+</form>
+</div>
+<MPuc:footer ID="ucfooter" runat="server"/>
+</body>
+</html>

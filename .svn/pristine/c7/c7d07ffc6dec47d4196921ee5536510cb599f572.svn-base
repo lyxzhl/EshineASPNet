@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text;
+
+namespace Bll
+{
+  
+        public class RiskassessmentBll
+        {
+            IDAL.RiskassessmentDal itu = DALFactory.Riskassessment_Factory.Createusers();
+            public int Add(Model.Riskassessment Riskassessment)
+            {
+                return itu.Add(Riskassessment);
+            }
+            public Model.Riskassessment getRiskassessment(Model.Riskassessment Riskassessment1)
+            {
+                return itu.getRiskassessment(Riskassessment1);
+            }
+            public int update(Model.Riskassessment Riskassessment)
+            {
+                return itu.update(Riskassessment);
+            }
+            public int Delete(int id)
+            {
+                return itu.Delete(id);
+            }
+            public DataTable Select(string ss)
+            {
+                return itu.Select(ss);
+            }
+        }
+
+
+    
+}

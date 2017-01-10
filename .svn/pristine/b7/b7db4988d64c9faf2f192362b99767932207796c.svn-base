@@ -1,0 +1,1 @@
+#stretch_header,#stretch_footer,#desktop,#mobile,footer{display:none}.hidden{display:none}.purchase h1{text-align:center}.purchase table{width:100%;margin-top:20px;color:#4b4b4b}.purchase table tr th{font-size:13px;font-weight:600;border-bottom:solid 1px #d9dbdd;padding-bottom:14px;text-align:left}.purchase table tr td{padding:14px 0 50px 0}.purchase #print_receipt{display:none}

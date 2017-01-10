@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text;
+
+namespace Bll
+{
+    public class QuestionClassBll
+    {
+        IDAL.QuestionClassDal itu = DALFactory.QuestionClass_Factory.Createusers();
+        public int Add(Model.QuestionClass QuestionClass)
+        {
+            return itu.Add(QuestionClass);
+        }
+        public Model.QuestionClass getQuestionClass(Model.QuestionClass QuestionClass1)
+        {
+            return itu.getQuestionClass(QuestionClass1);
+        }
+        public int update(Model.QuestionClass QuestionClass)
+        {
+            return itu.update(QuestionClass);
+        }
+        public int Delete(int QCID)
+        {
+            return itu.Delete(QCID);
+        }
+        public DataTable Select(string ss)
+        {
+            return itu.Select(ss);
+        }
+    }
+
+}

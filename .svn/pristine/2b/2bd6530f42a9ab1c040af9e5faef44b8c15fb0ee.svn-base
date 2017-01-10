@@ -1,0 +1,528 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Text.RegularExpressions;
+using MeiNianWebRef;
+using System.Web.Script.Serialization;
+using Subgurim.Controles;
+using System.IO;
+using System.Xml;
+using Com.Alipay;
+using System.Collections;
+using ikang;
+
+
+public partial class reserverelexam4 : System.Web.UI.Page
+{
+    DBunit.SQLAccess dbsql = new DBunit.SQLAccess();
+    Model.tab_customers modelCu = new Model.tab_customers();
+    Model.tab_relatives modelrel = new Model.tab_relatives();
+    Model.tab_orders orders = new Model.tab_orders();
+    Bll.CustomerBll Cb = new Bll.CustomerBll();
+    Bll.SupplierBll sb = new Bll.SupplierBll();
+    Bll.packageBll pb = new Bll.packageBll();
+    Bll.uppkgBll ub = new Bll.uppkgBll();
+    Bll.OrdersBll ob = new Bll.OrdersBll();
+    Bll.examcardBll eb = new Bll.examcardBll();
+    Bll.companyBll comb = new Bll.companyBll();
+    Bll.RelativeBLL rb = new Bll.RelativeBLL();
+    Bll.supplierpackageBll spb = new Bll.supplierpackageBll();
+    reserveexamcommon rc = new reserveexamcommon();
+
+    Bll.deliveryaddressBll db = new Bll.deliveryaddressBll();
+
+    GMap GMap1 = new GMap();
+
+    PublicClass pc = new PublicClass();
+    ikangservice iks = new ikangservice();
+    ikangmember ikm = new ikangmember();
+    HealthService mns = new HealthService();
+    //接收省份的集合
+    DataSet ds_Province;
+    //接收市的集合
+    DataSet ds_City;
+    //接收区的集合
+    DataSet ds_Area;
+    DateTime firstdate;
+    DateTime lastdate;
+    string DOB;
+    public string classmale, classfemale, classmarried, classunmarried, branchmapclass = "hidden", newaddressclass = "hidden", closscompanyaddressclass = "hidden";
+    public string supplierlistcontentikang, supplierlistcontentciming, supplierlistcontentmeinian;
+    int uppkgcount = -1;
+    public string continue2class = "hidden", xiyaclass = "hidden";
+    public string hideik = "", hidemn = "";
+    public int limit1, limit2, limit3, limit4, limit5, limit6, limit7, limit8, limit9, limit10;
+    public string supplierpackagecode = "";
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+        //return;
+        modelCu.customerID = int.Parse(Session["id"].ToString());
+        modelCu = Cb.getCustomer(modelCu);
+
+        modelrel.relativeID = int.Parse(Session["relativeID"].ToString());
+        modelrel = rb.getRelative(modelrel);
+
+
+        this.Label23.Text = modelrel.relativeName.ToString();
+        if (modelrel.relativeGender=="男")
+            this.Label24.Text = (string)GetGlobalResourceObject("GResource", "male");
+        else if (modelrel.relativeGender == "女")
+            this.Label24.Text = (string)GetGlobalResourceObject("GResource", "female");
+        int age = DateTime.Now.Year - modelrel.relativeDOB.Year;
+        this.Label26.Text = age.ToString();
+        this.Label28.Text = modelrel.relativeIDcard != "" ? modelrel.relativeIDcard : modelrel.relativeCustomer.ToString();
+        this.Label30.Text = modelrel.relativeMobile;
+        this.Label32.Text = modelrel.relativeEmail;
+
+        //if (modelrel.relativeRelationship == "配偶")
+        //    this.Label34.Text = (String)GetLocalResourceObject("RadioButton14Resource1.Text");
+        //else if (modelrel.relativeRelationship == "父母")
+        //    this.Label34.Text = (String)GetLocalResourceObject("RadioButton15Resource1.Text");
+        //else if (modelrel.relativeRelationship == "子女")
+        //    this.Label34.Text = (String)GetLocalResourceObject("RadioButton16Resource1.Text");
+        //else if (modelrel.relativeRelationship == "其他")
+        //    this.Label34.Text = (String)GetLocalResourceObject("RadioButton17Resource1.Text");
+        if (modelrel.relativeRelationship == "配偶")
+            this.Label34.Text = modelrel.relativeRelationship;
+        else if (modelrel.relativeRelationship == "父母")
+            this.Label34.Text = modelrel.relativeRelationship;
+        else if (modelrel.relativeRelationship == "子女")
+            this.Label34.Text = modelrel.relativeRelationship;
+        else if (modelrel.relativeRelationship == "其他")
+            this.Label34.Text = modelrel.relativeRelationship;
+
+        if (modelrel.relativeMarriageStatus == "未婚")
+            this.Label38.Text = (string)GetGlobalResourceObject("GResource", "unmarried");
+        else if (modelrel.relativeMarriageStatus == "已婚")
+            this.Label38.Text = (string)GetGlobalResourceObject("GResource", "married");
+        if (Request["baog"].ToString() == "True")
+        {
+            if (Request["yao"].ToString() == "True")
+            {
+                this.Label40.Text = "统一寄送";
+            }
+            else
+            {
+                this.Label40.Text = "门店自取";
+            }
+        }
+        else
+        {
+            this.Label40.Text = "不需要纸质报告";
+        }
+       
+        this.Label42.Text = Request["yuyue"].ToString();
+        this.Label44.Text = Session["shengfen"].ToString();
+        this.Label48.Text = Session["chengshi"].ToString();
+
+
+        Label72.Text = orders.xiya;
+
+        this.Label50.Text = Request["tijian"].ToString();
+        if (Request["fuke"].ToString()=="True")
+        {
+            this.Label50.Text += " +妇科检查";
+        }
+        this.Label52.Text = Request["jiabao"].ToString();
+      
+        //if (this.DropDownList3.SelectedValue != (String)GetLocalResourceObject("DropDownList3Resource1"))
+        //    this.Label52.Text = this.DropDownList3.SelectedItem.Text;
+        //else
+        //    this.Label52.Text = "";
+        supplierpackagecode = Session["supplierpackagecode"].ToString();
+        string s = "select price from supplierpackage where suppliercode='" + supplierpackagecode + "'";
+        DataTable dt = spb.Select(s);
+        this.Label54.Text = dt.Rows[0]["price"].ToString();
+        //this.Label54.Text = Math.Round(double.Parse(this.TextBoxCharge1.Text) + double.Parse(this.TextBoxCharge2.Text), 2).ToString();
+        this.Label56.Text = Request["fufei"].ToString();
+        this.Label58.Text = orders.examInfo;
+
+    }
+
+
+    bool submittosupplier(int ordernum)
+    {
+        string s;
+
+        if (Session["bindcard"] != null && Session["bindcard"] == "error")
+        {
+            return false;
+        }
+
+
+
+        if (this.Label48.Text.Contains("爱康国宾"))
+        {
+            ikm.cardnumber = eb.getcardnum(modelrel.relativeID, "爱康国宾");
+            ikm.regdate = this.Label42.Text;
+            int abc= int.Parse( Request["shuzi"].ToString());
+            if (false && abc >= 0)
+            {
+                ikm.packagecode = Request["value"].Split(',')[1]; 
+            }
+            else
+            {
+                if (supplierpackagecode != "")
+                    ikm.packagecode = supplierpackagecode;
+                else
+                {
+                    ikm.packagecode = Request["jiao"].ToString();
+                }
+            }
+            ikm.hospid = Session["hospid"].ToString();
+            ikm.name = this.Label23.Text;
+            ikm.sex = this.Label24.Text == (string)GetGlobalResourceObject("GResource", "male") ? "1" : "0";
+            ikm.married = this.Label38.Text == (string)GetGlobalResourceObject("GResource", "married") ? "1" : "0";
+            //ikm.contacttel = this.Label30.Text;
+            ikm.contacttel = "18017588993";
+            ikm.idnumber = this.Label28.Text;
+            ikm.reportaddress = orders.personAddress;
+            ikm.thirdnum = ordernum.ToString();
+
+
+            s = iks.AddOrder(ikm);
+            orders.Msg += s;
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            Dictionary<string, object> json = (Dictionary<string, object>)jss.DeserializeObject(s);
+            object value;
+            if (json.TryGetValue("code", out value) && value.ToString() == "1")
+            {
+                json.TryGetValue("message", out value);
+                orders.supplierOrderID = value.ToString().Split('|')[0];
+                orders.cardNumber = ikm.cardnumber;
+                return true;
+            }
+            else
+            {
+                ViewState["errormsg"] = s;
+                return false;
+            }
+
+        }
+        else if (this.Label48.Text.Contains("美年大健康"))
+        {
+            HealthUser mUser = new HealthUser
+            {
+                Cid = this.Label28.Text,	//员工号
+                Dwdm = modelCu.customerCompanycode,	//单位代码
+                Crsq = DOB,	//出生日期
+                Email = this.Label32.Text,	//邮件
+                Dept1 = "",	//部门1
+                Dept2 = string.Empty, 	//部门2
+                Djremark = "[标记:" + modelCu.customerID +
+                "][网址：http://www.medi-plus.cn/admin/login.aspx]" +
+                "[纸质报告寄送地址:" + orders.personAddress + "]",	//到检备注 预约号+网址 我方工作人员到该网址更新到检状态
+                Factory = Session["hospid"].ToString(),	//体检门店
+                Fgs = string.Empty, 	//分公司
+                IdCard = this.Label28.Text,	//身份证号
+                JxreMark = this.Label58.Text,	// 加选项备注 如加选项目名称，价格，挂帐还是自付费
+                MaritalStatus = this.Label38.Text == (string)GetGlobalResourceObject("GResource", "married") ? "1" : "0", 	//婚姻状况 1为已婚 0 未婚
+                //mPhone = this.Label30.Text,	//电话
+                mPhone = "18017588993",
+                Name = this.Label23.Text,	//姓名
+                Package = supplierpackagecode == "" ? Request["jiao"].ToString() : supplierpackagecode,	//套餐
+                TcName = Request["chuag"].ToString(),
+                Remark = string.Empty,	//备注
+                Sex = this.Label24.Text == (string)GetGlobalResourceObject("GResource", "male") ? "1" : "0", 	//性别 1为男性 0 为女性
+                YYSJ = this.Label42.Text.Substring(0, 10)//预约日期
+            };
+
+            s = mns.AddOrder(mUser);
+            orders.Msg += s;
+            if (s == "成功")
+            {
+                return true;
+            }
+            else
+            {
+                ViewState["errormsg"] = s;
+                return false;
+            }
+
+        }
+        return false;
+    }
+
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("reserverelexam3.aspx");
+    }
+   int  saveorder()
+    {
+        if (ob.checkorder(modelCu.customerID, modelrel.relativeID)>0)
+        {
+            return 9999;
+        }
+        //modelCu.customerBalance = double.Parse(this.Labelremainpoint.Text);
+        //Cb.update(modelCu);
+
+        orders.personAddress = this.Label40.Text;
+        if (this.Label56.Text != "" && this.Label56.Text != "0")
+        {
+            if (Request["fq"]=="True")
+            {
+                orders.payMethod = "网上支付";
+            }
+            else if (Request["fw"] == "True")
+            {
+                orders.payMethod = "前台支付";
+            }
+            else if (Request["fe"] == "True")
+            {
+                orders.payMethod = "转账支付";
+            }
+        }
+
+        //DOB = DropDownListYear.SelectedValue + "-" + DropDownListMonth.SelectedValue + "-" + DropDownListDay.SelectedValue;//出生日期
+
+        if (this.Label56.Text != "" && this.Label56.Text != "0")
+        {
+            if (Request["fq"] == "True")
+            {
+                orders.orderStatus = "待付款";
+            }
+            else if (Request["fe"] == "True")
+            {
+                orders.orderStatus = "待转账";
+            }
+        }
+        else
+        {
+            orders.orderStatus = "待确认";
+        }
+        //orders.orderStatus = "待确认";
+        orders.customerID = modelCu.customerID;
+        orders.relativeID = modelrel.relativeID;
+        orders.relativeName = this.Label23.Text;
+        orders.orderDate = DateTime.Now;
+        orders.personSex = this.Label24.Text;
+        orders.personAge = int.Parse(this.Label26.Text);
+        orders.personIDcard = this.Label28.Text;
+        orders.personMobile = this.Label30.Text;
+        orders.personPrivateEmail = this.Label32.Text;
+        orders.personCompany = modelCu.customerCompany;
+        orders.personMarriageStatus = this.Label38.Text;
+        orders.examDate = DateTime.Parse(this.Label42.Text);
+        orders.examCity = this.Label44.Text;
+        orders.xiya = this.Label72.Text;
+        if (this.Label48.Text.Contains("爱康国宾"))
+        {
+            orders.examSupplier = "爱康国宾";
+            //orders.cardNumber = eb.getcardnum(modelCu.customerID, "爱康国宾"); 
+        }
+        else if (this.Label48.Text.Contains("美年大健康"))
+        {
+            orders.examSupplier = "美年大健康";
+        }
+        else if (this.Label48.Text.Contains("慈铭体检"))
+        {
+            orders.examSupplier = "慈铭体检";
+        }
+        orders.examBranch = this.Label48.Text;
+        orders.examhosip = Session["hospid"].ToString();
+        orders.examPackage = this.Label50.Text;
+        orders.examUpPkg = this.Label52.Text;
+        orders.examTotalFee = double.Parse(this.Label54.Text);
+        orders.examBill = double.Parse(this.Label56.Text);
+        orders.examInfo = this.Label58.Text;
+
+
+        if (Session["htai"] != null && Session["htai"].ToString() == "htai")
+        {
+                orders.examWorkNo = Session["empName"].ToString();
+                orders.Msg = "用户后台下单。";
+            }
+        else
+        {
+            orders.Msg = "用户前台下单。";
+        }
+        if (Session["branchtype"].ToString() != "网络")
+        {
+            orders.Msg += "非网络预约门店。";
+        }
+        else
+        {
+            orders.Msg += "网络预约情况：";
+        }
+
+        //判断是否已经下单
+        //DataTable dtis = ob.Select("select * from tab_orders where customerID='" + modelCu.customerID + "' and ReportType<>'商城' and orderStatus<>'已取消' and orderStatus<>'已完成'");
+        //if (dtis.Rows.Count >= 0)
+        //{
+        //    return 0;
+        //}
+
+        int ordernum = ob.Add(orders);
+        supplierpackagecode = Request["tijiao"].ToString();
+        //orders.orderStatus = "已提交";
+        if (Session["branchtype"].ToString() == "网络")
+        {
+            if (ViewState["errormsg"] == null || ViewState["errormsg"].ToString() == "")
+            {
+                ViewState["errormsg"] = "";
+                bool submitsuccess = false;
+
+                try
+                {
+                    submitsuccess = submittosupplier(ordernum);
+                }
+                catch
+                { }
+
+
+
+                if (!submitsuccess)
+                {
+                    orders.Msg += "网络日期选择成功，网络提交失败，转人工预约！ (error:" + ViewState["errormsg"].ToString() + ")";
+                }
+                else
+                {
+                    //orders.orderStatus = "已预约";
+                    if (this.Label56.Text != "" && this.Label56.Text!="0")
+                    {
+                        if (Request["fq"] == "True")
+                        {
+                            orders.orderStatus = "待付款";
+                        }
+                        else if (Request["fw"] == "True")
+                        {
+                            orders.orderStatus = "约检成功";//前台支付就当作已付款
+                        }
+                        else if (Request["fe"] == "True")
+                        {
+                            orders.orderStatus = "待转账";
+                        }
+                    }
+                    else
+                    {
+                        orders.orderStatus = "约检成功";
+                    }
+                    orders.Msg += "网络预约成功";
+                }
+            }
+            else
+            {
+                orders.Msg = "供应商网络出错，转人工预约！ (error:" + ViewState["errormsg"].ToString() + ")";
+            }
+        }
+        orders.orderID = ordernum;
+        ob.Update(orders);
+
+        eb.markikcardinuse(orders.cardNumber);
+        return ordernum;
+    }
+
+   protected void Button7_Click(object sender, EventArgs e)
+   {
+       {
+           try
+           {
+               int ordernum;
+               ordernum = saveorder();
+
+               if (ordernum == 9999)
+               {
+                   Page.ClientScript.RegisterStartupScript(Page.GetType(), "message", "<script language='javascript' defer>alert('已有一个订单！');</script>");
+                   return;
+               }
+
+
+               Bll.messageBll mb = new Bll.messageBll();
+               mb.sendmsg(1004, modelCu, orders);
+
+               if (this.Label56.Text != "" && this.Label56.Text != "0")
+               {
+                   if (orders.orderStatus == "待付款")
+                   {
+                       Response.Redirect("ordersubmitted.aspx?onlinepay=" + ordernum, true);
+                       //goalipay(ordernum);
+                   }
+                   else if (orders.orderStatus == "待转账")
+                   {
+                       Response.Redirect("ordersubmitted.aspx?tran=" + ordernum, true);
+                       //this.Panel13.Visible = true;
+                   }
+                   else
+                   {
+                       Response.Redirect("ordersubmitted.aspx", true);
+                   }
+               }
+               else
+               {
+                   Response.Redirect("ordersubmitted.aspx", true);
+               }
+
+
+               //this.Panel6.Visible = false;
+               //this.Panel12.Visible = true;
+
+               //Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('预约成功！'); window.location.href = 'viewarrangement.aspx';");
+               //Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (String)GetLocalResourceObject("alertsubmitok") + "');</script>");
+           }
+           catch (Exception ex)
+           {
+               //Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (String)GetLocalResourceObject("alertsubmitfailed") + ex.Message + "'); window.location.href = 'reserverelexam.aspx';</script>");
+               Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + (String)GetGlobalResourceObject("GResource", "alertsubmitfailed") + ex.Message + "'); window.location.href = 'reserveexam.aspx';</script>");
+           }
+           
+       }
+   }
+    void goalipay(int ordernum)
+    {
+
+        //支付类型
+        string payment_type = "1";
+        string notify_url = System.Configuration.ConfigurationManager.AppSettings["notify_url"];
+        string return_url = System.Configuration.ConfigurationManager.AppSettings["return_url"];
+        string seller_email = "pay@medi-plus.cn";
+
+        string out_trade_no = ordernum.ToString();
+        //订单名称
+        string subject = (string)GetGlobalResourceObject("GResource", "MPpackage");
+        //付款金额
+        string total_fee = orders.examBill.ToString();
+        //订单描述
+        string body = orders.examPackage;
+        //商品展示地址
+        string show_url = "";
+
+        //防钓鱼时间戳
+        string anti_phishing_key = Submit.Query_timestamp();
+        //若要使用请调用类文件submit中的query_timestamp函数
+
+        //客户端的IP地址
+        string exter_invoke_ip = "";
+        //非局域网的外网IP地址，如：221.0.0.1
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //把请求参数打包成数组
+        SortedDictionary<string, string> sParaTemp = new SortedDictionary<string, string>();
+        sParaTemp.Add("partner", Config.Partner);
+        sParaTemp.Add("_input_charset", Config.Input_charset.ToLower());
+        sParaTemp.Add("service", "create_direct_pay_by_user");
+        sParaTemp.Add("payment_type", payment_type);
+        sParaTemp.Add("notify_url", notify_url);
+        sParaTemp.Add("return_url", return_url);
+        sParaTemp.Add("seller_email", seller_email);
+        sParaTemp.Add("out_trade_no", out_trade_no);
+        sParaTemp.Add("subject", subject);
+        sParaTemp.Add("total_fee", total_fee);
+        sParaTemp.Add("body", body);
+        sParaTemp.Add("show_url", show_url);
+        sParaTemp.Add("anti_phishing_key", anti_phishing_key);
+        sParaTemp.Add("exter_invoke_ip", exter_invoke_ip);
+
+        //建立请求
+        string sHtmlText = Submit.BuildRequest(sParaTemp, "get", "确认");
+        Response.Write(sHtmlText + "<script>window.location.href = 'ordersubmitted.aspx?onlinepay=yes';</script>");
+}
+
+
+}

@@ -1,0 +1,31 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick" onclick="goTo('../../index.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </a>
+        <div class="center"></div>
+        <div class="right">
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="OrderStatus" class="page">
+        <div class="page-content content_OrderStatus">
+            <div class="OrderStatus-wrap">
+                <div class="panel-body">
+                    <div class="jumbotron text-center">
+                        <p>
+                            <span class="text-center oStatus"></span>
+                        </p>
+                        <p>
+                            <a href="#" class="btn btn-info odetail">
+                                <i class="icon icon-file-text"></i><span>查看订单</span></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

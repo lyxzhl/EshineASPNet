@@ -1,0 +1,51 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="MeiNianExamCheck.aspx.cs" Inherits="Admin_supplierAdmin_MeiNianExamCheck" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
+        </asp:ToolkitScriptManager>
+    <table>
+    <tr><td>到检用户确认</td>
+    <td>
+        <asp:DropDownList ID="DropDownList1" runat="server"  style="margin-left:5px;" ></asp:DropDownList>
+    </td>
+    </tr>
+        <tr>
+            <td></td>
+            <td>
+                <asp:DropDownList ID="DropDownList2" runat="server"></asp:DropDownList>改成
+                <asp:DropDownList ID="DropDownList3" runat="server"></asp:DropDownList>
+            </td>
+        </tr>
+    <tr>
+    <td>
+    请输入到检用户工号：<br />
+    注：一行只能输入一个订单号
+    </td>
+    <td>
+        <asp:TextBox ID="TextBox2" runat="server" TextMode="MultiLine" Height="300px" 
+            Width="200px"></asp:TextBox>
+    </td>
+    </tr>
+    <tr>
+    <td></td>
+    <td>
+        <asp:Button ID="Button1" runat="server" Text="提 交" onclick="Button1_Click" />
+    </td>
+    </tr>
+    </table>
+        <br />
+        
+    </div>
+    </form>
+</body>
+</html>

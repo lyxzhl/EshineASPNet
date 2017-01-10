@@ -1,0 +1,44 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="tohbuilder.aspx.cs" Inherits="tohbuilder" %>
+
+
+<%@ Register TagPrefix="MPuc" TagName="headcontent" Src="~/UserControl/headcontent.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="mobilenav" Src="~/UserControl/mobilenav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="desktopnav" Src="~/UserControl/desktopnav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="~/UserControl/footer1.ascx"%>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Medi-Plus - <asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,titletext %>'></asp:Localize></title>
+<MPuc:headcontent runat="server" ID="Unnamed1"/>
+<SCRIPT src="JS/mp.js" type="text/javascript"></SCRIPT>
+</head>
+<body class='blogs'>
+
+<MPuc:mobilenav runat="server" ID="Unnamed2"/>
+<div class='wrapper' data-behavior='Navigation'>
+
+<form id="Form1" runat="server">
+<MPuc:desktopnav runat="server" ID="Unnamed3"/>
+
+
+<div class='container' data-behavior='Blog'>
+<div class='row'>
+<div class='twocol'></div>
+<div class='eightcol'>
+    <div class='tile' style="min-height:500px;">
+    <!-- Navigation top-->
+<iframe src="HBuilder/index.html?q=1&uid=100" style="width:100%;height:800px;"></iframe>
+
+    </div>
+
+</div>
+<div class='twocol last'></div>
+</div>
+</div>
+</form>
+</div>
+<MPuc:footer ID="ucfooter" runat="server"/>
+</body>
+</html>
+
+

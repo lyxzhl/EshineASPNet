@@ -1,0 +1,188 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Model
+{
+   public class tijianwenj
+    {
+        private int _id = 0;
+        private string _TijianID = "";
+        private string _wentibhao = "";
+        private string _wentixshi = "";
+        private string _wentixzhi = "";
+        private string _beizhu = "";
+        private string _wentifenlei = "";
+        private string _jiekodyinbma = "";
+        private string _miaoshu = "";
+        private string _Gender = "";
+        private string _Agelimit = "";
+        private string _hunyinzhuangt = "";
+        private string _xunxiangshul = "";
+        private string _miaoshuA = "";
+        private string _fenzhiA = "";
+        private string _miaoshuB = "";
+        private string _fenzhiB = "";
+        private string _miaoshuC = "";
+        private string _fenzhiC = "";
+        private string _miaoshuD = "";
+        private string _fenzhiD = "";
+        private string _miaoshuE = "";
+        private string _fenzhiE = "";
+        private string _miaoshuF = "";
+        private string _fenzhiF = "";
+
+
+        public int id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        public string TijianID
+        {
+            get { return _TijianID; }
+            set { _TijianID = value; }
+        }
+
+        public string wentibhao
+        {
+            get { return _wentibhao; }
+            set { _wentibhao = value; }
+        }
+
+        public string wentixshi
+        {
+            get { return _wentixshi; }
+            set { _wentixshi = value; }
+        }
+
+        public string wentixzhi
+        {
+            get { return _wentixzhi; }
+            set { _wentixzhi = value; }
+        }
+
+        public string beizhu
+        {
+            get { return _beizhu; }
+            set { _beizhu = value; }
+        }
+
+        public string wentifenlei
+        {
+            get { return _wentifenlei; }
+            set { _wentifenlei = value; }
+        }
+
+        public string jiekodyinbma
+        {
+            get { return _jiekodyinbma; }
+            set { _jiekodyinbma = value; }
+        }
+
+        public string miaoshu
+        {
+            get { return _miaoshu; }
+            set { _miaoshu = value; }
+        }
+
+        public string Gender
+        {
+            get { return _Gender; }
+            set { _Gender = value; }
+        }
+
+        public string Agelimit
+        {
+            get { return _Agelimit; }
+            set { _Agelimit = value; }
+        }
+
+        public string hunyinzhuangt
+        {
+            get { return _hunyinzhuangt; }
+            set { _hunyinzhuangt = value; }
+        }
+
+        public string xunxiangshul
+        {
+            get { return _xunxiangshul; }
+            set { _xunxiangshul = value; }
+        }
+
+        public string miaoshuA
+        {
+            get { return _miaoshuA; }
+            set { _miaoshuA = value; }
+        }
+
+        public string fenzhiA
+        {
+            get { return _fenzhiA; }
+            set { _fenzhiA = value; }
+        }
+
+        public string miaoshuB
+        {
+            get { return _miaoshuB; }
+            set { _miaoshuB = value; }
+        }
+
+        public string fenzhiB
+        {
+            get { return _fenzhiB; }
+            set { _fenzhiB = value; }
+        }
+
+        public string miaoshuC
+        {
+            get { return _miaoshuC; }
+            set { _miaoshuC = value; }
+        }
+
+        public string fenzhiC
+        {
+            get { return _fenzhiC; }
+            set { _fenzhiC = value; }
+        }
+
+        public string miaoshuD
+        {
+            get { return _miaoshuD; }
+            set { _miaoshuD = value; }
+        }
+
+        public string fenzhiD
+        {
+            get { return _fenzhiD; }
+            set { _fenzhiD = value; }
+        }
+
+        public string miaoshuE
+        {
+            get { return _miaoshuE; }
+            set { _miaoshuE = value; }
+        }
+
+        public string fenzhiE
+        {
+            get { return _fenzhiE; }
+            set { _fenzhiE = value; }
+        }
+
+        public string miaoshuF
+        {
+            get { return _miaoshuF; }
+            set { _miaoshuF = value; }
+        }
+
+        public string fenzhiF
+        {
+            get { return _fenzhiF; }
+            set { _fenzhiF = value; }
+        }
+
+
+    }
+}

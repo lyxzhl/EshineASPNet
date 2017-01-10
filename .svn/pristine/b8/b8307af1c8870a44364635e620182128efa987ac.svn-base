@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Reflection;
+
+namespace DALFactory
+{
+    public class consult_Factory
+    {
+        static readonly string path = System.Configuration.ConfigurationManager.AppSettings["DAL"];
+        public static IDAL.consultDal Createusers()
+        {
+            string classname = path + ".sql_consult";
+            return (IDAL.consultDal)Assembly.Load(path).CreateInstance(classname);
+        }
+    }
+}

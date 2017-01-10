@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+namespace Bll
+{
+    public class packageBll
+    {
+
+        IDAL.packageDal itu = DALFactory.package_Factory.Createusers();
+        public int Add(Model.tab_package package)
+        {
+            return itu.Add(package);
+        }
+        public Model.tab_package getpackage(Model.tab_package package1)
+        {
+            return itu.getpackage(package1);
+        }
+        public int update(Model.tab_package package)
+        {
+            return itu.update(package);
+        }
+        public int Delete(int id)
+        {
+            return itu.Delete(id);
+        }
+        public DataTable Select(string ss)
+        {
+            return itu.Select(ss);
+        }
+
+        public string getuppkgtype(string packagecode)
+        {
+            return itu.getuppkgtype(packagecode);
+        }
+    }
+}

@@ -1,0 +1,355 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" EnableEventValidation="false" CodeFile="orderInfo.aspx.cs" Theme="Default" Inherits="Admin_ordersAdmin_orderInfo" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title>订单管理</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
+    </asp:ToolkitScriptManager>
+    <div>
+    <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
+            <tr>
+                <td class="title" colspan="5" style="height: 30px">
+                    订单信息
+                    
+                    </td>
+            </tr>
+    </table>
+    <table border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td align="center" style="width: 150px; height: 24px;" >
+                            <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True"  Width="145"
+                                onselectedindexchanged="DropDownList1_SelectedIndexChanged" >
+                                <asp:ListItem>选择类别</asp:ListItem>
+                                <asp:ListItem>员工</asp:ListItem>
+                                <asp:ListItem>家属</asp:ListItem>
+                            </asp:DropDownList></td>
+                        <td align="center" style="width: 150px; height: 24px;" >
+                            <asp:DropDownList ID="DropDownList2" runat="server" AutoPostBack="True" 
+                                onselectedindexchanged="DropDownList2_SelectedIndexChanged" Width="150">
+                            </asp:DropDownList></td>
+                        <td style="width: 5px; height: 24px;" >
+                            </td>
+                        <td align="center" style="width: 150px; height: 24px;" >
+                            <asp:DropDownList ID="DropDownList3" runat="server" AutoPostBack="True"  Width="150"
+                                onselectedindexchanged="DropDownList1_SelectedIndexChanged" >
+                                <asp:ListItem>选择订单状态</asp:ListItem>
+                                <asp:ListItem>待确认</asp:ListItem>
+                                <asp:ListItem>待付款</asp:ListItem>
+                                <asp:ListItem>待转账</asp:ListItem>
+                                <asp:ListItem>预约未成功</asp:ListItem>
+                                <asp:ListItem>已预约未到检</asp:ListItem>
+                                <asp:ListItem>约检成功</asp:ListItem>
+                                <asp:ListItem>已体检</asp:ListItem>
+                                <asp:ListItem>已完成</asp:ListItem>
+                                <asp:ListItem>已报销</asp:ListItem>
+                                <asp:ListItem>已取消</asp:ListItem>
+                            </asp:DropDownList></td>
+
+                        <td align="center"  style="width: 150px; height: 24px;display:none" >
+                            <asp:DropDownList ID="DropDownList4" runat="server" AutoPostBack="True"  Width="150"
+                                onselectedindexchanged="DropDownList1_SelectedIndexChanged" >
+                                <asp:ListItem>选择套餐</asp:ListItem>
+                            </asp:DropDownList></td>
+                        <td align="center"  style="width: 150px; height: 24px;display:none" >
+                            <asp:DropDownList ID="DropDownList5" runat="server" AutoPostBack="True"  Width="150"
+                                onselectedindexchanged="DropDownList1_SelectedIndexChanged" >
+                                <asp:ListItem>选择城市</asp:ListItem>
+                            </asp:DropDownList></td>
+                            <td style="width: 5px; height: 24px;" ></td>
+                        <td align="center" style="width: 150px; height: 24px;" >
+                            <asp:TextBox ID="TextBox1" runat="server" placeholder="关键字" Width="145"></asp:TextBox>
+                            </td>
+                            <td style="width: 5px; height: 24px;" >
+                            </td>
+                        <td style="width: 150px; height: 24px;" >
+                            <asp:Button ID="Button1" runat="server" Text="搜索" onclick="Button1_Click" />
+                            </td>
+                    </tr>
+                    <tr>
+                        <td align="right" style="width: 150px; height: 24px;">
+                            下单时间：</td>
+                        <td style="width: 150px; height: 24px;">
+                            <asp:TextBox ID="TextBox3" runat="server"  Width="150"
+                                AutoPostBack="True" ontextchanged="TextBox3_TextChanged"></asp:TextBox>
+                            <asp:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="TextBox3">
+                            </asp:CalendarExtender>
+                            </td>
+                        <td style="width: 5px; height: 24px;" >-</td>
+                        <td align="center" style="width: 150px; height: 24px;">
+                            <asp:TextBox ID="TextBox4" runat="server"  ontextchanged="TextBox3_TextChanged" Width="150"
+                                AutoPostBack="True"></asp:TextBox>
+                            <asp:CalendarExtender ID="CalendarExtender2" runat="server" TargetControlID="TextBox4">
+                            </asp:CalendarExtender>
+                            </td>
+
+                        <td align="right" style="width: 150px; height: 24px;">
+                          体检时间:  </td>
+                        <td style="width: 150px; height: 24px;">
+                        <asp:TextBox ID="TextBox5" runat="server" AutoPostBack="True" Width="150" ontextchanged="TextBox3_TextChanged"></asp:TextBox>
+                        <asp:CalendarExtender ID="CalendarExtender3" runat="server" TargetControlID="TextBox5">
+                            </asp:CalendarExtender>
+                        </td>
+                        <td style="width: 5px; height: 24px;" >-</td>
+                        <td style="width: 150px; height: 24px;">
+                        <asp:TextBox ID="TextBox6" runat="server" AutoPostBack="True" ontextchanged="TextBox3_TextChanged" Width="150"></asp:TextBox>
+                        <asp:CalendarExtender ID="CalendarExtender4" runat="server" TargetControlID="TextBox6">
+                            </asp:CalendarExtender>
+                        </td>
+                        <td style="width: 5px; height: 24px;" >
+                            </td>
+                        <td  >
+                            <asp:Button ID="ButtonEE" runat="server" Text="导出excel" 
+                                onclick="ButtonEE_Click"  />
+                            </td>
+                    </tr>
+        <tr>
+            <td>
+                <asp:Button ID="Buttonmsg" runat="server" Text="发送明日体检短信提醒" onclick="Buttonmsg_Click" />
+                <asp:Button ID="Button2" runat="server" Text="发送短信" onclick="Button2_Click" Visible="false" />
+                <asp:Button ID="Button6" runat="server" Text="勾选订单号发送约检成功短信" OnClick="Button6_Click" />
+            </td>
+            <td style="text-align:right">导入订单</td>
+            <td>：</td>
+            <td><asp:FileUpload ID="FileUpload1" runat="server" ToolTip="选择.xls文件" Width="200px"  /></td>
+            <td><asp:Button ID="Button3" runat="server" onclick="Button3_Click" Text="上传Excel文件" ToolTip=""  /></td>
+            <td>报告总数：<asp:Label ID="Label1" runat="server" Text="Label"></asp:Label></td>
+            <td>
+                <asp:DropDownList ID="DropDownList6" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DropDownList6_SelectedIndexChanged"></asp:DropDownList></td>
+        </tr>
+        <tr>
+            <td>
+                <asp:Button ID="Button4" runat="server" Text="勾选订单号,发送体检取消短信" OnClick="Button4_Click" /></td>
+            <td style="padding-left:10px"> 
+                <asp:Button ID="Button5" runat="server" Text="发送催款短信" OnClick="Button5_Click" />
+            </td>
+        </tr>
+                </table>
+
+    <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
+    <tr>
+    <td align="center" style="height: 100%; width: 100%;">
+        <asp:GridView ID="GridView1" runat="server" AllowPaging="True" PageSize="25" AllowSorting="true" OnPageIndexChanged="GridView1_PageIndexChanged"
+            AutoGenerateColumns="False" Width="100%"  PagerSettings-Mode="NumericFirstLast" PagerSettings-PageButtonCount="50"
+            DataKeyNames="orderID" DataSourceID="SqlDataSource1">
+            <Columns>
+                <asp:TemplateField>
+                    <ItemTemplate>
+                        <asp:CheckBox ID="CheckBox1" runat="server" />
+                    </ItemTemplate>
+                </asp:TemplateField>
+         <asp:HyperLinkField DataNavigateUrlFields="orderID" DataNavigateUrlFormatString="orderDet.aspx?Cid={0}"  SortExpression="orderID" HeaderStyle-Wrap="false"
+                   ItemStyle-Wrap="False" InsertVisible="False"  DataTextField="orderID" HeaderText="订单号" />
+         <asp:BoundField DataField="examWorkNo" HeaderText="客服" HeaderStyle-Wrap="false" 
+                    SortExpression="examWorkNo"  ItemStyle-Wrap="False" />
+         <asp:BoundField DataField="supplierOrderID" HeaderText="供应商订单号" HeaderStyle-Wrap="false" Visible="false" 
+                    SortExpression="supplierOrderID"  ItemStyle-Wrap="False" />
+         <%--<asp:BoundField DataField="cardNumber" HeaderText="体检卡号" ItemStyle-Wrap="False"  Visible="false" 
+                    SortExpression="cardNumber" />--%>
+         <asp:BoundField DataField="customerID" HeaderText="customerID" ItemStyle-Wrap="False" Visible="false" 
+                    SortExpression="customerID" />
+<asp:BoundField DataField="customerCode" HeaderText="工号" ItemStyle-Wrap="False"  HeaderStyle-Wrap="false"
+                    SortExpression="customerCode" />
+<asp:BoundField DataField="customerName" HeaderText="姓名" ItemStyle-Wrap="False"  HeaderStyle-Wrap="false"
+                    SortExpression="customerName" />
+<asp:BoundField DataField="relativeID" HeaderText="relativeID" ItemStyle-Wrap="False"  Visible="false" 
+                    SortExpression="relativeID" />
+<asp:BoundField DataField="relativeName" HeaderText="家属姓名" ItemStyle-Wrap="False"  HeaderStyle-Wrap="false"
+                    SortExpression="relativeName" />
+<asp:BoundField DataField="cusName" HeaderText="对应员工" ItemStyle-Wrap="False"  HeaderStyle-Wrap="false"
+                    SortExpression="cusName" />
+<asp:BoundField DataField="orderDate" HeaderText="下单日期" ItemStyle-Wrap="False"  HeaderStyle-Wrap="false"
+                    SortExpression="orderDate" />
+<asp:BoundField DataField="orderStatus" HeaderText="订单状态" ItemStyle-Wrap="False"  HeaderStyle-Wrap="false"
+   SortExpression="orderStatus" Visible="false" />
+                <asp:TemplateField HeaderText="订单状态" ItemStyle-Wrap="false">
+                                <ItemTemplate>
+                                    <div <%# Eval("orderStatus").ToString()=="已取消"?"style='background-color:red":""%>'>
+                                        <asp:Literal ID="Literal1" runat="server" Text='<%# Eval("orderStatus") %>'></asp:Literal>
+                                    </div>
+                                    
+           <%--<asp:TextBox ID="TextBox2" runat="server" Text='<%# Eval("orderStatus") %>' BorderColor='<%   # Eval("orderStatus").ToString()=="已取消"? System.Drawing.Color.Red : System.Drawing.Color.Transparent  %>' Enabled="False"></asp:TextBox>--%>
+                                         </ItemTemplate>
+
+<ItemStyle Wrap="False"></ItemStyle>
+                            </asp:TemplateField>
+                
+                <asp:BoundField DataField="personSex" HeaderText="性别"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="personSex" />
+                <asp:BoundField DataField="personAge" HeaderText="年龄"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="personAge" />
+                <asp:BoundField DataField="personIDcard" HeaderText="身份证号"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="personIDcard" />
+                <asp:BoundField DataField="personMobile" HeaderText="手机号"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="personMobile" />
+                <asp:BoundField DataField="personPrivateEmail" HeaderText="私人邮箱"  ItemStyle-Wrap="False" Visible="false" 
+                    SortExpression="personPrivateEmail" />
+                <asp:BoundField DataField="personCompany" HeaderText="公司"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="personCompany" />
+                <asp:BoundField DataField="personCompanycode" HeaderText="personCompanycode"  Visible="false" 
+                    SortExpression="personCompanycode" />
+                <asp:BoundField DataField="personMarriageStatus"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    HeaderText="婚姻状况" SortExpression="personMarriageStatus" />
+                <asp:BoundField DataField="personAddress" HeaderText="地址"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="personAddress" />
+                <asp:BoundField DataField="examDate" HeaderText="体检日期"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="examDate" />
+                <asp:BoundField DataField="examCity" HeaderText="体检城市"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="examCity" />
+                <asp:BoundField DataField="examSupplier" HeaderText="体检机构"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="examSupplier" />
+                    <asp:BoundField DataField="suppliertype" HeaderText="机构类型"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="suppliertype" />
+                <asp:BoundField DataField="examBranch" HeaderText="分店"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="examBranch" />
+                <asp:BoundField DataField="examhosip" HeaderText="examhosip"  Visible="false" 
+                    SortExpression="examhosip" />
+                <asp:BoundField DataField="examPackage" HeaderText="套餐"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="examPackage" />
+                <asp:BoundField DataField="examUpPkg" HeaderText="加项包"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="examUpPkg" />
+                <asp:BoundField DataField="examTotalFee" HeaderText="总费用"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false" Visible="false"
+                    SortExpression="examTotalFee" />
+                <asp:BoundField DataField="examBill" HeaderText="自付费"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="examBill" />
+                <asp:BoundField DataField="examInfo" HeaderText="备注"  ItemStyle-Wrap="False" Visible="false" 
+                    SortExpression="examInfo" />
+                <asp:BoundField DataField="examWorkNo" HeaderText="examWorkNo"  Visible="false" 
+                    SortExpression="examWorkNo" />
+                <asp:BoundField DataField="Msg" HeaderText="订单情况汇总" ItemStyle-Wrap="False" SortExpression="Msg" Visible="false"  />
+                <asp:BoundField DataField="Report" HeaderText="报告"  ItemStyle-Wrap="False"
+                    SortExpression="Report" />
+                <asp:BoundField DataField="ReportContent" HeaderText="ReportContent"  Visible="false" 
+                    SortExpression="ReportContent" />
+                <asp:BoundField DataField="ReportType" HeaderText="报告类型"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="ReportType" />
+                <asp:BoundField DataField="ReportUploader" HeaderText="上传人"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="ReportUploader" />
+                <asp:BoundField DataField="ReportUploadDate" HeaderText="报告上传日期"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="ReportUploadDate" />
+                <asp:BoundField DataField="ReportNote" HeaderText="ReportNote"  Visible="false" 
+                    SortExpression="ReportNote" />
+                <asp:BoundField DataField="payMethod" HeaderText="支付方式"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="payMethod" />
+                <asp:BoundField DataField="payRefNum" HeaderText="支付宝订单号"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false" Visible="false" 
+                    SortExpression="payRefNum" />
+                <asp:BoundField DataField="payTime" HeaderText="付款时间"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="payTime" />
+                <asp:BoundField DataField="payNote" HeaderText="payNote"  Visible="false" 
+                    SortExpression="payNote" />
+                <asp:BoundField DataField="vip" HeaderText="VIP"  ItemStyle-Wrap="False" HeaderStyle-Wrap="false"
+                    SortExpression="vip" />
+            </Columns>
+        </asp:GridView>
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
+            ConnectionString="<%$ ConnectionStrings:db_ConnectionString %>" 
+            DeleteCommand="DELETE FROM [tab_orders] WHERE [orderID] = @orderID" 
+            InsertCommand="INSERT INTO [tab_orders] ([supplierOrderID], [cardNumber], [customerID], [customerCode], [customerName], [relativeID], [relativeName], [orderDate], [orderStatus], [personSex], [personAge], [personIDcard], [personMobile], [personPrivateEmail], [personCompany], [personCompanycode], [personMarriageStatus], [personAddress], [examDate], [examCity], [examSupplier], [examBranch], [examhosip], [examPackage], [examUpPkg], [examTotalFee], [examBill], [examInfo], [examWorkNo], [Msg], [Report], [ReportContent], [ReportType], [ReportUploader], [ReportUploadDate], [ReportNote], [payMethod], [payRefNum], [payTime], [payNote]) VALUES (@supplierOrderID, @cardNumber, @customerID, @customerCode, @customerName, @relativeID, @relativeName, @orderDate, @orderStatus, @personSex, @personAge, @personIDcard, @personMobile, @personPrivateEmail, @personCompany, @personCompanycode, @personMarriageStatus, @personAddress, @examDate, @examCity, @examSupplier, @examBranch, @examhosip, @examPackage, @examUpPkg, @examTotalFee, @examBill, @examInfo, @examWorkNo, @Msg, @Report, @ReportContent, @ReportType, @ReportUploader, @ReportUploadDate, @ReportNote, @payMethod, @payRefNum, @payTime, @payNote)" 
+            SelectCommand="SELECT *, (select top 1 type from tab_suppliers where hospid= examhosip and hospid<>'') suppliertype,(select customerName from tab_customers where customerID in (select  relativeCustomer from tab_relatives where relativeID=tab_orders.relativeID)) cusName,(select customerVIP from tab_customers where customerID=tab_orders.customerID) vip  FROM [tab_orders] WHERE ([ReportType] &lt;&gt; @ReportType) ORDER BY [orderID] DESC" 
+            UpdateCommand="UPDATE [tab_orders] SET [supplierOrderID] = @supplierOrderID, [cardNumber] = @cardNumber, [customerID] = @customerID, [customerCode] = @customerCode, [customerName] = @customerName, [relativeID] = @relativeID, [relativeName] = @relativeName, [orderDate] = @orderDate, [orderStatus] = @orderStatus, [personSex] = @personSex, [personAge] = @personAge, [personIDcard] = @personIDcard, [personMobile] = @personMobile, [personPrivateEmail] = @personPrivateEmail, [personCompany] = @personCompany, [personCompanycode] = @personCompanycode, [personMarriageStatus] = @personMarriageStatus, [personAddress] = @personAddress, [examDate] = @examDate, [examCity] = @examCity, [examSupplier] = @examSupplier, [examBranch] = @examBranch, [examhosip] = @examhosip, [examPackage] = @examPackage, [examUpPkg] = @examUpPkg, [examTotalFee] = @examTotalFee, [examBill] = @examBill, [examInfo] = @examInfo, [examWorkNo] = @examWorkNo, [Msg] = @Msg, [Report] = @Report, [ReportContent] = @ReportContent, [ReportType] = @ReportType, [ReportUploader] = @ReportUploader, [ReportUploadDate] = @ReportUploadDate, [ReportNote] = @ReportNote, [payMethod] = @payMethod, [payRefNum] = @payRefNum, [payTime] = @payTime, [payNote] = @payNote WHERE [orderID] = @orderID">
+            <DeleteParameters>
+                <asp:Parameter Name="orderID" Type="Int32" />
+            </DeleteParameters>
+            <InsertParameters>
+                <asp:Parameter Name="supplierOrderID" Type="String" />
+                <asp:Parameter Name="cardNumber" Type="String" />
+                <asp:Parameter Name="customerID" Type="Int32" />
+                <asp:Parameter Name="customerCode" Type="String" />
+                <asp:Parameter Name="customerName" Type="String" />
+                <asp:Parameter Name="relativeID" Type="Int32" />
+                <asp:Parameter Name="relativeName" Type="String" />
+                <asp:Parameter Name="orderDate" Type="DateTime" />
+                <asp:Parameter Name="orderStatus" Type="String" />
+                <asp:Parameter Name="personSex" Type="String" />
+                <asp:Parameter Name="personAge" Type="Int32" />
+                <asp:Parameter Name="personIDcard" Type="String" />
+                <asp:Parameter Name="personMobile" Type="String" />
+                <asp:Parameter Name="personPrivateEmail" Type="String" />
+                <asp:Parameter Name="personCompany" Type="String" />
+                <asp:Parameter Name="personCompanycode" Type="String" />
+                <asp:Parameter Name="personMarriageStatus" Type="String" />
+                <asp:Parameter Name="personAddress" Type="String" />
+                <asp:Parameter Name="examDate" Type="DateTime" />
+                <asp:Parameter Name="examCity" Type="String" />
+                <asp:Parameter Name="examSupplier" Type="String" />
+                <asp:Parameter Name="examBranch" Type="String" />
+                <asp:Parameter Name="examhosip" Type="String" />
+                <asp:Parameter Name="examPackage" Type="String" />
+                <asp:Parameter Name="examUpPkg" Type="String" />
+                <asp:Parameter Name="examTotalFee" Type="Double" />
+                <asp:Parameter Name="examBill" Type="Double" />
+                <asp:Parameter Name="examInfo" Type="String" />
+                <asp:Parameter Name="examWorkNo" Type="String" />
+                <asp:Parameter Name="Msg" Type="String" />
+                <asp:Parameter Name="Report" Type="String" />
+                <asp:Parameter Name="ReportContent" Type="String" />
+                <asp:Parameter Name="ReportType" Type="String" />
+                <asp:Parameter Name="ReportUploader" Type="String" />
+                <asp:Parameter Name="ReportUploadDate" Type="DateTime" />
+                <asp:Parameter Name="ReportNote" Type="String" />
+                <asp:Parameter Name="payMethod" Type="String" />
+                <asp:Parameter Name="payRefNum" Type="String" />
+                <asp:Parameter Name="payTime" Type="DateTime" />
+                <asp:Parameter Name="payNote" Type="String" />
+            </InsertParameters>
+            <SelectParameters>
+                <asp:Parameter DefaultValue="商城" Name="ReportType" Type="String" />
+            </SelectParameters>
+            <UpdateParameters>
+                <asp:Parameter Name="supplierOrderID" Type="String" />
+                <asp:Parameter Name="cardNumber" Type="String" />
+                <asp:Parameter Name="customerID" Type="Int32" />
+                <asp:Parameter Name="customerCode" Type="String" />
+                <asp:Parameter Name="customerName" Type="String" />
+                <asp:Parameter Name="relativeID" Type="Int32" />
+                <asp:Parameter Name="relativeName" Type="String" />
+                <asp:Parameter Name="orderDate" Type="DateTime" />
+                <asp:Parameter Name="orderStatus" Type="String" />
+                <asp:Parameter Name="personSex" Type="String" />
+                <asp:Parameter Name="personAge" Type="Int32" />
+                <asp:Parameter Name="personIDcard" Type="String" />
+                <asp:Parameter Name="personMobile" Type="String" />
+                <asp:Parameter Name="personPrivateEmail" Type="String" />
+                <asp:Parameter Name="personCompany" Type="String" />
+                <asp:Parameter Name="personCompanycode" Type="String" />
+                <asp:Parameter Name="personMarriageStatus" Type="String" />
+                <asp:Parameter Name="personAddress" Type="String" />
+                <asp:Parameter Name="examDate" Type="DateTime" />
+                <asp:Parameter Name="examCity" Type="String" />
+                <asp:Parameter Name="examSupplier" Type="String" />
+                <asp:Parameter Name="examBranch" Type="String" />
+                <asp:Parameter Name="examhosip" Type="String" />
+                <asp:Parameter Name="examPackage" Type="String" />
+                <asp:Parameter Name="examUpPkg" Type="String" />
+                <asp:Parameter Name="examTotalFee" Type="Double" />
+                <asp:Parameter Name="examBill" Type="Double" />
+                <asp:Parameter Name="examInfo" Type="String" />
+                <asp:Parameter Name="examWorkNo" Type="String" />
+                <asp:Parameter Name="Msg" Type="String" />
+                <asp:Parameter Name="Report" Type="String" />
+                <asp:Parameter Name="ReportContent" Type="String" />
+                <asp:Parameter Name="ReportType" Type="String" />
+                <asp:Parameter Name="ReportUploader" Type="String" />
+                <asp:Parameter Name="ReportUploadDate" Type="DateTime" />
+                <asp:Parameter Name="ReportNote" Type="String" />
+                <asp:Parameter Name="payMethod" Type="String" />
+                <asp:Parameter Name="payRefNum" Type="String" />
+                <asp:Parameter Name="payTime" Type="DateTime" />
+                <asp:Parameter Name="payNote" Type="String" />
+                <asp:Parameter Name="orderID" Type="Int32" />
+            </UpdateParameters>
+        </asp:SqlDataSource>
+    </td>
+    
+    </tr>
+    </table>
+    </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text;
+
+namespace Bll
+{
+    public class AssessmentAnswerBll
+    {
+        IDAL.AssessmentAnswerDal itu = DALFactory.AssessmentAnswer_Factory.Createusers();
+        public int Add(Model.AssessmentAnswer AssessmentAnswer)
+        {
+            return itu.Add(AssessmentAnswer);
+        }
+        public Model.AssessmentAnswer getAssessmentAnswer(Model.AssessmentAnswer AssessmentAnswer1)
+        {
+            return itu.getAssessmentAnswer(AssessmentAnswer1);
+        }
+        public int update(Model.AssessmentAnswer AssessmentAnswer)
+        {
+            return itu.update(AssessmentAnswer);
+        }
+        public int Delete(int AAID)
+        {
+            return itu.Delete(AAID);
+        }
+        public DataTable Select(string ss)
+        {
+            return itu.Select(ss);
+        }
+    }
+
+}

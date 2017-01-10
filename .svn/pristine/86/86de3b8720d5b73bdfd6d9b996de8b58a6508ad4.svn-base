@@ -1,0 +1,69 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+
+using System.Threading;
+using System.Globalization;
+
+/// <summary>
+/// PageBases 的摘要说明
+/// </summary>
+public class PageBases_lyx : System.Web.UI.Page
+{
+
+    /*
+    protected override void InitializeCulture()
+    {
+        base.InitializeCulture();
+
+
+        string s = Request.QueryString["currentculture"];
+        if (!String.IsNullOrEmpty(s))
+        {
+            Page.UICulture = s;
+            return;
+            //UICulture - 决定了采用哪一种本地化资源，也就是使用哪种语言
+            //Culture - 决定各种数据类型是如何组织，如数字与日期
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(s);
+            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(s);
+        }
+
+        return;
+        string language = (String)Context.Profile.GetPropertyValue("languagePreference");
+
+        if (!String.IsNullOrEmpty(language) && (language != "Auto"))
+        {
+            //Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
+            //Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(language);
+            Page.UICulture = language;
+        }
+
+    }*/
+    protected void Page_PreInit(object sender, EventArgs e)
+    {
+        string s = Request.QueryString["language"];
+        if (!String.IsNullOrEmpty(s))
+        {
+            this.UICulture = s;
+            this.Culture = s;
+            //Thread.CurrentThread.CurrentUICulture = new CultureInfo(s);
+            Session["language"] = s;
+        }
+        else if (!String.IsNullOrEmpty(Session["language"] as string))
+        {
+            this.UICulture = Session["language"].ToString();
+            this.Culture = Session["language"].ToString();
+            //Thread.CurrentThread.CurrentUICulture = new CultureInfo(Session["language"].ToString());
+        }
+        else
+        {
+            this.UICulture = "zh-cn";
+        }
+    }
+}

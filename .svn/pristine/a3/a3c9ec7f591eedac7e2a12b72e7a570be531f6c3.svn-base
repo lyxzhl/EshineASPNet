@@ -1,0 +1,148 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+
+/// <summary>
+/// ShopingCar 的摘要说明
+/// </summary>
+public class ShopingCar
+{
+    public ShopingCar()
+    {
+    }
+    /// <summary>
+    /// 创建购物篮
+    /// </summary>
+    /// <returns></returns>
+    public DataTable createShop()
+    {
+        DataTable dt = new DataTable();
+        dt.Columns.Add("产品ID",typeof(int));
+        dt.Columns.Add("产品名",typeof(string));
+        dt.Columns.Add("图片",typeof(string));
+        dt.Columns.Add("数量",typeof(int));
+        dt.Columns.Add("单价",typeof(double));
+        dt.Columns.Add("小计",typeof(double));
+        return dt;
+    }
+    /// <summary>
+    /// 为购物篮添加一条记录
+    /// </summary>
+    /// <param name="pId"></param>
+    /// <param name="pName"></param>
+    /// <param name="count"></param>
+    /// <param name="price"></param>
+    /// <param name="sum"></param>
+    /// <param name="dt"></param>
+    /// <returns></returns>
+    public DataTable Add(int pId, string pName,string pic ,int count, double price, double sum, DataTable dt)
+    {
+        DataRow row = dt.NewRow();
+        row["产品ID"] = pId;
+        row["产品名"] = pName;
+        row["图片"]=pic;
+        row["数量"] = count;
+        row["单价"] = price;
+        row["小计"] = sum;
+        dt.Rows.Add(row);
+        return dt;
+    }
+    /// <summary>
+    /// 删除一条购物篮中的信息
+    /// </summary>
+    /// <param name="pId"></param>
+    /// <param name="dt"></param>
+    /// <returns></returns>
+    public DataTable Delete(int pId, DataTable dt)
+    {
+        for (int i = 0; i < dt.Rows.Count; i++)
+        {
+            if (dt.Rows[i]["产品ID"].ToString() == pId.ToString())
+            {
+                dt.Rows.Remove(dt.Rows[i]);
+            }
+        }
+        return dt;
+    }
+    /// <summary>
+    /// 跟新购物篮
+    /// </summary>
+    /// <param name="pId"></param>
+    /// <param name="count"></param>
+    /// <param name="dt"></param>
+    /// <returns></returns>
+    public DataTable Update(int pId, int count, System.Data.DataTable dt)
+    {
+        for (int i = 0; i < dt.Rows.Count; i++)
+        {
+            if (dt.Rows[i]["产品ID"].ToString() == pId.ToString())
+            {
+                dt.Rows[i]["数量"] = count;
+                dt.Rows[i]["小计"] = Convert.ToDouble(count) * Convert.ToDouble(dt.Rows[i]["单价"]);
+            }
+        }
+        return dt;
+    }
+    /// <summary>
+    /// 获得总计
+    /// </summary>
+    /// <param name="dt"></param>
+    /// <returns></returns>
+    public double GetSum(DataTable dt)
+    {
+        if (dt != null)
+        {
+            double sum = 0;
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                sum += Convert.ToDouble(dt.Rows[i]["小计"]);
+            }
+            return sum;
+        }
+
+        else
+        {
+            return 0;
+        }
+        
+    }
+    /// <summary>
+    /// 获得总数
+    /// </summary>
+    /// <param name="dt"></param>
+    /// <returns></returns>
+    public int GetProCount(DataTable dt)
+    {
+        int count = 0;
+        for (int i = 0; i < dt.Rows.Count; i++)
+        {
+            count += Convert.ToInt32(dt.Rows[i]["数量"]);
+        }
+        return count;
+    }
+    /// <summary>
+    /// 查询
+    /// </summary>
+    /// <param name="Pid"></param>
+    /// <param name="dt"></param>
+    /// <returns></returns>
+    public DataRow SelectShop(int Pid, DataTable dt)
+    {
+        DataRow rowx = dt.NewRow();
+        for (int i = 0; i < dt.Rows.Count; i++)
+        {
+            if (dt.Rows[i]["产品ID"].ToString() == Pid.ToString())
+            {
+                rowx=dt.Rows[i];
+                break;
+            }
+        }
+        return rowx;
+    }
+}

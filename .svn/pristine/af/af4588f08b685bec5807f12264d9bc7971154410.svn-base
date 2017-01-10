@@ -1,0 +1,230 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.Script.Serialization;
+using System.Threading.Tasks;
+using System.Data;
+using MediPlus;
+
+
+
+
+
+
+ namespace MediPlus
+{
+     
+    public class reserve
+    {
+        
+        public static DataTable getpackage(bool isman, bool isunmarried, Model.tab_customers modelCu, Model.tab_relatives modelrel, string currentsupplier, bool needgynecology, bool isrel)
+        {
+            Bll.companyBll comb = new Bll.companyBll();
+            Bll.packageBll pb = new Bll.packageBll();
+            Bll.CustomerBll Cb = new Bll.CustomerBll();
+
+            string examtype;
+            if (isman)
+            {
+                examtype = "男";
+            }
+            else
+            {
+                if (isunmarried)
+                {
+                    if (needgynecology)
+                    {
+                        examtype = "女未婚加妇科";
+                    }
+                    else
+                    {
+                        examtype = "女未婚";
+                    }
+                }
+                else
+                {
+                    examtype = "女已婚";
+                }
+            }
+            DataTable dt;
+            string s;
+            DateTime birthday = (modelrel == null ? modelCu.customerDOB : modelrel.relativeDOB);
+
+
+            if (birthday == DateTime.Parse("1900-01-01"))
+            {
+                throw new Exception("error:出生日期错误");
+                return null;
+            }
+
+            int age = DateTime.Now.Year - birthday.Year;
+
+            if (modelCu.packagecode != "")//如果绑定了套餐，只填充绑定套餐
+            {
+                Bll.packageBll packb = new Bll.packageBll();
+                object[] t = modelCu.packagecode.Split(';');
+                string fill = "select budget,price,note,note_eng,packagecode from tab_package where packagecode in (";
+                for (int i = 0; i < t.Length; i++)
+                {
+                    fill += "'" + t[i] + "',";
+                }
+                fill = fill.Substring(0, fill.Length - 1);
+                fill += ") and company=N'" +
+                           modelCu.customerCompany + "' and (VIP='' or VIP=N'" + modelCu.customerVIP +
+                           "') and period='" + comb.getperiod(modelCu.customerCompany) +
+                           "' and type='" + examtype + "' ";
+                if (!isrel)
+                {
+                    fill += "and applytype = '1' ";
+                }
+                else
+                {
+                    fill += "and applytype = '2' ";
+                }
+                fill += "order by VIP desc";
+                dt = packb.Select(fill);
+                return dt;
+            }
+            else
+            {
+                if (isrel)         //高管家属可选高管和员工套餐，高管只能选择高管套餐
+                {
+                    s = "select budget,price,note,note_eng,packagecode from tab_package where company=N'" +
+                                  modelCu.customerCompany + "' and supplier=N'" +
+                                  currentsupplier +
+                                  "' and (VIP='' or VIP=N'" + modelCu.customerVIP +
+                                  "') and period='" + comb.getperiod(modelCu.customerCompany) +
+                                  "' and type='" + examtype + "' and minage<="+age +" and maxage>="+ age + " and applytype = '2' ";
+                }
+                else
+                {
+                    s = "select budget,price,note,note_eng,packagecode from tab_package where company=N'" +
+                               modelCu.customerCompany + "' and supplier=N'" +
+                               currentsupplier +
+                               "' and VIP=N'" + modelCu.customerVIP +
+                               "' and period='" + comb.getperiod(modelCu.customerCompany) +
+                               "' and type='" + examtype + "' and minage<=" + age + " and maxage>=" + age + " and applytype = '1' ";
+                }
+
+                s += "order by VIP desc";
+                dt = pb.Select(s);
+                return dt;
+            }
+
+        }
+
+        //public static string processsend(string Email, string mima)
+        //{
+        //    Model.tab_customers modelCu = new Model.tab_customers();
+        //    Bll.CustomerBll Cb = new Bll.CustomerBll();
+   
+
+        //    DataTable dt = Cb.CustomerSelect("select * from tab_customers where customerEmail='" +Email + "'");
+        //    if (dt.Rows.Count > 0)
+        //    {
+        //        modelCu.customerEmail =  Email;
+               
+        //        string pw = pc.MakePassword(6);
+        //        modelCu = Cb.getCustomer(modelCu);
+        //        modelCu.customerPwd = pc.md5(pw);
+        //        Cb.update(modelCu);
+
+        //        if (mima != null)
+        //        {
+        //            pc.addlog(Email, pw, "", "", "用户邮件获取密码", "安全问题");
+        //        }
+        //        else
+        //        {
+        //            pc.addlog(Email, pw, "", "", "用户邮件获取密码", "");
+        //        }
+
+        //        try
+        //        {
+
+        //            //SendEmail(modelCu.customerName, pw, modelCu.customerCode, modelCu.customerCompany);
+
+        //            //Session["cc"] = modelCu.customerCompany;
+        //            //Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('登陆成功')</script>");
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            //Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('发送邮件出错!!" + ex.Message + "')</script>");
+        //        }
+
+        //    }
+        //    return Email;
+
+        //}
+
+
+
+
+            
+
+        public static string s1_1CanCusRsr(Model.tab_customers modelCu)
+        {
+            if (modelCu.customerDOB == DateTime.Parse("1900-01-01"))
+            {
+                return "error:客户出生日期未填写，请更新后重试！";
+            }
+            if (modelCu.customerGender == "")
+            {
+                return "error:客户性别未填写，请更新后重试！";
+            }
+            if (modelCu.customerMarriageStatus == "")
+            {
+                return "error:客户婚姻状况未填写，请更新后重试！";
+            }
+            if (!MediPlus.reserveexam.hasvalidpackage(modelCu.customerCompany))
+            {
+                return "error:没有客户可选套餐！请检查客户公司名，套餐有效期，VIP，周期，年龄，应用类型。";
+            }
+            if (MediPlus.reserveexam.hasarrangement(modelCu.customerID))
+            {
+                return "error:当前有未完成订单。";
+            }
+            return "success";
+        }
+        public static string s1_2CanRelRsr(int id)
+        {
+            Model.tab_customers modelCu = new Model.tab_customers();
+            Bll.CustomerBll Cb = new Bll.CustomerBll();
+            modelCu.customerID =id;
+            modelCu = Cb.getCustomer(modelCu);
+
+            //if (rel.relativeDOB == DateTime.Parse("1900-01-01"))
+            //{
+            //    return "error:家属出生日期未填写，请更新后重试！";
+            //}
+            //if (rel.relativeGender == "")
+            //{
+            //    return "error:家属性别未填写，请更新后重试！";
+            //}
+            //if (rel.relativeMarriageStatus == "")
+            //{
+            //    return "error:家属婚姻状况未填写，请更新后重试！";
+            //}
+            if (modelCu.packagecode == "入职体检")
+            {
+                return "error:员工入职体检，家属不能预约！";
+            }
+            if (!MediPlus.reserveexam.hasvalidpackage(modelCu.customerCompany))
+            {
+                return "error:没有客户可选套餐！家属不能预约。";
+            }
+            
+            return "success";
+        }
+        public static string s1_3CanThisRelRsr(int id)
+        {
+            if (MediPlus.reserveexam.hasSpecRelarrangement(id))
+            {
+                return "error:此家属有未完成订单，不能预约。";
+            }
+            return "success";
+        }
+    }
+}

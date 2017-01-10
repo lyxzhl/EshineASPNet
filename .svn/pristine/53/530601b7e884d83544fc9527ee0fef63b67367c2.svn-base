@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://impl.service.ws.ctcoss.ctc.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://service.ws.ctcoss.ctc.com/" name="SmsService4XMLImplService" targetNamespace="http://impl.service.ws.ctcoss.ctc.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:import namespace="http://service.ws.ctcoss.ctc.com/" location="http://3tong.net/services/sms?wsdl=ISmsService4XML.wsdl" />
+  <wsdl:types />
+  <wsdl:binding name="SmsService4XMLImplServiceSoapBinding" type="ns1:ISmsService4XML">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="balance">
+      <soap:operation soapAction="" style="rpc" />
+      <wsdl:input name="balance">
+        <soap:body use="literal" namespace="http://service.ws.ctcoss.ctc.com/" />
+      </wsdl:input>
+      <wsdl:output name="balanceResponse">
+        <soap:body use="literal" namespace="http://service.ws.ctcoss.ctc.com/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deliver">
+      <soap:operation soapAction="" style="rpc" />
+      <wsdl:input name="deliver">
+        <soap:body use="literal" namespace="http://service.ws.ctcoss.ctc.com/" />
+      </wsdl:input>
+      <wsdl:output name="deliverResponse">
+        <soap:body use="literal" namespace="http://service.ws.ctcoss.ctc.com/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="submit">
+      <soap:operation soapAction="" style="rpc" />
+      <wsdl:input name="submit">
+        <soap:body use="literal" namespace="http://service.ws.ctcoss.ctc.com/" />
+      </wsdl:input>
+      <wsdl:output name="submitResponse">
+        <soap:body use="literal" namespace="http://service.ws.ctcoss.ctc.com/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="report">
+      <soap:operation soapAction="" style="rpc" />
+      <wsdl:input name="report">
+        <soap:body use="literal" namespace="http://service.ws.ctcoss.ctc.com/" />
+      </wsdl:input>
+      <wsdl:output name="reportResponse">
+        <soap:body use="literal" namespace="http://service.ws.ctcoss.ctc.com/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SmsService4XMLImplService">
+    <wsdl:port name="SmsService4XMLImplPort" binding="tns:SmsService4XMLImplServiceSoapBinding">
+      <soap:address location="http://3tong.net/services/sms" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

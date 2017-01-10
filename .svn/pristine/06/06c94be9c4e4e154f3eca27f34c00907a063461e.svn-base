@@ -1,0 +1,112 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Model
+{
+    public class tab_uppkg
+    {
+        private int _id = 0;
+        private string _uppkgcode = "";
+        private string _packagecode = "";
+        private string _msg = "";
+        private string _msg_eng = "";
+        private double _price = 0.0;
+        private double _marketprice = 0.0;
+        private string _VIP = "";
+        private string _note = "";
+        private string _note_eng = "";
+        private string _groupname = "";
+        private int _grouplimit = 0;
+        private int _minage = 0;
+        private int _maxage = 0;
+
+
+        public int id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        public string uppkgcode
+        {
+            get { return _uppkgcode; }
+            set { _uppkgcode = value; }
+        }
+
+        public string packagecode
+        {
+            get { return _packagecode; }
+            set { _packagecode = value; }
+        }
+
+        public string msg
+        {
+            get { return _msg; }
+            set { _msg = value; }
+        }
+
+        public string msg_eng
+        {
+            get { return _msg_eng; }
+            set { _msg_eng = value; }
+        }
+
+        public double price
+        {
+            get { return _price; }
+            set { _price = value; }
+        }
+
+        public double marketprice
+        {
+            get { return _marketprice; }
+            set { _marketprice = value; }
+        }
+
+        public string VIP
+        {
+            get { return _VIP; }
+            set { _VIP = value; }
+        }
+
+        public string note
+        {
+            get { return _note; }
+            set { _note = value; }
+        }
+
+        public string note_eng
+        {
+            get { return _note_eng; }
+            set { _note_eng = value; }
+        }
+
+        public string groupname
+        {
+            get { return _groupname; }
+            set { _groupname = value; }
+        }
+
+        public int grouplimit
+        {
+            get { return _grouplimit; }
+            set { _grouplimit = value; }
+        }
+
+        public int minage
+        {
+            get { return _minage; }
+            set { _minage = value; }
+        }
+
+        public int maxage
+        {
+            get { return _maxage; }
+            set { _maxage = value; }
+        }
+
+
+
+    }
+}

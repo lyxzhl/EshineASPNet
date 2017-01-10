@@ -1,0 +1,34 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+
+namespace Bll
+{
+    public class consultBll
+    {
+        IDAL.consultDal itu = DALFactory.consult_Factory.Createusers();
+
+        public int Add(Model.tab_consult consult)
+        {
+            return itu.Add(consult);
+        }
+        public Model.tab_consult getconsult(Model.tab_consult consult1)
+        {
+            return itu.getconsult(consult1);
+        }
+        public int update(Model.tab_consult consult)
+        {
+            return itu.update(consult);
+        }
+        public int Delete(int id)
+        {
+            return itu.Delete(id);
+        }
+        public DataTable Select(string ss)
+        {
+            return itu.Select(ss);
+        }
+
+    }
+}

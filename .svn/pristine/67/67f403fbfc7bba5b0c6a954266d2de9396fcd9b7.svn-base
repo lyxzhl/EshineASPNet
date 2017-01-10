@@ -1,0 +1,235 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="orderDet.aspx.cs" Theme="Default" Inherits="Admin_ordersAdmin_orderDet" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title>订单详细信息</title>
+    <link href="../../assets/trunkclub-d1b693260400bfdc2a0f7777f2fc64fc.css" media="screen" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ToolkitScriptManager>
+    <div class='row'>
+            <div class="twelvecol">
+            <h2>订单详情</h2>
+            <div class='buttons'>
+                
+<asp:Button ID="Button1" runat="server" class="button blue_button" OnClick="Button1_Click" Text="更　新" />
+<asp:HyperLink ID="HyperLink2" class="button " NavigateUrl="orderInfo.aspx?setorderpageindex=" runat="server">返回订单列表</asp:HyperLink>
+<asp:Button ID="Button5" runat="server" class="button blue_button" OnClick="Button5_Click" Text="返回个人信息" />
+
+    <asp:Button ID="Button3" runat="server" class="button blue_button" Text="取消订单" OnClick="Button3_Click"   OnClientClick='<%$ Resources:GResource,alertsurecancel %>' />
+
+    <asp:FileUpload ID="FileUpload1" runat="server" ToolTip="选择报告文件" Width="307px" Height="30px" />
+                <asp:Button ID="Button4" runat="server" class="button blue_button" Text="上传报告" OnClick="Button4_Click" />
+                <asp:Button ID="Button8" runat="server" class="button blue_button" Text="发送预约取消短信" OnClick="Button8_Click" />
+                <asp:Button ID="Button2" runat="server" class="button blue_button" Text="发送预约未成功短信" OnClick="Button2_Click" />
+                <asp:Button ID="Button9" runat="server" class="button blue_button" Text="发送提醒付费短信" OnClick="Button9_Click" />
+                <asp:Button ID="Button6" runat="server" class="button blue_button" Text="发送催款短信" OnClick="Button6_Click" />
+                <asp:Button ID="Button7" runat="server" class="button blue_button" Text="发送报告已上传短信" OnClick="Button7_Click" />
+                <asp:Button ID="Button10" runat="server" class="button blue_button" Text="发送预约成功短信" OnClick="Button10_Click" />
+                  <asp:Button ID="Button11" runat="server" class="button blue_button" Text="6666666666" />
+</div>
+            </div> 
+            </div>
+            <DIV class="row sizes">
+<DIV class="sixcol" style="text-align:left;">
+<H3><asp:Label ID="Label45" runat="server" Text="个人信息" Font-Bold="True" 
+                            meta:resourcekey="Label45Resource1"></asp:Label></H3>
+<DIV class="input">
+<asp:Label ID="Label21" runat="server" Text="姓名" 
+                   meta:resourcekey="Label21Resource1"></asp:Label>： &nbsp;&nbsp;&nbsp;客服：<asp:Label ID="Label11" runat="server" Text="Label"></asp:Label>
+<asp:TextBox class="string required" ID="TextBox1" runat="server" placeholder="" Enabled="false"></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label22" runat="server" Text="性别" 
+                   meta:resourcekey="Label22Resource1"></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox2" runat="server" placeholder="" Enabled="false"></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label25" runat="server" Text="年龄" 
+                   meta:resourcekey="Label25Resource1"></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox3" runat="server" placeholder="" Enabled="false"></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label27" runat="server" Text="证件号" 
+                   meta:resourcekey="Label27Resource1"></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox4" runat="server" placeholder="" Enabled="false"></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label29" runat="server" Text="手机号" 
+                   meta:resourcekey="Label29Resource1"></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox5" runat="server" placeholder=""></asp:TextBox>
+</DIV>
+<DIV class="input hidden">
+<asp:Label ID="Label31" runat="server" Text="私人邮箱" 
+                   meta:resourcekey="Label31Resource1"></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox6" runat="server" placeholder="" Enabled="false"></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label37" runat="server" Text="婚姻状况" 
+                   meta:resourcekey="Label37Resource1"></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox7" runat="server" placeholder="" Enabled="false"></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label39" runat="server" Text="联系地址" ></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox8" runat="server" placeholder=""></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label6" runat="server" Text="公司" ></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox22" runat="server" placeholder="" Enabled="false"></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label7" runat="server" Text="订单状态" ></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox23" runat="server" placeholder="" Visible="false"></asp:TextBox>
+<asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True"  class="select required customSelect">
+                                <asp:ListItem>选择订单状态</asp:ListItem>
+                                <asp:ListItem>待确认</asp:ListItem>
+                                <asp:ListItem>预约未成功</asp:ListItem>
+    <asp:ListItem>已预约未到检</asp:ListItem>
+                                <asp:ListItem>待付款</asp:ListItem>
+                                <asp:ListItem>待转账</asp:ListItem>
+                                <asp:ListItem>约检成功</asp:ListItem>
+                                <asp:ListItem>已体检</asp:ListItem>
+                                <asp:ListItem>已完成</asp:ListItem>
+    <asp:ListItem>已报销</asp:ListItem>
+                                <asp:ListItem>已取消</asp:ListItem>
+                            </asp:DropDownList>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label8" runat="server" Text="支付方式" ></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox24" runat="server" placeholder="" Enabled="false"></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label9" runat="server" Text="付款时间" ></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox25" runat="server" placeholder="" Enabled="false"></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label10" runat="server" Text="支付宝订单号" ></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox26" runat="server" placeholder="" Enabled="false"></asp:TextBox>
+</DIV>
+<DIV class="input">
+    <asp:HyperLink ID="HyperLink1" runat="server" Target="_blank">报告</asp:HyperLink>：
+<asp:TextBox class="string required" ID="TextBox27" runat="server" placeholder=""></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label12" runat="server" Text="报告类型" ></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox28" runat="server" placeholder=""></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label13" runat="server" Text="报告上传日期" ></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox29" runat="server" placeholder=""></asp:TextBox>
+</DIV>
+
+</DIV>
+
+<DIV class="sixcol last" style="text-align:left;">
+<H3><asp:Label ID="Label46" runat="server" Text="体检预约信息" Font-Bold="True" 
+                        meta:resourcekey="Label46Resource1"></asp:Label></H3>
+<DIV class="input">
+<asp:Label ID="Label41" runat="server" Text="预约时间" 
+                   meta:resourcekey="Label41Resource1"></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox9" runat="server" placeholder=""></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label43" runat="server" Text="体检城市" 
+                   meta:resourcekey="Label43Resource1"></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox10" runat="server" placeholder=""></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label47" runat="server" Text="体检门店" 
+                   meta:resourcekey="Label47Resource1"></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox11" runat="server" placeholder=""></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label49" runat="server" Text="体检套餐" 
+                   meta:resourcekey="Label49Resource1"></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox12" runat="server" placeholder=""></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label51" runat="server" Text="加项包" 
+                   meta:resourcekey="Label51Resource1"></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox13" runat="server" placeholder=""></asp:TextBox>
+</DIV>
+    <DIV class="input">
+<asp:Label ID="Label18" runat="server" Text="洗牙分店" 
+                   meta:resourcekey="Label51Resource1"></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox34" runat="server" placeholder=""></asp:TextBox>
+</DIV>
+<DIV class="input" style="display:none">
+<asp:Label ID="Label53" runat="server" Text="总费用" 
+                   meta:resourcekey="Label53Resource1"></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox14" runat="server" placeholder=""></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label55" runat="server" Text="自付费" 
+                   meta:resourcekey="Label55Resource1"></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox15" runat="server" placeholder=""></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label57" runat="server" Text="备注" 
+                   meta:resourcekey="Label57Resource1"></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox16" runat="server" placeholder=""></asp:TextBox>
+</DIV>
+
+<DIV class="input">
+<asp:Label ID="Label1" runat="server" Text="供应商订单号" ></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox17" runat="server" placeholder=""></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label2" runat="server" Text="体检卡号" ></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox18" runat="server" placeholder=""></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label3" runat="server" Text="分店代码" ></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox19" runat="server" placeholder=""></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label4" runat="server" Text="体检流水号" ></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox20" runat="server" placeholder=""></asp:TextBox>
+</DIV>
+<DIV class="input">
+<asp:Label ID="Label5" runat="server" Text="订单情况汇总" ></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox21" runat="server" placeholder="" TextMode="MultiLine"></asp:TextBox>
+</DIV>
+    <DIV class="input hidden">
+<asp:Label ID="Label14" runat="server" Text="订单备注" ></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox30" runat="server" placeholder="" TextMode="MultiLine"></asp:TextBox>
+</DIV>
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
+    <DIV class="input">
+<asp:Label ID="Label15" runat="server" Text="发票抬头" ></asp:Label>：
+        <asp:DropDownList ID="DropDownList2" class="select required customSelect" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DropDownList2_SelectedIndexChanged1">
+            <asp:ListItem Value="不需要发票">不需要发票</asp:ListItem>
+            <asp:ListItem Value="个人">个人</asp:ListItem>
+            <asp:ListItem Value="公司">公司</asp:ListItem>
+        </asp:DropDownList>
+<asp:TextBox class="string required " style="margin-top:5px" Visible="false" ID="TextBox31" runat="server" placeholder="" ></asp:TextBox>
+        
+</DIV>
+            </ContentTemplate>
+    </asp:UpdatePanel>
+    <DIV class="input">
+<asp:Label ID="Label16" runat="server" Text="发票内容" ></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox32" runat="server" placeholder="" ></asp:TextBox>
+</DIV>
+
+    <DIV class="input">
+<asp:Label ID="Label17" runat="server" Text="快递单号" ></asp:Label>：
+<asp:TextBox class="string required" ID="TextBox33" runat="server" placeholder="" ></asp:TextBox>
+</DIV>
+
+
+<br />
+
+<br /><br />
+</DIV>
+</DIV>
+
+    </form>
+</body>
+</html>

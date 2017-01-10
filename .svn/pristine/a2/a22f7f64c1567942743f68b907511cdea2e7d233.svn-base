@@ -1,0 +1,57 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick" onclick="goTo('../../index.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </a>
+        <div class="center">为自己预约</div>
+        <div class="right">
+            <span class="aClick" onclick="if(checkMedicalPackage())goTo('../../module/order/confirm_order.html?refurl=../../module/service/ourself_medical.html');">预约</span>
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="OurselfMedical" class="page">
+        <div class="page-content content_OMedical">
+            <div class="OMedical-wrap">
+                <div class="group-item">
+                    <a class="row-item img-item" onclick="goTo('choosestore_medical.html?refurl=ourself_medical.html');">
+                        <img src="../../img/medical/bg1.png" class="pull-center banner" />
+                        <span class="pull-right">选择预约门店</span>
+                    </a>
+                    <a href="#" class="row-item" onclick="goTo('choosestore_medical.html?refurl=ourself_medical.html');">
+                        <span class="pull-left mStore">尚未选择门店</span><i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                    <a class="row-item img-item" onclick="goTo('choosedate_medical.html?refurl=ourself_medical.html');">
+                        <img src="../../img/medical/bg2.png" class="pull-left banner" />
+                        <span class="pull-right">选择预约时间</span>
+                    </a>
+                    <a href="#" class="row-item" onclick="goTo('choosedate_medical.html?refurl=ourself_medical.html');">
+                        <span class="pull-left mDate">尚未选择时间</span><i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                    <a class="row-item img-item" onclick="goTo('choosepackage_medical.html?refurl=ourself_medical.html');">
+                        <img src="../../img/medical/bg3.png" class="pull-left banner" />
+                        <span class="pull-right">选择套餐及加项包</span>
+                    </a>
+                    <a href="#" class="row-item" onclick="goTo('choosepackage_medical.html?refurl=ourself_medical.html');">
+                        <span class="pull-left mPackage">尚未选择套餐及加项包</span><i class="pull-right icon icon-chevron-right"></i>
+                    </a>
+                </div>
+                <!--<div class="content-block-title basic-package-title"></div>
+                <div class="list-block accordion-list basic-package">
+                    <ul>
+                    </ul>
+                </div>
+                <div class="content-block-title plus-package-title">企业加项包：</div>
+                <div class="group-item plus-package">
+                </div>
+                <div class="content-block-title hra-package-title">HRA建议预约的其他体检项目：</div>
+                <div class="group-item hra-package">
+                    <div class="row-item">
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+</div>

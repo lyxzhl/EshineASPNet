@@ -1,0 +1,162 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="safemobile.aspx.cs" Inherits="safemobile" %>
+
+<%@ Register TagPrefix="MPuc" TagName="headcontent" Src="UserControl/headcontent.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="mobilenav" Src="UserControl/mobilenav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="desktopnav" Src="UserControl/desktopnav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="UserControl/footer1.ascx"%>
+<!DOCTYPE html>
+<html>
+<head>
+<title>EshineAspNet - <asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,titletext %>'></asp:Localize></title>
+<MPuc:headcontent runat="server" ID="Unnamed1"/>
+<SCRIPT src="JS/mp.js" type="text/javascript"></SCRIPT>
+</head>
+<body class='signups'>
+<MPuc:mobilenav runat="server" ID="Unnamed2"/>
+<form id="Form1" runat="server">
+<div class='wrapper' data-behavior='Navigation'>
+<MPuc:desktopnav runat="server" ID="Unnamed3"/>
+
+<div class='container signup'>
+<div class="simple_form new_signup_context">
+    <asp:Panel ID="Panel1" runat="server" class='choose_level tile'>
+<div class='row'>
+<div class='twelvecol'>
+<h2><asp:Label ID="Label2" runat="server" Text="您设置的绑定手机号" meta:resourcekey="Label2Resource1"></asp:Label></h2>
+<h4 class='mobile_hidden'></h4>
+</div>
+</div>
+<div class='row'>
+<div class='fourcol'></div>
+<div class='fourcol'>
+<br /><br />
+<div class="input string required">
+    <asp:Label ID="Label3" runat="server" Text="手机号：" meta:resourcekey="Label3Resource1"></asp:Label>
+    <asp:Label ID="Label4" runat="server" Text="Label" meta:resourcekey="Label4Resource1"></asp:Label>
+</div>
+<br />
+<div class="input string required">
+<asp:Button ID="Button4" runat="server" Text="返回"  class="button bluedark_button" onclick="Button4_Click"  meta:resourcekey="Button4Resource1"/>
+<asp:Button ID="Button0" runat="server" Text="修改"  class="button blue_button" onclick="Button0_Click"  meta:resourcekey="Button0Resource1" />
+</div>
+
+</div>
+<div class='fourcol last'>
+</div>
+</div>
+    </asp:Panel>
+
+    <asp:Panel ID="Panel2" runat="server" class='choose_level tile' Visible="False">
+<div class='row'>
+<div class='twelvecol'>
+<h2><asp:Label ID="Label5" runat="server" Text="修改绑定手机号" meta:resourcekey="Label5Resource1"></asp:Label></h2>
+<h4></h4>
+</div>
+</div>
+<div class='row sizes'>
+<div class='fourcol'></div>
+<div class='fourcol'>
+<br /><br />
+<div class="input string required hidden">
+    <asp:Label ID="Label6" runat="server" Text="原手机号：" meta:resourcekey="Label6Resource1"></asp:Label>
+    <asp:TextBox ID="TextBox1" runat="server" class="string required" placeholder='<%$ Resources:Label6Resource1.Text %>' maxlength="11" minlength="11"
+        onkeypress="if (event.keyCode<48 || event.keyCode>57) event.returnValue=false;" 
+        meta:resourcekey="TextBox1Resource1"></asp:TextBox>
+</div>
+<div class="input string required">
+<asp:Label ID="Label7" runat="server" Text="新手机号：" meta:resourcekey="Label7Resource1"></asp:Label>
+<asp:TextBox ID="TextBox4" runat="server" class="string required" placeholder='<%$ Resources:Label7Resource1.Text %>' maxlength="11" minlength="11"
+        onkeypress="if (event.keyCode<48 || event.keyCode>57) event.returnValue=false;" 
+        meta:resourcekey="TextBox4Resource1"></asp:TextBox>
+</div>
+<div class="input string required">
+<asp:Label ID="Label11" runat="server" Text="再次输入新号码：" meta:resourcekey="Label8Resource1"></asp:Label>
+<asp:TextBox ID="TextBox3" runat="server" class="string required" placeholder='<%$ Resources:Label8Resource1.Text %>' maxlength="11" minlength="11"
+        onkeypress="if (event.keyCode<48 || event.keyCode>57) event.returnValue=false;" 
+        meta:resourcekey="TextBox3Resource1"></asp:TextBox>
+</div>
+<br />
+<div class="input string required">
+<asp:Button ID="Button1" runat="server" Text="返回"  class="button bluedark_button" onclick="Button4_Click"  meta:resourcekey="Button4Resource1"/>
+<asp:Button ID="Button3" runat="server" Text="确认提交" class="button blue_button" onclick="Button3_Click" OnClientClick="return check2();" meta:resourcekey="Button3Resource1"/>
+</div>
+</div>
+<div class='fourcol last'>
+</div>
+</div>
+    </asp:Panel>
+
+<asp:Panel ID="Panel3" runat="server" class='choose_level tile' Visible="False">
+<div class='row'>
+<div class='twelvecol'>
+<h1><asp:Label ID="Label9" runat="server" Text="修改成功" meta:resourcekey="Label9Resource1"></asp:Label></h1>
+<h4></h4>
+</div>
+</div>
+<div class='row sizes'>
+<div class='fourcol'></div>
+<div class='fourcol'>
+
+<div class="input string required">
+<br /><br />
+    <asp:Label ID="Label10" runat="server" Text="已经设置您的新手机号为" meta:resourcekey="Label10Resource1"></asp:Label>
+    <asp:Label ID="Label1" runat="server" Text="" Font-Bold="True"  ForeColor="Blue" meta:resourcekey="Label1Resource1"></asp:Label>！
+</div>
+<div class="input string required">
+<br />
+<asp:Button ID="Button6" runat="server" Text="返回"  class="button bluedark_button" onclick="Button4_Click"  meta:resourcekey="Button4Resource1"/>
+<asp:HyperLink ID="HyperLink1" runat="server" class="button blue_button" NavigateUrl="~/reserveexam.aspx" Text="预约体检"></asp:HyperLink>
+</div>
+
+</div>
+<div class='fourcol last'>
+<ul class='selling_points mobile_hidden'>
+<li>
+
+</li>
+</ul>
+</div>
+</div>
+
+    </asp:Panel>
+
+    
+
+    
+
+</div>
+</div>
+
+</div>
+</form>
+<MPuc:footer ID="ucfooter" runat="server"/>
+<script>
+    function check2() {
+        var t1 = document.getElementById("<%=TextBox4.ClientID%>").value;
+        var t2 = document.getElementById("<%=TextBox3.ClientID%>").value;
+        var t3 = document.getElementById("<%=TextBox1.ClientID%>").value;
+        var reg = /^1[3|4|5|8][0-9]\d{4,8}$/;
+        if (t1 == "" || t2 == "") {
+            alert("请输入手机号！");
+            return false;
+        }
+        else if (t1.length != t2.length) {
+            alert("两次输入手机号必须一致！");
+            return false;
+        }
+        else if (t1.length < 11 || t2.length < 11 ) {
+            alert("手机号必须为11位！");
+            return false;
+        }
+        else if (!(reg.test(t1))) {
+            alert("手机号有误，请重新输入！");
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+</script>
+</body>
+</html>
+

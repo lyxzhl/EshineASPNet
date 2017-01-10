@@ -1,0 +1,48 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="riskevaluate.aspx.cs" Inherits="riskevaluate" %>
+<%@ Register TagPrefix="MPuc" TagName="sidebar" Src="UserControl/sidebar.ascx"%>
+<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+    <DIV class=nav>
+    <ul><li > <a href="Default.aspx">&nbsp;<asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,Default %>'></asp:Localize></a></li>
+<li > <a href="benefitplan.aspx">&nbsp;<asp:Localize ID="Localize2" runat="server" Text='<%$ Resources:GResource,benefitplan %>'></asp:Localize></a></li>
+<li > <a href="PersonalDetails.aspx">&nbsp;<asp:Localize ID="Localize3" runat="server" Text='<%$ Resources:GResource,PersonalDetails %>'></asp:Localize></a></li>
+<li > <a href="arrangeexam.aspx">&nbsp;<asp:Localize ID="Localize4" runat="server" Text='<%$ Resources:GResource,arrangeexam %>'></asp:Localize></a></li>
+<li > <a href="reportanalysis.aspx">&nbsp;<asp:Localize ID="Localize5" runat="server" Text='<%$ Resources:GResource,reportanalysis %>'></asp:Localize></a></li>
+<li > <a href="healthshop.aspx">&nbsp;<asp:Localize ID="Localize6" runat="server" Text='<%$ Resources:GResource,healthshop %>'></asp:Localize></a></li>
+<li > <a href="healthconsult.aspx">&nbsp;<asp:Localize ID="Localize7" runat="server" Text='<%$ Resources:GResource,healthconsult %>'></asp:Localize></a></li>
+<li class="current"> <a href="riskevaluate.aspx">&nbsp;<asp:Localize ID="Localize8" runat="server" Text='<%$ Resources:GResource,riskevaluate %>'></asp:Localize></a></li>
+       <td width="100%">&nbsp;</td>   </ul>
+    </DIV>
+
+<DIV class=clearboth></DIV>
+
+<DIV class=content>
+<DIV><LINK rel=stylesheet type=text/css 
+href="CSS/container.css">
+<DIV 
+style="PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px; WIDTH: 100%">
+<DIV class=DNNAlignleft>
+<DIV class="BA2 DashBoardContent">
+<DIV>
+
+<DIV class=content>
+<DIV class="column column_75pct">
+<DIV class=main_content style="background-image: url('Images/onbuilding.png'); ">
+<DIV style="background-image: url('Images/onbuilding.png'); height: 312px;">
+</DIV></DIV></DIV>
+
+<MPuc:sidebar ID="ucsidebar" runat="server"/>
+
+</DIV></DIV></DIV></DIV></DIV>
+<DIV 
+style="PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px; WIDTH: 100%"></DIV></DIV>
+</DIV>
+
+
+
+
+
+
+
+
+</asp:Content>
+

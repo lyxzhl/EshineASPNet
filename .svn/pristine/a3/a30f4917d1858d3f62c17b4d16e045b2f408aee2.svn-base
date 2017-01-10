@@ -1,0 +1,95 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="reportdataanalysis.aspx.cs" Inherits="reportdataanalysis" %>
+
+<%@ Register Assembly="System.Web.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+    Namespace="System.Web.UI.DataVisualization.Charting" TagPrefix="asp" %>
+<%@ Register TagPrefix="MPuc" TagName="sidebar" Src="UserControl/sidebar.ascx"%>
+<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+
+<DIV class=nav>
+    <ul><li > <a href="Default.aspx">&nbsp;<asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,Default %>'></asp:Localize></a></li>
+<li > <a href="benefitplan.aspx">&nbsp;<asp:Localize ID="Localize2" runat="server" Text='<%$ Resources:GResource,benefitplan %>'></asp:Localize></a></li>
+<li > <a href="PersonalDetails.aspx">&nbsp;<asp:Localize ID="Localize3" runat="server" Text='<%$ Resources:GResource,PersonalDetails %>'></asp:Localize></a></li>
+<li > <a href="arrangeexam.aspx">&nbsp;<asp:Localize ID="Localize4" runat="server" Text='<%$ Resources:GResource,arrangeexam %>'></asp:Localize></a></li>
+<li class="current"> <a href="reportanalysis.aspx">&nbsp;<asp:Localize ID="Localize5" runat="server" Text='<%$ Resources:GResource,reportanalysis %>'></asp:Localize></a></li>
+<li > <a href="healthshop.aspx">&nbsp;<asp:Localize ID="Localize6" runat="server" Text='<%$ Resources:GResource,healthshop %>'></asp:Localize></a></li>
+<li > <a href="healthconsult.aspx">&nbsp;<asp:Localize ID="Localize7" runat="server" Text='<%$ Resources:GResource,healthconsult %>'></asp:Localize></a></li>
+<li > <a href="riskevaluate.aspx">&nbsp;<asp:Localize ID="Localize8" runat="server" Text='<%$ Resources:GResource,riskevaluate %>'></asp:Localize></a></li>
+       <td width="100%">&nbsp;</td>   </ul>
+    </DIV>
+
+    
+<DIV class=clearboth></DIV>
+
+<DIV class=content>
+<DIV>
+<DIV style="PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px; WIDTH: 100%">
+<DIV class=DNNAlignleft>
+<DIV class=ClaimsContent>
+<DIV>
+
+
+<DIV class=content>
+<H1><SPAN>
+    <asp:Label ID="Label1" runat="server" Text="健康报告分析"></asp:Label></SPAN></H1>
+    <h3>
+    <asp:Label ID="Label2" runat="server" Text="体检数据对比"></asp:Label></h3>
+
+    <DIV class="column column_75pct">
+<DIV class=main_content>
+    <asp:Table ID="Table1" runat="server" Width="686" BorderColor="#6487B3"
+        BorderStyle="Solid" BorderWidth="1px" GridLines="Both">
+    <asp:TableHeaderRow Height="30">
+    <asp:TableHeaderCell ColumnSpan="7" Text="体检数据对比" BorderColor="#6487B3" 
+        BorderStyle="Solid" BorderWidth="3px"></asp:TableHeaderCell>
+    </asp:TableHeaderRow>
+    <asp:TableHeaderRow BackColor="#DDE7F3">
+    <asp:TableHeaderCell RowSpan="2" Text="项目" BorderColor="#6487B3"  Width="98"
+        BorderStyle="Solid" BorderWidth="1px" VerticalAlign="Middle"></asp:TableHeaderCell>
+    <asp:TableHeaderCell ColumnSpan="5" Text="年 份"></asp:TableHeaderCell>
+    <asp:TableHeaderCell RowSpan="2" Text="趋势" BorderColor="#6487B3"  Width="98"
+        BorderStyle="Solid" BorderWidth="1px" VerticalAlign="Middle"></asp:TableHeaderCell>
+    </asp:TableHeaderRow>
+    <asp:TableHeaderRow>
+    <asp:TableHeaderCell Text=" " Width="98" BorderColor="#6487B3" 
+        BorderStyle="Solid" BorderWidth="1px"></asp:TableHeaderCell>
+    <asp:TableHeaderCell Text=" " Width="98" BorderColor="#6487B3" 
+        BorderStyle="Solid" BorderWidth="1px"></asp:TableHeaderCell>
+    <asp:TableHeaderCell Text=" " Width="98" BorderColor="#6487B3" 
+        BorderStyle="Solid" BorderWidth="1px"></asp:TableHeaderCell>
+    <asp:TableHeaderCell Text=" " Width="98" BorderColor="#6487B3" 
+        BorderStyle="Solid" BorderWidth="1px"></asp:TableHeaderCell>
+    <asp:TableHeaderCell Text=" " Width="98" BorderColor="#6487B3" 
+        BorderStyle="Solid" BorderWidth="1px"></asp:TableHeaderCell>
+    </asp:TableHeaderRow>
+
+    </asp:Table>
+    
+</DIV>
+</DIV>
+
+<MPuc:sidebar ID="ucsidebar" runat="server"/>
+
+</DIV>
+
+
+
+
+
+
+</DIV></DIV></DIV></DIV>
+<DIV style="PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px; WIDTH: 100%"></DIV></DIV></DIV>
+
+<script>
+    function showanalysis(rowindex) {
+        var divimg = document.getElementById("analysis" + rowindex);
+        if (divimg.style.display == "none") {
+            divimg.style.display = "block";
+        }
+        else {
+            divimg.style.display = "none";
+        }
+        return false;
+    }
+</script>
+</asp:Content>
+

@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text;
+
+namespace IDAL
+{
+      public interface QuestionClassDal
+    {
+        int Add(Model.QuestionClass QuestionClass);
+        Model.QuestionClass getQuestionClass(Model.QuestionClass QuestionClass1);
+        int update(Model.QuestionClass QuestionClass);
+        int Delete(int QCID);
+        DataTable Select(string ss);
+
+    }
+}

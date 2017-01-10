@@ -1,0 +1,213 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
+using ikang;
+using System.Web.Script.Serialization;
+namespace MediPlus
+{
+    public class reserveexam
+    {
+        static DBunit.SQLAccess sql = new DBunit.SQLAccess();
+        static Bll.CustomerBll Cb = new Bll.CustomerBll();
+        static Bll.SupplierBll sb = new Bll.SupplierBll();
+        static Bll.packageBll pb = new Bll.packageBll();
+        static Bll.uppkgBll ub = new Bll.uppkgBll();
+        static Bll.OrdersBll ob = new Bll.OrdersBll();
+        static Bll.examcardBll eb = new Bll.examcardBll();
+        static Bll.companyBll comb = new Bll.companyBll();
+        public static bool hasvalidpackage(string customerCompany)
+        {
+            string s = "select packagecode from tab_package where expiredate>GETDATE() and company=N'" +customerCompany +  "'";
+            DataTable dt = pb.Select(s);
+            if (dt.Rows.Count <= 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static bool hasvalidpackage(Model.tab_customers modelCu)
+        {
+            int age = DateTime.Now.Year - modelCu.customerDOB.Year;
+            string s = "select count(packagecode) from tab_package where expiredate>GETDATE() and company=N'" +
+                               modelCu.customerCompany + "' ' and VIP=N'" + modelCu.customerVIP +
+                               "' and period='" + comb.getperiod(modelCu.customerCompany) +
+                              "' and minage<=" + age + " and maxage>=" + age + " and applytype = '1' ";
+
+            if (modelCu.packagecode == "入职体检")
+            {
+                s += " and note like '%入职体检%'";
+            }
+            else
+            {
+                s += " and note not like '%入职体检%'";
+            }
+
+            if (Convert.ToInt32(sql.ExecuteSc(s)) >= 1)
+            {
+                return true;
+            }
+            else
+                return false;
+
+        }
+
+        public static bool hasarrangement(int id)
+        {
+            string s = "select count(orderID) from tab_orders where orderStatus <>N'已完成' and orderStatus <>N'已取消' and ReportType<>N'商城' and customerName<>N'' and customerID=" + id;
+            if (Convert.ToInt32(sql.ExecuteSc(s)) >= 1)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+        public static bool hasSpecRelarrangement(int id)
+        {
+            string s = "select count(orderID) from tab_orders where orderStatus <>N'已完成' and orderStatus <>N'已取消' and relativeID =" + id;
+            
+            if (Convert.ToInt32(sql.ExecuteSc(s)) >= 1)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+
+
+
+
+        public static DataTable getexamprovince(string CompanyName)
+        {
+            return sql.ExecuteDataSet("select name from province where name  in (" + comb.getAvaiSuppProv(CompanyName) + ")").Tables[0];
+        }
+        public static DataTable getexamcity(string CompanyName, string com_ProvinceText)
+        {
+            return sql.ExecuteDataSet(string.Format("select name from city where provinceId in (select code from province where name='{0}') and name  in ({1})", com_ProvinceText, comb.getAvaiSuppCity(CompanyName))).Tables[0];
+        }
+
+        public static DataTable getexamprovinceRel(string CompanyName)
+        {
+            return sql.ExecuteDataSet("select name from province where name  in (" + comb.getAvaiSuppProvRel(CompanyName) + ")").Tables[0];
+        }
+        public static DataTable getexamcityRel(string CompanyName, string com_ProvinceText)
+        {
+            return sql.ExecuteDataSet(string.Format("select name from city where provinceId in (select code from province where name='{0}') and name  in ({1})", com_ProvinceText, comb.getAvaiSuppCityRel(CompanyName))).Tables[0];
+        }
+
+        public static DataTable getbranchlist(Model.tab_customers modelCu, string Province, string city, string supplier)
+        {
+            string s = "select * from tab_suppliers where id in (" + comb.getavailablesupplier(modelCu.customerCompany)
+            + ") and province like N'" + Province + "'";
+            if (city!="")
+            {
+                s += " and city like N'" + city + "'";
+            }
+            if (supplier!="")
+            {
+                s += " and supplier=N'" + supplier + "'";
+            }
+
+            if (modelCu.disablebranch != "")
+            {
+                s += " and supplier not in (" + modelCu.disablebranch + ")";
+            }
+            return sb.GetAny(s);
+        }
+
+        public static DataTable getbranchlistRel(Model.tab_customers modelCu, string Province, string city, string supplier)
+        {
+            string s = "select * from tab_suppliers where id in (" + comb.getavailablesupplierRel(modelCu.customerCompany)
+            + ") and province like N'" + Province + "'";
+            if (city != "")
+            {
+                s += " and city like N'" + city + "'";
+            }
+            if (supplier != "")
+            {
+                s += " and supplier=N'" + supplier + "'";
+            }
+
+            if (modelCu.disablebranch != "")
+            {
+                s += " and supplier not in (" + modelCu.disablebranch + ")";
+            }
+            return sb.GetAny(s);
+        }
+
+
+        public static bool bindikcard(Model.tab_relatives modelrel, Model.tab_customers modelCu, string name, string sex, string married, string contacttel, string idnum)
+        {
+            ikangservice iks = new ikangservice();
+            ikangmember ikm = new ikangmember();
+            DataTable dt;
+            if (modelrel.relativeID != 0)
+            {
+                dt = eb.Select("select CardNumIKang from tab_examcard where relativeID=" + modelrel.relativeID);
+                if (dt.Rows.Count > 0)
+                {
+                    return true;
+                }
+            }
+
+            dt = eb.Select("select * from tab_examcard where Cardstatus='emptycard' and company='" + modelCu.customerCompany + "'");
+            if (dt.Rows.Count < 1)
+            {
+                return false;
+            }
+            int trycount = dt.Rows.Count >= 2 ? 2 : 1;
+            for (int i = 0; i < trycount; i++)
+            {
+                ikm = new ikangmember();
+                ikm.cardnumber = dt.Rows[i]["CardNumIKang"].ToString();
+                ikm.password = dt.Rows[i]["name"].ToString();//空卡在name字段保存密码
+                ikm.name = name;
+                ikm.sex = sex;
+                ikm.married =married;
+                ikm.contacttel = contacttel;
+                ikm.idnumber = idnum;
+
+                string s;
+                s = iks.registercard(ikm);
+                JavaScriptSerializer jss = new JavaScriptSerializer();
+                Dictionary<string, object> json = (Dictionary<string, object>)jss.DeserializeObject(s);
+                object value;
+                Model.tab_examcard mex = new Model.tab_examcard();
+                if (json.TryGetValue("code", out value) && value.ToString() == "1")
+                {
+                    mex.CardNumIKang = ikm.cardnumber;
+                    mex.Cardstatus = "inuse";
+                    mex.name = ikm.name;
+                    mex.IDcard = ikm.idnumber;
+                    mex.relativeID = modelrel.relativeID;
+                    mex.id = Convert.ToInt32(dt.Rows[i]["id"]);
+                    eb.update(mex);
+                    return true;
+                }
+                else
+                {
+                    json.TryGetValue("message", out value);
+                    mex.CardNum3 += DateTime.Now + value.ToString() + ", ";//cardnum3临时存储错误信息
+                    mex.id = Convert.ToInt32(dt.Rows[i]["id"]);
+                    eb.update(mex);
+                }
+            }
+            return false;
+        }
+
+        public static string branchaddress(string examBranch, string city)
+        {
+            if (city == "")
+            {
+                return sb.GetAny("select address from tab_suppliers where supplier+' '+ branch ='" + examBranch + "'").Rows[0][0].ToString();
+            }
+            else
+                return sb.GetAny("select address from tab_suppliers where supplier+' '+ branch ='" + examBranch + "' and city='" + city + "'").Rows[0][0].ToString();
+            
+           
+        }
+    }
+}

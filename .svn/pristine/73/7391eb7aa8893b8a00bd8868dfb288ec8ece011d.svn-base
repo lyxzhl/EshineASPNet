@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text;
+
+namespace DALFactory
+{
+    public class AssessmentReport_Factory
+    {
+        static readonly string path = System.Configuration.ConfigurationManager.AppSettings["DAL"];
+        public static IDAL.AssessmentReportDal Createusers()
+        {
+            string classname = path + ".sql_AssessmentReport";
+            return (IDAL.AssessmentReportDal)Assembly.Load(path).CreateInstance(classname);
+        }
+    }
+}

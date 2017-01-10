@@ -1,0 +1,185 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Drawing;
+using System.Text;
+using System.Web.UI.DataVisualization.Charting;
+public partial class hrpage : PageBases
+{
+    Bll.OrdersBll ob = new Bll.OrdersBll();
+    Bll.CustomerBll cb = new Bll.CustomerBll();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (Session["Companycode"] == null || Session["Companycode"] == "")
+        {
+            Response.Redirect("login2.aspx", true);
+        }
+        //Session["Companycode"] = "2351234";
+        getpercent();
+    }
+    void getpercent()
+    {
+        Chart2.Series[0]["DrawingStyle"] = "Emboss";
+        //Chart2.Series[0].IsValueShownAsLabel = true;
+
+        string s, gender;
+        s = "select distinct  customerCompanyBU from tab_customers where customerCompanyBU<>'' and customerCompanycode='" + Session["Companycode"] + "' order by customerCompanyBU";
+
+        DataTable dt0 = cb.CustomerSelect(s);
+        DataTable dtbybu;
+        for (int i = 0; i < dt0.Rows.Count; i++)
+        {
+            dtbybu = new DataTable();
+            dtbybu.Columns.Add(new DataColumn(dt0.Rows[i]["customerCompanyBU"].ToString(), typeof(string)));
+            dtbybu.Columns.Add(new DataColumn("男", typeof(string)));
+            dtbybu.Columns.Add(new DataColumn("女", typeof(string)));
+            dtbybu.Columns.Add(new DataColumn("总计", typeof(string)));
+            for (int j = 0; j < 4; j++)
+            {
+                DataRow dr = dtbybu.NewRow();
+                dtbybu.Rows.Add(dr);
+            }
+            dtbybu.Rows[0][0] = "初始人数";
+            dtbybu.Rows[1][0] = "到检人数";
+            dtbybu.Rows[2][0] = "未检人数";
+            dtbybu.Rows[3][0] = "到检率";
+
+
+            for (int j = 1; j <= 2; j++)
+            {
+                gender = j == 1 ? "男" : "女";
+                /*
+                 select  count( distinct customerID) from tab_orders 
+where (orderStatus = N'已到检' or orderStatus = N'已完成') 
+and (DATEPART(year, tab_orders.examDate) = (select top 1 currentperiod from tab_company where Companycode='" + Session["Companycode"] +"' )) 
+and customerID in 
+(select  customerID from  tab_customers where customerCompanycode='" + Session["Companycode"] +"' and customerCompanyBU='" + dt0.Rows[i]["customerCompanyBU"]+"' and customerGender='" + gender+"')
+union all
+select  count(*) from  tab_customers where customerCompanycode='" + Session["Companycode"] +"' and customerCompanyBU='" + dt0.Rows[i]["customerCompanyBU"]+"' and customerGender='" + gender+"'
+                 */
+
+                /*
+                s = "select count(*) all_count, " +
+//"cast( round( sum(case when  orderStatus = N'已完成' then 1 else 0 end)*100.0/count(*),2) as numeric(5,2))  percent_all_count " +
+"(case when count(*)=0 then 0 else  sum(case when  orderStatus = N'已到检' or orderStatus = N'已完成' then 1 else 0 end) end )  checkednum " +
+"from  tab_customers LEFT JOIN tab_orders " +
+"ON tab_customers.customerID = tab_orders.customerID  AND (DATEPART(year, tab_orders.examDate) = DATEPART(year, GETDATE())) " +
+"where customerCompanycode='" + Session["Companycode"] +
+"' and customerCompanyBU='" + dt0.Rows[i]["customerCompanyBU"]+
+"' and customerGender='" + gender+"'";*/
+
+                s = "select  count( distinct customerID) from tab_orders " +
+"where (orderStatus = N'已体检' or orderStatus = N'已完成') " +
+"and (DATEPART(year, tab_orders.examDate) = (select top 1 currentperiod from tab_company where Companycode='" + Session["Companycode"] + "' )) " +
+"and customerID in " +
+"(select  customerID from  tab_customers where customerCompanycode='" + Session["Companycode"] + "' and customerCompanyBU='" + dt0.Rows[i]["customerCompanyBU"] + "' and customerGender='" + gender + "') " +
+"union all " +
+"select  count(*) from  tab_customers where customerCompanycode='" + Session["Companycode"] + "' and customerCompanyBU='" + dt0.Rows[i]["customerCompanyBU"] + "' and customerGender='" + gender + "'";
+                DataTable dt1 = ob.GetAny(s);
+                int allcount, checkednum;
+                //allcount=int.Parse(dt1.Rows[0]["all_count"].ToString());
+                allcount = int.Parse(dt1.Rows[1][0].ToString());
+                //checkednum=int.Parse(dt1.Rows[0]["checkednum"].ToString());
+                checkednum = int.Parse(dt1.Rows[0][0].ToString());
+                dtbybu.Rows[0][j] = allcount;
+
+
+
+                dtbybu.Rows[1][j] = checkednum;
+                dtbybu.Rows[2][j] = allcount - checkednum;
+                dtbybu.Rows[3][j] = allcount == 0 ? 0 : Math.Round(Convert.ToDouble(checkednum) / allcount * 100, 2);
+            }
+            dtbybu.Rows[0][3] = Convert.ToInt32(dtbybu.Rows[0][1]) + Convert.ToInt32(dtbybu.Rows[0][2]);
+            dtbybu.Rows[1][3] = Convert.ToInt32(dtbybu.Rows[1][1]) + Convert.ToInt32(dtbybu.Rows[1][2]);
+            dtbybu.Rows[2][3] = Convert.ToInt32(dtbybu.Rows[2][1]) + Convert.ToInt32(dtbybu.Rows[2][2]);
+
+            double percent = Math.Round(Convert.ToDouble(dtbybu.Rows[1][3]) / Convert.ToDouble(dtbybu.Rows[0][3]) * 100, 2);
+            dtbybu.Rows[3][3] = percent + "%";
+            dtbybu.Rows[3][1] += "%";
+            dtbybu.Rows[3][2] += "%";
+
+            this.Chart2.Series[0].Points.AddY(percent);
+            this.Chart2.Series[0].Points[i].Label = percent + "%";
+            this.Chart2.Series[0].Points[i].AxisLabel = dt0.Rows[i]["customerCompanyBU"].ToString();
+
+            GridView gv = new GridView();
+
+            gv.DataSource = dtbybu;
+            gv.DataBind();
+            gv.HeaderRow.Cells[0].Font.Bold = true;
+
+            HyperLink hl;
+            HyperLink hl2;
+            HyperLink hl3;
+
+            HyperLink hl4;
+            HyperLink hl5;
+            HyperLink hl6;
+            for (int k = 1; k < dtbybu.Rows.Count; k = k + 4)
+            {
+
+                hl = new HyperLink();
+                hl.NavigateUrl = "hrpage_checkinfo.aspx?customerCompanycode=" + Session["Companycode"] + "&customerCompanyBU=" + dt0.Rows[i]["customerCompanyBU"] + "&customerGender=男" + "&aa=初始人数";
+                hl.Target = "_black";
+                hl.Text = gv.Rows[k - 1].Cells[1].Text;
+                gv.Rows[k - 1].Cells[1].Text = "";
+                gv.Rows[k - 1].Cells[1].Controls.Add(hl);
+                if (gv.Rows[k].Cells[1].Text != "0")
+                {
+                    hl4 = new HyperLink();
+                    hl4.NavigateUrl = "hrpage_checkinfo2.aspx?customerCompanycode=" + Session["Companycode"] + "&customerCompanyBU=" + dt0.Rows[i]["customerCompanyBU"] + "&customerGender=男" + "&aa=到检人数";
+                    hl4.Target = "_black";
+                    hl4.Text = gv.Rows[k].Cells[1].Text;
+                    gv.Rows[k].Cells[1].Text = "";
+                    gv.Rows[k].Cells[1].Controls.Add(hl4);
+                }
+
+
+                hl2 = new HyperLink();
+                hl2.NavigateUrl = "hrpage_checkinfo.aspx?customerCompanycode=" + Session["Companycode"] + "&customerCompanyBU=" + dt0.Rows[i]["customerCompanyBU"] + "&customerGender=女" + "&aa=初始人数";
+                hl2.Target = "_black";
+                hl2.Text = gv.Rows[k-1].Cells[2].Text;
+                gv.Rows[k-1].Cells[2].Text = "";
+                gv.Rows[k-1].Cells[2].Controls.Add(hl2);
+                if (gv.Rows[k].Cells[2].Text != "0")
+                {
+                    hl5 = new HyperLink();
+                    hl5.NavigateUrl = "hrpage_checkinfo2.aspx?customerCompanycode=" + Session["Companycode"] + "&customerCompanyBU=" + dt0.Rows[i]["customerCompanyBU"] + "&customerGender=女" + "&aa=到检人数";
+                    hl5.Target = "_black";
+                    hl5.Text = gv.Rows[k].Cells[2].Text;
+                    gv.Rows[k].Cells[2].Text = "";
+                    gv.Rows[k].Cells[2].Controls.Add(hl5);
+                }
+
+                hl3 = new HyperLink();
+                hl3.NavigateUrl = "hrpage_checkinfo.aspx?customerCompanycode=" + Session["Companycode"] + "&customerCompanyBU=" + dt0.Rows[i]["customerCompanyBU"] + "&customerGender=全部" + "&aa=初始人数";
+                hl3.Target = "_black";
+                hl3.Text = gv.Rows[k-1].Cells[3].Text;
+                gv.Rows[k-1].Cells[3].Text = "";
+                gv.Rows[k-1].Cells[3].Controls.Add(hl3);
+                if (gv.Rows[k].Cells[3].Text != "0")
+                {
+                    hl6 = new HyperLink();
+                    hl6.NavigateUrl = "hrpage_checkinfo2.aspx?customerCompanycode=" + Session["Companycode"] + "&customerCompanyBU=" + dt0.Rows[i]["customerCompanyBU"] + "&customerGender=全部" + "&aa=到检人数";
+                    hl6.Target = "_black";
+                    hl6.Text = gv.Rows[k].Cells[3].Text;
+                    gv.Rows[k].Cells[3].Text = "";
+                    gv.Rows[k].Cells[3].Controls.Add(hl6);
+                }
+            }
+
+            this.Panel2.Controls.Add(gv);
+
+            Literal lit = new Literal();
+            lit.Text = "<br /><br />";
+            this.Panel2.Controls.Add(lit);
+        }
+
+
+    }
+
+}

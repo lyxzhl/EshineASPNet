@@ -1,0 +1,154 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="uploadrelreport.aspx.cs" Inherits="uploadrelreport" %>
+
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+
+<%@ Register TagPrefix="MPuc" TagName="headcontent" Src="UserControl/headcontent.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="mobilenav" Src="UserControl/mobilenav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="desktopnav" Src="UserControl/desktopnav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="UserControl/footer1.ascx"%>
+<!DOCTYPE html>
+<html>
+<head id="Head1" runat="server">
+<title>Medi-Plus - <asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,titletext %>'></asp:Localize></title>
+<MPuc:headcontent runat="server" ID="Unnamed1"/>
+<SCRIPT src="JS/mp.js" type="text/javascript"></SCRIPT>
+</head>
+<body class='signups'>
+<MPuc:mobilenav runat="server" ID="Unnamed2"/>
+<form id="Form1" runat="server">
+<div class='wrapper' data-behavior='Navigation'>
+<MPuc:desktopnav runat="server" ID="Unnamed3"/>
+
+    <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
+    </asp:ToolkitScriptManager>
+<div class='container signup'>
+<div class="simple_form new_signup_context">
+    <asp:Panel ID="Panel1" runat="server" class='choose_level tile'>
+<div class='row'>
+<div class='twelvecol'>
+<h2><asp:Label ID="Label2" runat="server" Text='<%$ Resources:GResource,uploadreport %>' ></asp:Label></h2>
+</div>
+</div>
+<div class='row'>
+<div class='threecol'></div>
+<div class='fivecol' style="height:350px;">
+<br />
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+    <ContentTemplate>
+    <DIV class="three_input_grouping">
+<DIV class="input required">
+<LABEL class="month_select required" for="signup_context_birth_month">
+<asp:Localize ID="Localize2" runat="server" Text='<%$ Resources:GResource,quickselect %>'></asp:Localize></LABEL>
+ <div>
+    <asp:CheckBox ID="CheckBox1" runat="server" Visible="False" Text="某某某"  AutoPostBack="True" Font-Bold="True" 
+                   oncheckedchanged="CheckBox1_CheckedChanged" meta:resourcekey="CheckBox1Resource1" />
+    <asp:TextBox ID="TextBox11" runat="server" Visible="False" ></asp:TextBox>
+    <asp:CheckBox ID="CheckBox4" runat="server" Visible="False" Text="某某某" AutoPostBack="True" Font-Bold="True" 
+                   oncheckedchanged="CheckBox1_CheckedChanged" meta:resourcekey="CheckBox2Resource1" />
+<asp:TextBox ID="TextBox14" runat="server" Visible="False" ></asp:TextBox>
+</div>
+</DIV>
+<DIV class="input required">
+<LABEL class="month_select required" for="signup_context_birth_date"> &nbsp;</LABEL>
+ <div>
+<asp:CheckBox ID="CheckBox2" runat="server" Visible="False" Text="某某某" AutoPostBack="True" Font-Bold="True" 
+                   oncheckedchanged="CheckBox1_CheckedChanged" meta:resourcekey="CheckBox2Resource1" />
+<asp:TextBox ID="TextBox12" runat="server" Visible="False" ></asp:TextBox>
+<asp:CheckBox ID="CheckBox5" runat="server" Visible="False" Text="某某某" AutoPostBack="True" Font-Bold="True" 
+                   oncheckedchanged="CheckBox1_CheckedChanged" meta:resourcekey="CheckBox2Resource1" />
+<asp:TextBox ID="TextBox15" runat="server" Visible="False" ></asp:TextBox>
+</div>
+</DIV>
+<DIV class="input required">
+<LABEL class="month_select required" for="signup_context_birth_year"> &nbsp;</LABEL>
+ <div>
+    <asp:CheckBox ID="CheckBox3" runat="server" Visible="False" Text="某某某" AutoPostBack="True" Font-Bold="True" 
+                   oncheckedchanged="CheckBox1_CheckedChanged" meta:resourcekey="CheckBox2Resource1" />
+<asp:TextBox ID="TextBox13" runat="server" Visible="False" ></asp:TextBox>
+<asp:CheckBox ID="CheckBox6" runat="server" Visible="False" Text="某某某" AutoPostBack="True" Font-Bold="True" 
+                   oncheckedchanged="CheckBox1_CheckedChanged" meta:resourcekey="CheckBox2Resource1" />
+<asp:TextBox ID="TextBox16" runat="server" Visible="False" ></asp:TextBox>
+</div>
+</DIV></DIV>
+    </ContentTemplate>
+    </asp:UpdatePanel>
+
+
+<div class="input string required">
+    <asp:FileUpload ID="FileUpload1" runat="server" ToolTip="选择报告文件" Width="394px" Height="30px" />
+</div>
+<div class="input string required">
+    <asp:TextBox ID="TextBox1" runat="server" class="string required" placeholder='<%$ Resources:GResource,reportexamdate %>'></asp:TextBox>
+    <asp:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="TextBox1">
+    </asp:CalendarExtender>
+</div>
+<DIV class="input select required">
+<asp:DropDownList ID="DropDownList1" class="month_select required customSelect" runat="server">
+    <asp:ListItem Text='<%$ Resources:GResource,reporttype %>'></asp:ListItem>
+<asp:ListItem Text='<%$ Resources:GResource,annualexam %>'></asp:ListItem>
+<asp:ListItem Text='<%$ Resources:GResource,entryexam %>'></asp:ListItem>
+<asp:ListItem Text='<%$ Resources:GResource,occupationalexam %>'></asp:ListItem>
+<asp:ListItem Text='<%$ Resources:GResource,healthcertiexam %>'></asp:ListItem>
+<asp:ListItem Text='<%$ Resources:GResource,other %>'></asp:ListItem>
+    </asp:DropDownList>
+</DIV>
+<DIV class="input select required">
+<asp:DropDownList ID="DropDownList2" class="month_select required customSelect selectreportorg" runat="server" onchange="changereportorg(this.options.selectedIndex);">
+    <asp:ListItem Text='<%$ Resources:GResource,organization %>'></asp:ListItem>
+<asp:ListItem Text='<%$ Resources:GResource,ikang %>'></asp:ListItem>
+<asp:ListItem Text='<%$ Resources:GResource,meinian %>'></asp:ListItem>
+<asp:ListItem Text='<%$ Resources:GResource,ciming %>'></asp:ListItem>
+<asp:ListItem Text='<%$ Resources:GResource,other %>'></asp:ListItem>
+    </asp:DropDownList>
+    
+</DIV>
+
+<div class="input select required" id="otherorg" style="display:none" >
+    <asp:TextBox ID="TextBox2" class="string required" runat="server" placeholder='<%$ Resources:GResource,fillreportorg %>'></asp:TextBox>
+</div>
+
+<div><br /><br /></div>
+
+<div class="input string required">
+    <asp:HyperLink ID="HyperLink1" runat="server" Text='<%$ Resources:GResource,back %>'  class="button blue_button" NavigateUrl="~/report.aspx"></asp:HyperLink>
+<asp:Button ID="Button1" runat="server" Text='<%$ Resources:GResource,uploadreport %>'  class="button blue_button" 
+        onclick="Button1_Click"  />
+</div>
+
+</div>
+<div class='fourcol last' style="text-align:left">
+    <br /><br /><br />
+    <asp:Label ID="Label1" runat="server" Text='<%$ Resources:GResource,pdfonly %>'></asp:Label>
+</div>
+</div>
+    </asp:Panel>
+
+  
+
+
+</div>
+</div>
+
+</div>
+</form>
+<MPuc:footer ID="ucfooter" runat="server"/>
+
+<script>
+    function changereportorg(index) {
+        var t1 = document.getElementById("otherorg");
+        if (index == 4) {
+
+            t1.style.display = "block";
+        }
+        else {
+            t1.style.display = "none";
+        }
+    }
+
+</script>
+</body>
+</html>
+
+

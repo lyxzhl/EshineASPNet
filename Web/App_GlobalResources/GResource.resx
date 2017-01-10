@@ -1,0 +1,1143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Default" xml:space="preserve">
+    <value>主页</value>
+  </data>
+  <data name="healthconsult" xml:space="preserve">
+    <value>健康咨询</value>
+  </data>
+  <data name="healthshop" xml:space="preserve">
+    <value>健康商城</value>
+  </data>
+  <data name="PersonalDetails" xml:space="preserve">
+    <value>我的资料</value>
+  </data>
+  <data name="reportanalysis" xml:space="preserve">
+    <value>健康报告</value>
+  </data>
+  <data name="riskevaluate" xml:space="preserve">
+    <value>风险评估</value>
+  </data>
+  <data name="examfaqc" xml:space="preserve">
+    <value>体检须知</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="languagecode" xml:space="preserve">
+    <value>?language=en-us</value>
+  </data>
+  <data name="viewreportc" xml:space="preserve">
+    <value>查看体检报告</value>
+  </data>
+  <data name="welcommsg" xml:space="preserve">
+    <value>欢迎参加美敦力健康计划</value>
+  </data>
+  <data name="aleartcorrectemail" xml:space="preserve">
+    <value>请输入正确的邮箱地址！</value>
+  </data>
+  <data name="confirm" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="personaldetail" xml:space="preserve">
+    <value>个人信息</value>
+  </data>
+  <data name="relativedetail" xml:space="preserve">
+    <value>家属信息</value>
+  </data>
+  <data name="addressmanagement" xml:space="preserve">
+    <value>地址管理</value>
+  </data>
+  <data name="addthisaddress" xml:space="preserve">
+    <value>添加此地址</value>
+  </data>
+  <data name="contactAddress" xml:space="preserve">
+    <value>联系地址</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="detailAddress" xml:space="preserve">
+    <value>详细地址</value>
+  </data>
+  <data name="mobilenumber" xml:space="preserve">
+    <value>手机号</value>
+  </data>
+  <data name="nosavedaddress" xml:space="preserve">
+    <value>您还没有保存任何地址！</value>
+  </data>
+  <data name="recipient" xml:space="preserve">
+    <value>收件人</value>
+  </data>
+  <data name="savedaddress" xml:space="preserve">
+    <value>已保存的地址</value>
+  </data>
+  <data name="selectCity" xml:space="preserve">
+    <value>请选择市</value>
+  </data>
+  <data name="selectProvince" xml:space="preserve">
+    <value>请选择省</value>
+  </data>
+  <data name="selectZone" xml:space="preserve">
+    <value>请选择区</value>
+  </data>
+  <data name="titletext" xml:space="preserve">
+    <value>微软专家</value>
+  </data>
+  <data name="accountname" xml:space="preserve">
+    <value>账户名</value>
+  </data>
+  <data name="accountnum" xml:space="preserve">
+    <value>账号</value>
+  </data>
+  <data name="alertalipayfailed" xml:space="preserve">
+    <value>支付失败，支付宝验证失败！</value>
+  </data>
+  <data name="alertcancelordersucc" xml:space="preserve">
+    <value>取消订单成功！</value>
+  </data>
+  <data name="alertcantfindorder" xml:space="preserve">
+    <value>找不到订单，请电话联系客服人员！</value>
+  </data>
+  <data name="alertidmust18" xml:space="preserve">
+    <value>身份证号码必须为18位！</value>
+  </data>
+  <data name="alertmobilemust11" xml:space="preserve">
+    <value>手机号必须为11位！</value>
+  </data>
+  <data name="alertneedanswer" xml:space="preserve">
+    <value>请输入答案！</value>
+  </data>
+  <data name="alertneeddob" xml:space="preserve">
+    <value>请选择出生日期!</value>
+  </data>
+  <data name="alertneedemail" xml:space="preserve">
+    <value>请输入邮箱地址!</value>
+  </data>
+  <data name="alertneedfullid" xml:space="preserve">
+    <value>请输入完整身份证号码！</value>
+  </data>
+  <data name="alertneedidorpass" xml:space="preserve">
+    <value>请输入身份证号码或护照号码！</value>
+  </data>
+  <data name="alertneedmaritalstatus" xml:space="preserve">
+    <value>请选择婚姻状况！</value>
+  </data>
+  <data name="alertneedmobile" xml:space="preserve">
+    <value>请输入手机号！</value>
+  </data>
+  <data name="alertneedname" xml:space="preserve">
+    <value>请输入姓名！</value>
+  </data>
+  <data name="alertneedquestion" xml:space="preserve">
+    <value>请选择问题！</value>
+  </data>
+  <data name="alertneedrecipient" xml:space="preserve">
+    <value>请填写收件人！</value>
+  </data>
+  <data name="alertneedrecipienttel" xml:space="preserve">
+    <value>请填写收件人联系电话！</value>
+  </data>
+  <data name="alertneedrel" xml:space="preserve">
+    <value>请选择家属！</value>
+  </data>
+  <data name="alertneedreportaddr" xml:space="preserve">
+    <value>请填写接收报告地址！</value>
+  </data>
+  <data name="alertneedreportfile" xml:space="preserve">
+    <value>请选择报告文件！</value>
+  </data>
+  <data name="alertneedreporttype" xml:space="preserve">
+    <value>请选择报告属性！</value>
+  </data>
+  <data name="alertneedsex" xml:space="preserve">
+    <value>请选择性别！</value>
+  </data>
+  <data name="alertneeduserpw" xml:space="preserve">
+    <value>用户名及密码不能为空</value>
+  </data>
+  <data name="alertneedvericode" xml:space="preserve">
+    <value>请输入验证码!</value>
+  </data>
+  <data name="alertnoemailrecord" xml:space="preserve">
+    <value>找不到此邮箱记录，请输入正确的邮箱地址!!</value>
+  </data>
+  <data name="alertpayerrortry" xml:space="preserve">
+    <value>支付遇到问题，请重新支付！</value>
+  </data>
+  <data name="alertpaysucceed" xml:space="preserve">
+    <value>支付成功！</value>
+  </data>
+  <data name="alertreportsldpdf" xml:space="preserve">
+    <value>报告必须为pdf格式！</value>
+  </data>
+  <data name="alertsendemailerror" xml:space="preserve">
+    <value>发送邮件出错!!</value>
+  </data>
+  <data name="alertsurecancel" xml:space="preserve">
+    <value>return confirm("确定要取消吗？");</value>
+  </data>
+  <data name="alertuploadsucceed" xml:space="preserve">
+    <value>成功上传报告文件！</value>
+  </data>
+  <data name="alertwronganswer" xml:space="preserve">
+    <value>验证问题回答错误，请重试！</value>
+  </data>
+  <data name="alertwrongDOB" xml:space="preserve">
+    <value>非法生日!</value>
+  </data>
+  <data name="alertwrongIDnum" xml:space="preserve">
+    <value>非法证号!</value>
+  </data>
+  <data name="alertwrongmobile" xml:space="preserve">
+    <value>手机号有误，请重新输入！</value>
+  </data>
+  <data name="alertwronguserpw" xml:space="preserve">
+    <value>用户名或密码错误!!</value>
+  </data>
+  <data name="alertwrongvericode" xml:space="preserve">
+    <value>验证码错误!</value>
+  </data>
+  <data name="alertwrongzone" xml:space="preserve">
+    <value>非法地区!</value>
+  </data>
+  <data name="back" xml:space="preserve">
+    <value>返回</value>
+  </data>
+  <data name="backtohome" xml:space="preserve">
+    <value>返回首页</value>
+  </data>
+  <data name="cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="changepassword" xml:space="preserve">
+    <value>修改密码</value>
+  </data>
+  <data name="children" xml:space="preserve">
+    <value>子女</value>
+  </data>
+  <data name="choosebranch" xml:space="preserve">
+    <value>门店双击选择</value>
+  </data>
+  <data name="ciming" xml:space="preserve">
+    <value>慈铭体检</value>
+  </data>
+  <data name="cimings" xml:space="preserve">
+    <value>慈铭</value>
+  </data>
+  <data name="contacttel" xml:space="preserve">
+    <value>联系电话</value>
+  </data>
+  <data name="continuego" xml:space="preserve">
+    <value>继续→</value>
+  </data>
+  <data name="coordinatedoctor" xml:space="preserve">
+    <value>期望就诊医生</value>
+  </data>
+  <data name="coordinatehospital" xml:space="preserve">
+    <value>协调医院</value>
+  </data>
+  <data name="copyrightpolicy" xml:space="preserve">
+    <value>版权政策</value>
+  </data>
+  <data name="couple" xml:space="preserve">
+    <value>配偶</value>
+  </data>
+  <data name="day" xml:space="preserve">
+    <value>日</value>
+  </data>
+  <data name="discribesymptom" xml:space="preserve">
+    <value>请在此叙述主要症状及问题，Medi-plus就医协调为有偿服务，您提交具体需求后，我们的客户服务人员将在一个工作日内与您沟通详情。</value>
+  </data>
+  <data name="dob" xml:space="preserve">
+    <value>出生日期</value>
+  </data>
+  <data name="docheckup" xml:space="preserve">
+    <value>去体检</value>
+  </data>
+  <data name="docheckupandpay" xml:space="preserve">
+    <value>去体检并付款</value>
+  </data>
+  <data name="doctorname" xml:space="preserve">
+    <value>医生姓名</value>
+  </data>
+  <data name="dontagree" xml:space="preserve">
+    <value>我不同意</value>
+  </data>
+  <data name="dontagreemsg" xml:space="preserve">
+    <value>return confirm("不同意服务条款只能以电话的方式人工预约，确定不同意吗");</value>
+  </data>
+  <data name="doublecheckinfo" xml:space="preserve">
+    <value>核对个人资料和体检预约信息</value>
+  </data>
+  <data name="downloadpdfdoc" xml:space="preserve">
+    <value>下载PDF文档</value>
+  </data>
+  <data name="entryexam" xml:space="preserve">
+    <value>入职体检</value>
+  </data>
+  <data name="examdate" xml:space="preserve">
+    <value>选择体检日期</value>
+  </data>
+  <data name="examtimepkg" xml:space="preserve">
+    <value>体检时间与套餐</value>
+  </data>
+  <data name="female" xml:space="preserve">
+    <value>女</value>
+  </data>
+  <data name="fetchmyself" xml:space="preserve">
+    <value>门店自取</value>
+  </data>
+  <data name="fetchpassword" xml:space="preserve">
+    <value>获取密码</value>
+  </data>
+  <data name="fillallpinfomsg" xml:space="preserve">
+    <value>请完整填写个人信息</value>
+  </data>
+  <data name="foreignpassnum" xml:space="preserve">
+    <value>外籍护照号码</value>
+  </data>
+  <data name="frontpay" xml:space="preserve">
+    <value>前台支付</value>
+  </data>
+  <data name="frontpaythen" xml:space="preserve">
+    <value>体检当天前台付款，一定要准时去体检哦，并认真阅读体检注意事项</value>
+  </data>
+  <data name="guangdabank" xml:space="preserve">
+    <value>中国建设银行安顺路支行</value>
+  </data>
+  <data name="Hadreservation" xml:space="preserve">
+    <value>有预约了，查看预约详情</value>
+  </data>
+  <data name="happennext" xml:space="preserve">
+    <value>接下来</value>
+  </data>
+  <data name="Health" xml:space="preserve">
+    <value>健康</value>
+  </data>
+  <data name="healthcertiexam" xml:space="preserve">
+    <value>健康证体检</value>
+  </data>
+  <data name="iagree" xml:space="preserve">
+    <value>我同意服务条款</value>
+  </data>
+  <data name="idnum" xml:space="preserve">
+    <value>身份证号</value>
+  </data>
+  <data name="ikang" xml:space="preserve">
+    <value>爱康国宾</value>
+  </data>
+  <data name="ikangs" xml:space="preserve">
+    <value>爱康</value>
+  </data>
+  <data name="ikupnote1" xml:space="preserve">
+    <value>如果需要选择加项包并且希望在前台付款，可在体检当天在前台增加体检项目并付费。</value>
+  </data>
+  <data name="ikupnote2" xml:space="preserve">
+    <value>提醒：前台付现价格略高于本平台价格。</value>
+  </data>
+  <data name="items" xml:space="preserve">
+    <value>条</value>
+  </data>
+  <data name="jinshicompanyname" xml:space="preserve">
+    <value>霓蝶（上海）医疗科技有限公司</value>
+  </data>
+  <data name="justnow" xml:space="preserve">
+    <value>刚刚</value>
+  </data>
+  <data name="Label" xml:space="preserve">
+    <value>标签</value>
+  </data>
+  <data name="makebanktransfer" xml:space="preserve">
+    <value>线下银行转账付款</value>
+  </data>
+  <data name="male" xml:space="preserve">
+    <value>男</value>
+  </data>
+  <data name="marriagestatus" xml:space="preserve">
+    <value>婚否</value>
+  </data>
+  <data name="married" xml:space="preserve">
+    <value>已婚</value>
+  </data>
+  <data name="medicalconsult" xml:space="preserve">
+    <value>就医咨询</value>
+  </data>
+  <data name="medicaltime" xml:space="preserve">
+    <value>就医时间</value>
+  </data>
+  <data name="meinian" xml:space="preserve">
+    <value>美年大健康</value>
+  </data>
+  <data name="meinians" xml:space="preserve">
+    <value>美年</value>
+  </data>
+  <data name="month" xml:space="preserve">
+    <value>月</value>
+  </data>
+  <data name="morefun" xml:space="preserve">
+    <value>更多精彩</value>
+  </data>
+  <data name="mpmorefun" xml:space="preserve">
+    <value>还有更多精彩增值服务等着您</value>
+  </data>
+  <data name="MPpackage" xml:space="preserve">
+    <value>精选</value>
+  </data>
+  <data name="mpselection" xml:space="preserve">
+    <value>精选商品</value>
+  </data>
+  <data name="mustchngpwmsg" xml:space="preserve">
+    <value>您必须修改密码才能继续使用！</value>
+  </data>
+  <data name="mustontimemsg" xml:space="preserve">
+    <value>一定要准时去体检哦，并认真阅读体检注意事项</value>
+  </data>
+  <data name="myreservation" xml:space="preserve">
+    <value>我的预约</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>姓名</value>
+  </data>
+  <data name="nameonid" xml:space="preserve">
+    <value>证件姓名</value>
+  </data>
+  <data name="noorder" xml:space="preserve">
+    <value>还没有订单</value>
+  </data>
+  <data name="noreport" xml:space="preserve">
+    <value>还没有报告,请在体检后5个工作日再做查询!</value>
+  </data>
+  <data name="notboundset" xml:space="preserve">
+    <value>未绑定，请设置！</value>
+  </data>
+  <data name="notsettedques" xml:space="preserve">
+    <value>未设置安全提问，请设置！</value>
+  </data>
+  <data name="occupationalexam" xml:space="preserve">
+    <value>职业病体检</value>
+  </data>
+  <data name="oldmobilewrong" xml:space="preserve">
+    <value>原手机号输入有误，请重试输入！</value>
+  </data>
+  <data name="onedayago" xml:space="preserve">
+    <value>1天前</value>
+  </data>
+  <data name="onemonthago" xml:space="preserve">
+    <value>1个月前</value>
+  </data>
+  <data name="oneweekago" xml:space="preserve">
+    <value>1周前</value>
+  </data>
+  <data name="onlinepay" xml:space="preserve">
+    <value>网上支付</value>
+  </data>
+  <data name="ordernum" xml:space="preserve">
+    <value>订单号</value>
+  </data>
+  <data name="orderstatus" xml:space="preserve">
+    <value>订单状态</value>
+  </data>
+  <data name="organization" xml:space="preserve">
+    <value>体检机构</value>
+  </data>
+  <data name="os_cancel" xml:space="preserve">
+    <value>已取消</value>
+  </data>
+  <data name="os_checked" xml:space="preserve">
+    <value>已体检</value>
+  </data>
+  <data name="os_finish" xml:space="preserve">
+    <value>已完成</value>
+  </data>
+  <data name="os_paid" xml:space="preserve">
+    <value>约检成功</value>
+  </data>
+  <data name="os_saved" xml:space="preserve">
+    <value>待确认</value>
+  </data>
+  <data name="os_waitpay" xml:space="preserve">
+    <value>待付款</value>
+  </data>
+  <data name="os_waittransfer" xml:space="preserve">
+    <value>待转账</value>
+  </data>
+  <data name="other" xml:space="preserve">
+    <value>其他</value>
+  </data>
+  <data name="package" xml:space="preserve">
+    <value>体检套餐</value>
+  </data>
+  <data name="packageinfo" xml:space="preserve">
+    <value>套餐信息</value>
+  </data>
+  <data name="Paperreportship" xml:space="preserve">
+    <value>纸质报告寄送</value>
+  </data>
+  <data name="parent" xml:space="preserve">
+    <value>父母</value>
+  </data>
+  <data name="passportnum" xml:space="preserve">
+    <value>护照号码</value>
+  </data>
+  <data name="payment" xml:space="preserve">
+    <value>去结账→</value>
+  </data>
+  <data name="paymethod" xml:space="preserve">
+    <value>付款方式</value>
+  </data>
+  <data name="payresult" xml:space="preserve">
+    <value>支付结果</value>
+  </data>
+  <data name="pdfdownload" xml:space="preserve">
+    <value>PDF下载</value>
+  </data>
+  <data name="pointbill" xml:space="preserve">
+    <value>可用点数,</value>
+  </data>
+  <data name="privacypolicy" xml:space="preserve">
+    <value>隐私保护政策</value>
+  </data>
+  <data name="privateemail" xml:space="preserve">
+    <value>私人邮箱</value>
+  </data>
+  <data name="productname" xml:space="preserve">
+    <value>商品名称</value>
+  </data>
+  <data name="pwchngsuccessmsg" xml:space="preserve">
+    <value>您的密码已经成功修改，请牢记您的新密码!</value>
+  </data>
+  <data name="pwlastchangedtime" xml:space="preserve">
+    <value>上次修改密码时间</value>
+  </data>
+  <data name="quantity" xml:space="preserve">
+    <value>数量</value>
+  </data>
+  <data name="questionrecordedmsg" xml:space="preserve">
+    <value>您的问题已经记录好了，我们的工作人员会主动和您联系！</value>
+  </data>
+  <data name="quickselect" xml:space="preserve">
+    <value>快速选择：</value>
+  </data>
+  <data name="relationshipcus" xml:space="preserve">
+    <value>与员工关系</value>
+  </data>
+  <data name="relname" xml:space="preserve">
+    <value>家属姓名</value>
+  </data>
+  <data name="relogin" xml:space="preserve">
+    <value>重新登陆</value>
+  </data>
+  <data name="relreport" xml:space="preserve">
+    <value>家属体检报告</value>
+  </data>
+  <data name="Relreservation" xml:space="preserve">
+    <value>家属预约</value>
+  </data>
+  <data name="remain" xml:space="preserve">
+    <value>剩余</value>
+  </data>
+  <data name="reportconsult" xml:space="preserve">
+    <value>体检报告咨询预约</value>
+  </data>
+  <data name="reportexamdate" xml:space="preserve">
+    <value>本报告体检日期</value>
+  </data>
+  <data name="reporttype" xml:space="preserve">
+    <value>报告属性</value>
+  </data>
+  <data name="Reservecheckup" xml:space="preserve">
+    <value>预约体检</value>
+  </data>
+  <data name="reserveforme" xml:space="preserve">
+    <value>为我预约</value>
+  </data>
+  <data name="reserveforrel" xml:space="preserve">
+    <value>为家人预约</value>
+  </data>
+  <data name="reservenow" xml:space="preserve">
+    <value>马上预约</value>
+  </data>
+  <data name="resvtimeshdaftermsg" xml:space="preserve">
+    <value>预约日期只能选择今天以后的日期，请重新选择！</value>
+  </data>
+  <data name="rightselectbranch" xml:space="preserve">
+    <value>请勾选右侧罗列体检中心</value>
+  </data>
+  <data name="safeq1" xml:space="preserve">
+    <value>您母亲的姓名是？</value>
+  </data>
+  <data name="safeq10" xml:space="preserve">
+    <value>您的小学校名是？</value>
+  </data>
+  <data name="safeq11" xml:space="preserve">
+    <value>您父亲的生日是？</value>
+  </data>
+  <data name="safeq12" xml:space="preserve">
+    <value>您配偶的姓名是？</value>
+  </data>
+  <data name="safeq13" xml:space="preserve">
+    <value>您母亲的职业是？</value>
+  </data>
+  <data name="safeq14" xml:space="preserve">
+    <value>您初中班主任的名字是？</value>
+  </data>
+  <data name="safeq15" xml:space="preserve">
+    <value>您配偶的职业是？</value>
+  </data>
+  <data name="safeq16" xml:space="preserve">
+    <value>您最熟悉的童年好友名字是？</value>
+  </data>
+  <data name="safeq17" xml:space="preserve">
+    <value>您最熟悉的学校宿舍室友名字是？</value>
+  </data>
+  <data name="safeq18" xml:space="preserve">
+    <value>对您影响最大的人名字是？</value>
+  </data>
+  <data name="safeq2" xml:space="preserve">
+    <value>您父亲的职业是？</value>
+  </data>
+  <data name="safeq3" xml:space="preserve">
+    <value>您配偶的生日是？</value>
+  </data>
+  <data name="safeq4" xml:space="preserve">
+    <value>您的学号（或工号）是？</value>
+  </data>
+  <data name="safeq5" xml:space="preserve">
+    <value>您母亲的生日是？</value>
+  </data>
+  <data name="safeq6" xml:space="preserve">
+    <value>您高中班主任的名字是？</value>
+  </data>
+  <data name="safeq7" xml:space="preserve">
+    <value>您父亲的姓名是？</value>
+  </data>
+  <data name="safeq8" xml:space="preserve">
+    <value>您的出生地是？</value>
+  </data>
+  <data name="safeq9" xml:space="preserve">
+    <value>您小学班主任的名字是？</value>
+  </data>
+  <data name="select" xml:space="preserve">
+    <value>请选择</value>
+  </data>
+  <data name="selfpay" xml:space="preserve">
+    <value>自付费</value>
+  </data>
+  <data name="sendtootheraddr" xml:space="preserve">
+    <value>寄送到其他地址（寄送报告费用请在门店自付）</value>
+  </data>
+  <data name="sentpwtomobilemsg" xml:space="preserve">
+    <value>我们已经往您的手机发送了新密码，请查收!</value>
+  </data>
+  <data name="servicetime" xml:space="preserve">
+    <value>服务时间</value>
+  </data>
+  <data name="servicetimemsg" xml:space="preserve">
+    <value>周一至周五 9：00--18：00（节假日除外）</value>
+  </data>
+  <data name="settedquestion" xml:space="preserve">
+    <value>已设置安全提问！</value>
+  </data>
+  <data name="sex" xml:space="preserve">
+    <value>性别</value>
+  </data>
+  <data name="stuffreport" xml:space="preserve">
+    <value>员工体检报告</value>
+  </data>
+  <data name="submit" xml:space="preserve">
+    <value>提交→</value>
+  </data>
+  <data name="suppliernotemsg" xml:space="preserve">
+    <value>体检中心可选日期见左侧列表，如需约后续日期请邮件联系客服</value>
+  </data>
+  <data name="termservice" xml:space="preserve">
+    <value>服务条款</value>
+  </data>
+  <data name="throughphoneandid" xml:space="preserve">
+    <value>通过手机+身份证号找回</value>
+  </data>
+  <data name="throughsafequestion" xml:space="preserve">
+    <value>通过安全问题找回</value>
+  </data>
+  <data name="throughworkemail" xml:space="preserve">
+    <value>通过工作邮箱</value>
+  </data>
+  <data name="Toaddress" xml:space="preserve">
+    <value>寄到:</value>
+  </data>
+  <data name="tocompany" xml:space="preserve">
+    <value>统一寄送至公司（每月一次）</value>
+  </data>
+  <data name="tootheraddr" xml:space="preserve">
+    <value>寄送到其他地址 （寄送报告费用请在门店自付）</value>
+  </data>
+  <data name="total" xml:space="preserve">
+    <value>共计</value>
+  </data>
+  <data name="totalamount" xml:space="preserve">
+    <value>小计</value>
+  </data>
+  <data name="transferbank" xml:space="preserve">
+    <value>汇款银行</value>
+  </data>
+  <data name="transferpay" xml:space="preserve">
+    <value>转账支付</value>
+  </data>
+  <data name="transfersuccessthen" xml:space="preserve">
+    <value>在转账成功后记得电话通知我们的客服人员确认付款状态</value>
+  </data>
+  <data name="twohourago" xml:space="preserve">
+    <value>2小时前</value>
+  </data>
+  <data name="twopassnotmatch" xml:space="preserve">
+    <value>两次输入的安全密码答案不一致，请重试一次</value>
+  </data>
+  <data name="unitprice" xml:space="preserve">
+    <value>单价</value>
+  </data>
+  <data name="unmarried" xml:space="preserve">
+    <value>未婚</value>
+  </data>
+  <data name="unreaditems" xml:space="preserve">
+    <value>条未读消息</value>
+  </data>
+  <data name="updatepassword" xml:space="preserve">
+    <value>更新密码</value>
+  </data>
+  <data name="updatesuccess" xml:space="preserve">
+    <value>更新成功！</value>
+  </data>
+  <data name="uploadreport" xml:space="preserve">
+    <value>上传报告</value>
+  </data>
+  <data name="uppkg" xml:space="preserve">
+    <value>加项包</value>
+  </data>
+  <data name="verifyok" xml:space="preserve">
+    <value>验证成功</value>
+  </data>
+  <data name="viewpkgdetail" xml:space="preserve">
+    <value>查看体检套餐详情</value>
+  </data>
+  <data name="workemail" xml:space="preserve">
+    <value>工作邮箱</value>
+  </data>
+  <data name="year" xml:space="preserve">
+    <value>年</value>
+  </data>
+  <data name="Yuan" xml:space="preserve">
+    <value>元</value>
+  </data>
+  <data name="goconsult" xml:space="preserve">
+    <value>去健康咨询</value>
+  </data>
+  <data name="goshopping" xml:space="preserve">
+    <value>逛健康商城</value>
+  </data>
+  <data name="vieworders" xml:space="preserve">
+    <value>查看订单</value>
+  </data>
+  <data name="alertlinkcannotrec" xml:space="preserve">
+    <value>链接无法识别！</value>
+  </data>
+  <data name="alertnewemailok" xml:space="preserve">
+    <value>新邮箱激活成功！</value>
+  </data>
+  <data name="fillreportorg" xml:space="preserve">
+    <value>填写体检机构</value>
+  </data>
+  <data name="idpass1option" xml:space="preserve">
+    <value>身份证号码与护照号码选填一项，其余必填</value>
+  </data>
+  <data name="viewuppkgdetail" xml:space="preserve">
+    <value>查看加项包详情</value>
+  </data>
+  <data name="payerrortry" xml:space="preserve">
+    <value>支付失败，请重新支付！</value>
+  </data>
+  <data name="paysucceed" xml:space="preserve">
+    <value>支付成功！</value>
+  </data>
+  <data name="alertwrongmobileid" xml:space="preserve">
+    <value>找不到此用户，请输入正确的手机号与身份证号码!!</value>
+  </data>
+  <data name="youreserveok" xml:space="preserve">
+    <value>你已成功提交预约,以收到确认短信为准</value>
+  </data>
+  <data name="requireenglishservice" xml:space="preserve">
+    <value>需要英文陪检服务</value>
+  </data>
+  <data name="requirepaperreport" xml:space="preserve">
+    <value>需要纸质报告 (如非必须请支持环保)</value>
+  </data>
+  <data name="wehaveereportplzcon" xml:space="preserve">
+    <value>电子体检报告在线查询</value>
+  </data>
+  <data name="alertneedprocityzone" xml:space="preserve">
+    <value>请选择省市区！</value>
+  </data>
+  <data name="yoursubmitok" xml:space="preserve">
+    <value>你已成功提交预约,以收到确认短信为准</value>
+  </data>
+  <data name="alertneeddate" xml:space="preserve">
+    <value>请正确选择日期！</value>
+  </data>
+  <data name="alertnorel" xml:space="preserve">
+    <value>没有家属信息，请先创建家属！</value>
+  </data>
+  <data name="alertilegle" xml:space="preserve">
+    <value>新密码不符合要求，请重新输入!</value>
+  </data>
+  <data name="alertrepeat3set" xml:space="preserve">
+    <value>新密码与最近3组密码重复，请重新输入!</value>
+  </data>
+  <data name="alertwrongcurrentpw" xml:space="preserve">
+    <value>现用密码不正确，请重新输入</value>
+  </data>
+  <data name="alertneedchar" xml:space="preserve">
+    <value>新密码必须包含字母！</value>
+  </data>
+  <data name="alertneeddigit" xml:space="preserve">
+    <value>新密码必须包含数字！</value>
+  </data>
+  <data name="pdfonly" xml:space="preserve">
+    <value>仅限pdf文件！</value>
+  </data>
+  <data name="requireenglishreport" xml:space="preserve">
+    <value>需要英文报告</value>
+  </data>
+  <data name="aboutus" xml:space="preserve">
+    <value>关于我们</value>
+  </data>
+  <data name="na" xml:space="preserve">
+    <value>无</value>
+  </data>
+  <data name="qrnofee" xml:space="preserve">
+    <value>支付宝扫描二维码支付免手续费！</value>
+  </data>
+  <data name="toalipay" xml:space="preserve">
+    <value>跳转到支付宝付款</value>
+  </data>
+  <data name="DropDownList2Resource1" xml:space="preserve">
+    <value>选择套餐</value>
+  </data>
+  <data name="com_CityResource1" xml:space="preserve">
+    <value>选择市</value>
+  </data>
+  <data name="com_ProvinceResource1" xml:space="preserve">
+    <value>选择省</value>
+  </data>
+  <data name="DropDownList1Resource1" xml:space="preserve">
+    <value>选择体检中心</value>
+  </data>
+  <data name="DropDownList2Resource11" xml:space="preserve">
+    <value>选择套餐</value>
+  </data>
+  <data name="DropDownList3Resource1" xml:space="preserve">
+    <value>选择升级包</value>
+  </data>
+  <data name="DropDownList4Resource1" xml:space="preserve">
+    <value>选择体检日期</value>
+  </data>
+  <data name="myorder" xml:space="preserve">
+    <value>我的订单</value>
+  </data>
+  <data name="shopcart" xml:space="preserve">
+    <value>购物车</value>
+  </data>
+  <data name="shippinginfo" xml:space="preserve">
+    <value>快递信息</value>
+  </data>
+  <data name="tobelowaddr" xml:space="preserve">
+    <value>寄送到以下地址</value>
+  </data>
+  <data name="abc" xml:space="preserve">
+    <value>我是abc</value>
+  </data>
+  <data name="pricetype" xml:space="preserve">
+    <value>市场价</value>
+  </data>
+  <data name="promoteprice" xml:space="preserve">
+    <value>员工价</value>
+  </data>
+  <data name="queren" xml:space="preserve">
+    <value>确认付款</value>
+  </data>
+  <data name="tianxie" xml:space="preserve">
+    <value>填写订单信息</value>
+  </data>
+  <data name="viewcart" xml:space="preserve">
+    <value>查看购物车</value>
+  </data>
+  <data name="xuanze" xml:space="preserve">
+    <value>选择物品</value>
+  </data>
+  <data name="addcart" xml:space="preserve">
+    <value>加入购物车</value>
+  </data>
+  <data name="buynow" xml:space="preserve">
+    <value>加入</value>
+  </data>
+  <data name="chanpinjieshao" xml:space="preserve">
+    <value>产品介绍</value>
+  </data>
+  <data name="choose" xml:space="preserve">
+    <value>已选择</value>
+  </data>
+  <data name="healthyadd" xml:space="preserve">
+    <value>健康补给站</value>
+  </data>
+  <data name="jibencanshu" xml:space="preserve">
+    <value>基本参数</value>
+  </data>
+  <data name="nowprice" xml:space="preserve">
+    <value>现价</value>
+  </data>
+  <data name="num" xml:space="preserve">
+    <value>数量</value>
+  </data>
+  <data name="pinpaijieshao" xml:space="preserve">
+    <value>品牌介绍</value>
+  </data>
+  <data name="producttype" xml:space="preserve">
+    <value>品类</value>
+  </data>
+  <data name="shiyongshuoming" xml:space="preserve">
+    <value>使用说明</value>
+  </data>
+  <data name="shopcar" xml:space="preserve">
+    <value>购物车</value>
+  </data>
+  <data name="money" xml:space="preserve">
+    <value>金额</value>
+  </data>
+  <data name="orderdate" xml:space="preserve">
+    <value>订单日期</value>
+  </data>
+  <data name="orderproduct" xml:space="preserve">
+    <value>订单物品</value>
+  </data>
+  <data name="payway" xml:space="preserve">
+    <value>请选择付款方式</value>
+  </data>
+  <data name="productyunfei" xml:space="preserve">
+    <value>物流费用：&lt;br /&gt;结算价格低于199元时，江浙沪会多加6元运费，北京、广州、武汉、深圳、成都、重庆加9元，其他城市加12元运费</value>
+  </data>
+  <data name="myshopcart" xml:space="preserve">
+    <value>我的购物车</value>
+  </data>
+  <data name="huajians" xml:space="preserve">
+    <value>华检</value>
+  </data>
+  <data name="ruicis" xml:space="preserve">
+    <value>瑞慈</value>
+  </data>
+  <data name="healthconsult1" xml:space="preserve">
+    <value>体检报告医生解读预约</value>
+  </data>
+  <data name="healthconsult2" xml:space="preserve">
+    <value>体检中心医生致电解读各项指标（免费）</value>
+  </data>
+  <data name="healthconsult3" xml:space="preserve">
+    <value>检后就医－全国各大三甲医院主任及专家预约</value>
+  </data>
+  <data name="healthconsult4" xml:space="preserve">
+    <value>预约挂号   350元/次(请致电客服确认后付费)</value>
+  </data>
+  <data name="healthconsult5" xml:space="preserve">
+    <value>预约挂号＋专人陪同   500元/次(请致电客服确认后付费)</value>
+  </data>
+  <data name="alertsubmitfailed" xml:space="preserve">
+    <value>提交订单出错！错误代码:</value>
+  </data>
+  <data name="errorpaymothod" xml:space="preserve">
+    <value>选择付款方式！</value>
+  </data>
+  <data name="address" xml:space="preserve">
+    <value>私人邮箱</value>
+  </data>
+  <data name="Age" xml:space="preserve">
+    <value>年龄</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>手机号</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>体检城市</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>预约时间</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>体检预约信息</value>
+  </data>
+  <data name="dizhi" xml:space="preserve">
+    <value>联系地址</value>
+  </data>
+  <data name="Fee" xml:space="preserve">
+    <value>自付费</value>
+  </data>
+  <data name="gerxx" xml:space="preserve">
+    <value>个人信息</value>
+  </data>
+  <data name="Itemsl" xml:space="preserve">
+    <value>加项包</value>
+  </data>
+  <data name="Marital" xml:space="preserve">
+    <value>婚姻状况</value>
+  </data>
+  <data name="Packagel" xml:space="preserve">
+    <value>体检套餐</value>
+  </data>
+  <data name="Passport" xml:space="preserve">
+    <value>证件号</value>
+  </data>
+  <data name="xingb" xml:space="preserve">
+    <value>性别</value>
+  </data>
+  <data name="xingming" xml:space="preserve">
+    <value>姓名</value>
+  </data>
+  <data name="Dental" xml:space="preserve">
+    <value>洗牙分店</value>
+  </data>
+  <data name="paywait" xml:space="preserve">
+    <value>如您已经付费，客服人员在工作时间确认后做相应安排！请耐心等待！</value>
+  </data>
+  <data name="RMB" xml:space="preserve">
+    <value />
+  </data>
+  <data name="mapinti" xml:space="preserve">
+    <value>地图嵌入</value>
+  </data>
+  <data name="mpwechat" xml:space="preserve">
+    <value>微信公众号</value>
+  </data>
+  <data name="onlineshop" xml:space="preserve">
+    <value>在线商城</value>
+  </data>
+  <data name="scrumdev" xml:space="preserve">
+    <value>敏捷开发</value>
+  </data>
+  <data name="view" xml:space="preserve">
+    <value>查看</value>
+  </data>
+</root>

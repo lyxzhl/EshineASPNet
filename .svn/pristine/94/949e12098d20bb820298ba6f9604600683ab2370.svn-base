@@ -1,0 +1,94 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Script.Serialization;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class tijianwjj : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        String shuzi = "J1";
+        //jieshu(shuzi);
+
+        jieshuwj(shuzi);
+    }
+
+    //体检问卷类别
+    public void jieshu(string shuzi)
+    {
+        //获取数据
+        string url = "http://app.medi-plus.com.cn/tijiandaod.aspx";
+        System.Collections.Specialized.NameValueCollection PostVars;
+        PostVars = new System.Collections.Specialized.NameValueCollection();
+        PostVars.Add("TijianID", shuzi);
+        string s = PublicClass.postrequest(url, PostVars);
+
+        JavaScriptSerializer jss = new JavaScriptSerializer();
+        Dictionary<string, object> json = (Dictionary<string, object>)jss.DeserializeObject(s);
+
+        object value;
+        if (json.TryGetValue("data", out value))
+        {
+            object[] array = (object[])value;
+            for (int i = 0; i < array.Length; i++)
+            {
+
+                Dictionary<string, object> dd = (Dictionary<string, object>)array[i];
+                switch (i)
+                {
+                    case 0: this.Label1.Text = dd["fenxname"].ToString(); break;
+                    case 1: this.Label2.Text = dd["fenxname"].ToString(); break;
+                    case 2: this.Label3.Text = dd["fenxname"].ToString(); break;
+                    case 3: this.Label4.Text = dd["fenxname"].ToString(); break;
+                    case 4: this.Label5.Text = dd["fenxname"].ToString(); break;
+                    case 5: this.Label6.Text = dd["fenxname"].ToString(); break;
+                    case 6: this.Label7.Text = dd["fenxname"].ToString(); break;
+                }
+
+            }
+
+        }
+
+    }
+    //体检问题
+    public void jieshuwj(string shuzi)
+    {
+        //获取数据
+        string url = "http://app.medi-plus.com.cn/tijianwj.aspx";
+        System.Collections.Specialized.NameValueCollection PostVars;
+        PostVars = new System.Collections.Specialized.NameValueCollection();
+        PostVars.Add("TijianID", shuzi);
+        string s = PublicClass.postrequest(url, PostVars);
+
+        JavaScriptSerializer jss = new JavaScriptSerializer();
+        Dictionary<string, object> json = (Dictionary<string, object>)jss.DeserializeObject(s);
+
+        object value;
+        if (json.TryGetValue("data", out value))
+        {
+            object[] array = (object[])value;
+            for (int i = 0; i < array.Length; i++)
+            {
+
+                Dictionary<string, object> dd = (Dictionary<string, object>)array[i];
+                switch (i)
+                {
+                    case 0: this.Label1.Text = dd["wentixshi"].ToString(); break;
+                    case 1: this.Label2.Text = dd["wentixshi"].ToString(); break;
+                    case 2: this.Label3.Text = dd["wentixshi"].ToString(); break;
+                    case 3: this.Label4.Text = dd["wentixshi"].ToString(); break;
+                    case 4: this.Label5.Text = dd["wentixshi"].ToString(); break;
+                    case 5: this.Label6.Text = dd["wentixshi"].ToString(); break;
+                    case 6: this.Label7.Text = dd["wentixshi"].ToString(); break;
+                }
+
+            }
+
+        }
+
+    }
+
+}

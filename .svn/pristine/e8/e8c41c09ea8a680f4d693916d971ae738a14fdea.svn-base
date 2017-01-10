@@ -1,0 +1,160 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Model
+{
+    public class tab_package
+    {
+        private int _id = 0;
+        private string _packagecode = "";
+        private string _supplier = "";
+        private string _company = "";
+        private string _period = "";
+        private string _msg = "";
+        private string _msg_eng = "";
+        private double _budget = 0.0;
+        private double _budgetshare = 0.0;
+        private double _price = 0.0;
+        private double _marketprice = 0.0;
+        private DateTime _addtime = DateTime.Parse("1900-01-01");
+        private DateTime _expiredate = DateTime.Parse("1900-01-01");
+        private string _VIP = "";
+        private string _note = "";
+        private string _note_eng = "";
+        private string _type = "";
+        private string _uppkgtype = "";
+        private string _applytype = "";
+        private int _minage = 0;
+        private int _maxage = 0;
+
+
+        public int id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        public string packagecode
+        {
+            get { return _packagecode; }
+            set { _packagecode = value; }
+        }
+
+        public string supplier
+        {
+            get { return _supplier; }
+            set { _supplier = value; }
+        }
+
+        public string company
+        {
+            get { return _company; }
+            set { _company = value; }
+        }
+
+        public string period
+        {
+            get { return _period; }
+            set { _period = value; }
+        }
+
+        public string msg
+        {
+            get { return _msg; }
+            set { _msg = value; }
+        }
+
+        public string msg_eng
+        {
+            get { return _msg_eng; }
+            set { _msg_eng = value; }
+        }
+
+        public double budget
+        {
+            get { return _budget; }
+            set { _budget = value; }
+        }
+
+        public double budgetshare
+        {
+            get { return _budgetshare; }
+            set { _budgetshare = value; }
+        }
+
+        public double price
+        {
+            get { return _price; }
+            set { _price = value; }
+        }
+
+        public double marketprice
+        {
+            get { return _marketprice; }
+            set { _marketprice = value; }
+        }
+
+        public DateTime addtime
+        {
+            get { return _addtime; }
+            set { _addtime = value; }
+        }
+
+        public DateTime expiredate
+        {
+            get { return _expiredate; }
+            set { _expiredate = value; }
+        }
+
+        public string VIP
+        {
+            get { return _VIP; }
+            set { _VIP = value; }
+        }
+
+        public string note
+        {
+            get { return _note; }
+            set { _note = value; }
+        }
+
+        public string note_eng
+        {
+            get { return _note_eng; }
+            set { _note_eng = value; }
+        }
+
+        public string type
+        {
+            get { return _type; }
+            set { _type = value; }
+        }
+
+        public string uppkgtype
+        {
+            get { return _uppkgtype; }
+            set { _uppkgtype = value; }
+        }
+
+        public string applytype
+        {
+            get { return _applytype; }
+            set { _applytype = value; }
+        }
+
+        public int minage
+        {
+            get { return _minage; }
+            set { _minage = value; }
+        }
+
+        public int maxage
+        {
+            get { return _maxage; }
+            set { _maxage = value; }
+        }
+
+
+    }
+}

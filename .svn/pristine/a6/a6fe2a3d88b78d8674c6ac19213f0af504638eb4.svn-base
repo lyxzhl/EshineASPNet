@@ -1,0 +1,41 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick" onclick="goTo('../../module/service/family_medical.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </a>
+        <div class="center">家庭成员列表</div>
+        <div class="right">
+            <span class="aClick" onclick="goTo('add_familymember.html');">添加</span>
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="FamilyMember" class="page">
+        <div class="page-content content_FMember">
+            <div class="FMember-wrap">
+                <div class="group-item">
+                    <div class="row-item">
+                        您还未添加任何家庭成员
+                    </div>
+                    <a class="row-item" href="#" onclick="goTo('../../module/service/family_medical.html');">
+                        <span class="full-left">姓名：张三</span>
+                        <span class="full-left">证件号：31010210000000000</span>
+                        <span class="full-left">联系方式：13813813811</span>
+                    </a>
+                    <a class="row-item" href="#" onclick="goTo('../../module/service/family_medical.html');">
+                        <span class="full-left">姓名：李四</span>
+                        <span class="full-left">证件号：31010210000000000</span>
+                        <span class="full-left">联系方式：13813813811</span>
+                    </a>
+                    <a class="row-item" href="#" onclick="goTo('../../module/service/family_medical.html');">
+                        <span class="full-left">姓名：王五</span>
+                        <span class="full-left">证件号：31010210000000000</span>
+                        <span class="full-left">联系方式：13813813811</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

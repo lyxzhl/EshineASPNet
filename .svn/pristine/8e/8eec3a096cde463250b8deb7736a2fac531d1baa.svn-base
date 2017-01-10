@@ -1,0 +1,294 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="fillinfo.aspx.cs" Inherits="fillinfo" %>
+
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+<%@ Register TagPrefix="MPuc" TagName="headcontent" Src="UserControl/headcontent.ascx" %>
+<%@ Register TagPrefix="MPuc" TagName="mobilenav" Src="UserControl/mobilenav.ascx" %>
+<%@ Register TagPrefix="MPuc" TagName="desktopnav" Src="UserControl/desktopnav.ascx" %>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="UserControl/footer1.ascx" %>
+<%@ Register Assembly="GMaps" Namespace="Subgurim.Controles" TagPrefix="cc1" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Medi-Plus -
+        <asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,titletext %>'></asp:Localize></title>
+    <MPuc:headcontent runat="server" ID="Unnamed1" />
+    <link rel="stylesheet" type="text/css" href="CSS/safecenter.css">
+    <script src="JS/mp.js" type="text/javascript"></script>
+    <!--script type="text/javascript" src="http://api.map.baidu.com/api?ak=YG2iv0eCzo1z6YTsau5pgd24&v=2.0"></!--script-->
+    <script type="text/javascript" src="http://api.map.baidu.com/api?ak=YG2iv0eCzo1z6YTsau5pgd24&v=1.5"></script>
+    <script src="JS/baidumap.js" type="text/javascript"></script>
+
+
+
+</head>
+<body class='signups'>
+    <MPuc:mobilenav runat="server" ID="Unnamed2" />
+    <form id="Form1" runat="server">
+        <div class='wrapper' data-behavior='Navigation'>
+            <MPuc:desktopnav runat="server" ID="Unnamed3" />
+
+
+            <div class="container signup">
+                <div class="simple_form new_signup_context" id="new_signup_context">
+
+                    <div id="main" runat="server">
+                        <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
+                        </asp:ToolkitScriptManager>
+                    </div>
+                    <asp:UpdateProgress ID="UpdateProgress1" runat="server">
+                        <ProgressTemplate>
+                            <div style="filter: alpha(opacity=80); background-color: #f0f0f0; width: 150px; height: 150px; text-align: center;">
+                                <asp:Label ID="Labelwait1" runat="server" Text="正在联系体检中心..."
+                                    meta:resourcekey="LabelwaitResource1"></asp:Label><br />
+                                <asp:Label ID="Labelwait2" runat="server" Text="可能持续约几秒钟" meta:resourcekey="Labelwait2Resource1"></asp:Label><br />
+                                <img src="Images/loading.gif" align="middle" width="100px" height="100px" />
+                            </div>
+                        </ProgressTemplate>
+                    </asp:UpdateProgress>
+                    <asp:ModalPopupExtender ID="ModalPopupExtender1" runat="server" TargetControlID="LinkButPop"
+                        PopupControlID="UpdateProgress1" DynamicServicePath="" Enabled="True">
+                    </asp:ModalPopupExtender>
+                    <asp:LinkButton ID="LinkButPop" runat="server" class="hidden"></asp:LinkButton>
+                 <asp:Panel class="signup_form tile" ID="Panel2" runat="server" Visible="true">
+                        <div class="row">
+                            <div class="twelvecol">
+                                <h1>
+                                    <asp:Localize ID="Localize3" runat="server" Text='<%$ Resources:GResource,personaldetail %>'></asp:Localize></h1>
+                                <h4>
+                                    <asp:Localize ID="Localize4" runat="server" Text='<%$ Resources:GResource,fillallpinfomsg %>'></asp:Localize></h4>
+                            </div>
+                        </div>
+                        <div class="row sizes">
+                            <div class="fourcol"></div>
+                            <div class="fourcol">
+
+                                <div class="input string required">
+                                    <label class="string required" for="signup_context_first_name">
+                                        <asp:Localize ID="Localize5" runat="server" Text='<%$ Resources:GResource,name %>'></asp:Localize></label>
+                                    <asp:TextBox class="string required" ID="TextBox1" runat="server" placeholder='<%$ Resources:GResource,nameonid %>'></asp:TextBox>
+                                </div>
+                                <div class="input string required">
+                                    <label class="string required" for="signup_context_first_name">
+                                        <asp:Localize ID="Localize6" runat="server" Text='<%$ Resources:GResource,idnum %>'></asp:Localize></label>
+                                    <asp:TextBox class="string required" ID="TextBox3" runat="server" placeholder='<%$ Resources:GResource,idnum %>' onblur="javascript:cidInfo(this.value);" MaxLength="18"></asp:TextBox>
+                                    <asp:TextBox ID="TextBox6" runat="server" class="hidden"></asp:TextBox>
+                                </div>
+                                <div class="input string required">
+                                    <label class="string required" for="signup_context_first_name">
+                                        <asp:Localize ID="Localize7" runat="server" Text='<%$ Resources:GResource,passportnum %>'></asp:Localize></label>
+                                    <asp:TextBox class="string required" ID="TextBox5" runat="server" placeholder='<%$ Resources:GResource,foreignpassnum %>' MaxLength="18"></asp:TextBox>
+                                </div>
+                                <div class="input email required">
+                                    <label class="email required" for="signup_context_first_name">
+                                        <asp:Localize ID="Localize11" runat="server" Text='<%$ Resources:GResource,privateemail %>'></asp:Localize></label>
+                                    <asp:TextBox class="string email required" ID="TextBox2" runat="server" type="email" placeholder='<%$ Resources:GResource,privateemail %>'></asp:TextBox>
+                                </div>
+                                <div id="email_warning"></div>
+
+                                <div class="three_input_grouping">
+                                    <div class="input month_select required">
+                                        <label class="month_select required" for="signup_context_birth_month">
+                                            <asp:Localize ID="Localize8" runat="server" Text='<%$ Resources:GResource,dob %>'></asp:Localize></label>
+                                        <asp:DropDownList ID="DropDownListYear" class="select required customSelect" runat="server">
+                                            <asp:ListItem Text='<%$ Resources:GResource,year %>'></asp:ListItem>
+                                            <asp:ListItem>2012</asp:ListItem>
+                                            <asp:ListItem>2011</asp:ListItem>
+                                            <asp:ListItem>2010</asp:ListItem>
+                                            <asp:ListItem>2009</asp:ListItem>
+                                            <asp:ListItem>2008</asp:ListItem>
+                                            <asp:ListItem>2007</asp:ListItem>
+                                            <asp:ListItem>2006</asp:ListItem>
+                                            <asp:ListItem>2005</asp:ListItem>
+                                            <asp:ListItem>2004</asp:ListItem>
+                                            <asp:ListItem>2003</asp:ListItem>
+                                            <asp:ListItem>2002</asp:ListItem>
+                                            <asp:ListItem>2001</asp:ListItem>
+                                            <asp:ListItem>2000</asp:ListItem>
+                                            <asp:ListItem>1999</asp:ListItem>
+                                            <asp:ListItem>1998</asp:ListItem>
+                                            <asp:ListItem>1997</asp:ListItem>
+                                            <asp:ListItem>1996</asp:ListItem>
+                                            <asp:ListItem>1995</asp:ListItem>
+                                            <asp:ListItem>1994</asp:ListItem>
+                                            <asp:ListItem>1993</asp:ListItem>
+                                            <asp:ListItem>1992</asp:ListItem>
+                                            <asp:ListItem>1991</asp:ListItem>
+                                            <asp:ListItem>1990</asp:ListItem>
+                                            <asp:ListItem>1989</asp:ListItem>
+                                            <asp:ListItem>1988</asp:ListItem>
+                                            <asp:ListItem>1987</asp:ListItem>
+                                            <asp:ListItem>1986</asp:ListItem>
+                                            <asp:ListItem>1985</asp:ListItem>
+                                            <asp:ListItem>1984</asp:ListItem>
+                                            <asp:ListItem>1983</asp:ListItem>
+                                            <asp:ListItem>1982</asp:ListItem>
+                                            <asp:ListItem>1981</asp:ListItem>
+                                            <asp:ListItem>1980</asp:ListItem>
+                                            <asp:ListItem>1979</asp:ListItem>
+                                            <asp:ListItem>1978</asp:ListItem>
+                                            <asp:ListItem>1977</asp:ListItem>
+                                            <asp:ListItem>1976</asp:ListItem>
+                                            <asp:ListItem>1975</asp:ListItem>
+                                            <asp:ListItem>1974</asp:ListItem>
+                                            <asp:ListItem>1973</asp:ListItem>
+                                            <asp:ListItem>1972</asp:ListItem>
+                                            <asp:ListItem>1971</asp:ListItem>
+                                            <asp:ListItem>1970</asp:ListItem>
+                                            <asp:ListItem>1969</asp:ListItem>
+                                            <asp:ListItem>1968</asp:ListItem>
+                                            <asp:ListItem>1967</asp:ListItem>
+                                            <asp:ListItem>1966</asp:ListItem>
+                                            <asp:ListItem>1965</asp:ListItem>
+                                            <asp:ListItem>1964</asp:ListItem>
+                                            <asp:ListItem>1963</asp:ListItem>
+                                            <asp:ListItem>1962</asp:ListItem>
+                                            <asp:ListItem>1961</asp:ListItem>
+                                            <asp:ListItem>1960</asp:ListItem>
+                                            <asp:ListItem>1959</asp:ListItem>
+                                            <asp:ListItem>1958</asp:ListItem>
+                                            <asp:ListItem>1957</asp:ListItem>
+                                            <asp:ListItem>1956</asp:ListItem>
+                                            <asp:ListItem>1955</asp:ListItem>
+                                            <asp:ListItem>1954</asp:ListItem>
+                                            <asp:ListItem>1953</asp:ListItem>
+                                            <asp:ListItem>1952</asp:ListItem>
+                                            <asp:ListItem>1951</asp:ListItem>
+                                            <asp:ListItem>1950</asp:ListItem>
+                                            <asp:ListItem>1949</asp:ListItem>
+                                            <asp:ListItem>1948</asp:ListItem>
+                                            <asp:ListItem>1947</asp:ListItem>
+                                            <asp:ListItem>1946</asp:ListItem>
+                                            <asp:ListItem>1945</asp:ListItem>
+                                            <asp:ListItem>1944</asp:ListItem>
+                                            <asp:ListItem>1943</asp:ListItem>
+                                            <asp:ListItem>1942</asp:ListItem>
+                                            <asp:ListItem>1941</asp:ListItem>
+                                            <asp:ListItem>1940</asp:ListItem>
+                                            <asp:ListItem>1939</asp:ListItem>
+                                            <asp:ListItem>1938</asp:ListItem>
+                                            <asp:ListItem>1937</asp:ListItem>
+                                            <asp:ListItem>1936</asp:ListItem>
+                                            <asp:ListItem>1935</asp:ListItem>
+                                            <asp:ListItem>1934</asp:ListItem>
+                                            <asp:ListItem>1933</asp:ListItem>
+
+                                        </asp:DropDownList>
+
+                                    </div>
+                                    <div class="input select required">
+                                        <label class="select required" for="signup_context_birth_date">&nbsp;</label>
+                                        <asp:DropDownList ID="DropDownListMonth" class="month_select required customSelect" runat="server">
+                                            <asp:ListItem Text='<%$ Resources:GResource,month %>'></asp:ListItem>
+                                            <asp:ListItem>1</asp:ListItem>
+                                            <asp:ListItem>2</asp:ListItem>
+                                            <asp:ListItem>3</asp:ListItem>
+                                            <asp:ListItem>4</asp:ListItem>
+                                            <asp:ListItem>5</asp:ListItem>
+                                            <asp:ListItem>6</asp:ListItem>
+                                            <asp:ListItem>7</asp:ListItem>
+                                            <asp:ListItem>8</asp:ListItem>
+                                            <asp:ListItem>9</asp:ListItem>
+                                            <asp:ListItem>10</asp:ListItem>
+                                            <asp:ListItem>11</asp:ListItem>
+                                            <asp:ListItem>12</asp:ListItem>
+
+                                        </asp:DropDownList>
+                                    </div>
+                                    <div class="input select required">
+                                        <label class="select required" for="signup_context_birth_year">&nbsp;</label>
+                                        <asp:DropDownList ID="DropDownListDay" class="select required customSelect" runat="server">
+                                            <asp:ListItem Text='<%$ Resources:GResource,day %>'></asp:ListItem>
+                                            <asp:ListItem>1</asp:ListItem>
+                                            <asp:ListItem>2</asp:ListItem>
+                                            <asp:ListItem>3</asp:ListItem>
+                                            <asp:ListItem>4</asp:ListItem>
+                                            <asp:ListItem>5</asp:ListItem>
+                                            <asp:ListItem>6</asp:ListItem>
+                                            <asp:ListItem>7</asp:ListItem>
+                                            <asp:ListItem>8</asp:ListItem>
+                                            <asp:ListItem>9</asp:ListItem>
+                                            <asp:ListItem>10</asp:ListItem>
+                                            <asp:ListItem>11</asp:ListItem>
+                                            <asp:ListItem>12</asp:ListItem>
+                                            <asp:ListItem>13</asp:ListItem>
+                                            <asp:ListItem>14</asp:ListItem>
+                                            <asp:ListItem>15</asp:ListItem>
+                                            <asp:ListItem>16</asp:ListItem>
+                                            <asp:ListItem>17</asp:ListItem>
+                                            <asp:ListItem>18</asp:ListItem>
+                                            <asp:ListItem>19</asp:ListItem>
+                                            <asp:ListItem>20</asp:ListItem>
+                                            <asp:ListItem>21</asp:ListItem>
+                                            <asp:ListItem>22</asp:ListItem>
+                                            <asp:ListItem>23</asp:ListItem>
+                                            <asp:ListItem>24</asp:ListItem>
+                                            <asp:ListItem>25</asp:ListItem>
+                                            <asp:ListItem>26</asp:ListItem>
+                                            <asp:ListItem>27</asp:ListItem>
+                                            <asp:ListItem>28</asp:ListItem>
+                                            <asp:ListItem>29</asp:ListItem>
+                                            <asp:ListItem>30</asp:ListItem>
+                                            <asp:ListItem>31</asp:ListItem>
+                                        </asp:DropDownList>
+                                    </div>
+                                </div>
+
+                                <div class="input string required">
+                                    <label class="string required" for="signup_context_first_name">
+                                        <asp:Localize ID="Localize13" runat="server" Text='<%$ Resources:GResource,sex %>'></asp:Localize></label>
+                                    <p class="field switch">
+                                        <asp:RadioButton ID="RadioButton1" runat="server" Text="男" class="hidden" GroupName="sex" />
+                                        <asp:RadioButton ID="RadioButton2" runat="server" Text="女" class="hidden" GroupName="sex" />
+                                        <label id="malelabel" for="<%=RadioButton1.ClientID%>" class="cb-enable <%=classmale %>">
+                                            <span>
+                                                <asp:Localize ID="Localize9" runat="server" Text='<%$ Resources:GResource,male %>'></asp:Localize></span></label>
+                                        <label id="femalelabel" for="<%=RadioButton2.ClientID%>" class="cb-disable <%=classfemale %>">
+                                            <span>
+                                                <asp:Localize ID="Localize10" runat="server" Text='<%$ Resources:GResource,female %>'></asp:Localize></span></label>
+                                    </p>
+
+                                </div>
+
+                                <div class="input string required">
+                                    <label class="string required" for="signup_context_first_name">
+                                        <asp:Localize ID="Localize12" runat="server" Text='<%$ Resources:GResource,mobilenumber %>'></asp:Localize></label>
+                                    <asp:TextBox class="string tel required numeric" ID="TextBox4" runat="server" type="tel" MaxLength="11" minlength="11" placeholder='<%$ Resources:GResource,mobilenumber %>'></asp:TextBox>
+                                </div>
+                                <div class="input string required">
+                                    <label class="string required" for="signup_context_first_name">
+                                        <asp:Localize ID="Localize14" runat="server" Text='<%$ Resources:GResource,marriagestatus %>'></asp:Localize></label>
+                                    <p class="field switch">
+                                        <asp:RadioButton ID="RadioButton3" runat="server" Text="未婚" class="hidden" GroupName="Marriage" />
+                                        <asp:RadioButton ID="RadioButton4" runat="server" Text="已婚" class="hidden" GroupName="Marriage" />
+                                        <label for="<%=RadioButton3.ClientID%>" class="cb-enable <%=classunmarried %>">
+                                            <span>
+                                                <asp:Localize ID="Localize15" runat="server" Text='<%$ Resources:GResource,unmarried %>'></asp:Localize></span></label>
+                                        <label for="<%=RadioButton4.ClientID%>" class="cb-disable <%=classmarried %>">
+                                            <span>
+                                                <asp:Localize ID="Localize16" runat="server" Text='<%$ Resources:GResource,married %>'></asp:Localize></span></label>
+                                    </p>
+
+                                </div>
+                            </div>
+                            <div class="fourcol last">
+                                <ul class="selling_points mobile_hidden">
+                                    <li>
+                                        <asp:Label ID="Label17" runat="server" Text='<%$ Resources:GResource,idpass1option %>'></asp:Label></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="fixed_button" style="z-index: 99999">
+                            <div class="spinner"></div>
+                            <asp:Button class="button blue_button continue continue_form" ID="Button3"
+                                runat="server" Text='<%$ Resources:GResource,continuego %>' OnClientClick="return checkform1();"
+                                OnClick="Button3_Click" />
+
+                            <p class="terms"></p>
+                        </div>
+                    </asp:Panel>
+    </div>
+    </form>
+</body>
+</html>

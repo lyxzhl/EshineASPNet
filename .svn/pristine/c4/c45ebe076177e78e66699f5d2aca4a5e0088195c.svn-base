@@ -1,0 +1,19 @@
+<!-- Navigation top-->
+<nav class="navbar">
+	<div class="navbar-inner">
+		<div class="left aClick" onclick="goTo('login.html');">
+            <i class="icon icon-chevron-left"></i>
+		</div>
+		<div class="center">注册</div>
+		<div class="right">
+		</div>
+	</div>
+</nav>
+<div class="pages navbar-through">
+	<div data-page="UserRegister" class="page">
+		<div class="page-content content_URegister">
+			<div class="URegister-wrap">
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,39 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class cshi : System.Web.UI.Page
+{
+       DBunit.SQLAccess sql = new DBunit.SQLAccess();
+    protected System.Web.UI.WebControls.Repeater childRepeater;//parentRepeater;
+   
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        SqlConnection cnn = new SqlConnection("Data Source=.;uid=sa;pwd=123456;database=MediPlus");
+        SqlDataAdapter cmd1 = new SqlDataAdapter("select * from db_AssessmentQuestion　where QCID=1　and (AQGender=0 or AQGender=1) and (Marriage=1 or Marriage=0) and (AQMinAge<=0and AQMaxAge>=40)", cnn);
+        DataSet ds = new DataSet();
+        cmd1.Fill(ds, "authors");
+        SqlDataAdapter cmd2 = new SqlDataAdapter("select * from db_AssessmentAnswer", cnn);
+        cmd2.Fill(ds, "titles");
+        ds.Relations.Add("myrelation",
+        ds.Tables["authors"].Columns["AQID"],
+        ds.Tables["titles"].Columns["AQID"],false);
+        parentRepeater.DataSource = ds.Tables["authors"];
+        Page.DataBind();
+        cnn.Close();
+    }
+
+    private void Page_Init(object sender, EventArgs e)
+    {
+        InitializeComponent();
+    }
+    private void InitializeComponent()
+    {
+        this.Load += new System.EventHandler(this.Page_Load);
+    }
+}

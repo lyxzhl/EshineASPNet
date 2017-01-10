@@ -1,0 +1,54 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class Admin_ordersAdmin_orderconsult : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (ViewState["orderselectcomm"] != null && ViewState["orderselectcomm"].ToString() != "")
+        {
+            this.SqlDataSource1.SelectCommand = ViewState["orderselectcomm"].ToString();
+        }
+    }
+
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        string s = this.TextBox1.Text;
+        string scmd ;
+
+        if (s != "")
+        {
+            scmd = "and (orderID like '%" + s + "%' or  supplierOrderID like '%" + s + "%' or  customerCode like '%" + s + "%' or "
++ "customerName like '%" + s + "%' or  relativeName like '%" + s + "%' or orderDate like '%" + s + "%' or "
++ "personAge like '%" + s + "%' or personIDcard like '%" + s + "%' or personMobile like '%" + s + "%' or "
++ "personPrivateEmail like '%" + s + "%' or examDate like '%" + s + "%' or examCity like '%" + s + "%' or "
++ "examSupplier like '%" + s + "%' or examBranch like '%" + s + "%' or examBill like '%" + s + "%')";
+        }
+        else
+        {
+            return;
+        }
+        ViewState["orderselectcomm"] = scmd;
+        this.SqlDataSource1.SelectCommand = scmd;
+        this.SqlDataSource1.DataBind();
+    }
+    protected void ButtonEE_Click(object sender, EventArgs e)
+    {
+        PublicClass pc = new PublicClass();
+        GridView1.AllowPaging = false;// turn off paging 
+        GridView1.DataSourceID = "";
+        GridView1.DataSourceID = this.SqlDataSource1.ID;
+
+        GridView1.DataBind();
+        pc.gridviewtoexcel(GridView1, "MediPlusexport");
+        GridView1.AllowPaging = true;
+        GridView1.DataSourceID = "";
+        GridView1.DataSourceID = this.SqlDataSource1.ID;
+
+        GridView1.DataBind();
+    }
+}

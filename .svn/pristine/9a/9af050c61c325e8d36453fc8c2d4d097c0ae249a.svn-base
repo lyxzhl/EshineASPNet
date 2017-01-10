@@ -1,0 +1,136 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ikangcard.aspx.cs" Inherits="Admin_supplierAdmin_ikangcard" %>
+
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head id="Head1" runat="server">
+    <title>爱康卡号管理</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
+    </asp:ToolkitScriptManager>
+    <div>
+    <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
+            <tr>
+                <td class="title" colspan="5" style="height: 30px">
+                    爱康卡号信息
+                    
+                    
+                    </td>
+            </tr>
+    </table>
+    <table border="0" cellpadding="0" cellspacing="0">
+                    
+                    <tr>
+                        <td>剩余空卡：<asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>&nbsp;&nbsp;</td>
+                    <td align="center" style="width: 150px; height: 24px;" >
+<asp:FileUpload ID="FileUpload1" runat="server" ToolTip="选择.xls文件" Width="200px" />
+                            </td>
+                        <td style="width: 150px; height: 24px;" >
+<asp:Button ID="Button3" runat="server" onclick="Button3_Click" Text="上传Excel文件" ToolTip="" />
+                            </td>
+                        <td align="center" style="width: 150px; height: 24px;" >
+                            <asp:TextBox ID="TextBox1" runat="server" placeholder="关键字" Width="145"></asp:TextBox>
+                            </td>
+                        <td style="width: 150px; height: 24px;" >
+                            <asp:Button ID="Button1" runat="server" Text="搜索" onclick="Button1_Click" />
+                            </td>
+                        <td  >
+                            <asp:Button ID="ButtonEE" runat="server" Text="导出excel" 
+                                onclick="ButtonEE_Click"  />
+                            </td>
+                    </tr>
+                </table>
+
+    <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
+    <tr>
+    <td align="center" style="height: 100%; width: 100%;">
+        <asp:GridView ID="GridView1" runat="server" AllowPaging="True" PageSize="25" AllowSorting="True"
+            AutoGenerateColumns="False" Width="100%" 
+            DataKeyNames="id" DataSourceID="SqlDataSource1"  PagerSettings-Mode="NumericFirstLast" PagerSettings-PageButtonCount="50">
+            <Columns>
+                <asp:CommandField ShowEditButton="True" />
+         <asp:BoundField DataField="CardNumIKang" HeaderText="爱康卡号" HeaderStyle-Wrap="false"
+                    SortExpression="CardNumIKang"  ItemStyle-Wrap="False" >
+<HeaderStyle Wrap="False"></HeaderStyle>
+
+<ItemStyle Wrap="False"></ItemStyle>
+                </asp:BoundField>
+         <asp:BoundField DataField="Cardstatus" HeaderText="卡状态" ItemStyle-Wrap="False" 
+                    SortExpression="Cardstatus" >
+<ItemStyle Wrap="False"></ItemStyle>
+                </asp:BoundField>
+
+                <asp:BoundField DataField="company" HeaderText="公司" ItemStyle-Wrap="False" 
+                    SortExpression="company" >
+<ItemStyle Wrap="False"></ItemStyle>
+                </asp:BoundField>
+
+         <asp:BoundField DataField="name" HeaderText="客户姓名" ItemStyle-Wrap="False" 
+                    SortExpression="name" >
+<ItemStyle Wrap="False"></ItemStyle>
+                </asp:BoundField>
+<asp:BoundField DataField="IDcard" HeaderText="客户证件号" ItemStyle-Wrap="False"  HeaderStyle-Wrap="false"
+                    SortExpression="IDcard" >
+<HeaderStyle Wrap="False"></HeaderStyle>
+
+<ItemStyle Wrap="False"></ItemStyle>
+                </asp:BoundField>
+<asp:BoundField DataField="customerID" HeaderText="客户ID" ItemStyle-Wrap="False"  HeaderStyle-Wrap="false"
+                    SortExpression="customerID" >
+<HeaderStyle Wrap="False"></HeaderStyle>
+
+<ItemStyle Wrap="False"></ItemStyle>
+                </asp:BoundField>
+<asp:BoundField DataField="relativeID" HeaderText="家属ID" ItemStyle-Wrap="False" 
+                    SortExpression="relativeID" >
+<ItemStyle Wrap="False"></ItemStyle>
+                </asp:BoundField>
+<asp:BoundField DataField="id" HeaderText="id" ItemStyle-Wrap="False"  HeaderStyle-Wrap="false"
+                    SortExpression="id" InsertVisible="False" ReadOnly="True" >
+<HeaderStyle Wrap="False"></HeaderStyle>
+
+<ItemStyle Wrap="False"></ItemStyle>
+                </asp:BoundField>
+            </Columns>
+        </asp:GridView>
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
+            ConnectionString="<%$ ConnectionStrings:db_ConnectionString %>" 
+            DeleteCommand="DELETE FROM [tab_examcard] WHERE [id] = @id" 
+            InsertCommand="INSERT INTO [tab_examcard] ([CardNumIKang], [Cardstatus], [name], [IDcard], [customerID], [relativeID]) VALUES (@CardNumIKang, @Cardstatus, @name, @IDcard, @customerID, @relativeID)" 
+            SelectCommand="SELECT * FROM [tab_examcard]" 
+            
+            UpdateCommand="UPDATE [tab_examcard] SET [CardNumIKang] = @CardNumIKang, [Cardstatus] = @Cardstatus, [name] = @name, [IDcard] = @IDcard, [customerID] = @customerID, [relativeID] = @relativeID WHERE [id] = @id">
+            <DeleteParameters>
+                <asp:Parameter Name="id" Type="Int32" />
+            </DeleteParameters>
+            <InsertParameters>
+                <asp:Parameter Name="CardNumIKang" Type="String" />
+                <asp:Parameter Name="Cardstatus" Type="String" />
+                <asp:Parameter Name="name" Type="String" />
+                <asp:Parameter Name="IDcard" Type="String" />
+                <asp:Parameter Name="customerID" Type="Int32" />
+                <asp:Parameter Name="relativeID" Type="Int32" />
+            </InsertParameters>
+            <UpdateParameters>
+                <asp:Parameter Name="CardNumIKang" Type="String" />
+                <asp:Parameter Name="Cardstatus" Type="String" />
+                <asp:Parameter Name="name" Type="String" />
+                <asp:Parameter Name="IDcard" Type="String" />
+                <asp:Parameter Name="customerID" Type="Int32" />
+                <asp:Parameter Name="relativeID" Type="Int32" />
+                <asp:Parameter Name="id" Type="Int32" />
+            </UpdateParameters>
+        </asp:SqlDataSource>
+    </td>
+    
+    </tr>
+    </table>
+    </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,27 @@
+﻿<%@ Page Language="C#" MasterPageFile="MasterPage.master" AutoEventWireup="true" CodeFile="ShopZd.aspx.cs" Inherits="IndexPage_ShopZd" Title="Untitled Page" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="665">
+<tr>
+ <td align="center" background="Images/cplist_03.gif"  width="665" style="height: 132px">
+<table border="0" cellpadding="0" cellspacing="0" >
+                    <tr>
+                        <td width="665">
+                            <img src="Images/help_01.gif" /></td>
+                    </tr>
+                    <tr>
+                        <td width="665" valign="top"  style="height: 33px"><img src="Images/helpic2.gif" />
+                        </td>
+                    </tr>
+                    
+                    </table>
+</td>
+
+</tr>
+                  
+<tr>
+            <td style="height: 4px; background-image: url(Images/cplist_04.gif);">
+                <img alt="" border="0" height="4" name="cplist_04" src="../Image/cplist_04.gif" width="665" /></td>
+        </tr>
+</table>
+</asp:Content>
+

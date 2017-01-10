@@ -1,0 +1,32 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+namespace Bll
+{
+    public class xiyasuppliersBll
+    {
+        IDAL.xiyasuppliersDal itu = DALFactory.xiyasuppliers_Factory.Createusers();
+        public int Add(Model.tab_xiyasuppliers xiyasuppliers)
+        {
+            return itu.Add(xiyasuppliers);
+        }
+        public Model.tab_xiyasuppliers getxiyasuppliers(Model.tab_xiyasuppliers xiyasuppliers1)
+        {
+            return itu.getxiyasuppliers(xiyasuppliers1);
+        }
+        public int update(Model.tab_xiyasuppliers xiyasuppliers)
+        {
+            return itu.update(xiyasuppliers);
+        }
+        public int Delete(int supplier)
+        {
+            return itu.Delete(supplier);
+        }
+        public DataTable Select(string ss)
+        {
+            return itu.Select(ss);
+        }
+    }
+
+}

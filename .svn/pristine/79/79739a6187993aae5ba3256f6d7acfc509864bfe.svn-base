@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class Admin_jiaxiangbaoInfo : System.Web.UI.Page
+{
+    DBunit.SQLAccess dbsql = new DBunit.SQLAccess();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+    }
+    protected void GridView1_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+        string str = "delete from tab_paras where id='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'";
+        dbsql.ExecuteNonQuery(str);
+        this.GridView1.DataBind();
+    }
+}

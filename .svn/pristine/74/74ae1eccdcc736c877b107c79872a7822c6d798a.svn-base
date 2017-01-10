@@ -1,0 +1,21 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="#" class="left aClick" onclick="goTo('../../index.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </a>
+        <div class="center">订单确认</div>
+        <div class="right">
+            <span class="aClick" onclick="if(checkConfirmOrder())goTo('payment_order.html?refurl=confirm_order.html');">确认</span>
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="ConfirmOrder" class="page">
+        <div class="page-content content_COrder">
+            <div class="COrder-wrap">
+            </div>
+        </div>
+    </div>
+</div>

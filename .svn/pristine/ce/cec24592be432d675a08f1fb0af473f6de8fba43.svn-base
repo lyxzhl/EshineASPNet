@@ -1,0 +1,183 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="viewreservation.aspx.cs" Inherits="viewreservation" %>
+<%@ Register TagPrefix="MPuc" TagName="headcontent" Src="UserControl/headcontent.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="mobilenav" Src="UserControl/mobilenav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="desktopnav" Src="UserControl/desktopnav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="UserControl/footer1.ascx"%>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Medi-Plus - <asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,titletext %>'></asp:Localize></title>
+<MPuc:headcontent runat="server" ID="Unnamed1"/>
+<SCRIPT src="JS/mp.js" type="text/javascript"></SCRIPT>
+</head>
+<body class='member_orders'>
+<MPuc:mobilenav runat="server" ID="Unnamed2"/>
+<form runat="server">
+<div class='wrapper' data-behavior='Navigation'>
+<MPuc:desktopnav runat="server" ID="Unnamed3"/>
+
+<div class='container'>
+<div class='row'>
+<div class='twelvecol'>
+<h3><asp:Label ID="Label1" runat="server" Text='<%$ Resources:GResource,myreservation %>'></asp:Label></h3>
+<div class='tile'  id='your_trunks1' >
+    <asp:Panel ID="Panel1" runat="server" Visible="False">
+        <asp:Label ID="Label3" runat="server" Text='<%$ Resources:GResource,noorder %>'></asp:Label>
+        <asp:HyperLink ID="HyperLink2" runat="server" class="button blue_button" NavigateUrl="~/reserveexam.aspx" Text='<%$ Resources:GResource,reservenow %>'></asp:HyperLink>
+    </asp:Panel>
+<div id="PrintArea">
+    <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False"  OnRowDataBound="GridView12_RowDataBound" 
+        DataKeyNames="orderID" DataSourceID="SqlDataSource1" >
+        <Columns>
+            <asp:BoundField DataField="orderID" HeaderText='<%$ Resources:GResource,ordernum %>' InsertVisible="False" 
+                ReadOnly="True" SortExpression="orderID" 
+                meta:resourcekey="BoundFieldResource1" />
+                <asp:BoundField DataField="customerName" HeaderText='<%$ Resources:GResource,name %>' 
+                SortExpression="customerName" />
+                <asp:BoundField DataField="examDate" HeaderText='<%$ Resources:GResource,examdate %>'  DataFormatString="{0:d}"
+                SortExpression="examDate" />
+            <asp:BoundField DataField="examBranch" HeaderText='<%$ Resources:GResource,organization %>' 
+                SortExpression="examBranch" />
+                <asp:BoundField DataField="examPackage" HeaderText='<%$ Resources:GResource,package %>' 
+                SortExpression="examPackage" />
+            <asp:BoundField DataField="examUpPkg" HeaderText='<%$ Resources:GResource,uppkg %>' 
+                SortExpression="examUpPkg" />
+                <asp:BoundField DataField="examBill" HeaderText='<%$ Resources:GResource,selfpay %>' 
+                SortExpression="examBill" />
+                <asp:BoundField DataField="orderStatus" HeaderText='<%$ Resources:GResource,orderstatus %>' 
+                SortExpression="orderStatus" />
+                <asp:TemplateField HeaderText="  " ItemStyle-Wrap="false">
+                                <ItemTemplate>
+								<asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" Text="打印"  Visible="false"
+                                        OnClientClick="return PrintGridView();" meta:resourcekey="LinkButton1Resource1"></asp:LinkButton>
+                            <asp:LinkButton ID="BtnDelete" runat="server" CausesValidation="False" Text='<%$ Resources:GResource,cancel %>' 
+                                        CommandArgument='<%# Eval("orderID") %>' OnClick="BtnDelete_Click" 
+                                        OnClientClick='<%$ Resources:GResource,alertsurecancel %>' ></asp:LinkButton>
+                                    <asp:HyperLink ID="BtnPay" runat="server" CausesValidation="False" Target='_blank' Text='<%$ Resources:GResource,payment %>' class="button blue_button" 
+                                     Visible ='<%   # Eval("orderStatus").ToString()=="待付款"? true : false  %>' NavigateUrl='<%# "ordersubmitted.aspx?orderID="+Eval("orderID") %>' ForeColor="White"></asp:HyperLink>
+
+                                </ItemTemplate>
+
+<ItemStyle Wrap="False"></ItemStyle>
+                            </asp:TemplateField>
+        </Columns>
+    </asp:GridView>
+    </div>
+
+    <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
+        ConnectionString="<%$ ConnectionStrings:db_ConnectionString %>" 
+        SelectCommand="SELECT * FROM [tab_orders] WHERE ReportType<>N'商城' and customerName <>'' AND orderStatus <>N'已完成' AND orderStatus <>N'已取消' AND customerID = @customerID ORDER BY orderID DESC">
+        <SelectParameters>
+            <asp:SessionParameter Name="customerID" SessionField="id" Type="Int32" />
+        </SelectParameters>
+    </asp:SqlDataSource>
+</div>
+</div>
+</div>
+<br /><br /><p></p>
+<div class='row <%=relcss %>'>
+<div class='twelvecol'>
+<h3><asp:Label ID="Label2" runat="server" Text='<%$ Resources:GResource,Relreservation %>'></asp:Label></h3>
+<div class='tile'  id='your_trunks'>
+<asp:Panel ID="Panel2" runat="server" Visible="False">
+        <asp:Label ID="Label4" runat="server" Text='<%$ Resources:GResource,noorder %>'></asp:Label>
+    <asp:HyperLink ID="HyperLink1" runat="server" class="button blue_button" NavigateUrl="~/reserverelexam.aspx" Text='<%$ Resources:GResource,reservenow %>'></asp:HyperLink>
+    </asp:Panel>
+<div id="PrintArea1">
+    <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False"  OnRowDataBound="GridView12_RowDataBound" 
+        DataKeyNames="orderID" DataSourceID="SqlDataSource2" 
+        meta:resourcekey="GridView2Resource1">
+        <Columns>
+        <asp:BoundField DataField="orderID" HeaderText='<%$ Resources:GResource,ordernum %>' InsertVisible="False" 
+                ReadOnly="True" SortExpression="orderID" 
+                meta:resourcekey="BoundFieldResource9" />
+                <asp:BoundField DataField="relativeName" HeaderText='<%$ Resources:GResource,name %>' 
+                SortExpression="relativeName" />
+                <asp:BoundField DataField="examDate" HeaderText='<%$ Resources:GResource,examdate %>'  DataFormatString="{0:d}"
+                SortExpression="examDate" />
+            <asp:BoundField DataField="examBranch" HeaderText='<%$ Resources:GResource,organization %>' 
+                SortExpression="examBranch" />
+                <asp:BoundField DataField="examPackage" HeaderText='<%$ Resources:GResource,package %>' 
+                SortExpression="examPackage" />
+            <asp:BoundField DataField="examUpPkg" HeaderText='<%$ Resources:GResource,uppkg %>' 
+                SortExpression="examUpPkg" />
+                <asp:BoundField DataField="examBill" HeaderText='<%$ Resources:GResource,selfpay %>' 
+                SortExpression="examBill" />
+                <asp:BoundField DataField="orderStatus" HeaderText='<%$ Resources:GResource,orderstatus %>' 
+                SortExpression="orderStatus" />
+                 <asp:TemplateField HeaderText="  " ItemStyle-Wrap="false" >
+                                <ItemTemplate>
+								<asp:LinkButton ID="LinkButton1" runat="server" Text="打印"  Visible="false"
+                                        OnClientClick="return PrintGridView1();" 
+                                        meta:resourcekey="LinkButton1Resource2"></asp:LinkButton>
+                            <asp:LinkButton ID="BtnDeleteRel" runat="server" Text='<%$ Resources:GResource,cancel %>' 
+                                        CommandArgument='<%# Eval("orderID") %>' OnClick="BtnDeleteRel_Click" 
+                                        OnClientClick='<%$ Resources:GResource,alertsurecancel %>' ></asp:LinkButton>
+                           <asp:HyperLink ID="BtnPayRel" runat="server" CausesValidation="False" Target='_blank' Text='<%$ Resources:GResource,payment %>' class="button blue_button" NavigateUrl='<%# "ordersubmitted.aspx?orderID="+Eval("orderID") %>'
+                                     Visible ='<%   # (Eval("orderStatus").ToString()=="待付款"||Eval("orderStatus").ToString()=="待转账")? true : false  %>'   CommandArgument='<%# Eval("orderID") %>'  ForeColor="White"></asp:HyperLink>
+                                </ItemTemplate>
+
+<ItemStyle Wrap="False"></ItemStyle>
+                            </asp:TemplateField>
+        </Columns>
+    </asp:GridView>
+    
+
+    </DIV>
+    <asp:SqlDataSource ID="SqlDataSource2" runat="server" 
+        ConnectionString="<%$ ConnectionStrings:db_ConnectionString %>" 
+        SelectCommand="SELECT * FROM tab_orders join tab_relatives on tab_orders.relativeID=tab_relatives.relativeID  WHERE ReportType<>N'商城' and tab_orders.relativeName <> ''  AND orderStatus <>N'已完成' AND orderStatus <>N'已取消' AND tab_relatives.relativeID in (select relativeID from tab_relatives where relativeCustomer=@customerID)">
+        <SelectParameters>
+            <asp:SessionParameter Name="customerID" SessionField="id" Type="Int32" />
+        </SelectParameters>
+    </asp:SqlDataSource>
+
+</div>
+</div>
+</div>
+
+
+</div>
+
+</div>
+</form>
+<MPuc:footer ID="ucfooter" runat="server"/>
+
+
+<script language="Javascript">
+
+    function PrintGridView() {
+        // 打开一个新网页
+        var newwindow = window.open('');
+
+        // 将指定DIV中的内容写入该网页
+        newwindow.document.write(document.getElementById('PrintArea').innerHTML);
+        newwindow.document.close();
+
+        // 打印该网页
+        newwindow.focus();
+        newwindow.print();
+
+        // 打印完毕后关闭该窗口
+        newwindow.close();
+        return false;
+    }
+    function PrintGridView1() {
+        // 打开一个新网页
+        var newwindow = window.open('');
+
+        // 将指定DIV中的内容写入该网页
+        newwindow.document.write(document.getElementById('PrintArea1').innerHTML);
+        newwindow.document.close();
+
+        // 打印该网页
+        newwindow.focus();
+        newwindow.print();
+
+        // 打印完毕后关闭该窗口
+        newwindow.close();
+        return false;
+    }
+</script>
+</body>
+</html>

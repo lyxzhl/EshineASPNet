@@ -1,0 +1,47 @@
+<!-- Navigation top-->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <div class="left aClick" onclick="goTo('../../index.html');">
+            <i class="icon icon-chevron-left"></i>
+            <span>返回</span>
+        </div>
+        <div class="center">评估分类</div>
+        <div class="right">
+        </div>
+    </div>
+</nav>
+<div class="pages navbar-through">
+    <div data-page="ChooseAssessment" class="page">
+        <div class="page-content content_CAssessment">
+            <div class="CAssessment-wrap">
+                <div class="container">
+                    <ul id="myTab" class="nav nav-tabs row">
+                        <li class="active col-md-3">
+                            <a href="#Basic" data-toggle="tab">整体健康</a>
+                        </li>
+                        <li class="col-md-3">
+                            <a href="#Disease" data-toggle="tab">疾病风险</a>
+                        </li>
+                        <li class="col-md-3">
+                            <a href="#Mind" data-toggle="tab">心理健康
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="Basic">
+                        <div class="group-item">
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="Disease">
+                        <div class="group-item"></div>
+                    </div>
+                    <div class="tab-pane fade" id="Mind">
+                        <div class="group-item">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+namespace IDAL
+{
+    public interface uppkgDal
+    {
+        int Add(Model.tab_uppkg uppkg);
+        Model.tab_uppkg getuppkg(Model.tab_uppkg uppkg1);
+        int update(Model.tab_uppkg uppkg);
+        int Delete(int id);
+        DataTable Select(string ss);
+
+    }
+}

@@ -1,0 +1,180 @@
+﻿
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using Bll;
+using Model;
+
+public partial class Admin_tijianAdmin_tijianwenti : System.Web.UI.Page
+{
+    Bll.tijianwenjBll sb = new Bll.tijianwenjBll();
+    Model.tijianwenj modelCb = new Model.tijianwenj();
+    PublicClass pc = new PublicClass();
+    upExcel ue = new upExcel();
+    
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        string s = this.TextBox1.Text;
+        string scmd = @"select * from tijianwenj";
+
+        this.SqlDataSource2.SelectCommand = scmd;
+        this.SqlDataSource2.DataBind();
+    }
+
+
+    protected void Button3_Click(object sender, EventArgs e)
+    {
+        int successfulcount = 0, errorcount = 0;
+        try
+        {
+            if (this.FileUpload1.HasFile)
+            {
+                if (!ue.SaveUpFile("~/Admin/temp/", this.FileUpload1))//上传文件
+                {
+                    throw new Exception("上传文件失败!");
+                }
+
+                DataTable inputdt = ue.InputExcel("Sheet1");
+                if (inputdt == null)
+                {
+                    throw new Exception("Excel文件读取失败!");
+                }
+
+                int j;
+                string erroritems = "";
+                tijianwenjBll supp = new tijianwenjBll();
+                tijianwenj supplier;
+                for (int i = 0; i < inputdt.Rows.Count; i++)
+                {
+                    j = 0;
+                    supplier = new Model.tijianwenj();
+                    supplier.TijianID = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.wentibhao = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.wentixshi = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.wentixzhi = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.beizhu = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.wentifenlei = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.jiekodyinbma = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.miaoshu = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.Gender = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.Agelimit = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.hunyinzhuangt = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.xunxiangshul = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.miaoshuA = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.fenzhiA = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.miaoshuB = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.fenzhiB= inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.miaoshuC = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.fenzhiC= inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.miaoshuD = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.fenzhiD = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.miaoshuE = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.fenzhiE = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.miaoshuF = inputdt.Rows[i][j++].ToString().Trim();
+                    supplier.fenzhiF = inputdt.Rows[i][j++].ToString().Trim();
+
+
+
+
+
+                    try
+                    {
+                        if (supp.Add(supplier) < 1)
+                        {
+                            errorcount++;
+                        }
+                        else
+                        {
+                            successfulcount++;
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.Message.ToString();
+                        errorcount++;
+                        erroritems += supplier.TijianID + " " + supplier.TijianID + "\n";
+                    }
+                }
+                Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('操作已完成！其中成功导入数据" + successfulcount + "条，失败" + errorcount + "条," + erroritems + "'); </script>");
+                GridView1.DataBind();
+            }
+            else
+            {
+                throw new Exception("请选择Excel文件!");
+            }
+        }
+        catch (Exception ex)
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + ex.Message + "'); </script>");
+        }
+    }
+
+    protected void ButtonEE_Click(object sender, EventArgs e)
+    {
+        PublicClass pc = new PublicClass();
+        GridView1.AllowPaging = false;// turn off paging 
+        GridView1.DataSourceID = "";
+        GridView1.DataSourceID = this.SqlDataSource2.ID;
+
+        GridView1.DataBind();
+        pc.gridviewtoexcel(GridView1, "MediPlusexport");
+        GridView1.AllowPaging = true;
+        GridView1.DataSourceID = "";
+        GridView1.DataSourceID = this.SqlDataSource2.ID;
+
+        GridView1.DataBind();
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        string supplierid = "";
+        int i = 0;
+        foreach (GridViewRow row in GridView1.Rows)
+        {
+            if ((row.FindControl("CheckBox1") as CheckBox).Checked)
+            {
+                int id = 0;
+                id = Convert.ToInt32(GridView1.DataKeys[row.RowIndex].Value);
+                supplierid += id.ToString() + ",";
+                i++;
+            }
+        }
+        Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('" + supplierid + "'); </script>");
+    }
+    public void updatenote(object sender, EventArgs e)
+    {
+
+        int i = 0;
+        foreach (GridViewRow row in GridView1.Rows)
+        {
+            if ((row.FindControl("CheckBox1") as CheckBox).Checked)
+            {
+                int id = 0;
+                id = Convert.ToInt32(GridView1.DataKeys[row.RowIndex].Value);
+                modelCb.id = id;
+                modelCb = sb.gettijianwenj(modelCb);
+                modelCb.TijianID = this.TextBox7.Text;
+                sb.update(modelCb);
+                i++;
+            }
+        }
+        if (i == 0)
+        {
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('请选择门店'); </script>");
+        }
+        else
+        {
+            GridView1.DataSourceID = this.SqlDataSource2.ID;
+            GridView1.DataBind();
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('成功修改" + i + "个门店'); </script>");
+        }
+    }
+}

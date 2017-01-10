@@ -1,0 +1,87 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text;
+
+namespace SQLServerDAL
+{
+    public class sql_AssessmentAnswer :IDAL.AssessmentAnswerDal
+    {
+        DBunit.SQLAccess sql = new DBunit.SQLAccess();
+        DateTime baddate = DateTime.Parse("1900-01-01");
+        public int Add(Model.AssessmentAnswer AssessmentAnswer)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("insert into AssessmentAnswer values (");
+            strsql.AppendFormat("{0},", AssessmentAnswer.AQID);
+            strsql.AppendFormat("N'{0}',", AssessmentAnswer.AAContent);
+            strsql.AppendFormat("N'{0}',", AssessmentAnswer.AADes);
+            strsql.AppendFormat("{0},", AssessmentAnswer.AAType);
+            strsql.AppendFormat("'{0}',", AssessmentAnswer.AAScore);
+            strsql.AppendFormat("{0},", AssessmentAnswer.CreateTime == baddate ? "null" : "'" + AssessmentAnswer.CreateTime.ToString() + "'");
+            strsql.AppendFormat("{0},", AssessmentAnswer.UpdateTime == baddate ? "null" : "'" + AssessmentAnswer.UpdateTime.ToString() + "'");
+            strsql.AppendFormat("{0},", AssessmentAnswer.CreateUser);
+            strsql.AppendFormat("{0},", AssessmentAnswer.UpdateUser);
+            strsql.AppendFormat("{0},", AssessmentAnswer.IsShow);
+            strsql.AppendFormat("{0}", AssessmentAnswer.IsDel);
+            strsql.Append(") select SCOPE_IDENTITY()");
+            return Convert.ToInt32(sql.ExecuteSc(strsql.ToString()));
+        }
+
+
+        public Model.AssessmentAnswer getAssessmentAnswer(Model.AssessmentAnswer AssessmentAnswer1)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("select * from AssessmentAnswer where ");
+            strsql.AppendFormat("AAID='{0}'", AssessmentAnswer1.AAID);
+            DataTable dt = sql.ExecuteDataSet(strsql.ToString()).Tables[0];
+            if (dt.Rows.Count < 1) return null;
+
+            Model.AssessmentAnswer AssessmentAnswer = new Model.AssessmentAnswer();
+            AssessmentAnswer.AAID = AssessmentAnswer1.AAID;
+            AssessmentAnswer.AQID = int.Parse(dt.Rows[0]["AQID"].ToString());
+            AssessmentAnswer.AAContent = dt.Rows[0]["AAContent"].ToString();
+            AssessmentAnswer.AADes = dt.Rows[0]["AADes"].ToString();
+            AssessmentAnswer.AAType = int.Parse(dt.Rows[0]["AAType"].ToString());
+            AssessmentAnswer.AAScore = dt.Rows[0]["AAScore"].ToString();
+            AssessmentAnswer.CreateTime = dt.Rows[0]["CreateTime"].ToString() == "" ? baddate : DateTime.Parse(dt.Rows[0]["CreateTime"].ToString());
+            AssessmentAnswer.UpdateTime = dt.Rows[0]["UpdateTime"].ToString() == "" ? baddate : DateTime.Parse(dt.Rows[0]["UpdateTime"].ToString());
+            AssessmentAnswer.CreateUser = int.Parse(dt.Rows[0]["CreateUser"].ToString());
+            AssessmentAnswer.UpdateUser = int.Parse(dt.Rows[0]["UpdateUser"].ToString());
+            AssessmentAnswer.IsShow = int.Parse(dt.Rows[0]["IsShow"].ToString());
+            AssessmentAnswer.IsDel = int.Parse(dt.Rows[0]["IsDel"].ToString());
+            return AssessmentAnswer;
+        }
+
+
+        public int update(Model.AssessmentAnswer AssessmentAnswer)
+        {
+            StringBuilder strsql = new StringBuilder();
+            strsql.Append("update AssessmentAnswer set ");
+            strsql.AppendFormat(" AQID ='{0}',", AssessmentAnswer.AQID);
+            strsql.AppendFormat(" AAContent =N'{0}',", AssessmentAnswer.AAContent);
+            strsql.AppendFormat(" AADes =N'{0}',", AssessmentAnswer.AADes);
+            strsql.AppendFormat(" AAType ='{0}',", AssessmentAnswer.AAType);
+            strsql.AppendFormat(" AAScore ='{0}',", AssessmentAnswer.AAScore);
+            strsql.AppendFormat(" CreateTime ={0},", AssessmentAnswer.CreateTime == baddate ? "null" : "'" + AssessmentAnswer.CreateTime.ToString() + "'");
+            strsql.AppendFormat(" UpdateTime ={0},", AssessmentAnswer.UpdateTime == baddate ? "null" : "'" + AssessmentAnswer.UpdateTime.ToString() + "'");
+            strsql.AppendFormat(" CreateUser ='{0}',", AssessmentAnswer.CreateUser);
+            strsql.AppendFormat(" UpdateUser ='{0}',", AssessmentAnswer.UpdateUser);
+            strsql.AppendFormat(" IsShow ='{0}',", AssessmentAnswer.IsShow);
+            strsql.AppendFormat(" IsDel ='{0}'", AssessmentAnswer.IsDel);
+            strsql.AppendFormat(" where AAID={0}", AssessmentAnswer.AAID);
+            return sql.ExecuteNonQuery(strsql.ToString());
+        }
+
+
+        public int Delete(int AAID)
+        {
+            return sql.ExecuteNonQuery("delete from AssessmentAnswer where AAID=" + AAID);
+        }
+        public DataTable Select(string ss)
+        {
+            return sql.ExecuteDataSet(ss).Tables[0];
+        }
+
+    }
+}

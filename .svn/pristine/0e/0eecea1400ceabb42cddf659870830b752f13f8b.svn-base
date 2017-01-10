@@ -1,0 +1,83 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="hrpage2.aspx.cs" Inherits="hrpage2" %>
+
+<%@ Register Assembly="System.Web.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Namespace="System.Web.UI.DataVisualization.Charting" TagPrefix="asp" %>
+
+<%@ Register TagPrefix="MPuc" TagName="headcontent" Src="UserControl/headcontent.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="mobilenav" Src="UserControl/mobilenav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="desktopnav" Src="UserControl/desktopnav.ascx"%>
+<%@ Register TagPrefix="MPuc" TagName="footer" Src="UserControl/footer1.ascx"%>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Medi-Plus - <asp:Localize ID="Localize1" runat="server" Text='<%$ Resources:GResource,titletext %>'></asp:Localize></title>
+<MPuc:headcontent runat="server" ID="Unnamed1"/>
+<SCRIPT src="JS/mp.js" type="text/javascript"></SCRIPT>
+</head>
+<body class='careers member_orders'>
+<MPuc:mobilenav runat="server" ID="Unnamed2"/>
+<div class='wrapper' data-behavior='Navigation'>
+<MPuc:desktopnav runat="server" ID="Unnamed3"/>
+
+<form id="Form1" runat="server">
+<div class='container'>
+<div class='row'> 
+<div class='twelvecol'>
+<div class='tile'>
+<h1>到检率统计</h1>
+
+    
+
+    <asp:HyperLink ID="HyperLink1" runat="server" class="button blue_button" NavigateUrl="~/index.aspx" style="float:right; margin-top:-30px;">退出</asp:HyperLink>
+    <asp:HyperLink ID="HyperLink2" runat="server" class="button blue_button" NavigateUrl="~/hrpage.aspx" style="float:right; margin-top:-30px; margin-right:5px;">切换至按BU统计</asp:HyperLink>
+<br />
+<div class='content' style="text-align:center">
+   <asp:CHART id="Chart2" runat="server" Palette="BrightPastel" BackColor="#D3DFF0" ImageType="Png" Width="480px" Height="300px" BorderlineDashStyle="Solid" BackGradientStyle="TopBottom" BorderWidth="2" BorderColor="26, 59, 105">
+							<titles>
+								<asp:Title ShadowColor="32, 0, 0, 0" Font="Trebuchet MS, 14.25pt, style=Bold" ShadowOffset="3" Text="按城市到检统计" ForeColor="26, 59, 105"></asp:Title>
+							</titles>
+							<legends>
+								<asp:Legend Enabled="False" IsTextAutoFit="False" Name="Default" BackColor="Transparent" Font="Trebuchet MS, 8.25pt, style=Bold"></asp:Legend>
+							</legends>
+							<borderskin SkinStyle="Emboss"></borderskin>
+							<series>
+								<asp:Series ChartArea="ChartArea1" Name="Series1" 
+                                    BorderColor="180, 26, 59, 105" Color="220, 65, 140, 240" 
+                                    IsValueShownAsLabel="True">
+								</asp:Series>
+								
+							</series>
+							<chartareas>
+								<asp:ChartArea Name="ChartArea1" BorderColor="64, 64, 64, 64" BackSecondaryColor="Transparent" BackColor="64, 165, 191, 228" ShadowColor="Transparent" BackGradientStyle="TopBottom">
+									<area3dstyle Rotation="10" Perspective="10" Enable3D="True" Inclination="15" IsRightAngleAxes="False" WallWidth="0" IsClustered="False" />
+									<axisy LineColor="64, 64, 64, 64" Minimum="0" Maximum="100">
+										<LabelStyle Font="Trebuchet MS, 8.25pt, style=Bold" />
+										<MajorGrid LineColor="64, 64, 64, 64" />
+									</axisy>
+									<axisx LineColor="64, 64, 64, 64" Interval="1" IntervalOffset="1" LabelAutoFitMinFontSize="10">
+										<LabelStyle Font="Trebuchet MS, 8.25pt, style=Bold" />
+										<MajorGrid LineColor="64, 64, 64, 64" />
+									</axisx>
+								</asp:ChartArea>
+							</chartareas>
+						</asp:CHART>
+</div>
+</div>
+<br />
+
+<div class='tile'>
+<div class='content' id='your_trunks2'>
+ <asp:Panel ID="Panel2" runat="server">
+
+    </asp:Panel>
+</div>
+</div>
+
+
+</div>
+</div>
+</div>
+</form>
+</div>
+<MPuc:footer ID="ucfooter" runat="server"/>
+</body>
+</html>

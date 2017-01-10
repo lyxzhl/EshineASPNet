@@ -1,0 +1,127 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="BuyThing.aspx.cs" Inherits="IndexPage_BuyThing" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+<title>服装专卖店网站管理系统源码--您的购物车</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
+<link href="../CSS/css.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+<!--
+.style1 {
+	color: #FFFFFF;
+	font-weight: bold;
+}
+.style3 {color: #000000}
+body {
+	background-image: url(Images/houtai/bg.gif);
+}
+.STYLE4 {
+	color: #FF0000;
+	font-weight: bold;
+}
+-->
+</style>
+
+
+
+
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div style="text-align: center">
+            <table border="0" cellpadding="0" cellspacing="0" style="width: 700px; height: 66px;">
+                <tr>
+                    <td style="width: 100%; height: 21px; padding-right: 0px; padding-left: 0px; padding-bottom: 0px; padding-top: 0px; background-color: #ffffff;">
+                        <asp:DataList ID="DataList1" runat="server" OnSelectedIndexChanged="DataList1_SelectedIndexChanged" OnItemDataBound="DataList1_ItemDataBound" OnItemCommand="DataList1_ItemCommand" DataKeyField="产品ID">
+                            <ItemTemplate>
+                                <table style="width: 100%; height: 93px; text-align: center;" border="0" cellpadding="4" cellspacing="1">
+                                    <tr>
+                                        <td  style="width: 2px; height: 12px; background-color: #f7f7f7;">
+                                            <asp:CheckBox ID="CheckBox1" runat="server" Checked="True" AutoPostBack="True" OnCheckedChanged="CheckBox1_CheckedChanged" /></td>
+                                        <td align="center" style="height: 12px; background-color: #ffffff; width: 12px;">
+                                            <asp:Image ID="Image1" runat="server" ImageUrl='<%#"~/Images/SmallImages/"+Eval("图片")%>' Height="83px" Width="68px"/></td>
+                                        <td style="height: 12px; background-color: #ffffff; text-align: left; vertical-align: top; width: 491px;">
+                                            <table  border="0" cellpadding="7" cellspacing="1" style="height: 110px; width: 658px; background-color: #f2f2f2;">
+                                                <tr>
+                                                    <td  style="width:17%; height: 30px; background-color: #f7f7f7; text-align: right;">
+                                                        <strong>商品名称：</strong>
+                                                    </td>
+                                                    <td style="height: 30px; background-color: #ffffff" colspan="5">
+                                                        <asp:Label ID="Label3" runat="server"><%# Eval("产品名")%></asp:Label></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 20px;" align="right" bgcolor="#f7f7f7">
+                                                        <strong>数量：</strong></td>
+                                                    <td style="width: 104px; height: 20px;" bgcolor="#ffffff">
+                                                        <strong style="vertical-align: middle; text-align: center"> &nbsp;<asp:TextBox ID="TextBox1"  runat="server" Text='<%# Eval("数量") %>' CommandName="txt" CssClass="input_sr" Width="16px" Height="19px"></asp:TextBox>&nbsp;
+                                                            <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="~/Images/gx.gif" OnClick="ImageButton1_Click" CommandName="up" /></strong></td>
+                                                    <td style="font-weight: bold; width: 94px; height: 20px" align="right" bgcolor="#f7f7f7" >
+                                                        所赠积分：</td>
+                                                    <td bgcolor="#ffffff" style="font-weight: bold; height: 20px; width: 49px;">
+                                                        0 分</td>
+                                                    <td align="right" bgcolor="#f7f7f7" style="font-weight: bold; height: 20px" width="15%">
+                                                        市场价：</td>
+                                                    <td bgcolor="#ffffff" style="font-weight: bold; width: 49px; height: 20px" align="left">
+                                                        <asp:Label ID="Label1" runat="server" Width="1px"><%# Eval("单价")%></asp:Label>&nbsp;</td>
+                                                </tr>
+                                                <tr style="font-weight: bold">
+                                                    <td align="right" bgcolor="#f7f7f7" style="height: 22px">
+                                                        <span style="color: #ff0000">会员价：</span></td>
+                                                    <td bgcolor="#ffffff" style="width: 104px; height: 22px">
+                                                        <asp:Label ID="Label4" runat="server"><%# Eval("单价") %>元</asp:Label></td>
+                                                    <td align="right" bgcolor="#f7f7f7" style="width: 94px; height: 22px">
+                                                        <strong>成交价：</strong></td>
+                                                    <td bgcolor="#ffffff" style="height: 22px; width: 49px;">
+                                                        <asp:Label ID="Label5" runat="server"><%# Eval("单价") %>元</asp:Label></td>
+                                                    <td align="right" bgcolor="#f7f7f7" style="height: 22px">
+                                                        <strong>总计：</strong></td>
+                                                    <td bgcolor="#ffffff" style="width: 49px; height: 22px">
+                                                        <span class="STYLE4">
+                                                            <asp:Label ID="Label2" runat="server" CommandName="zhongji"><%# Eval("小计") %>元</asp:Label></span></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                           <%--     <asp:RangeValidator ID="RangeValidator1" runat="server" ControlToValidate="TextBox1"
+                                    ErrorMessage="本物品货源不足或则您输入错误!!" MaximumValue="20" MinimumValue="1"></asp:RangeValidator>--%>
+                            </ItemTemplate>
+                        </asp:DataList></td>
+                </tr>
+                <tr>
+                    <td style="width: 100%; height: 21px;">
+                        <div style="text-align: center">
+                            <table border="0"  cellpadding="4" cellspacing="1"  style="width: 100%; text-align:center; height: 31px;">
+                                <tr align="center" style="height: 25px; background-color: #f7f7f7">
+                                    <td colspan="3" style="height: 13px; background-color: #ffffff; text-align: right; padding-right: 0px; padding-bottom: 0px; padding-top: 0px; vertical-align: top;">
+                                        <table  border="0" cellpadding="4" cellspacing="1" bgcolor="#FFFFFF" style="height: 30px;" width="644" id="TABLE1" onclick="return TABLE1_onclick()">
+                                            <tr>
+                                        <td  style="width:74%; height: 15px; vertical-align: middle;" align="center">
+                                            您的用户等级为：非注册用户 | <span class="STYLE4"><strong>价格总计：<asp:Label ID="Label6" runat="server"
+                                                ><%# Eval("小计")%>元</asp:Label></strong></span> | 获得积分：0分</td>
+                                        <td align="center" bgcolor="#FFCC00" style="height: 15px; width: 70px; vertical-align: top; margin-top: 4px; margin-bottom: 4px; text-align: left;">
+                                            <table border="0" cellpadding="0" cellspacing="0" style="width: 79%">
+                                                <tr>
+                                                    <td style="width: 100px; height: 24px; text-align: left;">
+	                                    <input name="payment" type="submit" class="input_bot" value="去收银台" id="Submit1" onclick="return Submit1_onclick()" onserverclick="Submit1_ServerClick" runat="server" /></td>
+                                                    <td style="width: 100px; height: 24px; text-align: left;"><input type="button" value="继续购物"  class="input_bot" id="Button1" onclick="javascript:window.location='BindPro.aspx';" />
+                                                        <%--<asp:Button ID="Button2" runat="server" CssClass="input_bot" OnClick="Button2_Click"
+                                                            Text="继续购物" />--%></td>
+                                                </tr>
+                                            </table>
+                                            </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,116 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" ValidateRequest="false" CodeFile="uppkgUpdate.aspx.cs" Inherits="Admin_packageAdmin_uppkgUpdate" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head id="Head1" runat="server">
+    <title>无标题页</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../kindeditor/themes/default/default.css" />
+	<link rel="stylesheet" href="../../kindeditor/plugins/code/prettify.css" />
+	<script charset="utf-8" src="../../kindeditor/kindeditor.js"></script>
+	<script charset="utf-8" src="../../kindeditor/lang/zh_CN.js"></script>
+	<script charset="utf-8" src="../../kindeditor/plugins/code/prettify.js"></script>
+	<script>
+	    KindEditor.ready(function (K) {
+	        var editor1 = K.create('#content1', {
+	            cssPath: '../../kindeditor/plugins/code/prettify.css',
+	            uploadJson: '../../kindeditor/asp.net/upload_json.ashx',
+	            fileManagerJson: '../../kindeditor/asp.net/file_manager_json.ashx',
+	            allowFileManager: true,
+	            afterCreate: function () {
+	                var self = this;
+	                K.ctrl(document, 13, function () {
+	                    self.sync();
+	                    K('form[name=example]')[0].submit();
+	                });
+	                K.ctrl(self.edit.doc, 13, function () {
+	                    self.sync();
+	                    K('form[name=example]')[0].submit();
+	                });
+	            }
+	        });
+	        prettyPrint();
+	    });
+	</script>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+      <table border="0" cellpadding="0" cellspacing="0" style="width: 100%">
+            <tr>
+                <td class="title" colspan="5">
+                    <asp:Label ID="Label1" runat="server" Text="体检套餐更新"></asp:Label> </td>
+            </tr>
+<tr>
+                            <td align="center" style="width: 100px">
+                               
+                                        <asp:Button ID="Button1" runat="server" CssClass="button" OnClick="Button1_Click"
+                                            Text="更　新" />
+                                <asp:Button ID="Button3" runat="server" CssClass="button" Text="提  交" 
+                                            onclick="Button3_Click" Visible="False" />
+                                
+                            </td>
+          &nbsp;&nbsp;
+                            <td colspan="2">
+                                <input id="Button2" class="button" onclick="location = 'packageInfo.aspx'" type="button" value="返　回" /></td>
+          
+                            <td colspan="1">
+                            </td>
+                            <td colspan="1">
+                            </td>
+                        </tr>
+
+        </table>
+    </div><br>
+      
+            <table border="1" cellpadding="1" cellspacing="1" class="adminContent" style="width: 100%">
+                <tr>
+                    <td align="center" style="width: 100px; height: 23px;" width="132">
+                        套餐代码：</td>
+                    <td style="width: 22px; height: 23px;" width="144">
+                        <asp:TextBox ID="TextBox1" runat="server" CssClass="TextBox" Width="175px"></asp:TextBox></td>
+                        <td align="center" style="width: 100px; height: 23px;" width="132">
+                        套餐名称：</td>
+                    <td style="width: 22px; height: 23px;" width="144">
+                        <asp:TextBox ID="TextBox2" runat="server" CssClass="TextBox" Width="175px"></asp:TextBox></td>
+                    
+                </tr>
+                
+                <tr>
+                    <td align="center" style="width: 100px; height: 23px;" width="266">
+                        VIP：</td>
+                    <td style="width: 100px; height: 23px;" width="243">
+                        <asp:TextBox ID="TextBox5" runat="server" CssClass="TextBox" Width="175px"></asp:TextBox></td>
+                    <td align="center" style="width: 100px; height: 23px;" width="266">
+                        </td>
+                    <td style="width: 100px; height: 23px;" width="243">
+                </tr>
+
+                <tr>
+                    <td align="center" style="width: 100px">
+                        价格：</td>
+                    <td style="width: 22px">
+                        <asp:TextBox ID="TextBox4" runat="server" CssClass="TextBox" Width="175px"></asp:TextBox>
+                    </td>
+                    <td align="center" style="width: 100px">
+                    市场价：</td>
+                    <td style="width: 100px">
+                        <asp:TextBox ID="TextBox8" runat="server" CssClass="TextBox" Width="175px"></asp:TextBox>
+                    </td>
+                </tr>
+               
+                <tr>
+                    <td align="center" valign="top">
+                        套餐内容：</td>
+                    <td colspan="3" >
+                        <textarea id="content1" cols="100" rows="8" style="width:350px;height:300px;visibility:hidden;" runat="server"></textarea>
+         
+                        </td>
+                </tr>
+                
+            </table>
+            
+    </form>
+</body>
+</html>
