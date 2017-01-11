@@ -13,10 +13,10 @@ EshineASPNet-基于ASP.Net敏捷开发开源框架
 2. 项目Demo：http://eshine.chinacloudapp.cn:100      用户名及密码：eshine
 3. 框架说明：http://blog.csdn.net/lyx_zhl/article/details/54313495
 
-###使用教程
+###使用教程 (教程大部分内容同样适用MVC平台)
 1. 多语言与单一登录：http://blog.csdn.net/lyx_zhl/article/details/54342494
 2. 商店门店地图展示：http://blog.csdn.net/lyx_zhl/article/details/54344925
-
+3. 身份证校验与正则：http://blog.csdn.net/lyx_zhl/article/details/54347849
 
 ###包含功能模块和特色：
 * 前台：
