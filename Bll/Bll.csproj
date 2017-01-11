@@ -73,6 +73,7 @@
     <Compile Include="ProdutClassBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProwerBll.cs" />
+    <Compile Include="PublicClass.cs" />
     <Compile Include="RelativeBLL.cs" />
     <Compile Include="reserveexam.cs" />
     <Compile Include="RolesBll.cs" />

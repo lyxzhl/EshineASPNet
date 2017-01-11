@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F4913863-687B-44EF-B1A4-655C49A5BCB7}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Senparc.Weixin.MP.Sample.WebForms</RootNamespace>
+    <AssemblyName>Senparc.Weixin.MP.Sample.WebForms</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Senparc.Weixin">
+      <HintPath>..\..\Senparc.Weixin.MP.Sample.CommonService\bin\Debug\Senparc.Weixin.dll</HintPath>
+    </Reference>
+    <Reference Include="Senparc.Weixin.MP">
+      <HintPath>..\..\Senparc.Weixin.MP.Sample.CommonService\bin\Debug\Senparc.Weixin.MP.dll</HintPath>
+    </Reference>
+    <Reference Include="Senparc.Weixin.Open">
+      <HintPath>..\..\Senparc.Weixin.MP.Sample.CommonService\bin\Debug\Senparc.Weixin.Open.dll</HintPath>
+    </Reference>
+    <Reference Include="Senparc.Weixin.QY">
+      <HintPath>..\..\Senparc.Weixin.MP.Sample.CommonService\bin\Debug\Senparc.Weixin.QY.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Default.aspx" />
+    <Content Include="OAuth2page.aspx" />
+    <Content Include="Qy.aspx" />
+    <Content Include="Scripts\jquery-1.7.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.7.1.js" />
+    <Content Include="Scripts\jquery-1.7.1.min.js" />
+    <Content Include="readme.txt" />
+    <Content Include="Web.config" />
+    <Content Include="webpage\AssetPrice.aspx" />
+    <Content Include="webpage\css\bootstrap-dialog.min.css" />
+    <Content Include="webpage\css\bootstrap-select.min.css" />
+    <Content Include="webpage\css\bootstrap.min.css" />
+    <Content Include="webpage\css\fsgallery.css" />
+    <Content Include="webpage\css\icon.css" />
+    <Content Include="webpage\css\main.css" />
+    <Content Include="webpage\fonts\icomoon.svg" />
+    <Content Include="webpage\img\addpic.png" />
+    <Content Include="webpage\img\button_cancel.png" />
+    <Content Include="webpage\img\button_ok.png" />
+    <Content Include="webpage\img\chat.png" />
+    <Content Include="webpage\img\date.png" />
+    <Content Include="webpage\img\edit.png" />
+    <Content Include="webpage\img\female.png" />
+    <Content Include="webpage\img\head.jpg" />
+    <Content Include="webpage\img\icon2.png" />
+    <Content Include="webpage\img\logo.png" />
+    <Content Include="webpage\img\male.png" />
+    <Content Include="webpage\img\team\no.jpg" />
+    <Content Include="webpage\js\Area.js" />
+    <Content Include="webpage\js\AreaData_min.js" />
+    <Content Include="webpage\js\bootstrap-dialog.js" />
+    <Content Include="webpage\js\bootstrap-dialog.min.js" />
+    <Content Include="webpage\js\bootstrap-select.min.js" />
+    <Content Include="webpage\js\bootstrap.min.js" />
+    <Content Include="webpage\js\fs_forse.js" />
+    <Content Include="webpage\js\geo.js" />
+    <Content Include="webpage\js\imageScroll.js" />
+    <Content Include="webpage\js\jquery.js" />
+    <Content Include="webpage\js\main.js" />
+    <Content Include="webpage\js\year_month_day.js" />
+    <Content Include="webpage\testuploadpic.aspx" />
+    <Content Include="webpage\webinterface\ExchangeData.aspx" />
+    <Content Include="Weixin.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="basePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OAuth2page.aspx.cs">
+      <DependentUpon>OAuth2page.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OAuth2page.aspx.designer.cs">
+      <DependentUpon>OAuth2page.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="publicclass.cs" />
+    <Compile Include="Qy.aspx.cs">
+      <DependentUpon>Qy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="webpage\AssetPrice.aspx.cs">
+      <DependentUpon>AssetPrice.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="webpage\AssetPrice.aspx.designer.cs">
+      <DependentUpon>AssetPrice.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="webpage\testuploadpic.aspx.cs">
+      <DependentUpon>testuploadpic.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="webpage\testuploadpic.aspx.designer.cs">
+      <DependentUpon>testuploadpic.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="webpage\webinterface\ExchangeData.aspx.cs">
+      <DependentUpon>ExchangeData.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="webpage\webinterface\ExchangeData.aspx.designer.cs">
+      <DependentUpon>ExchangeData.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Weixin.aspx.cs">
+      <DependentUpon>Weixin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\publish.pubxml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <Content Include="webpage\fonts\icomoon.eot" />
+    <Content Include="webpage\fonts\icomoon.ttf" />
+    <Content Include="webpage\fonts\icomoon.woff" />
+    <Content Include="webpage\js\main.rar" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Bll\Bll.csproj">
+      <Project>{aa8935c8-7b0f-46b4-b7c4-955790be4fa4}</Project>
+      <Name>Bll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DBunit\DBunit.csproj">
+      <Project>{4b2328f0-1f5e-41a5-b147-6d74efdefb8d}</Project>
+      <Name>DBunit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Model\Model.csproj">
+      <Project>{38acb28f-efed-4abb-9742-b41681ba076f}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Senparc.Weixin.MP.Sample.CommonService\Senparc.Weixin.MP.Sample.CommonService.csproj">
+      <Project>{ccd291e9-16fa-4b53-b032-ebd3f659567b}</Project>
+      <Name>Senparc.Weixin.MP.Sample.CommonService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SQLServerDAL\SQLServerDAL.csproj">
+      <Project>{0b762349-2883-4549-9caa-736dce865e6e}</Project>
+      <Name>SQLServerDAL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:6365/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,187 @@
+body {
+    color: #ADADAD;
+}
+
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+
+.photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    display: inline-block;
+    background: url(../img/team/no.jpg) center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    margin-right: 10px;
+}
+
+    .photo.big {
+        width: 200px;
+        height: 200px;
+        border-radius: 100px;
+    }
+     .photo.middle {
+        width: 100px;
+        height: 100px;
+        border-radius: 50px;
+    }
+      .photo.small {
+        width: 60px;
+        height: 60px;
+        border-radius: 30px;
+    }
+
+    .photo.default {
+        width: 76px;
+        height: 76px;
+        border-radius: 38px;
+    }
+
+    .photo.xsmall {
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+    }
+
+    .photo.xxsmall {
+        width: 30px;
+        height: 30px;
+        border-radius: 15px;
+    }
+
+    .photo.no-photo {
+        background-image: url(../img/team/no.jpg);
+    }
+
+    .col-md-1-5 {
+width: 20%;
+float: left;
+text-align:center;
+}
+.col-xs-1-5,.col-sm-1-5,.col-md-1-5,.col-lg-1-5 {
+min-height: 1px;
+padding-left: 15px;
+padding-right: 15px;
+position: relative;
+text-align:center;
+}
+
+@media (min-width: 240px) {
+.col-xs-1-5 {
+width: 20%;
+float: left;
+}
+}
+
+@media (min-width: 768px) {
+.col-sm-1-5 {
+width: 20%;
+float: left;
+}
+}
+@media (min-width: 992px) {
+.col-md-1-5 {
+width: 20%;
+float: left;
+}
+}
+@media (min-width: 1200px) {
+.col-lg-1-5 {
+width: 20%;
+float: left;
+}
+}
+
+    .col-md-2-5 {
+width: 40%;
+float: left;text-align:center;
+}
+.col-xs-2-5,.col-sm-2-5,.col-md-2-5,.col-lg-2-5 {
+min-height: 1px;
+padding-left: 15px;
+padding-right: 15px;
+position: relative;text-align:center;
+}
+@media (min-width: 240px) {
+.col-xs-2-5 {
+width: 40%;
+float: left;
+}
+}
+@media (min-width: 768px) {
+.col-sm-2-5 {
+width: 40%;
+float: left;
+}
+}
+@media (min-width: 992px) {
+.col-md-2-5 {
+width: 40%;
+float: left;
+
+}
+}
+@media (min-width: 1200px) {
+.col-lg-2-5 {
+width: 40%;
+float: left;
+
+}
+}
+body{
+background-color:black;
+}
+.headtop {
+margin:5px 0 5px 0;
+}
+.AssetPrice .col-xs-4,.col-sm-4,.col-md-4,.col-lg-4{
+text-align:center;
+}
+
+.AssetPrice .tabletop div{
+background-color:#272b2e;
+}
+
+.row div {
+line-height:36px;
+}
+.tabletop div {
+min-height:80px;
+}
+
+.goup {
+background-color:red;
+color:white;
+}
+.godown {
+background-color:green;
+color:white;
+}
+.greyback {
+    background-color: #3c3c3c;
+}
+
+    .greyback div {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+.greyK {
+    background-color: #4f4f4f;
+    color: white;
+}
+#maincontent .row {
+border-bottom:1px solid #2e2e2e;
+}
+.upprice {
+color:red;
+}
+.downprice {
+color:green;
+}

@@ -23,8 +23,12 @@
 <div class='tencol'>
 <div class='tile'>
 <h1 style="font-size:26px; color:#606060"><asp:Localize ID="Localize2" runat="server" Text='<%$ Resources:GResource,aboutus %>'></asp:Localize></h1>
-待完善！
+<p>
+    Senparc的使用可以参考http://weixin.senparc.com/
+</p>
+    <p>
 
+    </p>
 
 </div>
 <div class='onecol last'></div>
