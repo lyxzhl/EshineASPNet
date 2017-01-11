@@ -42,7 +42,7 @@ public class PageBases : System.Web.UI.Page
                 {
                     //用户没有在线 ，转到登录界面
                     // Response.Write("<script>parent.document.location.href='Login.aspx';</script>"); ////有框架时用
-                    Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('本帐号在其他地方登陆！'); window.location.href = 'login2.aspx';</script>");
+                    Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "message", " <script>alert('本帐号在其他地方登陆！'); window.location.href = 'login.aspx';</script>");
                     //Response.Redirect("login.aspx"); ////无框架时用
                     return;
                 }
