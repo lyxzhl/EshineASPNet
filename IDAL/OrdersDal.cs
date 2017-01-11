@@ -10,9 +10,11 @@ namespace IDAL
         DataTable GetAll();
         DataTable GetAny(string sql);
         DataTable Select(string ss);
-        int Add(Model.tab_orders m_order);
-        Model.tab_orders getorders(Model.tab_orders orders1);
-        string Update(Model.tab_orders orders);
+        int Add(Model.tab_orders tab_orders);
+        Model.tab_orders gettab_orders(int id);
+        Model.tab_orders gettab_orders(DataTable dt);
+        int update(Model.tab_orders tab_orders);
+
         int updatereportpath(int orderID, string path);
         DataSet getOrderInfo(string sql, string sqlx);
         int Delete(int st);

@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Model
 {
-    /// <summary>
-    /// 订单表信息
-    /// </summary>
     public class tab_orders
     {
         private int _orderID = 0;
@@ -51,6 +46,10 @@ namespace Model
         private DateTime _payTime = DateTime.Parse("1900-01-01");
         private string _payNote = "";
         private string _ordernote = "";
+        private string _fapiaotitle = "";
+        private string _fapiaocontent = "";
+        private string _deliveryno = "";
+        private string _xiya = "";
 
 
         public int orderID
@@ -305,7 +304,29 @@ namespace Model
             set { _ordernote = value; }
         }
 
+        public string fapiaotitle
+        {
+            get { return _fapiaotitle; }
+            set { _fapiaotitle = value; }
+        }
 
+        public string fapiaocontent
+        {
+            get { return _fapiaocontent; }
+            set { _fapiaocontent = value; }
+        }
+
+        public string deliveryno
+        {
+            get { return _deliveryno; }
+            set { _deliveryno = value; }
+        }
+
+        public string xiya
+        {
+            get { return _xiya; }
+            set { _xiya = value; }
+        }
 
     }
 }

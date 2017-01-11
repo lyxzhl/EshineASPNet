@@ -295,7 +295,7 @@ public partial class Admin_CustomersAdmin_CustomerInfo : System.Web.UI.Page
         this.SqlDataSource1.SelectCommand = s;
         this.SqlDataSource1.DataBind();
     }
-    protected void Button1_Click(object sender, EventArgs e)
+    protected void Button1_Click(object sender, EventArgs e)//批量操作
     {
         string memberidlist = "";
         foreach (GridViewRow row in GridView1.Rows)
@@ -309,6 +309,6 @@ public partial class Admin_CustomersAdmin_CustomerInfo : System.Web.UI.Page
                 memberidlist += id;
             }
         }
-        Response.Redirect("customerBuorder.aspx?completeorder=yes&memberidlist=" + memberidlist);
+        //Response.Redirect("customerBuorder.aspx?completeorder=yes&memberidlist=" + memberidlist);
     }
 }

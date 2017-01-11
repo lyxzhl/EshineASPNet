@@ -165,7 +165,7 @@
                   <dd>
 
 <asp:ImageButton ID="ImageButton1" runat="server" AlternateText="-" ImageUrl="~/Images/minus.jpg" ImageAlign="Middle" />
-                <asp:TextBox ID="num" runat="server" Width="25px" Text="1" onchange="updatePrice();" class="uniprice" BackColor="White"></asp:TextBox>
+                <asp:TextBox ID="num" runat="server" Width="25px" Text="1" class="uniprice" BackColor="White"></asp:TextBox>
                 <asp:ImageButton ID="ImageButton2" runat="server" AlternateText="+" ImageUrl="~/Images/plus.jpg" ImageAlign="Middle" />
                 <asp:NumericUpDownExtender ID="NumericUpDownExtender1" runat="server" Maximum="10" Minimum="0" TargetButtonUpID="ImageButton2" TargetButtonDownID="ImageButton1" TargetControlID="num"></asp:NumericUpDownExtender>
          

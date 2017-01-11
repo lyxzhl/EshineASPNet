@@ -44,28 +44,23 @@
                             <asp:Button ID="Button2" runat="server" CssClass="button" Text="搜　索" OnClick="Button2_Click" /></td>
                         <td>
                             <asp:DropDownList ID="DropDownList2" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DropDownList2_SelectedIndexChanged" Visible="false">
-                                <asp:ListItem>--搜索任意体检状态的公司员工--</asp:ListItem>
+                                <asp:ListItem>--搜索任意状态的公司员工--</asp:ListItem>
                                 <asp:ListItem>待付款</asp:ListItem>
                                 <asp:ListItem>待确认</asp:ListItem>
                                 <asp:ListItem>待转账</asp:ListItem>
                                 <asp:ListItem>付款完成</asp:ListItem>
                                 <asp:ListItem>已取消</asp:ListItem>
-                                <asp:ListItem>已体检</asp:ListItem>
                                 <asp:ListItem>已完成</asp:ListItem>
-                                <asp:ListItem>约检成功</asp:ListItem>
                             </asp:DropDownList>
                         </td>
                         <td  >
                             <asp:Button ID="ButtonEE" runat="server" Text="导出excel" 
                                 onclick="ButtonEE_Click"  />
+                            <asp:Button ID="Button1" runat="server" Text="批量操作" OnClick="Button1_Click" />
+                            <asp:Label ID="Label1" runat="server" Text="错误信息" Visible="false"></asp:Label>
                             </td>
                     </tr>
-                    <tr>
-                        <td >
-                            <asp:Button ID="Button1" runat="server" Text="批量补单" OnClick="Button1_Click" />
-                            <asp:Label ID="Label1" runat="server" Text="错误信息"></asp:Label>
-                            </td>
-                    </tr>
+                    
                 </table>
                 <table border="0" cellpadding="0" cellspacing="0" class="adminContent" style="width: 100%">
                 <tr>

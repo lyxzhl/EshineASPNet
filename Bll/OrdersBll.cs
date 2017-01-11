@@ -49,7 +49,7 @@ namespace Bll
         /// <returns></returns>
         public string Update(Model.tab_orders m_order)
         {
-            return itu.Update(m_order);
+            return itu.update(m_order).ToString();
         }
         /// <summary>
         /// 父子表
@@ -63,7 +63,7 @@ namespace Bll
         }
         public Model.tab_orders getorders(Model.tab_orders orders1)
         {
-            return itu.getorders(orders1);
+            return itu.gettab_orders(orders1.orderID);
         }
         public int Delete(int orderID)
         {

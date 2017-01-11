@@ -15,7 +15,7 @@
   <TR>
     <TD height="99" bgcolor="#0099d8">
       <DIV class="logo_time">
-      <DIV class="logo l"><IMG src="../Images/Medi-plus_02.png" height="99px" /></DIV>
+      <DIV class="logo l" style="margin-top:20px"><IMG src="../Images/logo2.png"  /></DIV>
       <DIV class="time r"><SPAN>咨询热线 <B style="font-family: Arial, Helvetica, sans-serif; font-size: 14px;">400-888-8888</B></SPAN><SPAN>EshineASPNet</SPAN></DIV></DIV></TD></TR>
   <TR>
     <TD height="90">&nbsp;</TD></TR>
