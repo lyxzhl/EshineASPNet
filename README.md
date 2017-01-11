@@ -50,4 +50,7 @@ Bootstrap, Kindeditor, Senparc.Weixin
 
 最后说一下使用，打包下载github包之后，先到db文件夹，这里有个bak文件可以直接还原到sql server 2012以上的版本，对于低版本的sql server，这里提供了script文件执行一次就可以创建数据库。然后修改web.config里面的connectionstring就可以运行了，have fun!
 
-![](ScreenShot/e1.jpg)
+![](ScreenShot/e1.JPG)
+![](ScreenShot/e2.JPG)
+![](ScreenShot/e3.JPG)
+![](ScreenShot/e4.JPG)
