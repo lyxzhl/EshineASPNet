@@ -35,6 +35,8 @@ EshineASPNet-基于ASP.Net敏捷开发开源框架
     * 公司管理 - 公司信息的管理
     * 商品管理 - 商场管理
     * 订单管理 - 订单的管理
+    * 导入Excel - 自动读取excel多张sheet并存入数据库
+    * 导出Excel - 导出gridview数据至excel
 
 ###涵盖技术：
 Asp.net Webform，Sql Server，三层架构，用户控件，页面继承
@@ -54,3 +56,7 @@ Bootstrap, Kindeditor, Senparc.Weixin
 ![](ScreenShot/e2.JPG)
 ![](ScreenShot/e3.JPG)
 ![](ScreenShot/e4.JPG)
+![](ScreenShot/e5.JPG)
+![](ScreenShot/e6.JPG)
+![](ScreenShot/e7.JPG)
+![](ScreenShot/e8.JPG)
