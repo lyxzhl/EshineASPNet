@@ -19,6 +19,7 @@ EshineASPNet-基于ASP.Net敏捷开发开源框架
 3. 身份证校验与正则：http://blog.csdn.net/lyx_zhl/article/details/54347849
 4. EXCEL导入与导出：http://blog.csdn.net/lyx_zhl/article/details/54352443
 5. 根据模板发送邮件：http://blog.csdn.net/lyx_zhl/article/details/54375625
+6. 支付机构支付模块：http://blog.csdn.net/lyx_zhl/article/details/54377252
 
 ###包含功能模块和特色：
 * 前台：
