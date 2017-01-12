@@ -21,6 +21,7 @@ EshineASPNet-基于ASP.Net敏捷开发开源框架
 5. 根据模板发送邮件：http://blog.csdn.net/lyx_zhl/article/details/54375625
 6. 支付机构支付模块：http://blog.csdn.net/lyx_zhl/article/details/54377252
 7. 自动生成代码模块：http://blog.csdn.net/lyx_zhl/article/details/54377962
+8. 公众号开发与框架：http://blog.csdn.net/lyx_zhl/article/details/54378528
 
 ###包含功能模块和特色：
 * 前台：
