@@ -190,7 +190,7 @@ public class PublicClass : System.Web.UI.Page
     {
         return System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(str, "MD5").ToLower();
     }
-    public string getIp()
+    public string getIp(HttpRequest Request)
     {
         string ip2;
         try
@@ -523,7 +523,7 @@ public class PublicClass : System.Web.UI.Page
         loginlog.loginid = id;
         loginlog.loginpw = pw;
         loginlog.time = DateTime.Now;
-        loginlog.loginip = getIp();
+        //loginlog.loginip = getIp();
         loginlog.loginbrowser = browser;
         loginlog.logindevice = device;
         loginlog.note = note;

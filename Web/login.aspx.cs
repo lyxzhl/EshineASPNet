@@ -33,7 +33,7 @@ public partial class login : PageBases
         loginlog.loginid = this.TextBox1.Text;
         loginlog.loginpw = this.TextBox2.Text;
         loginlog.time = DateTime.Now;
-        loginlog.loginip = pc.getIp();
+        loginlog.loginip = pc.getIp(Request);
         loginlog.loginbrowser = Request.Browser.Type;
         loginlog.logindevice = Request.Browser.MobileDeviceManufacturer + " " + Request.Browser.MobileDeviceModel;
         //loginlog.status = ;

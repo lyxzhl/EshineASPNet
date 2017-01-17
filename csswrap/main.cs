@@ -34,6 +34,9 @@ namespace csswrap
                     return false;
                 }
             }
+            else {
+                folderpath = this.textBox1.Text;
+            }
             return true;
         }
 
@@ -267,7 +270,7 @@ namespace csswrap
             s = s.Substring(0, s.LastIndexOf('\\'));
             s = s.Substring(0, s.LastIndexOf('\\'));
             s = s.Substring(0, s.LastIndexOf('\\'));
-            this.textBox1.Text = s;
+            this.textBox1.Text= folderpath = s;
         }
 
         private void button3_Click(object sender, EventArgs e)
