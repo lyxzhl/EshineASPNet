@@ -325,5 +325,37 @@ namespace csswrap
             }
         }
 
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (this.radioButton1.Checked)
+            {
+                this.textBox2.Text = System.Web.HttpUtility.UrlDecode(this.textBox3.Text, System.Text.Encoding.UTF8);
+            }
+            else if (this.radioButton2.Checked)
+            {
+                this.textBox2.Text = System.Web.HttpUtility.UrlDecode(this.textBox3.Text, System.Text.Encoding.GetEncoding("GB2312"));
+            }
+            else
+            {
+                this.textBox2.Text = System.Web.HttpUtility.UrlDecode(this.textBox3.Text);
+            }
+
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            if (this.radioButton1.Checked)
+            {
+                this.textBox2.Text = System.Web.HttpUtility.UrlEncode(this.textBox3.Text, System.Text.Encoding.UTF8);
+            }
+            else if (this.radioButton2.Checked)
+            {
+                this.textBox2.Text = System.Web.HttpUtility.UrlEncode(this.textBox3.Text, System.Text.Encoding.GetEncoding("GB2312"));
+            }
+            else
+            {
+                this.textBox2.Text = System.Web.HttpUtility.UrlEncode(this.textBox3.Text);
+            }
+        }
     }
 }
